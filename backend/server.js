@@ -1,7 +1,9 @@
-const express = require('express');
+require('dotenv').config()
 
+const express = require('express');
 const app = express();
- 
+const User = require('./models/user')
+
 // GET method route
 app.get('/user', function (req, res) {
   res.send('Code Factory')
