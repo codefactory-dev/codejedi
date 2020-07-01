@@ -4,7 +4,7 @@ const app = express();
  
 // GET method route
 app.get('/user', function (req, res) {
-  res.send('GET request to the homepage')
+  res.send('Code Factory')
 })
 
 app.listen(3000, () =>
