@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+
+##############################
+#    Setup node container    #
+##############################
+
+    server:
+        build: ./backend
+        expose:
+            - ${APP_SERVER_PORT}
+        environment:
+            API_HOST: ${API_HOST}
+            APP_SERVER_PORT: ${APP_SERVER_PORT}
+        ports:
+            - ${APP_SERVER_PORT}:${APP_SERVER_PORT}
+        volumes:
+            - ./backend/src:/srv/app/admin-server/src
+        command: npm run start
+
+##############################
+#    Setup node container    #
+##############################
+    client:
+        build: ./frontend
+        environment:
+            - REACT_APP_PORT=${REACT_APP_PORT}
+        expose:
+            - ${REACT_APP_PORT}    
+        ports:
+            - 80:${REACT_APP_PORT}
+        volumes:
+            - ./frontend/src:/srv/app/admin-client/src
+            - ./frontend/public:/srv/app/admin-client/public
+        links:
+            - server
+        stdin_open: true
+        command: npm run start
