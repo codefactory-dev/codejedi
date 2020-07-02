@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const User = mongoose.model('User',{
     
-    _id: {
+    name: {
         type: String,
         required: true,
         trim: true,

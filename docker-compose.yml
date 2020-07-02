@@ -17,6 +17,8 @@ services:
             - ${APP_SERVER_PORT}:${APP_SERVER_PORT}
         volumes:
             - ./backend/src:/srv/app/admin-server/src
+        depends_on:
+            - mongo    
         command: npm run start
 
 ##############################
@@ -37,3 +39,11 @@ services:
             - server
         stdin_open: true
         command: npm run start
+
+#####################
+#   MONGO SERVICE   #  
+#####################
+    mongo:
+        image: mongo
+        ports:
+            - "27017:27017"
