@@ -4,6 +4,7 @@ FROM node:8.7.0-alpine as build
 # Create app directory and use it as the working directory
 RUN mkdir -p /srv/app/admin-client
 WORKDIR /srv/app/admin-client
+ENV PATH /srv/app/admin-client/node_modules/.bin:$PATH
 
 COPY package.json /srv/app/admin-client
 COPY package-lock.json /srv-app/admin-client
@@ -14,7 +15,7 @@ RUN npm install react-scripts@3.3.1 -g --silent
 
 COPY . /srv/app/admin-client
 
-CMD [ "npm", "start" ]
+RUN npm run build
 
 
 # production environment
