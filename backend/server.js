@@ -57,19 +57,49 @@ app.get('/users', async (req,res) => {
 
 // POST method route
 app.post('/users', async (req,res) => {
-  console.log("gonna create user")
-  const user = new User(req.body);
-  console.log("created user "+user.name);
-  try{
-    await user.save()
-    res.status(201).send(user)
-  } catch(e){
-    res.status(500).json({
-      error: true,
-      message: e.toString()
-    });
-  }
-})
+  console.log(`REQUEST :: create user  ${req.body.name}`);
+
+  const [firstname, lastname] = req.body.name.split(' ');
+  const newUser = {
+    firstname,
+    lastname,
+    email: `${firstname}@gmail.com`,
+    username: firstname,
+    password: `${lastname}123`,
+    qTrackSummary: {
+      nbTracksPerType: {
+        'Array': 0,
+        'String': 0,
+        'Tree': 0
+      },
+      avgDurationPerType: {
+        'Array': 0,
+        'String': 0,
+        'Tree': 0
+      },
+      nbPDifficultyPerType: {
+        'Array': 0,
+        'String': 0,
+        'Tree': 0
+      }
+    }
+  };
+
+
+  await User.create(newUser)
+          .then((resolve) => {
+            console.log(`STATUS :: Success`);
+            console.log(resolve);
+            res.status(201).send(newUser);
+          })
+        .catch((e) => {
+          console.error(`STATUS :: Ops.Something went wrong.`);
+          res.status(500).json({
+            error: true,
+            message: e.toString()
+          });
+        });
+});
 
 
 // --------------------------------------------------------------------

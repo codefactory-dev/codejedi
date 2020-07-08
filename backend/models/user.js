@@ -42,7 +42,7 @@ const userSchema = new mongoose.Schema({
     },
     profileVisibility: {
         type: Boolean,
-        required: true
+        default: false,
     },
     ratingTds: [{ 
         type: mongoose.Schema.Types.ObjectId, 
