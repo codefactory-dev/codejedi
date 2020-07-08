@@ -9,12 +9,12 @@ services:
     server:
         build: ./backend
         expose:
-            - ${APP_SERVER_PORT}
+            - 8000
         environment:
-            API_HOST: ${API_HOST}
-            APP_SERVER_PORT: ${APP_SERVER_PORT}
+            API_HOST: "http://0.0.0.0:3000/"
+            APP_SERVER_PORT: 8000
         ports:
-            - ${APP_SERVER_PORT}:${APP_SERVER_PORT}
+            - 8000:8000
         volumes:
             - ./backend/src:/srv/app/admin-server/src
         depends_on:
@@ -27,18 +27,18 @@ services:
     client:
         build: ./frontend
         environment:
-            - REACT_APP_PORT=${REACT_APP_PORT}
+            - REACT_APP_PORT=4000
         expose:
-            - ${REACT_APP_PORT}    
+            - 4000    
         ports:
-            - 80:${REACT_APP_PORT}
+            - 4000:4000
         volumes:
             - ./frontend/src:/srv/app/admin-client/src
             - ./frontend/public:/srv/app/admin-client/public
         links:
             - server
         stdin_open: true
-        command: npm run start
+        command: nginx -g "daemon off;"
 
 #####################
 #   MONGO SERVICE   #  
