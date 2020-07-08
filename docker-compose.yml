@@ -38,9 +38,7 @@ services:
         links:
             - server
         stdin_open: true
-        depends_on:
-            - server
-        command: npm run start
+        command: nginx -g daemon off;
 
 #####################
 #   MONGO SERVICE   #  
