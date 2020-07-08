@@ -4,23 +4,25 @@ const mongoose = require('mongoose');
 
 
 const qbasicSchema = new mongoose.Schema({
-    qDetail: { 
+    detailsId: { 
         type: mongoose.Schema.Types.ObjectId, 
         ref: "QDetail",
         required: true 
     },
     creator: { 
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: "User", 
-        required: true 
-    },
-    creatorUsername: {
-        type: String,
-        required: true
-    },
-    creatorJoinDate: {
-        type: Date,
-        required: true
+        id: {
+            type: mongoose.Schema.Types.ObjectId, 
+            ref: "User", 
+            required: true 
+        },
+        username: {
+            type: String,
+            required: true
+        },
+        joinDate: {
+            type: Date,
+            required: true
+        }
     },
     title: { 
         type: String, 
