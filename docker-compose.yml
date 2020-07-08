@@ -38,7 +38,7 @@ services:
         links:
             - server
         stdin_open: true
-        command: nginx -g daemon off;
+        command: nginx -g "daemon off;"
 
 #####################
 #   MONGO SERVICE   #  
