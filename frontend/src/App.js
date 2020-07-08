@@ -11,7 +11,7 @@ function App() {
     {
       const fetchedUsers = await axios.get('/users')
       setUsers(fetchedUsers.data.map((fetchedUserData)=>{
-        return fetchedUserData.name;
+        return `${fetchedUserData.firstname} ${fetchedUserData.lastname}`;
       }));
     }
     getUsers();
