@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 
 const ratingSchema = new mongoose.Schema({
-    creator: { 
+    creatorId: { 
         type: mongoose.Schema.Types.ObjectId, 
         ref: "User", 
         required: true 
