@@ -38,6 +38,8 @@ services:
         links:
             - server
         stdin_open: true
+        depends_on:
+            - server
         command: npm run start
 
 #####################
