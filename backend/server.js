@@ -1,20 +1,46 @@
 require('dotenv').config()
 
-const express = require('express');
-const bodyParser = require('body-parser')
-const app = express();
-const User = require('./models/user')
+const bodyParser = require('body-parser'),
+      mongoose = require('mongoose'),
+      express = require('express'),
+      app = express();
 
-const mongoose = require('mongoose');
+// --------------------------------------------------------------------
+// APP CONFIG
+// --------------------------------------------------------------------
 
-mongoose.connect(process.env.MONGODB_URL, {
+app.use(bodyParser.json())
+
+// --------------------------------------------------------------------
+// MONGODB/MONGOOSE
+// --------------------------------------------------------------------
+const QDifficulty = require('./models/qdifficulty');
+const Comment = require('./models/comment');
+const QDetail = require('./models/qdetail');
+const QBasic = require('./models/qbasic');
+const Rating = require('./models/rating');
+const QTrack = require('./models/qtrack');
+const QType = require('./models/qtype');
+const User = require('./models/user');
+
+const resetDB = require('./resetDB');
+resetDB();
+
+
+const MONGODB_URL = process.env.MONGODB_URL || "mongodb://localhost:27017/codefactory-database";
+mongoose.connect(MONGODB_URL, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true
 })
+.catch((err) => {
+  console.log("Error on db connection: " + err.message);
+});
 
-// parse application/json
-app.use(bodyParser.json())
+
+// --------------------------------------------------------------------
+// ROUTES
+// --------------------------------------------------------------------
 
 // GET method route
 app.get('/users', async (req,res) => {
@@ -44,6 +70,11 @@ app.post('/users', async (req,res) => {
     });
   }
 })
+
+
+// --------------------------------------------------------------------
+// SERVER LISTENER
+// --------------------------------------------------------------------
 
 app.listen(3000, () =>
   console.log('Example app listening on port 3000!')
