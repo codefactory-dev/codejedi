@@ -23,7 +23,7 @@ function App() {
       setLoading(true);
       const result = await axios.post('/users', {name: newName});
       console.log("posted user: "+result.data.name);
-      setUsers([...users,result.data.name]);
+      setUsers([...users,`${result.data.firstname} ${result.data.lastname}`]);
       setLoading(false);
     }
     generateAsync();
