@@ -16,10 +16,10 @@ const qdetailSchema = new mongoose.Schema({
     },
     solution: {
         type: String,
+        default: undefined
     },
     creationDate: {
         type: Date,
-        required: true,
         default: Date.now
     },
     ratingIds: [{ 

@@ -13,8 +13,7 @@ const ratingSchema = new mongoose.Schema({
         required: true 
     },
     lastUpdate : { 
-        type: Date, 
-        required: true, 
+        type: Date,
         default: Date.now 
     },
 });

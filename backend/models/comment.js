@@ -20,12 +20,10 @@ const commentSchema = new mongoose.Schema({
     },
     creationDate: {
         type: Date,
-        required: true,
         default: Date.now
     },
     lastUpdate: {
         type: Date,
-        required: true,
         default: Date.now
     },
     reply: {

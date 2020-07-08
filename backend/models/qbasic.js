@@ -38,27 +38,23 @@ const qbasicSchema = new mongoose.Schema({
     },
     hasSolution: { 
         type: Boolean, 
-        required: true,
-        default: false 
+        required: true
     },
     avgRatings: { 
         type: mongoose.Types.Decimal128, 
-        required: true,
-        default: 0.0
+        default: 0
     },
     nbRatings: { 
-        type: Number, 
-        required: true,
+        type: Number,
         default: 0 
     },
     lastUpdate: { 
-        type: Date, 
-        required: true, 
+        type: Date,
         default: Date.now 
     },
     lastCommentDescription: { 
         type: String, 
-        required: true 
+        default: undefined
     },
 });
 

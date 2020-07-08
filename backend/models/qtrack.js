@@ -22,14 +22,16 @@ const qtrackSchema = new mongoose.Schema({
         type: Boolean, 
         required: true
     },
+    duration: {
+        type: Number,
+        required: true
+    },
     creationDate: {
         type: Date,
-        required: true,
         default: Date.now
     },
     lastUpdate: { 
-        type: Date, 
-        required: true, 
+        type: Date,
         default: Date.now 
     }
 });
