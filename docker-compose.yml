@@ -17,8 +17,6 @@ services:
             - 8000:8000
         volumes:
             - ./backend/src:/srv/app/admin-server/src
-        depends_on:
-            - mongo    
         command: npm run start
 
 ##############################
@@ -39,11 +37,3 @@ services:
             - server
         stdin_open: true
         command: nginx -g "daemon off;"
-
-#####################
-#   MONGO SERVICE   #  
-#####################
-    mongo:
-        image: mongo
-        ports:
-            - "27017:27017"
