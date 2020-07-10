@@ -22,6 +22,7 @@ const Rating = require('./models/rating');
 const QTrack = require('./models/qtrack');
 const QType = require('./models/qtype');
 const User = require('./models/user');
+const Editor = require('./models/editor');
 
 const resetDB = require('./resetDB');
 resetDB();
@@ -41,6 +42,44 @@ mongoose.connect(MONGODB_URL, {
 // --------------------------------------------------------------------
 // ROUTES
 // --------------------------------------------------------------------
+
+// GET rich-text
+app.get('/editors', async (req,res) => {
+  try{
+    const editors = await Editor.find({})
+    return res.send(editors)
+  } catch(error) {
+    return res.status(500).json({
+      error: true,
+      message: e.toString()
+    });
+  }
+});
+
+// POST rich-text
+app.post('/editors', async (req,res) => {
+  console.log(`REQUEST :: create editor  ${req.body.description}`);
+
+  const newEditor = {
+    description: req.body.description
+  };
+
+
+  await Editor.create(newEditor)
+          .then((resolve) => {
+            console.log(`STATUS :: Success`);
+            console.log(resolve);
+            res.status(201).send(newEditor);
+          })
+        .catch((e) => {
+          console.error(`STATUS :: Ops.Something went wrong.`);
+          res.status(500).json({
+            error: true,
+            message: e.toString()
+          });
+        });
+});
+
 
 // GET method route
 app.get('/users', async (req,res) => {
