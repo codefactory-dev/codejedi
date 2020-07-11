@@ -3,6 +3,8 @@ require('dotenv').config()
 const bodyParser = require('body-parser'),
       mongoose = require('mongoose'),
       express = require('express'),
+      multer = require("multer"),
+      fs = require('fs'),
       app = express();
 
 // --------------------------------------------------------------------
@@ -23,12 +25,15 @@ const QTrack = require('./models/qtrack');
 const QType = require('./models/qtype');
 const User = require('./models/user');
 const Editor = require('./models/editor');
+const Img = require('./models/img');
 
 const resetDB = require('./resetDB');
 resetDB();
 
 
 const MONGODB_URL = process.env.MONGODB_URL || "mongodb://localhost:27017/codefactory-database";
+const upload = multer();
+
 mongoose.connect(MONGODB_URL, {
     useNewUrlParser: true,
     useCreateIndex: true,
@@ -38,16 +43,43 @@ mongoose.connect(MONGODB_URL, {
   console.log("Error on db connection: " + err.message);
 });
 
-
 // --------------------------------------------------------------------
 // ROUTES
 // --------------------------------------------------------------------
 
+// GET profile pictures
+app.get('/profilepics', async (req,res) => { 
+    res.status(201).send("TODO");
+});
+
+
+// POST profile picture
+app.post('/profilepics', upload.single('profilepic'), async (req, res) => {
+  console.log(`REQUEST :: create profile picture`);
+  console.log(req.file);
+  console.log(upload);
+  await Img.create(req.file)
+          .then((resolve) => {
+              console.log(`STATUS :: Success`);  
+              // res.contentType(req.file.mimetype);
+              // res.status(201).send(req.file.buffer);
+              res.status(201).send(req.file.buffer.toString('base64'));      
+          })
+        .catch((e) => {
+          console.error(`STATUS :: Ops.Something went wrong.`);
+          res.status(500).json({
+            error: true,
+            message: e.toString()
+          });
+        });
+});
+
+
 // GET rich-text
 app.get('/editors', async (req,res) => {
   try{
-    const editors = await Editor.find({})
-    return res.send(editors)
+    const editors = await Editor.find({});
+    return res.send(editors);
   } catch(error) {
     return res.status(500).json({
       error: true,
