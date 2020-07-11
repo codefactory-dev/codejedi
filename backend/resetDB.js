@@ -1,5 +1,6 @@
 const User = require('./models/user');
 const Editor = require('./models/editor');
+const Img = require('./models/img');
 const mongoose = require('mongoose');
 
 
@@ -12,7 +13,11 @@ const resetDB = async () => {
 
     await Editor.deleteMany({})
                 .then(() => console.log("removed all editors."))
-                .catch((err) => console.error("error: could not remove editors"));            
+                .catch((err) => console.error("error: could not remove editors")); 
+    
+    await Img.deleteMany({})
+                .then(() => console.log("removed all images."))
+                .catch((err) => console.error("error: could not remove images"));
 };
 
 
