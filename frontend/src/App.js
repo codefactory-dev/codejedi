@@ -47,7 +47,7 @@ function App() {
       </ul>
       <div>
         <label>
-          Click to generate a new user with a random name:
+          Click the button to generate a new user with a random name:
         <button onClick={generateRandomUser}>
           { loading ? '...' : 'Generate' }
         </button>
