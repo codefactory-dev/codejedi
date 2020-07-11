@@ -21,7 +21,7 @@ function App() {
     async function generateAsync() {
       const newName = GenerateName();
       setLoading(true);
-      const result = await axios.post('/users', {name: newName});
+      const result = await axios.post('/.netlify/functions/server/api/users', {name: newName});
       console.log("posted user: "+result.data.name);
       setUsers([...users,`${result.data.firstname} ${result.data.lastname}`]);
       setLoading(false);

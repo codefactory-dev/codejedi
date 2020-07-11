@@ -35,7 +35,9 @@ const MONGODB_URL = process.env.MONGODB_URL || "mongodb://localhost:27017/codefa
 mongoose.connect(MONGODB_URL, {
     useNewUrlParser: true,
     useCreateIndex: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    bufferCommands: false,
+    bufferMaxEntries: 0
 })
 .catch((err) => {
   console.log("Error on db connection: " + err.message);
@@ -86,6 +88,7 @@ router.post('/editors', async (req,res) => {
 
 // GET method route
 router.get('/users', async (req,res) => {
+  console.log("will try to get users");
   try{
     const users = await User.find({})
     return res.send(users)
@@ -144,7 +147,7 @@ router.post('/users', async (req,res) => {
 });
 
 // API calls
-router.get('/api/hello', (req, res) => {
+router.get('/hello', (req, res) => {
   res.send({ express: 'Hello From Express' });
 });
 
@@ -153,7 +156,7 @@ router.get('/api/hello', (req, res) => {
 // ROUTE ALL PATHS TO LAMBDA
 // --------------------------------------------------------------------
 
-app.use('/.netlify/functions/server', router); // path must route to lambda
+app.use('/.netlify/functions/server/api', router); // path must route to lambda
 
 
 // --------------------------------------------------------------------
