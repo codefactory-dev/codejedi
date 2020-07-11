@@ -9,7 +9,7 @@ function App() {
   useEffect(()=>{
     async function getUsers()
     {
-      const fetchedUsers = await axios.get('/users')
+      const fetchedUsers = await axios.get('/.netlify/functions/server/api/hello')
       setUsers(fetchedUsers.data.map((fetchedUserData)=>{
         return `${fetchedUserData.firstname} ${fetchedUserData.lastname}`;
       }));
