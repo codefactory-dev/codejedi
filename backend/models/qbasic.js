@@ -1,17 +1,18 @@
 const QDetail = require('../models/qdetail');
 const User = require('../models/user');
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 
-const qbasicSchema = new mongoose.Schema({
+const qbasicSchema = new Schema({
     detailsId: { 
-        type: mongoose.Schema.Types.ObjectId, 
+        type: Schema.Types.ObjectId, 
         ref: "QDetail",
         required: true 
     },
     creator: { 
         id: {
-            type: mongoose.Schema.Types.ObjectId, 
+            type: Schema.Types.ObjectId, 
             ref: "User", 
             required: true 
         },
@@ -41,7 +42,7 @@ const qbasicSchema = new mongoose.Schema({
         required: true
     },
     avgRatings: { 
-        type: mongoose.Types.Decimal128, 
+        type: Schema.Types.Decimal128, 
         default: 0
     },
     nbRatings: { 

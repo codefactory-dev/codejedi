@@ -9,7 +9,7 @@ function App() {
   useEffect(()=>{
     async function getUsers()
     {
-      const fetchedUsers = await axios.get('/users')
+      const fetchedUsers = await axios.get('/.netlify/functions/server/api/users')
       setUsers(fetchedUsers.data.map((fetchedUserData)=>{
         return `${fetchedUserData.firstname} ${fetchedUserData.lastname}`;
       }));
@@ -21,7 +21,7 @@ function App() {
     async function generateAsync() {
       const newName = GenerateName();
       setLoading(true);
-      const result = await axios.post('/users', {name: newName});
+      const result = await axios.post('/.netlify/functions/server/api/users', {name: newName});
       console.log("posted user: "+result.data.name);
       setUsers([...users,`${result.data.firstname} ${result.data.lastname}`]);
       setLoading(false);
@@ -47,7 +47,7 @@ function App() {
       </ul>
       <div>
         <label>
-          Click to generate a new user with a random name:
+          Click the button to generate a new user with a random name:
         <button onClick={generateRandomUser}>
           { loading ? '...' : 'Generate' }
         </button>

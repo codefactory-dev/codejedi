@@ -1,17 +1,20 @@
 require('dotenv').config()
 
 const bodyParser = require('body-parser'),
+      serverless = require('serverless-http'),
       mongoose = require('mongoose'),
       express = require('express'),
       multer = require("multer"),
       fs = require('fs'),
+      router = express.Router(),
       app = express();
 
 // --------------------------------------------------------------------
 // APP CONFIG
 // --------------------------------------------------------------------
 
-app.use(bodyParser.json())
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // --------------------------------------------------------------------
 // MONGODB/MONGOOSE
@@ -37,7 +40,12 @@ const upload = multer();
 mongoose.connect(MONGODB_URL, {
     useNewUrlParser: true,
     useCreateIndex: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    bufferCommands: false,
+    bufferMaxEntries: 0
+})
+.then(()=>{
+  console.log("connected to URL "+MONGODB_URL);
 })
 .catch((err) => {
   console.log("Error on db connection: " + err.message);
@@ -76,7 +84,7 @@ app.post('/profilepics', upload.single('profilepic'), async (req, res) => {
 
 
 // GET rich-text
-app.get('/editors', async (req,res) => {
+router.get('/editors', async (req,res) => {
   try{
     const editors = await Editor.find({});
     return res.send(editors);
@@ -89,7 +97,7 @@ app.get('/editors', async (req,res) => {
 });
 
 // POST rich-text
-app.post('/editors', async (req,res) => {
+router.post('/editors', async (req,res) => {
   console.log(`REQUEST :: create editor  ${req.body.description}`);
 
   const newEditor = {
@@ -114,7 +122,8 @@ app.post('/editors', async (req,res) => {
 
 
 // GET method route
-app.get('/users', async (req,res) => {
+router.get('/users', async (req,res) => {
+  console.log("will try to get users");
   try{
     const users = await User.find({})
     return res.send(users)
@@ -127,7 +136,7 @@ app.get('/users', async (req,res) => {
 })
 
 // POST method route
-app.post('/users', async (req,res) => {
+router.post('/users', async (req,res) => {
   console.log(`REQUEST :: create user  ${req.body.name}`);
 
   const [firstname, lastname] = req.body.name.split(' ');
@@ -172,11 +181,33 @@ app.post('/users', async (req,res) => {
         });
 });
 
+// API calls
+router.get('/hello', (req, res) => {
+  res.send({ express: 'Hello From Express' });
+});
+
+
+// --------------------------------------------------------------------
+// ROUTE ALL PATHS TO LAMBDA
+// --------------------------------------------------------------------
+
+app.use('/.netlify/functions/server/api', router); // path must route to lambda
+
 
 // --------------------------------------------------------------------
 // SERVER LISTENER
 // --------------------------------------------------------------------
 
+
+/* NOT NEEDED WITH NETLIFY
 app.listen(3000, () =>
   console.log('Example app listening on port 3000!')
 );
+*/
+
+// --------------------------------------------------------------------
+// SERVELESS SETUP
+// --------------------------------------------------------------------
+
+module.exports = app;
+module.exports.handler = serverless(app);

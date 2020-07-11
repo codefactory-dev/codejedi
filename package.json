@@ -4,7 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm start backend/server.js"
+    "start": "run-s start:**",
+    "start:lambda": "netlify-lambda serve backend",
+    "start:app": "cd frontend && yarn start",
+    "build": "run-s build:**",
+    "build:lambda": "netlify-lambda build backend",
+    "build:app": "cd frontend && yarn build",
+    "deploy:draft": "netlify deploy --dir=frontend/build --functions=functions",
+    "deploy:prod": "netlify deploy --dir=frontend/build --functions=functions --prod"
   },
   "repository": {
     "type": "git",
@@ -16,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/codefactory-dev/codejedi/issues"
   },
-  "homepage": "https://github.com/codefactory-dev/codejedi#readme"
+  "homepage": "https://github.com/codefactory-dev/codejedi#readme",
+  "dependencies": {
+    "netlify-lambda": "^1.6.3"
+  }
 }
