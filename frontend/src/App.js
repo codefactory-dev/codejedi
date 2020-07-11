@@ -9,10 +9,15 @@ function App() {
   useEffect(()=>{
     async function getUsers()
     {
-      const fetchedUsers = await axios.get('/.netlify/functions/server/api/hello')
+      const response = await fetch('/.netlify/functions/server/api/hello');
+      const body = await response.json();
+      if (response.status !== 200) throw Error(body.message);
+      console.log(body)
+      /*const fetchedUsers = await axios.get('/.netlify/functions/server/api/hello')
       setUsers(fetchedUsers.data.map((fetchedUserData)=>{
         return `${fetchedUserData.firstname} ${fetchedUserData.lastname}`;
       }));
+      */
     }
     getUsers();
   },[])
