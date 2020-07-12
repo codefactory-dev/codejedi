@@ -4,6 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "install": "run-s install:**",
+    "install:lambda": "cd backend && npm install",
+    "install:app": "cd frontend && npm install",
     "start": "run-s start:**",
     "start:lambda": "netlify-lambda serve backend",
     "start:app": "cd frontend && yarn start",
