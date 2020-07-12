@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'
 import GenerateName from './GenerateName.js'
+import TextFileReader from './utils/TextfileReader.js'
+
+
+var myTxt = require("./version.txt");
 
 function App() {
 
   const [users,setUsers] = useState(null)
   const [loading,setLoading] = useState(false)
+  
   useEffect(()=>{
     async function getUsers()
     {
@@ -53,6 +58,9 @@ function App() {
         </button>
         </label>
       </div>
+      <footer>
+        version: <TextFileReader txt={myTxt} />
+      </footer>
     </div>
   );
 }
