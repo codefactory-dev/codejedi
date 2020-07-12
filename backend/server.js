@@ -56,13 +56,13 @@ mongoose.connect(MONGODB_URL, {
 // --------------------------------------------------------------------
 
 // GET profile pictures
-app.get('/profilepics', async (req,res) => { 
+router.get('/profilepics', async (req,res) => { 
     res.status(201).send("TODO");
 });
 
 
 // POST profile picture
-app.post('/profilepics', upload.single('profilepic'), async (req, res) => {
+router.post('/profilepics', upload.single('profilepic'), async (req, res) => {
   console.log(`REQUEST :: create profile picture`);
   console.log(req.file);
   console.log(upload);
@@ -70,8 +70,12 @@ app.post('/profilepics', upload.single('profilepic'), async (req, res) => {
           .then((resolve) => {
               console.log(`STATUS :: Success`);  
               // res.contentType(req.file.mimetype);
-              // res.status(201).send(req.file.buffer);
-              res.status(201).send(req.file.buffer.toString('base64'));      
+              // res.contentType('json');
+              // res.status(201).send(req.file);
+              res.send({
+                post: req.file,
+                postImgBase64: req.file.buffer.toString('base64')
+              });    
           })
         .catch((e) => {
           console.error(`STATUS :: Ops.Something went wrong.`);
