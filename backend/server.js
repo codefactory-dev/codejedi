@@ -32,11 +32,13 @@ const Rating = require('./models/rating');
 const QTrack = require('./models/qtrack');
 const QType = require('./models/qtype');
 const User = require('./models/user');
+
+// temp files
 const Editor = require('./models/editor');
 const Img = require('./models/img');
+const Code = require('./models/code');
 
 const resetDB = require('./resetDB');
-const 
 resetDB();
 
 const dbName = "codefactory-database";
@@ -77,6 +79,34 @@ mongoose.connect(MONGODB_URL, {
 // --------------------------------------------------------------------
 // ROUTES
 // --------------------------------------------------------------------
+
+// POST code
+router.post('/codes', async (req,res) => {
+  console.log(`REQUEST :: create code  ${req.body.mode}`);
+  console.log(req.body);
+
+  const newCode = {
+    mode: req.body.mode,
+    text: req.body.text
+  };
+
+
+  await Code.create(newCode)
+          .then((resolve) => {
+            console.log(`STATUS :: Success`);
+            console.log(resolve);
+            res.status(201).send(newCode);
+          })
+        .catch((e) => {
+          console.error(`STATUS :: Ops.Something went wrong.`);
+          res.status(500).json({
+            error: true,
+            message: e.toString()
+          });
+        });
+});
+
+
 
 // GET profile pictures
 router.get('/profilepics', async (req,res) => { 
