@@ -12,6 +12,7 @@ const GridFsStorage = require('multer-gridfs-storage'),
       // crypto = require('crypto'),
       router = express.Router(),
       // fs = require('fs'),
+      axios = require('axios'),
       app = express();
 
 // --------------------------------------------------------------------
@@ -20,6 +21,7 @@ const GridFsStorage = require('multer-gridfs-storage'),
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+//app.use(cors)
 
 // --------------------------------------------------------------------
 // MONGODB/MONGOOSE
@@ -277,6 +279,27 @@ router.post('/users', async (req,res) => {
 router.get('/hello', (req, res) => {
   res.send({ express: 'Hello From Express' });
 });
+
+router.post('/compile', async (req,res) => {
+  const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': 'Token '+process.env.GLOT_IO_TOKEN
+  }
+  console.log("these are the headers: ");
+  for (key in headers){
+    console.log( key + ": " + headers[key]);
+  }
+  const data = req.body;
+  try{
+    const result = await axios.post('https://run.glot.io/languages/cpp/latest', data, headers);
+    console.log(result);
+    res.status(200).send(result);
+  } catch(e){
+    console.log("error "+e);
+    res.status(500).send(e.message);
+  }
+  
+})
 
 
 // --------------------------------------------------------------------
