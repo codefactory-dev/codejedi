@@ -9,8 +9,7 @@ function readTextFileSync()
         var fs = require('fs')
         , filename = process.argv[2];
         var data = fs.readFileSync(filename, 'utf8');
-        console.log(data.toString());
-        return data;    
+        return data.toString();    
     } catch(e) {
         console.log('Error:', e.stack);
     }
@@ -35,7 +34,8 @@ function readTextFile()
 function ConvertCodeToOneLiner()
 {
     var text = readTextFileSync();
-    text.replace(/\n|\t/g, ' ');
-    console.log(text);
+    var convertedText = text.replace(/(?:\r\n|\r|\n)/g, '\n');
+    console.log(JSON.stringify(convertedText));
+    return JSON.stringify(convertedText);
 }
 ConvertCodeToOneLiner();
