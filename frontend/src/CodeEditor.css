@@ -1,0 +1,8 @@
+.codemirrorContainer {
+    height: 10rem;
+    width: 50rem;
+}
+
+.CodeMirror {
+    height: 100%;
+}
