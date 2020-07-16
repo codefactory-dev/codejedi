@@ -1,6 +1,7 @@
 require('dotenv').config()
 
 const GridFsStorage = require('multer-gridfs-storage'),
+      fileUpload = require('express-fileupload'),
       serverless = require('serverless-http'),
       bodyParser = require('body-parser'),
       { Console } = require('console'),
@@ -11,6 +12,7 @@ const GridFsStorage = require('multer-gridfs-storage'),
       multer = require("multer"),
       // crypto = require('crypto'),
       router = express.Router(),
+      cors = require('cors'),
       // fs = require('fs'),
       app = express();
 
@@ -18,8 +20,11 @@ const GridFsStorage = require('multer-gridfs-storage'),
 // APP CONFIG
 // --------------------------------------------------------------------
 
+app.use(cors());
+app.use(fileUpload());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use('/public', express.static(__dirname + '/public'));
 
 // --------------------------------------------------------------------
 // MONGODB/MONGOOSE
@@ -36,7 +41,6 @@ const Editor = require('./models/editor');
 const Img = require('./models/img');
 
 const resetDB = require('./resetDB');
-const 
 resetDB();
 
 const dbName = "codefactory-database";
@@ -77,6 +81,18 @@ mongoose.connect(MONGODB_URL, {
 // --------------------------------------------------------------------
 // ROUTES
 // --------------------------------------------------------------------
+
+router.post('/upload', function(req, res) {
+  console.log(`REQUEST :: create avatar ${req.files.file.name}`);
+  
+  const imageFile = req.files.file;
+  
+  imageFile.mv(`./public/${imageFile.name}`, err => {
+    if (err)  return res.status(500).send(err);
+
+    res.json({file: `public/${imageFile.name}`});
+  });
+});
 
 // GET profile pictures
 router.get('/profilepics', async (req,res) => { 
@@ -253,7 +269,8 @@ router.get('/hello', (req, res) => {
 // ROUTE ALL PATHS TO LAMBDA
 // --------------------------------------------------------------------
 
-app.use('/.netlify/functions/server/api', router); // path must route to lambda
+app.use('', router);
+// app.use('/.netlify/functions/server/api', router); // path must route to lambda
 
 
 // --------------------------------------------------------------------
@@ -261,15 +278,14 @@ app.use('/.netlify/functions/server/api', router); // path must route to lambda
 // --------------------------------------------------------------------
 
 
-/* NOT NEEDED WITH NETLIFY
+// NOT NEEDED WITH NETLIFY
 app.listen(3000, () =>
   console.log('Example app listening on port 3000!')
 );
-*/
 
 // --------------------------------------------------------------------
 // SERVELESS SETUP
 // --------------------------------------------------------------------
 
 module.exports = app;
-module.exports.handler = serverless(app);
+// module.exports.handler = serverless(app);
