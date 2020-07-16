@@ -1,37 +1,40 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
 function Img() { 
     const [img, setImg] = useState('');
     let imgFile = undefined;
 
-    useEffect(()=> {
-        // GET request
-        async function getImgs() {
-            const fetchImgs = await axios.get('/.netlify/functions/server/api/profilepics'); 
-        
-            if (fetchImgs) {
-                // TODO
-            }
-        }
-    }, []);
 
     const handleSubmit = evt => {
         evt.preventDefault();
         uploadImage();
         
+        function _imageEncode (arrayBuffer) {
+            let u8 = new Uint8Array(arrayBuffer)
+            let b64encoded = btoa([].reduce.call(new Uint8Array(arrayBuffer),function(p,c){return p+String.fromCharCode(c)},''))
+            let mimetype="image/png"
+            return "data:"+mimetype+";base64,"+b64encoded
+        }
+
         async function uploadImage() {
             const data = new FormData();
             data.append('file', imgFile);
             data.append('filename', imgFile.name);
 
             // POST request
-            // const netlifyURL = '/.netlify/functions/server/api/profilepics'
+            const netlifyURL = '/.netlify/functions/server/api/upload';
             const localURL = 'http://localhost:3000/upload';
-            const result = await axios.post(localURL, data, {headers: { 'Content-Type': 'multipart/form-data'} });
+            const postURL = localURL;
+            const result = await axios.post(postURL, data, {
+                                            headers: { 'Content-Type': 'multipart/form-data'},
+                                            responseType: 'arraybuffer'
+            });
 
             console.log(result);
-            setImg(`http://localhost:4000/${result.data.file}`);
+            const url = _imageEncode(result.data);
+            console.log(url);
+            setImg(url);
         }
     }
 
@@ -42,12 +45,10 @@ function Img() {
     return (
         <React.Fragment>
             <form encType="multipart/form-data" onSubmit={handleSubmit}> 
-                    <input type="file" name="profilepic" onChange={e => imgFile = e.target.files[0]}/>
+                    <input type="file" name="avatar" onChange={e => imgFile = e.target.files[0]}/>
                     <input type="submit" value="Upload a file"/>
             </form>
-            {img ? <img
-                    src={img}
-                    width="128" height="128"/> : undefined}
+            {img ? <img src={img} width="128" height="128"/> : undefined}
         </React.Fragment>
     );
 };

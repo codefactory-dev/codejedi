@@ -13,7 +13,6 @@
     "react-scripts": "3.4.1"
   },
   "main": "index.js",
-  "proxy": "http://localhost:3000",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

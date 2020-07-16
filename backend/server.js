@@ -1,66 +1,48 @@
 require('dotenv').config()
 
-const GridFsStorage = require('multer-gridfs-storage'),
-      fileUpload = require('express-fileupload'),
-      serverless = require('serverless-http'),
+const serverless = require('serverless-http'),
       bodyParser = require('body-parser'),
       { Console } = require('console'),
-      MongoClient = require('mongodb'),
-      Grid = require('gridfs-stream'),
       mongoose = require('mongoose'),
       express = require('express'),
       multer = require("multer"),
-      // crypto = require('crypto'),
       router = express.Router(),
       cors = require('cors'),
-      // fs = require('fs'),
       app = express();
 
 // --------------------------------------------------------------------
 // APP CONFIG
 // --------------------------------------------------------------------
 
-app.use(cors());
-app.use(fileUpload());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use('/public', express.static(__dirname + '/public'));
+const local = process.env.LOCAL_SERVER || false;
+const proxy = local ? '' : '/.netlify/functions/server/api';
+
+app.use(cors())
+   .use(bodyParser.json())
+   .use(bodyParser.urlencoded({ extended: true }))
+   .use(proxy, router);
 
 // --------------------------------------------------------------------
 // MONGODB/MONGOOSE
 // --------------------------------------------------------------------
-const QDifficulty = require('./models/qdifficulty');
-const Comment = require('./models/comment');
-const QDetail = require('./models/qdetail');
-const QBasic = require('./models/qbasic');
-const Rating = require('./models/rating');
-const QTrack = require('./models/qtrack');
-const QType = require('./models/qtype');
-const User = require('./models/user');
-const Editor = require('./models/editor');
-const Img = require('./models/img');
+const QDifficulty = require('./models/qdifficulty'),
+      Comment = require('./models/comment'),
+      QDetail = require('./models/qdetail'),
+      QBasic = require('./models/qbasic'),
+      Rating = require('./models/rating'),
+      QTrack = require('./models/qtrack'),
+      QType = require('./models/qtype'),
+      User = require('./models/user'),
+      Editor = require('./models/editor'),
+      Img = require('./models/img');
 
 const resetDB = require('./resetDB');
 resetDB();
 
 const dbName = "codefactory-database";
-const MONGODB_URL = process.env.MONGODB_URL || `mongodb://localhost:27017/${dbName}`;
-const storageBucketName = 'uploads';
-let storage = null;             // multer-gridfs-storage : storage to allow multer store file directly to MongoDB
-let upload = null;              // multer : parse request's form data to file object
-let gfs;                        // gridfs-stream  : stream files to and from MongoDB GridFS. (not being currently used)
-
-
-storage = new GridFsStorage({
-  url: MONGODB_URL,
-  file: (req, file) => {
-    return {      
-      bucketName: `${storageBucketName}`,     //Setting collection name, default name is fs  
-      filename: file.originalname             //Setting file name to original name of file        
-    }
-  },
-});
-upload = multer({ storage: storage  });
+const dbURL = process.env.LOCAL_DB ? "localhost" : "mongo";
+const MONGODB_URL =`mongodb://${dbURL}:27017/${dbName}`;
+const upload = multer({}); 
 
 mongoose.connect(MONGODB_URL, {
     useNewUrlParser: true,
@@ -69,97 +51,34 @@ mongoose.connect(MONGODB_URL, {
     bufferCommands: false,
     bufferMaxEntries: 0
 })
-.then(()=>{
-  //gfs = Grid(mongoose.connection.db, mongoose.mongo);
-  //gfs.collection(storageBucketName);
-  console.log("connected to URL " + MONGODB_URL);
-})
-.catch((err) => {
-  console.log("Error on db connection: " + err.message);
-});
+.then(()=> console.log("connected to URL " + MONGODB_URL))
+.catch((err) => console.log("Error on db connection: " + err.message));
 
 // --------------------------------------------------------------------
 // ROUTES
 // --------------------------------------------------------------------
 
-router.post('/upload', function(req, res) {
-  console.log(`REQUEST :: create avatar ${req.files.file.name}`);
-  
-  const imageFile = req.files.file;
-  
-  imageFile.mv(`./public/${imageFile.name}`, err => {
-    if (err)  return res.status(500).send(err);
+// POST user photo
+router.post('/upload', upload.single('file'), async(req, res) => {
+  console.log(`REQUEST :: create user photo`);
+  console.log(req.file)
 
-    res.json({file: `public/${imageFile.name}`});
+  const newImg = req.file;
+
+  await Img.create(newImg)
+    .then((resolve) => {
+      console.log(`STATUS :: Success`);
+      res.set('Content-Type', newImg.mimetype);
+      res.status(201).send(newImg.buffer);
+    })
+  .catch((e) => {
+    console.error(`STATUS :: Ops.Something went wrong.`);
+    res.status(500).json({
+      error: true,
+      message: e.toString()
+    });
   });
 });
-
-// GET profile pictures
-router.get('/profilepics', async (req,res) => { 
-    res.status(201).send("TODO");
-});
-
-
-// POST profile picture
-router.post('/profilepics',upload.single('profilepic'), async (req, res) => {
-      console.log(`REQUEST :: create profile picture`);
-      console.log(req.file);
-
-      MongoClient.connect(MONGODB_URL, {useUnifiedTopology: true}, function(err, client){
-        if(err){      
-          console.log("Error: MongoClient Connection error");
-          res.status(500).json({ title: 'Uploaded Error', message: 'MongoClient Connection error', error: err.errMsg});    
-        } 
-
-        const db = client.db(dbName);
-        const collection = db.collection('uploads.files');         // metadata
-        const collectionChunks = db.collection('uploads.chunks');  // data
-        const fileName = req.file.originalname; 
-        // console.log(fileName);
-        // console.log(collection);
-        // console.log(collectionChunks);
-
-        collection.find({filename: fileName}).toArray(function(err, docs){        
-          if(err){        
-            console.log("Error: Error finding file");
-            res.status(500).json({ title: 'File error', message: 'Error finding file', error: err.errMsg});      
-          }
-          if(!docs || docs.length === 0){       
-            console.log("Error: No file found"); 
-            res.status(500).json({ title: 'Download Error', message: 'No file found'});      
-          }
-          else{
-            //console.log(docs);
-            //Retrieving the chunks from the db          
-            collectionChunks.find({files_id : docs[0]._id})
-              .sort({n: 1})
-              .toArray(function(err, chunks){          
-                if(err){            
-                    console.log("Error: Error retrieving chunks"); 
-                    res.status(500).json({ title: 'Download Error', message: 'Error retrieving chunks', error: err.errmsg});          
-                }
-                if(!chunks || chunks.length === 0){            
-                  console.log("Error: No data found"); 
-                  res.status(500).json({ title: 'Download Error', message: 'No data found'});          
-                }
-                
-                //console.log(chunks);
-                let fileData = [];          
-                for(let i=0; i<chunks.length;i++){            
-                  //This is in Binary JSON or BSON format, which is stored               
-                  //in fileData array in base64 endocoded string format                      
-                  fileData.push(chunks[i].data.toString('base64'));          
-                }
-              
-              //Display the chunks using the data URI format          
-              let finalFile = 'data:' + docs[0].contentType + ';base64,' + fileData.join('');   
-              res.status(201).send(finalFile);       
-              });      
-          } // end else       
-        });
-      })
-});
-
 
 // GET rich-text
 router.get('/editors', async (req,res) => {
@@ -266,26 +185,15 @@ router.get('/hello', (req, res) => {
 
 
 // --------------------------------------------------------------------
-// ROUTE ALL PATHS TO LAMBDA
-// --------------------------------------------------------------------
-
-app.use('', router);
-// app.use('/.netlify/functions/server/api', router); // path must route to lambda
-
-
-// --------------------------------------------------------------------
 // SERVER LISTENER
 // --------------------------------------------------------------------
 
-
 // NOT NEEDED WITH NETLIFY
-app.listen(3000, () =>
-  console.log('Example app listening on port 3000!')
-);
+if (local) app.listen(3000, () => console.log('Example app listening on port 3000!'));
 
 // --------------------------------------------------------------------
 // SERVELESS SETUP
 // --------------------------------------------------------------------
 
 module.exports = app;
-// module.exports.handler = serverless(app);
+if (!local) module.exports.handler = serverless(app);
