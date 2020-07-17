@@ -68,15 +68,17 @@ router.post('/upload', upload.single('file'), async(req, res) => {
   await Img.create(newImg)
     .then((resolve) => {
       console.log(`STATUS :: Success`);
-      res.set('Content-Type', newImg.mimetype);
-      res.status(201).send(newImg.buffer);
+      res.status(201).send({name: newImg.originalname,
+                            mimetype: newImg.mimetype,
+                            buffer: newImg.buffer
+      });
     })
-  .catch((e) => {
-    console.error(`STATUS :: Ops.Something went wrong.`);
-    res.status(500).json({
-      error: true,
-      message: e.toString()
-    });
+    .catch((e) => {
+      console.error(`STATUS :: Ops.Something went wrong.`);
+      res.status(500).json({
+        error: true,
+        message: e.toString()
+      });
   });
 });
 

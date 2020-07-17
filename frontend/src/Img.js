@@ -10,11 +10,10 @@ function Img() {
         evt.preventDefault();
         uploadImage();
         
-        function _imageEncode (arrayBuffer) {
+        function _imageEncode (mimetype, arrayBuffer) {
             let u8 = new Uint8Array(arrayBuffer)
             let b64encoded = btoa([].reduce.call(new Uint8Array(arrayBuffer),function(p,c){return p+String.fromCharCode(c)},''))
-            let mimetype="image/png"
-            return "data:"+mimetype+";base64,"+b64encoded
+            return "data:"+mimetype+";base64,"+b64encoded;
         }
 
         async function uploadImage() {
@@ -25,14 +24,14 @@ function Img() {
             // POST request
             const netlifyURL = '/.netlify/functions/server/api/upload';
             const localURL = 'http://localhost:3000/upload';
-            const postURL = localURL;
+            const postURL = netlifyURL;
             const result = await axios.post(postURL, data, {
                                             headers: { 'Content-Type': 'multipart/form-data'},
-                                            responseType: 'arraybuffer'
+                                            // responseType: 'arraybuffer'
             });
 
             console.log(result);
-            const url = _imageEncode(result.data);
+            const url = _imageEncode(result.data.mimetype, result.data.buffer.data);
             console.log(url);
             setImg(url);
         }
@@ -48,7 +47,7 @@ function Img() {
                     <input type="file" name="avatar" onChange={e => imgFile = e.target.files[0]}/>
                     <input type="submit" value="Upload a file"/>
             </form>
-            {img ? <img src={img} width="128" height="128"/> : undefined}
+            {img ? <img src={img} width="400" height="300"/> : undefined}
         </React.Fragment>
     );
 };
