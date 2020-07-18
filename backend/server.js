@@ -1,17 +1,11 @@
 require('dotenv').config()
 
-const GridFsStorage = require('multer-gridfs-storage'),
-      serverless = require('serverless-http'),
+const serverless = require('serverless-http'),
       bodyParser = require('body-parser'),
       { Console } = require('console'),
-      MongoClient = require('mongodb'),
-      Grid = require('gridfs-stream'),
       mongoose = require('mongoose'),
       express = require('express'),
-      multer = require("multer"),
-      // crypto = require('crypto'),
       router = express.Router(),
-      // fs = require('fs'),
       axios = require('axios'),
       cors = require('cors'),
       app = express();
@@ -20,10 +14,15 @@ const GridFsStorage = require('multer-gridfs-storage'),
 // APP CONFIG
 // --------------------------------------------------------------------
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors());
+const local = process.env.LOCAL_SERVER || false;
+const proxy = local ? '' : '/.netlify/functions/server/api';
 
+app.use(cors())
+   .use(bodyParser.json({limit: '50mb'}))
+   .use(bodyParser.urlencoded({limit: '50mb', extended: true }))
+   .use(proxy, router);
+
+   
 // --------------------------------------------------------------------
 // MONGODB/MONGOOSE
 // --------------------------------------------------------------------
@@ -46,22 +45,6 @@ resetDB();
 
 const dbName = "codefactory-database";
 const MONGODB_URL = process.env.MONGODB_URL || `mongodb://localhost:27017/${dbName}`;
-const storageBucketName = 'uploads';
-let storage = null;             // multer-gridfs-storage : storage to allow multer store file directly to MongoDB
-let upload = null;              // multer : parse request's form data to file object
-let gfs;                        // gridfs-stream  : stream files to and from MongoDB GridFS. (not being currently used)
-
-
-storage = new GridFsStorage({
-  url: MONGODB_URL,
-  file: (req, file) => {
-    return {      
-      bucketName: `${storageBucketName}`,     //Setting collection name, default name is fs  
-      filename: file.originalname             //Setting file name to original name of file        
-    }
-  },
-});
-upload = multer({ storage: storage  });
 
 mongoose.connect(MONGODB_URL, {
     useNewUrlParser: true,
@@ -70,14 +53,8 @@ mongoose.connect(MONGODB_URL, {
     bufferCommands: false,
     bufferMaxEntries: 0
 })
-.then(()=>{
-  //gfs = Grid(mongoose.connection.db, mongoose.mongo);
-  //gfs.collection(storageBucketName);
-  console.log("connected to URL " + MONGODB_URL);
-})
-.catch((err) => {
-  console.log("Error on db connection: " + err.message);
-});
+.then(()=> console.log("connected to URL " + MONGODB_URL))
+.catch((err) => console.log("Error on db connection: " + err.message));
 
 // --------------------------------------------------------------------
 // ROUTES
@@ -109,74 +86,28 @@ router.post('/codes', async (req,res) => {
         });
 });
 
+// POST user photo
+router.post('/uploadPhoto', async(req, res) => {
+  console.log(`REQUEST :: create user photo`);
+  // console.log(req.body.img)
 
+  const newImg = {
+    data: req.body.img
+  }
 
-// GET profile pictures
-router.get('/profilepics', async (req,res) => { 
-    res.status(201).send("TODO");
+  await Img.create(newImg)
+    .then((resolve) => {
+      console.log(`STATUS :: Success`);
+      res.status(201).send({buffer: newImg.data});
+    })
+    .catch((e) => {
+      console.error(`STATUS :: Ops.Something went wrong.`);
+      res.status(500).json({
+        error: true,
+        message: e.toString()
+      });
+  });
 });
-
-
-// POST profile picture
-router.post('/profilepics',upload.single('profilepic'), async (req, res) => {
-      console.log(`REQUEST :: create profile picture`);
-      console.log(req.file);
-
-      MongoClient.connect(MONGODB_URL, {useUnifiedTopology: true}, function(err, client){
-        if(err){      
-          console.log("Error: MongoClient Connection error");
-          res.status(500).json({ title: 'Uploaded Error', message: 'MongoClient Connection error', error: err.errMsg});    
-        } 
-
-        const db = client.db(dbName);
-        const collection = db.collection('uploads.files');         // metadata
-        const collectionChunks = db.collection('uploads.chunks');  // data
-        const fileName = req.file.originalname; 
-        // console.log(fileName);
-        // console.log(collection);
-        // console.log(collectionChunks);
-
-        collection.find({filename: fileName}).toArray(function(err, docs){        
-          if(err){        
-            console.log("Error: Error finding file");
-            res.status(500).json({ title: 'File error', message: 'Error finding file', error: err.errMsg});      
-          }
-          if(!docs || docs.length === 0){       
-            console.log("Error: No file found"); 
-            res.status(500).json({ title: 'Download Error', message: 'No file found'});      
-          }
-          else{
-            //console.log(docs);
-            //Retrieving the chunks from the db          
-            collectionChunks.find({files_id : docs[0]._id})
-              .sort({n: 1})
-              .toArray(function(err, chunks){          
-                if(err){            
-                    console.log("Error: Error retrieving chunks"); 
-                    res.status(500).json({ title: 'Download Error', message: 'Error retrieving chunks', error: err.errmsg});          
-                }
-                if(!chunks || chunks.length === 0){            
-                  console.log("Error: No data found"); 
-                  res.status(500).json({ title: 'Download Error', message: 'No data found'});          
-                }
-                
-                //console.log(chunks);
-                let fileData = [];          
-                for(let i=0; i<chunks.length;i++){            
-                  //This is in Binary JSON or BSON format, which is stored               
-                  //in fileData array in base64 endocoded string format                      
-                  fileData.push(chunks[i].data.toString('base64'));          
-                }
-              
-              //Display the chunks using the data URI format          
-              let finalFile = 'data:' + docs[0].contentType + ';base64,' + fileData.join('');   
-              res.status(201).send(finalFile);       
-              });      
-          } // end else       
-        });
-      })
-});
-
 
 // GET rich-text
 router.get('/editors', async (req,res) => {
@@ -309,26 +240,15 @@ router.post('/compile', async (req,res) => {
 
 
 // --------------------------------------------------------------------
-// ROUTE ALL PATHS TO LAMBDA
-// --------------------------------------------------------------------
-
-app.use('/.netlify/functions/server/api', router); // path must route to lambda
-
-
-// --------------------------------------------------------------------
 // SERVER LISTENER
 // --------------------------------------------------------------------
 
-
-/* NOT NEEDED WITH NETLIFY
-app.listen(3000, () =>
-  console.log('Example app listening on port 3000!')
-);
-*/
+// NOT NEEDED WITH NETLIFY
+if (local) app.listen(3000, () => console.log('Example app listening on port 3000!'));
 
 // --------------------------------------------------------------------
 // SERVELESS SETUP
 // --------------------------------------------------------------------
 
 module.exports = app;
-module.exports.handler = serverless(app);
+if (!local) module.exports.handler = serverless(app);
