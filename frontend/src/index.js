@@ -4,6 +4,6 @@ import App from './App';
 
 import Img from './Img';
 //import CodeEditor from './CodeEditor';
-import EditorTestCases from './EditorTestcases.js'
+import QuestionSubmitter from './QuestionSubmitter.js'
 
-ReactDOM.render(<React.StrictMode><EditorTestCases /></React.StrictMode>, document.getElementById('root'));
+ReactDOM.render(<React.StrictMode><QuestionSubmitter /></React.StrictMode>, document.getElementById('root'));

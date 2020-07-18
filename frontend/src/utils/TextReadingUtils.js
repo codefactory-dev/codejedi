@@ -6,7 +6,7 @@ var fs = require('fs')
 function readTextFileSync(filename)
 {
     try {  
-        var data = fs.readFileSync(filename, 'utf8');
+        var data = fs.readFileSync(filename, {encoding:'utf8'});
         return data.toString();    
     } catch(e) {
         console.log('Error:', e.stack);
@@ -29,7 +29,7 @@ function ConvertCodeToOneLiner()
     return JSON.stringify(text);
 
 }
-
+/*
 async function postToApi()
 {
     
@@ -49,7 +49,7 @@ async function postToApi()
         'Authorization': 'Token '+process.env.GLOT_IO_TOKEN
     }
     console.log("these are the headers: ");
-    for (key in payload){
+    for (key in payload.keys()){
         console.log( key + ": " + payload[key]);
     }
     try{
@@ -64,6 +64,7 @@ async function postToApi()
         console.log("error "+e);
     }
 }
+*/
 
 module.exports = {
     readTextFileSync,
