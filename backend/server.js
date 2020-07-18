@@ -5,7 +5,6 @@ const serverless = require('serverless-http'),
       { Console } = require('console'),
       mongoose = require('mongoose'),
       express = require('express'),
-      multer = require("multer"),
       router = express.Router(),
       cors = require('cors'),
       app = express();
@@ -18,10 +17,11 @@ const local = process.env.LOCAL_SERVER || false;
 const proxy = local ? '' : '/.netlify/functions/server/api';
 
 app.use(cors())
-   .use(bodyParser.json())
-   .use(bodyParser.urlencoded({ extended: true }))
+   .use(bodyParser.json({limit: '50mb'}))
+   .use(bodyParser.urlencoded({limit: '50mb', extended: true }))
    .use(proxy, router);
 
+   
 // --------------------------------------------------------------------
 // MONGODB/MONGOOSE
 // --------------------------------------------------------------------
@@ -40,9 +40,7 @@ const resetDB = require('./resetDB');
 resetDB();
 
 const dbName = "codefactory-database";
-const dbURL = process.env.LOCAL_DB ? "localhost" : "mongo";
-const MONGODB_URL =`mongodb://${dbURL}:27017/${dbName}`;
-const upload = multer({}); 
+const MONGODB_URL = process.env.MONGODB_URL || `mongodb://localhost:27017/${dbName}`;
 
 mongoose.connect(MONGODB_URL, {
     useNewUrlParser: true,
@@ -59,19 +57,18 @@ mongoose.connect(MONGODB_URL, {
 // --------------------------------------------------------------------
 
 // POST user photo
-router.post('/upload', upload.single('file'), async(req, res) => {
+router.post('/uploadPhoto', async(req, res) => {
   console.log(`REQUEST :: create user photo`);
-  console.log(req.file)
+  // console.log(req.body.img)
 
-  const newImg = req.file;
+  const newImg = {
+    data: req.body.img
+  }
 
   await Img.create(newImg)
     .then((resolve) => {
       console.log(`STATUS :: Success`);
-      res.status(201).send({name: newImg.originalname,
-                            mimetype: newImg.mimetype,
-                            buffer: newImg.buffer
-      });
+      res.status(201).send({buffer: newImg.data});
     })
     .catch((e) => {
       console.error(`STATUS :: Ops.Something went wrong.`);
