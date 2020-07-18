@@ -12,13 +12,14 @@ function readTextFileSync(filename)
         console.log('Error:', e.stack);
     }
 }
-function readTextFile(filename)
-{    
-    const readFile = util.promisify(fs.readFile);
-    // Read the file and print its contents.
-    return readFile(filename, 'utf8', function(err, data) {
-        if (err) throw err;
-    });
+function appendToFileSync(filename,data)
+{
+    try{
+        fs.appendFileSync(filename, data);
+        return true;
+    } catch(e) {
+        console.log('Error:', e.stack);
+    }
 }
 function ConvertCodeToOneLiner()
 {
@@ -65,6 +66,6 @@ async function postToApi()
 }
 
 module.exports = {
-    readTextFile, 
-    readTextFileSync
+    readTextFileSync,
+    appendToFileSync
 }

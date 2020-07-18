@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { readTextFileSync } from './utils/TextReadingUtils.js'
+const path = require('path')
 
 import './Editor.css';
 
@@ -46,14 +48,25 @@ function EditorTestcases() {
 
     const handleButtonClick = e => {
         const txt = iFrameRef.contentWindow.document.body.outerHTML;
-        createEditor();
+        //createEditor();
         cleaniFrame(iFrameRef);
+        
+        //get question from somewhere
+        var questionText = readTextFileSync(path.join(__dirname,'./utils/test_codes/.code.txt'));
         
         //get test cases from file
 
-        //get question from somewhere
+        var testCasesText = readTextFileSync(path.join(__dirname,'./utils/test_codes/.testCases.txt'));
 
-        //transform everything into a "sendable" one-line string for json
+        //insert test cases into question
+        var togetherText = questionText;
+        togetherText+='\n\n';
+        togetherText+=testCasesText;
+
+        console.log("===========TOGETHER TEXT===========");
+        console.log(togetherText);
+
+        //transform question into a "sendable" one-line string for json
         var oneLiner;
 
         // POST both the question and the test cases
