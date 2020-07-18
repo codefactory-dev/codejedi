@@ -1,37 +1,23 @@
 require('dotenv').config()
 const axios = require('axios');
+const util = require('util');
+var fs = require('fs')
 
-function readTextFileSync()
+function readTextFileSync(filename)
 {
-    // Make sure we got a filename on the command line.
-    if (process.argv.length < 3) {
-        console.log('Usage: node ' + process.argv[1] + ' FILENAME');
-        process.exit(1);
-    }
     try {  
-        var fs = require('fs')
-        , filename = process.argv[2];
         var data = fs.readFileSync(filename, 'utf8');
         return data.toString();    
     } catch(e) {
         console.log('Error:', e.stack);
     }
 }
-
-function readTextFile()
-{
-    // Make sure we got a filename on the command line.
-    if (process.argv.length < 3) {
-        console.log('Usage: node ' + process.argv[1] + ' FILENAME');
-        process.exit(1);
-    }
+function readTextFile(filename)
+{    
+    const readFile = util.promisify(fs.readFile);
     // Read the file and print its contents.
-    var fs = require('fs')
-        , filename = process.argv[2];
-    fs.readFile(filename, 'utf8', function(err, data) {
+    return readFile(filename, 'utf8', function(err, data) {
         if (err) throw err;
-        console.log('OK: ' + filename);
-        console.log(data)
     });
 }
 function ConvertCodeToOneLiner()
@@ -77,4 +63,8 @@ async function postToApi()
         console.log("error "+e);
     }
 }
-postToApi();
+
+module.exports = {
+    readTextFile, 
+    readTextFileSync
+}
