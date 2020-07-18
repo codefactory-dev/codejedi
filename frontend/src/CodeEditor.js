@@ -10,8 +10,7 @@ import './CodeEditor.css';
 
 
 
-function CodeEditor() { 
-    const [code, setCode] = useState('');
+function CodeEditor({code, setCode}) { 
     const textareaNode = useRef();
     const languageModes = new Map([['javascript', 'javascript'], ['java', 'text/x-java'], ['c++', 'text/x-c++src']]);
     let selectedLanguage = 'java';
@@ -44,6 +43,9 @@ function CodeEditor() {
             setCode(result.data);
         }
     }
+    function handleChange(event) {
+        this.setState({code: event.target.value});
+    }
 
     // --------------------------------------------------------------------
     // RENDERING
@@ -53,7 +55,9 @@ function CodeEditor() {
         <div className={'codemirrorContainer'}>
             <textarea
 					ref={textareaNode}
-					autoComplete="off"
+                    autoComplete="off"
+                    value={code}
+                    onChange={handleChange}
 			/>
             <button onClick={handleBtnClick}>Save</button>
         </div>
