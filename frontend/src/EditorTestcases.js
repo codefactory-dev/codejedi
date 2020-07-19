@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-import './Editor.css';
+import './css/EditorTestcases.css';
 
 function EditorTestcases({editorValue, setEditorValue}) { 
     function handleChange(event){
@@ -9,7 +9,7 @@ function EditorTestcases({editorValue, setEditorValue}) {
         setEditorValue(event.target.value);
     }
     return(
-        <textarea value={editorValue} onChange={handleChange} />
+        <textarea id="editor-testcases" value={editorValue} onChange={handleChange} />
     )
  
 }

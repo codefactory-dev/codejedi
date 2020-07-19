@@ -5,12 +5,13 @@ const ENTRY_TYPES = {
     PAIR_OF_ARRAYS: 3
 }
 
-function CodeScaffolding()
+function CodeScaffolding(entryType, text)
 {
-    var TYPE_OF_ENTRY = 
+    //ENTRY TYPE = ARRAY
+    const { inputs, outputs} = parseEntries(text);
     var CodeScaffolding = 
     `
-    
+    blablabla
     
     
     
@@ -20,7 +21,10 @@ function CodeScaffolding()
     
     `;
 }
-
+function parseEntries(text)
+{
+    
+}
 
 
 module.exports = CodeScaffolding

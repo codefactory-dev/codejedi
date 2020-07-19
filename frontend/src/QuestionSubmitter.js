@@ -47,7 +47,9 @@ function QuestionSubmitter()
             <br/>
             <br/>
             <EditorTestcases editorValue={editorValue} setEditorValue={setEditorValue} />
-            <button onClick={submitAll}> SUBMIT ALL </button>
+            <div>
+                <button onClick={submitAll}> SUBMIT ALL </button>
+            </div>
         </>
     )
 
