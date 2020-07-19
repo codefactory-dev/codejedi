@@ -1,11 +1,26 @@
-const path = require('path')
-const testCasesFilePath = path.join(__dirname,'/test_codes/.testcases.txt');
-const { readTextFile, readTextFileSync } = require('./TextReadingUtils');
-
-async function CodeScaffolding()
-{
-    console.log("testCasesFilePath = "+testCasesFilePath);
-    const result = readTextFileSync(testCasesFilePath);
-    console.log("result: "+result);
+const ENTRY_TYPES = {
+    NUMBER: 0,
+    STRING: 1,
+    ARRAY: 2,
+    PAIR_OF_ARRAYS: 3
 }
-CodeScaffolding();
+
+function CodeScaffolding()
+{
+    var TYPE_OF_ENTRY = 
+    var CodeScaffolding = 
+    `
+    
+    
+    
+    
+    
+    
+    
+    
+    `;
+}
+
+
+
+module.exports = CodeScaffolding
