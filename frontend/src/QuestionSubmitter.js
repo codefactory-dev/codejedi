@@ -7,8 +7,7 @@ import { ConvertCodeToOneLiner } from './utils/TextReadingUtils'
 function QuestionSubmitter()
 {
     const [code, setCode] = useState('');
-    const [iFrameDoc, setIframeDoc] = useState();
-    const [editorValue, setEditorValue] = useState()
+    const [editorValue, setEditorValue] = useState();
     function submitAll()
     {
         
@@ -43,9 +42,6 @@ function QuestionSubmitter()
     return (
         <>
             <CodeEditor code={code} setCode={setCode} />
-            <br/>
-            <br/>
-            <br/>
             <EditorTestcases editorValue={editorValue} setEditorValue={setEditorValue} />
             <div>
                 <button onClick={submitAll}> SUBMIT ALL </button>
