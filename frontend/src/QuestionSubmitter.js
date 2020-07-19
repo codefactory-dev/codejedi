@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import CodeEditor from './CodeEditor.js'
 import EditorTestcases from './EditorTestcases';
 import axios from 'axios'
+import { ConvertCodeToOneLiner } from './utils/TextReadingUtils'
 
 function QuestionSubmitter()
 {
@@ -23,11 +24,15 @@ function QuestionSubmitter()
         togetherText+='\n\n';
         togetherText+=testCasesText;
 
-        console.log("===========TOGETHER TEXT===========");
+        console.log("---TOGETHER TEXT---");
         console.log(togetherText);
 
         //transform question into a "sendable" one-line string for json
-        var oneLiner = "";
+        var oneLiner = ConvertCodeToOneLiner(togetherText);
+        console.log("---ONE LINER---");
+        console.log(oneLiner);
+
+
         createEditor();
 
         // POST both the question and the test cases

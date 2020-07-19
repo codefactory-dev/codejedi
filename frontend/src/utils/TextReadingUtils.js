@@ -21,12 +21,10 @@ function appendToFileSync(filename,data)
         console.log('Error:', e.stack);
     }
 }
-function ConvertCodeToOneLiner()
+function ConvertCodeToOneLiner(code)
 {
-    var text = readTextFileSync();
-    //var convertedText = text.replace(/(?:\r\n|\r|\n)/g, '\n');
-    console.log(JSON.stringify(text));
-    return JSON.stringify(text);
+    console.log(JSON.stringify(code));
+    return JSON.stringify(code);
 
 }
 /*
@@ -68,5 +66,6 @@ async function postToApi()
 
 module.exports = {
     readTextFileSync,
-    appendToFileSync
+    appendToFileSync,
+    ConvertCodeToOneLiner
 }
