@@ -10,12 +10,11 @@ import './CodeEditor.css';
 
 
 
-function CodeEditor({code, setCode}) { 
+function CodeEditor({code, setCode, codemirror}) { 
     const textareaNode = useRef();
     const languageModes = new Map([['javascript', 'javascript'], ['java', 'text/x-java'], ['c++', 'text/x-c++src']]);
     let selectedLanguage = 'java';
 
-    let codemirror = null;
     useEffect(()=> {
         codemirror = CodeMirror.fromTextArea(textareaNode.current, {
             lineNumbers: true,
@@ -23,6 +22,9 @@ function CodeEditor({code, setCode}) {
             matchBrackets: true
         });
         codemirror.focus();
+        codemirror.on("change",(changeObj)=>{    
+            handleChange(changeObj)
+        });
     }, []);
 
     // --------------------------------------------------------------------
@@ -43,8 +45,8 @@ function CodeEditor({code, setCode}) {
             setCode(result.data);
         }
     }
-    function handleChange(event) {
-        this.setState({code: event.target.value});
+    function handleChange(changeObj) {
+        setCode(changeObj.doc.getValue());
     }
 
     // --------------------------------------------------------------------
@@ -56,10 +58,8 @@ function CodeEditor({code, setCode}) {
             <textarea
 					ref={textareaNode}
                     autoComplete="off"
-                    value={code}
-                    onChange={handleChange}
 			/>
-            <button onClick={handleBtnClick}>Save</button>
+            {/*<button onClick={handleBtnClick}>Save</button>*/}
         </div>
         
     );

@@ -12,7 +12,7 @@ function Editor({editors, setEditors}) {
 
         // GET request
         async function getEditors() {
-            const fetchEditors = await axios.get('/editors'); 
+            const fetchEditors = await axios.get('/.netlify/functions/server/api/editors'); 
         
             if (fetchEditors) { 
                 setEditors(fetchEditors.data.map(editor => editor.description)); 
@@ -70,7 +70,7 @@ function Editor({editors, setEditors}) {
             </div>
 
             <iframe ref={ref => iFrameRef = ref} />
-            <button onClick={handleButtonClick}>Save</button>
+            {/*<button onClick={handleButtonClick}>Save</button>*/}
 
             <div className={"iframeContainer"}>
                 <p>SAVED TEXTS:</p>

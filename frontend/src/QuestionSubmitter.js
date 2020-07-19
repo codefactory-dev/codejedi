@@ -7,6 +7,9 @@ function QuestionSubmitter()
 {
     const [code, setCode] = useState('');
     const [editors, setEditors] = useState(null);
+    useState(()=>{
+        console.log("triggered re-render");
+    },[code,editors])
     function submitAll()
     {
         
