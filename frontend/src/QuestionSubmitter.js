@@ -1,15 +1,13 @@
 import React, {useState} from 'react'
 import CodeEditor from './CodeEditor.js'
-import EditorTestcases from './EditorTestcases.js';
+import EditorTestcases from './EditorTestcases';
 import axios from 'axios'
 
 function QuestionSubmitter()
 {
     const [code, setCode] = useState('');
-    const [editors, setEditors] = useState(null);
-    useState(()=>{
-        console.log("triggered re-render");
-    },[code,editors])
+    const [iFrameDoc, setIframeDoc] = useState();
+    const [editorValue, setEditorValue] = useState()
     function submitAll()
     {
         
@@ -18,7 +16,7 @@ function QuestionSubmitter()
         
         //get test cases from file
 
-        var testCasesText = editors;
+        var testCasesText = editorValue;
 
         //insert test cases into question
         var togetherText = questionText;
@@ -35,7 +33,6 @@ function QuestionSubmitter()
         // POST both the question and the test cases
         async function createEditor() {
             const result = await axios.post('/compile', {code: oneLiner});
-            setEditors([...editors, result.data.description]);
         }
     }
     return (
@@ -44,7 +41,7 @@ function QuestionSubmitter()
             <br/>
             <br/>
             <br/>
-            <EditorTestcases editors={editors} setEditors={setEditors} />
+            <EditorTestcases editorValue={editorValue} setEditorValue={setEditorValue} />
             <button onClick={submitAll}> SUBMIT ALL </button>
         </>
     )

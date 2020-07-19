@@ -3,82 +3,15 @@ import axios from 'axios';
 
 import './Editor.css';
 
-function Editor({editors, setEditors}) { 
-    let iFrameRef;
-
-    useEffect(()=> {
-        iFrameRef.contentWindow.document.designMode = 'On';
-        getEditors();
-
-        // GET request
-        async function getEditors() {
-            const fetchEditors = await axios.get('/.netlify/functions/server/api/editors'); 
-        
-            if (fetchEditors) { 
-                setEditors(fetchEditors.data.map(editor => editor.description)); 
-            }
-        }   
-    }, []);
-
-
-    // --------------------------------------------------------------------
-    // HELPERS
-    // --------------------------------------------------------------------
-
-    const renderiFrame = (content, idx) => {    
-        const applyRef = ref => { 
-            if (ref) {
-                cleaniFrame(ref);
-                ref.contentWindow.document.write(content); 
-            }
-        };
-
-        const ifrm = <iframe key={idx} ref={ref => applyRef(ref)} />;
-        return ifrm;
+function EditorTestcases({editorValue, setEditorValue}) { 
+    function handleChange(event){
+        console.log(event.target.value);
+        setEditorValue(event.target.value);
     }
-
-    const cleaniFrame = (ref) => ref.contentWindow.document.body.innerHTML = '';
-
-    // --------------------------------------------------------------------
-    // HANDLERS
-    // --------------------------------------------------------------------
-
-    const handleButtonClick = e => {
-        const txt = iFrameRef.contentWindow.document.body.outerHTML;
-        createEditor();
-        cleaniFrame(iFrameRef);
-
-        // POST request
-        async function createEditor() {
-            const result = await axios.post('/editors', {description: txt});
-            setEditors([...editors, result.data.description]);
-        }
-    };
-
-    const handleIconClick = cmd => iFrameRef.contentWindow.document.execCommand(cmd, false, null);
-
-    // --------------------------------------------------------------------
-    // RENDERING
-    // --------------------------------------------------------------------
-
-    return (
-        <div className={"container"}>
-            <div className={"iconContainer"}>
-                <i className="fas fa-bold" onClick={() => handleIconClick('bold')}></i>
-                <i className="fas fa-italic" onClick={() => handleIconClick('italic')}></i>
-                <i className="fas fa-underline" onClick={() => handleIconClick('underline')}></i>
-            </div>
-
-            <iframe ref={ref => iFrameRef = ref} />
-            {/*<button onClick={handleButtonClick}>Save</button>*/}
-
-            <div className={"iframeContainer"}>
-                <p>SAVED TEXTS:</p>
-                { editors ? editors.map((editorContent, index) => renderiFrame(editorContent, index)) : undefined }
-            </div>
-        </div> 
-    );
-
+    return(
+        <textarea value={editorValue} onChange={handleChange} />
+    )
+ 
 }
 
-export default Editor;
+export default EditorTestcases;
