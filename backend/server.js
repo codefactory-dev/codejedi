@@ -222,11 +222,19 @@ router.post('/compile', async (req,res) => {
   for (key in payload){
     console.log( key + ": " + payload[key]);
   }
+  const body = {
+    "files": [
+        {
+            "name": "main.js", 
+            "content": req.body.code
+        }
+    ]
+  }
   try{
     const result = await axios({
       method: 'post',
       url: 'https://run.glot.io/languages/javascript/latest',
-      data: req.body,
+      data: body,
       headers: payload
     });
     console.log(result);
