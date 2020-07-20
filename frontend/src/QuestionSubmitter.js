@@ -3,6 +3,7 @@ import CodeEditor from './CodeEditor.js'
 import EditorTestcases from './EditorTestcases';
 import axios from 'axios'
 import { ConvertCodeToOneLiner } from './utils/TextReadingUtils'
+import CodeScaffolding from './utils/CodeScaffolding'
 import Parse from './utils/Parser'
 
 function QuestionSubmitter()
@@ -27,7 +28,7 @@ function QuestionSubmitter()
         //insert test cases into question
         var togetherText = questionText;
         togetherText+='\n\n';
-        togetherText+=JSON.stringify(structure);
+        togetherText+=CodeScaffolding(structure);
 
         console.log("---TOGETHER TEXT---");
         console.log(togetherText);
