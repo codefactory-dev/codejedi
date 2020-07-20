@@ -19,19 +19,18 @@ function QuestionSubmitter()
 
         var testCasesText = editorValue;
 
-        //insert test cases into question
-        var togetherText = questionText;
-        togetherText+='\n\n';
-        togetherText+=testCasesText;
-
-        console.log("---TOGETHER TEXT---");
-        console.log(togetherText);
-
-
+        //parse test cases into javascript
         var structure = Parse(testCasesText);
         console.log("---PARSED STRUCTURE---");
         console.log(structure);
-        
+
+        //insert test cases into question
+        var togetherText = questionText;
+        togetherText+='\n\n';
+        togetherText+=JSON.stringify(structure);
+
+        console.log("---TOGETHER TEXT---");
+        console.log(togetherText);
 
         //transform question into a "sendable" one-line string for json
         var oneLiner = ConvertCodeToOneLiner(togetherText);
