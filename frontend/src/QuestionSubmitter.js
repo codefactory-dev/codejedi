@@ -43,7 +43,22 @@ function QuestionSubmitter()
 
         // POST both the question and the test cases
         async function createEditor() {
-            const result = await axios.post('/compile', {code: oneLiner});
+            const body = {
+                "files": [
+                    {
+                        "name": "main.js", 
+                        "content": oneLiner
+                    }
+                ]
+            }
+            const result = await axios({
+                method: 'post',
+                url: '/compile',
+                data: body
+            });            
+            console.log(Object.getOwnPropertyNames(result))
+            const {stdout, stderr, error} = result.data;
+            console.log("stdout: "+stdout+", stderr: "+stderr+", error: "+error);
         }
     }
     return (
