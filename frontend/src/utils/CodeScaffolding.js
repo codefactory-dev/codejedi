@@ -13,6 +13,7 @@ function CodeScaffolding(entries)
                 gotRightAmount++;
             }
         }
+        console.log("got right: "+gotRightAmount);
     `;
     return CodeScaffolding;
 }

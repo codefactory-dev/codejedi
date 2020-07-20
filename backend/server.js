@@ -225,7 +225,7 @@ router.post('/compile', async (req,res) => {
   try{
     const result = await axios({
       method: 'post',
-      url: 'https://run.glot.io/languages/cpp/latest',
+      url: 'https://run.glot.io/languages/javascript/latest',
       data: req.body,
       headers: payload
     });
