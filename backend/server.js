@@ -226,7 +226,7 @@ router.post('/compile', async (req,res) => {
     "files": [
         {
             "name": "main.js", 
-            "content": req.body.code
+            "content": req.body
         }
     ]
   }
