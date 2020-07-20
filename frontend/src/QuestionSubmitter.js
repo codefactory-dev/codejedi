@@ -3,6 +3,7 @@ import CodeEditor from './CodeEditor.js'
 import EditorTestcases from './EditorTestcases';
 import axios from 'axios'
 import { ConvertCodeToOneLiner } from './utils/TextReadingUtils'
+import Parse from './utils/Parser'
 
 function QuestionSubmitter()
 {
@@ -25,6 +26,12 @@ function QuestionSubmitter()
 
         console.log("---TOGETHER TEXT---");
         console.log(togetherText);
+
+
+        var structure = Parse(testCasesText);
+        console.log("---PARSED STRUCTURE---");
+        console.log(structure);
+        
 
         //transform question into a "sendable" one-line string for json
         var oneLiner = ConvertCodeToOneLiner(togetherText);

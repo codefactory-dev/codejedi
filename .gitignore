@@ -8,3 +8,4 @@ node_modules/**/*
 functions/**/*
 # CRA build
 frontend/build/**/*
+.vscode

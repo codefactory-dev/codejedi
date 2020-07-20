@@ -3,36 +3,46 @@ function Parse(text)
     var ans = [];
     var i = 0;
     var len = text.length;
-    while(i<text.length)
+    while(i<len)
     {
-        var {op,k} = nextOp();
+        console.log("i = "+i);
+        var {op,k} = nextOp(text,i);
+        console.log("op = "+op);
+        console.log("k = "+k);
+        
         if (op === "comma")
         {
-            var input = JSON.parse(str.substring(i+1,k+1));
+            console.log("substring("+(i+1)+","+(k)+")");
+            var input = JSON.parse(text.substring(i+1,k));
+            console.log("pushing "+input);
             ans.push(input);
             i = k;
         }
         else if (op === "close")
         {
+            var input = JSON.parse(text.substring(i+1,k));
+            console.log("pushing "+input);
+            ans.push(input);
             i = k+2;
         }
     }
     return ans;
 }
 function nextOp(str,index){
-    while(str.charAt(index+1) !== ',' && str.charAt(index+1) !== ']')
+    index++;
+    while(str.charAt(index) !== ',' && str.charAt(index) !== ']')
     {
         index++;
     }
     var op;
-    if (str.charAt(index+1) === ',')
+    if (str.charAt(index) === ',')
     {
         op = "comma";
     }
-    else if (str.charAt(index+1) === ']')
+    else if (str.charAt(index) === ']')
     {
         op = "close";
     }
-    return {op:op, k:index+1};
+    return {op:op, k:index};
 }
 module.exports = Parse
