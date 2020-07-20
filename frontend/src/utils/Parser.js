@@ -3,6 +3,7 @@ function Parse(text)
     var ans = [];
     var i = 0;
     var len = text.length;
+    var temp = [];
     while(i<len)
     {
         console.log("i = "+i);
@@ -15,14 +16,16 @@ function Parse(text)
             console.log("substring("+(i+1)+","+(k)+")");
             var input = JSON.parse(text.substring(i+1,k));
             console.log("pushing "+input);
-            ans.push(input);
+            temp.push(input);
             i = k;
         }
         else if (op === "close")
         {
             var input = JSON.parse(text.substring(i+1,k));
             console.log("pushing "+input);
-            ans.push(input);
+            temp.push(input);
+            ans.push(temp);
+            temp = [];
             i = k+2;
         }
     }
