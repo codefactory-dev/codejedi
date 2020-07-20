@@ -27,7 +27,6 @@ function QuestionSubmitter()
 
         //insert test cases into question
         var togetherText = questionText;
-        togetherText+='\n\n';
         togetherText+=CodeScaffolding(structure);
 
         console.log("---TOGETHER TEXT---");
@@ -43,18 +42,13 @@ function QuestionSubmitter()
 
         // POST both the question and the test cases
         async function createEditor() {
-            const body = {
-                "files": [
-                    {
-                        "name": "main.js", 
-                        "content": oneLiner
-                    }
-                ]
-            }
+            
             const result = await axios({
                 method: 'post',
                 url: '/compile',
-                data: body
+                data: { 
+                    code:oneLiner
+                }
             });            
             console.log(Object.getOwnPropertyNames(result))
             const {stdout, stderr, error} = result.data;

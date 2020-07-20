@@ -212,6 +212,20 @@ router.get('/hello', (req, res) => {
   res.send({ express: 'Hello From Express' });
 });
 
+function unescape(str) {
+  var newStr = str;
+  newStr = newStr.replace(/\\(^)/g, '');
+  newStr = escapeQuotes(newStr);
+  newStr = newStr.trim();
+  return newStr;
+  function unescapeQuotes(string) {
+    return string.replace(/\\"/g, '"');
+  }
+  function escapeQuotes(string) {
+    return string.replace(/"/g, '\\"');
+  }
+}
+
 router.post('/compile', async (req,res) => {
   const payload = {
     'Content-Type': 'application/json',
@@ -222,14 +236,17 @@ router.post('/compile', async (req,res) => {
   for (key in payload){
     console.log( key + ": " + payload[key]);
   }
+  var text = unescape(req.body.code);
+  console.log("text = "+text+"\n\n\n");
   const body = {
-    "files": [
+    files: [
         {
-            "name": "main.js", 
-            "content": req.body
+            name: "main.js", 
+            content: text
         }
     ]
   }
+  console.log("body = "+body);
   try{
     const result = await axios({
       method: 'post',
@@ -237,7 +254,8 @@ router.post('/compile', async (req,res) => {
       data: body,
       headers: payload
     });
-    console.log(result);
+    console.log("finished waiting....\n")
+    console.log(result.config.data);
     res.status(200).send(result.data);
   } catch(e){
     console.log("error "+e);

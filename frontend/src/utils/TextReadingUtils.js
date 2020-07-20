@@ -2,6 +2,7 @@ require('dotenv').config()
 const axios = require('axios');
 const util = require('util');
 var fs = require('fs')
+var removeNewline = require('newline-remove');
 
 function readTextFileSync(filename)
 {
@@ -23,10 +24,12 @@ function appendToFileSync(filename,data)
 }
 function ConvertCodeToOneLiner(code)
 {
-    console.log(JSON.stringify(code));
-    return JSON.stringify(code);
+    var stringified = (removeNewline(code));
+    console.log(stringified);
+    return stringified;
 
 }
+  
 /*
 async function postToApi()
 {
