@@ -1,7 +1,7 @@
 function CodeScaffolding(entries)
 {
     var CodeScaffolding = 
-`/*---------------ENTRIES---------------*/
+` /*---------------ENTRIES---------------*/
 var entries = ${JSON.stringify(entries)};
 var gotRightAmount = 0;
 for(var i=0;i<entries.length;i+=2)
@@ -12,7 +12,7 @@ for(var i=0;i<entries.length;i+=2)
         gotRightAmount++;
     }
 }
-console.log("got right amount = "+gotRightAmount);`
+console.log('got right amount = '+gotRightAmount);`
     return CodeScaffolding;
 }
 
