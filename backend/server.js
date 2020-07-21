@@ -2,7 +2,6 @@ require('dotenv').config()
 
 const serverless = require('serverless-http'),
       mongoose = require('mongoose'),
-      express = require('express'),
       app = require('./app');
 
 const local = process.env.LOCAL_SERVER || false;
@@ -13,8 +12,7 @@ const local = process.env.LOCAL_SERVER || false;
 const resetDB = require('./resetDB');
 resetDB();
 
-const dbName = "codefactory-database";
-const MONGODB_URL = process.env.MONGODB_URL || `mongodb://localhost:27017/${dbName}`;
+const MONGODB_URL = process.env.MONGODB_URL || `mongodb://localhost:27017/codefactory-database`;
 
 mongoose.connect(MONGODB_URL, {
     useNewUrlParser: true,
