@@ -2,6 +2,7 @@ require('dotenv').config()
 const axios = require('axios');
 const util = require('util');
 var fs = require('fs')
+var assert = require('assert');
 
 function readTextFileSync(filename)
 {
@@ -21,52 +22,21 @@ function appendToFileSync(filename,data)
         console.log('Error:', e.stack);
     }
 }
-function ConvertCodeToOneLiner()
+function removeNewLine(val, replace)
 {
-    var text = readTextFileSync();
-    //var convertedText = text.replace(/(?:\r\n|\r|\n)/g, '\n');
-    console.log(JSON.stringify(text));
-    return JSON.stringify(text);
+    assert.equal(typeof val, 'string', 'newline-remove: val should be a string');
+    return val.replace(/(\r\n|\n|\r)/gm, replace);
+}
+function ConvertCodeToOneLiner(code)
+{
+    var response = removeNewLine(code,' ')
+    console.log(response);
+    return response;
 
 }
-/*
-async function postToApi()
-{
-    
-    const text = ConvertCodeToOneLiner();
-    
-    const body = {
-        "files": [
-            {
-                "name": "main.js", 
-                "content": text
-            }
-        ]
-    }
-    const payload = {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'Token '+process.env.GLOT_IO_TOKEN
-    }
-    console.log("these are the headers: ");
-    for (key in payload.keys()){
-        console.log( key + ": " + payload[key]);
-    }
-    try{
-        const result = await axios({
-            method: 'post',
-            url: 'https://run.glot.io/languages/javascript/latest',
-            data: body,
-            headers: payload
-        });
-        console.log(result);
-    } catch(e){
-        console.log("error "+e);
-    }
-}
-*/
 
 module.exports = {
     readTextFileSync,
-    appendToFileSync
+    appendToFileSync,
+    ConvertCodeToOneLiner
 }

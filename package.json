@@ -14,7 +14,9 @@
     "build:lambda": "netlify-lambda build backend",
     "build:app": "cd frontend && npm run build",
     "deploy:draft": "netlify deploy --dir=frontend/build --functions=functions",
-    "deploy:prod": "netlify deploy --dir=frontend/build --functions=functions --prod"
+    "deploy:prod": "netlify deploy --dir=frontend/build --functions=functions --prod",
+    "server": "cd backend && npm run dev",
+    "client": "cd frontend && npm start"
   },
   "repository": {
     "type": "git",

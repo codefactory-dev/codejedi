@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-import './Editor.css';
+import './css/Editor.css';
 
 function Editor() { 
     const [editors, setEditors] = useState(null);

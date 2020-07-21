@@ -2,12 +2,15 @@ import React, {useState} from 'react'
 import CodeEditor from './CodeEditor.js'
 import EditorTestcases from './EditorTestcases';
 import axios from 'axios'
+import { ConvertCodeToOneLiner } from './utils/TextReadingUtils'
+import CodeScaffolding from './utils/CodeScaffolding'
+import Parse from './utils/Parser'
 
 function QuestionSubmitter()
 {
     const [code, setCode] = useState('');
-    const [iFrameDoc, setIframeDoc] = useState();
-    const [editorValue, setEditorValue] = useState()
+    const [editorValue, setEditorValue] = useState();
+    const [answer, setAnswer] = useState();
     function submitAll()
     {
         
@@ -18,31 +21,64 @@ function QuestionSubmitter()
 
         var testCasesText = editorValue;
 
+        //parse test cases into javascript
+        var structure = Parse(testCasesText);
+        console.log("---PARSED STRUCTURE---");
+        console.log(structure);
+
         //insert test cases into question
         var togetherText = questionText;
-        togetherText+='\n\n';
-        togetherText+=testCasesText;
+        togetherText+=CodeScaffolding(structure);
 
-        console.log("===========TOGETHER TEXT===========");
+        console.log("---TOGETHER TEXT---");
         console.log(togetherText);
 
         //transform question into a "sendable" one-line string for json
-        var oneLiner = "";
+        var oneLiner = ConvertCodeToOneLiner(togetherText);
+        console.log("---ONE LINER---");
+        console.log(oneLiner);
+
+
         createEditor();
 
         // POST both the question and the test cases
         async function createEditor() {
-            const result = await axios.post('/compile', {code: oneLiner});
+            
+            const result = await axios({
+                method: 'post',
+                url: '/compile',
+                data: { 
+                    code:oneLiner
+                }
+            });            
+            console.log(Object.getOwnPropertyNames(result))
+            const {stdout, stderr, error} = result.data;
+            console.log("stdout: "+stdout+", stderr: "+stderr+", error: "+error);
+            if (stderr || error)
+            {
+                return setAnswer(stderr +' '+ error)
+            }
+            return setAnswer(stdout);
         }
     }
     return (
         <>
             <CodeEditor code={code} setCode={setCode} />
-            <br/>
-            <br/>
-            <br/>
             <EditorTestcases editorValue={editorValue} setEditorValue={setEditorValue} />
-            <button onClick={submitAll}> SUBMIT ALL </button>
+            <div>
+                <button onClick={submitAll}> SUBMIT ALL </button>
+            </div>
+            {
+                answer ?
+                <h2 style={{color:'green'}}>
+                    {answer}
+                </h2>
+                :
+                <h2 style={{color:'red'}}>
+                    {answer}
+                </h2>
+            }
+            
         </>
     )
 

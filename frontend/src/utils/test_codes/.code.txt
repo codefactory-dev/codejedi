@@ -1,49 +1,11 @@
-/**
- * Definition for a binary tree node.
- * function TreeNode(val, left, right) {
- *     this.val = (val===undefined ? 0 : val)
- *     this.left = (left===undefined ? null : left)
- *     this.right = (right===undefined ? null : right)
- * }
- */
-/**
- * @param {TreeNode} root
- * @return {number[][]}
- */
-var levelOrder = function(root) {
-    
-    var q = [];
-    var result = [];
-    if (root != undefined)
+var someFunction = function(entry) {
+    var sum = 0;
+    for(var i=0;i<entry.length;i++)
     {
-        q.push(root);
-        result.push([root.val]);
-    }
-        
-    while(q.length > 0)
-    {
-        var size = q.length;
-        var temp = [];
-        while(size > 0)
+        if (entry[i] !== null)
         {
-            var curr = q.shift();
-            if (curr.left != null)
-            {
-                temp.push(curr.left.val);
-                q.push(curr.left);
-            }
-            if (curr.right != null)
-            {
-                temp.push(curr.right.val)
-                q.push(curr.right);
-            }
-            size--;
+            sum+=entry[i];
         }
-        if (q.length > 0)
-            result.push(temp);
-        
-        
     }
-    return result;
-    
+    return sum;
 };
