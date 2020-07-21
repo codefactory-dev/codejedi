@@ -10,6 +10,7 @@ function QuestionSubmitter()
 {
     const [code, setCode] = useState('');
     const [editorValue, setEditorValue] = useState();
+    const [answer, setAnswer] = useState();
     function submitAll()
     {
         
@@ -53,6 +54,11 @@ function QuestionSubmitter()
             console.log(Object.getOwnPropertyNames(result))
             const {stdout, stderr, error} = result.data;
             console.log("stdout: "+stdout+", stderr: "+stderr+", error: "+error);
+            if (stderr || error)
+            {
+                return setAnswer(stderr +' '+ error)
+            }
+            return setAnswer(stdout);
         }
     }
     return (
@@ -62,6 +68,17 @@ function QuestionSubmitter()
             <div>
                 <button onClick={submitAll}> SUBMIT ALL </button>
             </div>
+            {
+                answer ?
+                <h2 style={{color:'green'}}>
+                    {answer}
+                </h2>
+                :
+                <h2 style={{color:'red'}}>
+                    {answer}
+                </h2>
+            }
+            
         </>
     )
 

@@ -12,7 +12,7 @@ for(var i=0;i<entries.length;i+=2)
         gotRightAmount++;
     }
 }
-console.log('got right amount = '+gotRightAmount);`
+console.log('Accepted ! Cases passed: '+gotRightAmount);`
     return CodeScaffolding;
 }
 
