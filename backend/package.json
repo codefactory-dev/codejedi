@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "env-cmd -f ./.env nodemon server.js",
+    "dev": "env-cmd -f ./config/dev.env nodemon server.js",
     "test": "env-cmd -f ./config/test.env jest"
   },
   "jest": {
@@ -18,9 +18,7 @@
     "axios": "^0.19.2",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
-    "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "gridfs-stream": "^1.1.1",
     "mongodb": "^3.5.9",
     "mongoose": "^5.9.21",
     "serverless-http": "^2.5.0"

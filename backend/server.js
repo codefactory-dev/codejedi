@@ -1,5 +1,3 @@
-require('dotenv').config()
-
 const serverless = require('serverless-http'),
       mongoose = require('mongoose'),
       app = require('./app');
