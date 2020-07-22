@@ -2,34 +2,12 @@ const mongoose = require('mongoose'),
       request = require('supertest'),
       app = require('../app');
 
-const User = require('../models/user');
+const {users, questions} = require('../src/utils/seedDB');
+const Rating = require('../models/rating'),
+      User = require('../models/user');
 
-const userOneId = new mongoose.Types.ObjectId;
-const userOne = {
-      _id: userOneId,
-      firstname: 'Roberta',
-      lastname: 'Mota',
-      email: 'roberta.cmota@gmail.com',
-      username: 'roberta.crmota',
-      password: 'roberta.crmota123',
-      qTrackSummary: {
-          nbTracksPerType: {
-              array: 0,
-              string: 0,
-              graph: 0
-          },
-          avgDurationPerType: {
-              array: 0,
-              string: 0,
-              graph: 0
-          },
-          nbPDifficultyPerType: {
-              array: 0,
-              string: 0,
-              graph: 0
-          }
-      }
-};
+const userOne = users[0];
+const qOne = questions[0];
 
 describe('Ratings routes', () => {
   let connection;
@@ -44,12 +22,15 @@ describe('Ratings routes', () => {
       bufferMaxEntries: 0
     });
     db = mongoose.connection;
+
+    console.log(process.env.MONGO_URL);
   });
 
   afterAll(async () => mongoose.disconnect());
 
   // create test user (creator)
   beforeEach(async() => {
+      await Rating.deleteMany({});
       await User.deleteMany({});
       await new User(userOne).save();
   });
@@ -60,20 +41,32 @@ describe('Ratings routes', () => {
   // ----------------------------------------------------------------------------
 
   it('should be able to post a rating', async () => {
-  });
-
-  it('shoudl failt to post a rating without a creator', async () => {
     const response = await request(app)
                               .post('/ratings')
                               .send({
-                                creatorId: userOneId,
+                                creatorId: userOne._id,
+                                questionId: qOne.basic._id,
                                 value: 3
                               });
 
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(201);
+    // console.log(response);
+
+    // additional assertions
+    const rating = await Rating.findById(response.body.rating._id);
+    
+    expect(rating).not.toBeNull();
   });
 
-  it('shoudl failt to post a rating without a value', async () => {
+  it('shoudl fail to post a rating without a creatorId/questionId required fields', async () => {
+    const response = await request(app)
+                              .post('/ratings')
+                              .send({
+                                questionId: qOne.basic._id,
+                                value: 3
+                              });
+
+    expect(response.status).toBe(500);
   });
 
 
@@ -86,14 +79,4 @@ describe('Ratings routes', () => {
   // TEST CASES - PUT /ratings/:id/edit 
   // ----------------------------------------------------------------------------
 
-  // it('should be able to get ratings', async () => {
-  //   const response = await request(app)
-  //     .get('/ratings')
-  //     .send({
-  //       title: "Dummy sample test",
-  //       description: "This is just a dummy request to test ratings request"
-  //     })
-
-  //   expect(response.status).toBe(200);
-  // });
 });

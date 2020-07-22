@@ -60,9 +60,10 @@ const ratingOne = {
 };
 
 
-const users = [userOne];
+
 const questions = [{basic: qbasicOne, detail: qdetailOne}];
 const ratings = [ratingOne];
+const users = [userOne];
 
 const seedDB = async () => {
     console.log("seeding db *********************");
@@ -88,8 +89,8 @@ const seedDB = async () => {
 
 
 module.exports ={
-    users,
-    ratings,
     questions,
+    ratings,
+    users,
     seedDB
 };
