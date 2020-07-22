@@ -1,5 +1,6 @@
 const express = require('express'),
       router = express.Router({mergeParams: true}),
+      axios = require('axios'),
       Code = require('../models/code');
 
 // API calls
