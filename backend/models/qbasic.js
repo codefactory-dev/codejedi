@@ -8,7 +8,6 @@ const qbasicSchema = new Schema({
     detailsId: { 
         type: Schema.Types.ObjectId, 
         ref: "QDetail",
-        required: true 
     },
     creator: { 
         id: {

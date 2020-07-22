@@ -1,11 +1,17 @@
-const User = require('../models/user');
-const mongoose = require('mongoose');
+const User = require('../models/user'),
+      QBasic = require('../models/qbasic'),
+      mongoose = require('mongoose');
 
 
 const ratingSchema = new mongoose.Schema({
     creatorId: { 
         type: mongoose.Schema.Types.ObjectId, 
         ref: "User", 
+        required: true 
+    },
+    questionId: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: "QBasic", 
         required: true 
     },
     value : { 
