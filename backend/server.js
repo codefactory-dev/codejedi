@@ -9,8 +9,15 @@ const local = process.env.LOCAL_SERVER || false;
 // --------------------------------------------------------------------
 // MONGODB/MONGOOSE
 // --------------------------------------------------------------------
-const resetDB = require('./resetDB');
-resetDB();
+const resetDB = require('./src/utils/resetDB');
+const {seedDB} = require('./src/utils/seedDB');
+
+(async () => {
+    await resetDB();
+    await seedDB();
+})();
+
+
 
 const MONGODB_URL = process.env.MONGODB_URL || `mongodb://localhost:27017/codefactory-database`;
 
