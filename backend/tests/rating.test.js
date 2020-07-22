@@ -14,7 +14,7 @@ describe('Ratings routes', () => {
   let db;
 
   beforeAll(async () => {
-    connection = await mongoose.connect(process.env.MONGO_URL, {
+    connection = await mongoose.connect(process.env.MONGODB_URL, {
       useNewUrlParser: true,
       useCreateIndex: true,
       useUnifiedTopology: true,
@@ -23,7 +23,7 @@ describe('Ratings routes', () => {
     });
     db = mongoose.connection;
 
-    console.log(process.env.MONGO_URL);
+    console.log(`connected to ${process.env.MONGODB_URL}`);
   });
 
   afterAll(async () => mongoose.disconnect());
@@ -54,7 +54,7 @@ describe('Ratings routes', () => {
 
     // additional assertions
     const rating = await Rating.findById(response.body.rating._id);
-    
+
     expect(rating).not.toBeNull();
   });
 

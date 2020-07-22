@@ -6,7 +6,10 @@
   "scripts": {
     "start": "node server.js",
     "dev": "env-cmd -f ./.env nodemon server.js",
-    "test": "env-cmd -f ./config/test.env jest rating"
+    "test": "env-cmd -f ./config/test.env jest"
+  },
+  "jest": {
+    "testEnvironment": "node"
   },
   "keywords": [],
   "author": "",
@@ -23,7 +26,6 @@
     "serverless-http": "^2.5.0"
   },
   "devDependencies": {
-    "@shelf/jest-mongodb": "^1.2.1",
     "env-cmd": "^10.1.0",
     "jest": "^26.1.0",
     "supertest": "^4.0.2"
