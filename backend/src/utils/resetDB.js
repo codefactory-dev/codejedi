@@ -3,7 +3,7 @@ const User = require('../../models/user'),
       Img = require('../../models/img'),
       Rating = require('../../models/rating'),
       QBasic = require('../../models/qbasic'),
-      QDetail = require('../../models/qbasic');
+      QDetail = require('../../models/qdetail');
 
 const mongoose = require('mongoose');
 

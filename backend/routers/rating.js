@@ -7,8 +7,10 @@ const express = require('express'),
     TEMPORARY: seedDB to use:
        1. seed user for creating a new rating
        2. seed rating for showing/updating rating's info
+
+    PREFIX: /users/:uid/questions/:qid
 */
-const {users} = require('../src/utils/seedDB');
+const {users, ratings} = require('../src/utils/seedDB');
 
 // CREATE - new rating
 router.post('/ratings', async (req, res) => {
@@ -36,9 +38,21 @@ router.post('/ratings', async (req, res) => {
 
 // SHOW - get rating's info
 router.get('/ratings/:id', async(req, res) => {
+    console.log(`GET REQUEST :: get rating's data`);
+    // console.log(`id: ${req.params.id}`);
+    console.log(`seed id: ${ratings[0]._id}`);
 
+    const rating = await Rating.findById(ratings[0]._id);
+
+    if(rating == null) 
+        return res.status(500).json({
+                    error: true,
+                    message: "Could not find rating info"
+                });
+
+    return res.status(201).send(rating);
 });
 
-// UPDATE - update rating's info
+// UPDATE - update rating's info   :: TODO
 
 module.exports = router;

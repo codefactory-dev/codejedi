@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const User = require('../../models/user'),
       Rating = require('../../models/rating'),
       QBasic = require('../../models/qbasic'),
-      QDetail = require('../../models/qbasic');
+      QDetail = require('../../models/qdetail');
 
 const userOne = {
       _id: new mongoose.Types.ObjectId,
@@ -53,6 +53,7 @@ const qdetailOne = {
 };
 
 const ratingOne = {
+    _id: new mongoose.Types.ObjectId,
     creatorId: userOne._id,
     questionId: qbasicOne._id,
     value: 3,
@@ -68,17 +69,21 @@ const seedDB = async () => {
 
     await User.insertMany(users)
             .then(() => console.log("created seed users."))
-            .catch(err => console.error("Error: could not create seed users "));
+            .catch(err => console.error("Error: could not create seed users."));
 
     questions.forEach((q, index, arr) => {
             QBasic.create(q.basic)
-                .catch(err => console.error(`Error: could not create seed question ${q.basic.title}`))
+                .catch(err => console.error(`Error: could not create seed question basic ${q.basic.title}`))
                 .then(qbasicDB => {
                         QDetail.create(q.detail)
                             .catch(err => console.error(`Error: could not create seed question detail ${q.basic.title}`))
                             .then(qDetailDB => console.log(`created seed question ${q.basic.title}`));
                 });
     });
+
+    await Rating.insertMany(ratings)
+            .then(() => console.log("created seed ratings."))
+            .catch(err => console.error("Error: could not create seed ratings."));
 };
 
 
