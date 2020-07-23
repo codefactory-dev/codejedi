@@ -58,7 +58,7 @@ describe('Ratings routes', () => {
     expect(rating).not.toBeNull();
   });
 
-  it('shoudl fail to post a rating without a creatorId/questionId required fields', async () => {
+  it('should fail to post a rating without a creatorId/questionId required fields', async () => {
     const response = await request(app)
                               .post('/ratings')
                               .send({
