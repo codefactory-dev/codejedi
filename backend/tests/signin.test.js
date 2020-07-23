@@ -37,18 +37,22 @@ describe('Ratings routes', () => {
 
 
   // ----------------------------------------------------------------------------
-  // TEST CASES - POST /users
+  // TEST CASES - POST /users/login 
   // ----------------------------------------------------------------------------
-  it('should be able to create a new user', async () => {
-    await request(app).post('/users').send({
-            firstname: 'Jeff',
-            lastname: 'Zigzig',
-            email: 'testing@gmail.com',
-            username: 'jeffzigzig20',
-            password: 'co0lp4$$'
+
+  it('should be able to login existent users', async () => {
+    await request(app).post('/users/login').send({
+            email: userOne.email,
+            password: userOne.password
         }).expect(200)
   });
 
-  
-
+  it('should not login non-existent users', async () => {
+      await request(app).post('/users/login').send({
+          email: userOne.email,
+          password: 'thisisnotmypass'
+      }).expect(200);
+  })
 });
+
+
