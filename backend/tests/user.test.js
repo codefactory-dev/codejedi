@@ -39,16 +39,22 @@ describe('Ratings routes', () => {
   // ----------------------------------------------------------------------------
   // TEST CASES - POST /users
   // ----------------------------------------------------------------------------
-  it.only('should be able to create a new user', async () => {
+  it('should be able to create a new user', async () => {
     await request(app).post('/users').send({
-            firstname: 'Jeff',
-            lastname: 'Zigzig',
+            name: 'Jeff Zigzig',
             email: 'testing@gmail.com',
             username: 'jeffzigzig20',
             password: 'co0lp4$$'
-        }).expect(200)
+        }).expect(201)
   });
 
-  
+  // ----------------------------------------------------------------------------
+  // TEST CASES - DELETE /users/:id
+  // ----------------------------------------------------------------------------
+  it.only('should be able to delete the user', async () => {
+    const response = await request(app).delete('/users/'+userOne._id).send();
+    expect(response.status).toBe(200);
+  })
+    
 
 });
