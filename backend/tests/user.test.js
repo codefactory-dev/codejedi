@@ -39,7 +39,7 @@ describe('Ratings routes', () => {
   // ----------------------------------------------------------------------------
   // TEST CASES - POST /users
   // ----------------------------------------------------------------------------
-  it('should be able to create a new user', async () => {
+  it.only('should be able to create a new user', async () => {
     await request(app).post('/users').send({
             firstname: 'Jeff',
             lastname: 'Zigzig',
