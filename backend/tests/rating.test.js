@@ -1,15 +1,18 @@
-const mongoose = require('mongoose'),
+const {users, questions, ratings} = require('../src/utils/seedDB'),
+      QDetail = require('../models/qdetail'),
+      Rating = require('../models/rating'),
+      QBasic = require('../models/qbasic'),
+      User = require('../models/user'),
+      mongoose = require('mongoose'),
       request = require('supertest'),
       app = require('../app');
 
-const {users, questions} = require('../src/utils/seedDB');
-const Rating = require('../models/rating'),
-      User = require('../models/user');
+const qOne = questions[0], qTwo = questions[1],
+      userOne = users[0], userTwo = users[1],
+      ratingOne = ratings[0];
 
-const userOne = users[0];
-const qOne = questions[0];
 
-describe('Ratings routes', () => {
+describe('Rating routes', () => {
   let connection;
   let db;
 
@@ -32,51 +35,198 @@ describe('Ratings routes', () => {
   beforeEach(async() => {
       await Rating.deleteMany({});
       await User.deleteMany({});
+      await QBasic.deleteMany({});
+      await QDetail.deleteMany({});
+
       await new User(userOne).save();
+      await new QBasic(qOne.basic).save();
+      await new QDetail(qOne.detail).save();
   });
 
 
   // ----------------------------------------------------------------------------
-  // TEST CASES - POST /ratings 
+  // TEST CASES - POST /users/:uid/questions/:qid/ratings 
   // ----------------------------------------------------------------------------
-
-  it('should be able to post a rating', async () => {
+  it('should post a rating', async () => {
     const response = await request(app)
-                              .post('/ratings')
-                              .send({
-                                creatorId: userOne._id,
-                                questionId: qOne.basic._id,
-                                value: 3
-                              });
+                              .post(`/users/${userOne._id}/questions/${qOne.basic._id}/ratings`)
+                              .send({ value: 3 });
 
-    expect(response.status).toBe(201);
-    // console.log(response);
+    expect(response.status).toBe(201); // success :: created
+
 
     // additional assertions
     const rating = await Rating.findById(response.body.rating._id);
-
     expect(rating).not.toBeNull();
   });
 
-  it('shoudl fail to post a rating without a creatorId/questionId required fields', async () => {
+  it('shoudl fail to post a rating with non-existing creatorId/questionId', async () => {
     const response = await request(app)
-                              .post('/ratings')
-                              .send({
-                                questionId: qOne.basic._id,
-                                value: 3
-                              });
+                              .post(`/users/${userTwo._id}/questions/${qOne.basic._id}/ratings`)
+                              .send({ value: 3 });
 
-    expect(response.status).toBe(500);
+    expect(response.status).toBe(400); // client error :: bad request
+
+    const rating = await Rating.find();
+    expect(rating).toHaveLength(0);
   });
 
+  it('shoudl fail to post a rating with invalid value', async () => {
+    const response = await request(app)
+                              .post(`/users/${userOne._id}/questions/${qOne.basic._id}/ratings`)
+                              .send({ value: 6 });
+
+    expect(response.status).toBe(400); // client error :: bad request
+
+    const rating = await Rating.find();
+    expect(rating).toHaveLength(0);
+  });
+
+  it('shoudl fail to post a rating with missing required field (value)', async () => {
+    const response = await request(app)
+                              .post(`/users/${userOne._id}/questions/${qOne.basic._id}/ratings`);
+
+    expect(response.status).toBe(400); // client error :: bad request
+
+    const rating = await Rating.find();
+    expect(rating).toHaveLength(0);
+  });
 
   // ----------------------------------------------------------------------------
-  // TEST CASES - GET /ratings/:id GET   :: TODO
+  // TEST CASES - GET /users/:uid/questions/:qid/ratings/:id 
   // ----------------------------------------------------------------------------
+  it('should fetch a rating', async () => {
+    await new Rating(ratingOne).save();
+
+    const response = await request(app)
+                              .get(`/users/${userOne._id}/questions/${qOne.basic._id}/ratings/${ratingOne._id}`);
+
+    expect(response.status).toBe(201); // success :: created
 
 
-  // ----------------------------------------------------------------------------
-  // TEST CASES - PUT /ratings/:id/edit   :: TODO
-  // ----------------------------------------------------------------------------
+    // additional assertions
+    const rating = await Rating.findById(response.body.rating._id);
+    expect(rating).not.toBeNull();
+  });
 
+  it('should not fetch other user/question rating', async () => {
+    ratingOne.creatorId = userTwo._id;
+    ratingOne.questionId = qOne.basic._id;
+
+    await new User(userTwo).save();
+    await new QBasic(qTwo.basic).save();
+    await new QDetail(qTwo.detail).save();
+    await new Rating(ratingOne).save();
+
+    let response = await request(app)
+                              .get(`/users/${userOne._id}/questions/${qOne.basic._id}/ratings/${ratingOne._id}`);
+
+    expect(response.status).toBe(400); // client error :: bad request
+
+    response = await request(app)
+                              .get(`/users/${userTwo._id}/questions/${qTwo.basic._id}/ratings/${ratingOne._id}`);
+
+    expect(response.status).toBe(400); // client error :: bad request
+  });
+
+  // ----------------------------------------------------------------------------
+  // TEST CASES - PUT /users/:uid/questions/:qid/ratings/:id/edit
+  // ----------------------------------------------------------------------------
+  it('should update a rating', async () => {
+    ratingOne.creatorId = userOne._id;
+    ratingOne.questionId = qOne.basic._id;
+
+    await new Rating(ratingOne).save();
+
+    const response = await request(app)
+                              .put(`/users/${userOne._id}/questions/${qOne.basic._id}/ratings/${ratingOne._id}/edit`)
+                              .send({ value: 1 });
+
+    expect(response.status).toBe(201); // success :: created
+
+
+    // additional assertions
+    const rating = await Rating.findById(ratingOne._id);
+    expect(rating).not.toBeNull();
+    expect(rating.value).toBe(1);
+  });
+
+  it('shoudl fail to update a rating with invalid value', async () => {
+    ratingOne.creatorId = userOne._id;
+    ratingOne.questionId = qOne.basic._id;
+
+    await new Rating(ratingOne).save();
+
+    const response = await request(app)
+                              .put(`/users/${userOne._id}/questions/${qOne.basic._id}/ratings/${ratingOne._id}/edit`)
+                              .send({ value: -1 });
+
+    expect(response.status).toBe(400); // client error :: bad request
+
+    const rating = await Rating.findById(ratingOne._id);
+    expect(rating).not.toBeNull();
+    expect(rating.value).toBe(ratingOne.value);
+  });
+
+  it('shoudl fail to update a rating with missing required field (value)', async () => {
+    ratingOne.creatorId = userOne._id;
+    ratingOne.questionId = qOne.basic._id;
+
+    await new Rating(ratingOne).save();
+
+    const response = await request(app)
+                              .put(`/users/${userOne._id}/questions/${qOne.basic._id}/ratings/${ratingOne._id}/edit`);
+
+    expect(response.status).toBe(400); // client error :: bad request
+
+    const rating = await Rating.findById(ratingOne._id);
+    expect(rating).not.toBeNull();
+    expect(rating.value).toBe(ratingOne.value);
+  });
+
+  it('shoudl fail to update a rating with non-existing creatorId/questionId', async () => {
+    ratingOne.creatorId = userOne._id;
+    ratingOne.questionId = qOne.basic._id;
+
+    await new Rating(ratingOne).save();
+
+    const updateValue = ((ratingOne.value + 1) % 4) + 1;
+    const response = await request(app)
+                              .put(`/users/${userTwo._id}/questions/${qOne.basic._id}/ratings/${ratingOne._id}/edit`)
+                              .send({ value: updateValue });
+
+    expect(response.status).toBe(400); // client error :: bad request
+
+    const rating = await Rating.findById(ratingOne._id);
+    expect(rating).not.toBeNull();
+    expect(rating.value).toBe(ratingOne.value);
+  });
+
+  it('should fail to update other user/question rating', async () => {
+    ratingOne.creatorId = userTwo._id;
+    ratingOne.questionId = qOne.basic._id;
+
+    await new User(userTwo).save();
+    await new QBasic(qTwo.basic).save();
+    await new QDetail(qTwo.detail).save();
+    await new Rating(ratingOne).save();
+
+    const updateValue = ((ratingOne.value + 1) % 4) + 1;
+
+    let response = await request(app)
+                              .put(`/users/${userOne._id}/questions/${qOne.basic._id}/ratings/${ratingOne._id}/edit`)
+                              .send({ value: updateValue });
+
+    expect(response.status).toBe(400); // client error :: bad request
+
+    response = await request(app)
+                              .put(`/users/${userTwo._id}/questions/${qTwo.basic._id}/ratings/${ratingOne._id}/edit`)
+                              .send({ value: updateValue });
+
+    expect(response.status).toBe(400); // client error :: bad request
+
+    const rating = await Rating.findById(ratingOne._id);
+    expect(rating).not.toBeNull();
+    expect(rating.value).toBe(ratingOne.value);
+  });
 });
