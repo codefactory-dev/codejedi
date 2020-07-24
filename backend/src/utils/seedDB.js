@@ -4,7 +4,7 @@ const User = require('../../models/user'),
       QBasic = require('../../models/qbasic'),
       QDetail = require('../../models/qdetail');
 
-const userOne = {
+const users = [{
       _id: new mongoose.Types.ObjectId,
       firstname: 'Roberta',
       lastname: 'Mota',
@@ -29,41 +29,88 @@ const userOne = {
               graph: 0
           }
       }
-};
-
-const qbasicOne = {
-    _id: new mongoose.Types.ObjectId,
-    creator: { 
-        id: userOne._id,
-        username: userOne.username,
-        joinDate: userOne.joinDate
     },
-    title: 'Number of Islands',
-    difficulty: 'Medium',
-    type: 'Dynamic Programming',
-    hasSolution: false,
-};
+    {
+      _id: new mongoose.Types.ObjectId,
+      firstname: 'Guilherme',
+      lastname: 'Reis',
+      email: 'grrbm2@gmail.com',
+      username: 'grrbm',
+      password: 'grrbm123',
+      joinDate: new Date(),
+      qTrackSummary: {
+          nbTracksPerType: {
+              array: 0,
+              string: 0,
+              graph: 0
+          },
+          avgDurationPerType: {
+              array: 0,
+              string: 0,
+              graph: 0
+          },
+          nbPDifficultyPerType: {
+              array: 0,
+              string: 0,
+              graph: 0
+          }
+      }
+}];
 
-const qdetailOne = {
-    basicsId: qbasicOne._id,
-    description: "Given a 2d grid map of '1's (land) and '0's (water), count the number of islands. " +
-               + "An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically." +
-               + "You may assume all four edges of the grid are all surrounded by water.",    
-    creationDate: new Date(),
-};
+const qOneId = new mongoose.Types.ObjectId;
+const qTwoId = new mongoose.Types.ObjectId;
+const questions = [
+    {
+        basic: {
+            _id: qOneId,
+            creator: { 
+                id: users[0]._id,
+                username: users[0].username,
+                joinDate: users[0].joinDate
+            },
+            title: 'Number of Islands',
+            difficulty: 'Medium',
+            type: 'Dynamic Programming',
+            hasSolution: false,
+        },
+        detail: {
+            basicsId: qOneId,
+            description: "Given a 2d grid map of '1's (land) and '0's (water), count the number of islands. " +
+                    + "An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically." +
+                    + "You may assume all four edges of the grid are all surrounded by water.",    
+            creationDate: new Date(),
+        }
+    },
+    {
+        basic: {
+            _id: qTwoId,
+            creator: { 
+                id: users[0]._id,
+                username: users[0].username,
+                joinDate: users[0].joinDate
+            },
+            title: 'Number of Islands',
+            difficulty: 'Medium',
+            type: 'Dynamic Programming',
+            hasSolution: false,
+        },
+        detail: {
+            basicsId: qTwoId,
+            description: "Given a 2d grid map of '1's (land) and '0's (water), count the number of islands. " +
+                    + "An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically." +
+                    + "You may assume all four edges of the grid are all surrounded by water.",    
+            creationDate: new Date(),
+        }
+    }
+];
 
-const ratingOne = {
+const ratings = [{
     _id: new mongoose.Types.ObjectId,
-    creatorId: userOne._id,
-    questionId: qbasicOne._id,
+    creatorId: users[0]._id,
+    questionId: questions[0].basic._id,
     value: 3,
-};
+}];
 
-
-
-const questions = [{basic: qbasicOne, detail: qdetailOne}];
-const ratings = [ratingOne];
-const users = [userOne];
 
 const seedDB = async () => {
     console.log("seeding db *********************");
