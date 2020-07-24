@@ -1,59 +1,93 @@
 const express = require('express'),
       router = express.Router({mergeParams: true}),
-      Rating = require('../models/rating');
+      Rating = require('../models/rating'),
+      QBasic = require('../models/qbasic'),
+      User = require('../models/user');
+
+// PREFIX: /users/:uid/questions/:qid
 
 
-/* 
-    TEMPORARY: seedDB to use:
-       1. seed user for creating a new rating
-       2. seed rating for showing/updating rating's info
+// CREATE new rating
+router.post('/', async (req, res) => {
+    // console.log(`POST REQUEST :: create new rating`);
+    // console.log(req.params);
 
-    PREFIX: /users/:uid/questions/:qid
-*/
-const {users, ratings} = require('../src/utils/seedDB');
+    let newRating;
+    let value = req.body.value;
+    let error;
 
-// CREATE - new rating
-router.post('/ratings', async (req, res) => {
-    console.log(`POST REQUEST :: create new rating`);
-    //console.log(req.body)
+    error = await User.findById(req.params.uid) == null || await QBasic.findById(req.params.qid) == null;
+    if (error) {
+        res.status(400).json({ error: true, message: 'Invalid userId, questionId parameters' });
+        return;
+    } 
 
-    const newRating = {
-        creatorId: req.body.creatorId,
-        questionId: req.body.questionId,
-        value: req.body.value,
+    error = value == undefined || value <= 0 ||  value > 5;
+    if (error) {
+        res.status(400).json({ error: true, message: 'Invalid rating value' });
+        return;
+    } 
+
+    newRating = {
+        creatorId: req.params.uid,
+        questionId: req.params.qid,
+        value: value,
     };
 
     await Rating.create(newRating)
-            .then((resolve) => {
-                //console.log(`STATUS :: Success`);
-                res.status(201).send({rating: resolve});
-            })
-            .catch((e) => {
-                //console.error(`STATUS :: Ops.Something went wrong.`);
-                res.status(500).json({
-                  error: true,
-                  message: e.toString()
-                });
-            });
+            .then(resolve => res.status(201).send({rating: resolve}))
+            .catch(e => res.status(500).json({
+                            error: true,
+                            message: e.toString()
+                          }));
 });
 
-// SHOW - get rating's info
-router.get('/ratings/:id', async(req, res) => {
-    console.log(`GET REQUEST :: get rating's data`);
-    // console.log(`id: ${req.params.id}`);
-    console.log(`seed id: ${ratings[0]._id}`);
+// SHOW - get rating
+router.get('/:id', async(req, res) => {
+    // console.log(`GET REQUEST :: rating`);
 
-    const rating = await Rating.findById(ratings[0]._id);
+    let rating = await Rating.findById(req.params.id);
+    let error;
 
-    if(rating == null) 
-        return res.status(500).json({
-                    error: true,
-                    message: "Could not find rating info"
-                });
+    error = await User.findById(req.params.uid) == null || await QBasic.findById(req.params.qid) == null;
+    error = error || rating.creatorId != req.params.uid || rating.questionId != req.params.qid;
+    error = error || rating == null;
+    if (error) {
+        res.status(400).json({ error: true, message: 'Invalid userId, questionId, ratingId parameters' });
+        return;
+    }
 
-    return res.status(201).send(rating);
+    return res.status(201).send({rating});
 });
 
-// UPDATE - update rating's info   :: TODO
+// UPDATE - update rating
+router.put('/:id/edit', async(req, res) => {
+    // console.log(`PUT REQUEST :: rating`);
+
+    let rating = await Rating.findById(req.params.id);
+    let value = req.body.value;
+    let error;
+
+    error = await User.findById(req.params.uid) === null || await QBasic.findById(req.params.qid) === null;
+    error = error || rating.creatorId != req.params.uid || rating.questionId != req.params.qid;
+    error = error || rating === null;
+    if (error) {
+        res.status(400).json({ error: true, message: 'Invalid userId, questionId, ratingId parameters' });
+        return;
+    }
+
+    error = value === undefined || value <= 0 ||  value > 5;
+    if (error) {
+        res.status(400).json({ error: true, message: 'Invalid rating value' });
+        return;
+    }
+
+    await Rating.update({_id: req.params.id, value: value})
+                .then(resolve => res.status(201).send({rating: resolve}))
+                .catch(e => res.status(500).json({
+                            error: true,
+                            message: e.toString()
+                          }));
+});
 
 module.exports = router;

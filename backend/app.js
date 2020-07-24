@@ -1,5 +1,3 @@
-require('dotenv').config()
-
 const bodyParser = require('body-parser'),
       express = require('express'),
       router = express.Router(),
@@ -32,7 +30,7 @@ const   ImgRouter    = require('./routers/img'),
         EditorRouter = require('./routers/editor');
 
 app.use(proxy, UserRouter);
-app.use(proxy, RatingRouter);
+app.use(`${proxy}/users/:uid/questions/:qid/ratings`, RatingRouter);
 app.use(proxy, ImgRouter);
 app.use(proxy, CodeRouter);
 app.use(proxy, EditorRouter);
