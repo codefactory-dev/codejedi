@@ -83,7 +83,8 @@ router.post('/users', async (req,res) => {
 router.patch('/users/:id', async (req,res) => {
   const updates = Object.keys(req.body)
   console.log("keys = "+updates.toString());
-  const allowedUpdates = ["name","email","password", "confirmed", "alarms"]
+  const allowedUpdates = ["firstname","lastname","email", "username", "password","joinDate",
+                          "profileImage","profileVisibility","qTrackSummary"];
   const updatesAreValid = updates.every((update)=>allowedUpdates.includes(update))
   if (!updatesAreValid)
   {
