@@ -1,9 +1,10 @@
 const express = require('express'),
       router = express.Router({mergeParams: true}),
-      User = require('../models/user');
+      User = require('../models/user'),
+      utils = require('../src/utils/utils')
 
 // validate the user credentials
-router.post('/users/signin', async function (req, res) {
+router.post('/auth/signup', async function (req, res) {
     const _id = req.body._id;
     const pwd = req.body.password;
   
@@ -49,7 +50,7 @@ router.post('/users/signin', async function (req, res) {
   });
 
 //user confirmation by token
-router.post('/confirm', async (req,res) => {
+router.post('/auth/confirm', async (req,res) => {
     try{
       // Find a matching token
       Token.findOne({ token: req.body.token }, function (err, token) {

@@ -7,7 +7,8 @@
     "start": "node server.js",
     "dev": "env-cmd -f ./config/dev.env nodemon server.js",
     "test": "env-cmd -f ./config/test.env jest",
-    "test:user": "env-cmd -f ./config/test.env jest --watch ./tests/user.test.js"
+    "test:user": "env-cmd -f ./config/test.env jest --watch ./tests/user.test.js",
+    "test:auth": "env-cmd -f ./config/test.env jest --watch ./tests/auth.test.js"
   },
   "jest": {
     "testEnvironment": "node"
