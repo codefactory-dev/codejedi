@@ -4,7 +4,7 @@ const express = require('express'),
       utils = require('../src/utils/utils')
 
 // validate the user credentials
-router.post('/auth/signup', async function (req, res) {
+router.post('/auth/signin', async function (req, res) {
     const _id = req.body._id;
     const pwd = req.body.password;
   
@@ -35,6 +35,7 @@ router.post('/auth/signup', async function (req, res) {
           });
         }
   
+        console.log("gonna generate token!!!");
         // generate token
         const token = utils.generateToken(userFromDB);
         // get basic user details

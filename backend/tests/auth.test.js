@@ -37,14 +37,14 @@ describe('Ratings routes', () => {
       await new Token
   });
 
-
   // ----------------------------------------------------------------------------
   // TEST CASES - SIGNIN (POST /users/signin) 
   // ----------------------------------------------------------------------------
 
-  it('should be able to login existent users', async () => {
+  it.only('should be able to login existent users', async () => {
+    console.log("trying to login _id:"+userOne._id+ " + "+" password:"+userOne.password)
     await request(app).post('/auth/signin').send({
-            email: userOne.email,
+            _id: userOne._id,
             password: userOne.password
         }).expect(200)
   });
