@@ -2,7 +2,9 @@ const express = require('express'),
       router = express.Router({mergeParams: true}),
       User = require('../models/user');
 
-// get all users
+
+
+//INDEX - GET all users
 router.get('/users', async (req,res) => {
     console.log("will try to get users");
     try{
@@ -16,7 +18,7 @@ router.get('/users', async (req,res) => {
     }
 });
 
-// get specific user
+// SHOW - get specific user
 router.get('/users/:id', async (req,res) => {
   try{
       const user = await User.findById(req.params.id)
@@ -31,7 +33,7 @@ router.get('/users/:id', async (req,res) => {
   }
 })
   
-// create a user
+// CREATE - post a new user
 router.post('/users', async (req,res) => {
     console.log(`REQUEST :: create user  ${req.body.name}`);
   
@@ -77,7 +79,7 @@ router.post('/users', async (req,res) => {
           });
 });
 
-//update a user
+//UPDATE - updates a user
 router.patch('/users/:id', async (req,res) => {
   const updates = Object.keys(req.body)
   console.log("keys = "+updates.toString());
@@ -100,7 +102,7 @@ router.patch('/users/:id', async (req,res) => {
   }
 })
 
-//delete a user
+//DESTROY - delete user's info
 router.delete('/users/:id', async (req,res) => {
   const _id = req.params.id;
   try{
@@ -116,5 +118,16 @@ router.delete('/users/:id', async (req,res) => {
     res.status(500).send({error: e})
   }
 })
+
+// EDIT /photos/:id/edit GET
+router.get('/users/:id/edit', async (req,res) => {
+
+});
+
+
+//NEW /photos/new	GET
+router.get('/users/:id/new', async (req,res) => {
+
+});
 
 module.exports = router;

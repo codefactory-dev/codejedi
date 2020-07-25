@@ -51,7 +51,15 @@ describe('Ratings routes', () => {
   // ----------------------------------------------------------------------------
   // TEST CASES - DELETE /users/:id
   // ----------------------------------------------------------------------------
-  it.only('should be able to delete the user', async () => {
+  it('should be able to delete the user', async () => {
+    const response = await request(app).delete('/users/'+userOne._id).send();
+    expect(response.status).toBe(200);
+  })
+
+  // ----------------------------------------------------------------------------
+  // TEST CASES - PATCH /users/:id
+  // ----------------------------------------------------------------------------
+  it.only('should be able to update the user', async () => {
     const response = await request(app).delete('/users/'+userOne._id).send();
     expect(response.status).toBe(200);
   })
