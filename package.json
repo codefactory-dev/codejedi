@@ -16,7 +16,8 @@
     "deploy:draft": "netlify deploy --dir=frontend/build --functions=functions",
     "deploy:prod": "netlify deploy --dir=frontend/build --functions=functions --prod",
     "server": "cd backend && npm run dev",
-    "client": "cd frontend && npm start"
+    "client": "cd frontend && npm start",
+    "test:user": "cd backend && npm run test:user"
   },
   "repository": {
     "type": "git",
