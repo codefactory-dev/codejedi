@@ -71,7 +71,7 @@ describe('Rating routes', () => {
     expect(rating).toHaveLength(0);
   });
 
-  it('shoudl fail to post a rating with invalid value', async () => {
+  it('should fail to post a rating with invalid value', async () => {
     const response = await request(app)
                               .post(`/users/${userOne._id}/questions/${qOne.basic._id}/ratings`)
                               .send({ value: 6 });
