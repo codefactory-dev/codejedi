@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const User = require('../../models/user'),
       Rating = require('../../models/rating'),
+      QTrack = require('../../models/qtrack'),
       QBasic = require('../../models/qbasic'),
       QDetail = require('../../models/qdetail');
 
@@ -104,6 +105,23 @@ const questions = [
     }
 ];
 
+const qtracks = [
+    {
+        questionId: questions[0].basic._id,
+        creatorId: users[0]._id,
+        perceivedDifficulty: "Medium",
+        solved: false,
+        duration: 30
+    },
+    {
+        questionId: questions[0].basic._id,
+        creatorId: users[1]._id,
+        perceivedDifficulty: "Easy",
+        solved: true,
+        duration: 18
+    },
+];
+
 const ratings = [{
     _id: new mongoose.Types.ObjectId,
     creatorId: users[0]._id,
@@ -137,6 +155,7 @@ const seedDB = async () => {
 
 module.exports ={
     questions,
+    qtracks,
     ratings,
     users,
     seedDB
