@@ -31,7 +31,6 @@ describe('Rating routes', () => {
 
   afterAll(async () => mongoose.disconnect());
 
-  // create test user (creator)
   beforeEach(async() => {
       await Rating.deleteMany({});
       await User.deleteMany({});
@@ -58,6 +57,13 @@ describe('Rating routes', () => {
     // additional assertions
     const rating = await Rating.findById(response.body.rating._id);
     expect(rating).not.toBeNull();
+
+    const user = await User.findById(userOne._id);
+    // expect(user.ratingIds).toHaveLength(1);
+    // expect(user.ratingIds[0]._id).toEqual(rating._id);
+
+    const qdetails = await QBasic.findById(qOne.basic._id).populate('detailsId');
+    console.log(qdetails);
   });
 
   it('shoudl fail to post a rating with non-existing creatorId/questionId', async () => {
@@ -69,6 +75,9 @@ describe('Rating routes', () => {
 
     const rating = await Rating.find();
     expect(rating).toHaveLength(0);
+
+    const user = await User.findById(userOne._id);
+    expect(user.ratingIds).toHaveLength(0);
   });
 
   it('shoudl fail to post a rating with invalid value', async () => {
@@ -80,6 +89,9 @@ describe('Rating routes', () => {
 
     const rating = await Rating.find();
     expect(rating).toHaveLength(0);
+
+    const user = await User.findById(userOne._id);
+    expect(user.ratingIds).toHaveLength(0);
   });
 
   it('shoudl fail to post a rating with missing required field (value)', async () => {
@@ -90,6 +102,9 @@ describe('Rating routes', () => {
 
     const rating = await Rating.find();
     expect(rating).toHaveLength(0);
+
+    const user = await User.findById(userOne._id);
+    expect(user.ratingIds).toHaveLength(0);
   });
 
   // ----------------------------------------------------------------------------

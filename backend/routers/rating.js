@@ -1,93 +1,84 @@
 const express = require('express'),
       router = express.Router({mergeParams: true}),
+      middleware = require('../middleware/index'),
+      QDetail = require('../models/qdetail'),
       Rating = require('../models/rating'),
       QBasic = require('../models/qbasic'),
-      User = require('../models/user');
+      User = require('../models/user'),    
+      {isNull} = require('./utils');
 
-// PREFIX: /users/:uid/questions/:qid
+
+// PREFIX: /users/:uid/questions/:qid/ratings
 
 
 // CREATE new rating
-router.post('/', async (req, res) => {
-    // console.log(`POST REQUEST :: create new rating`);
-    // console.log(req.params);
+router.post('/', middleware.checkRatingParamsNullable, 
+                 middleware.checkRatingValue, 
+                 async (req, res) => {
 
-    let newRating;
-    let value = req.body.value;
-    let error;
+    const user = await User.findById(req.params.uid);
+    const qbasic = await QBasic.findById(req.params.qid);
+    const qdetail = await QDetail.findOne({basicsId: req.params.qid});
 
-    error = await User.findById(req.params.uid) == null || await QBasic.findById(req.params.qid) == null;
-    if (error) {
-        res.status(400).json({ error: true, message: 'Invalid userId, questionId parameters' });
-        return;
-    } 
-
-    error = value == undefined || value <= 0 ||  value > 5;
-    if (error) {
-        res.status(400).json({ error: true, message: 'Invalid rating value' });
-        return;
-    } 
-
-    newRating = {
+    const newRating = {
         creatorId: req.params.uid,
         questionId: req.params.qid,
-        value: value,
+        value: req.body.value
     };
 
     await Rating.create(newRating)
-            .then(resolve => res.status(201).send({rating: resolve}))
+            .then(ratingDB => {
+
+                // update user
+                user.ratingIds.push(ratingDB._id);
+                user.save();
+
+                // update question     
+                qbasic.avgRatings = ((qbasic.avgRatings*qbasic.nbRatings) + ratingDB.value) / (qbasic.nbRatings+1);
+                qbasic.nbRatings += 1;
+                qbasic.save();
+                qdetail.ratingIds.push(ratingDB._id);
+                qdetail.save(); 
+
+                res.status(201).send({rating: ratingDB});
+            })
             .catch(e => res.status(500).json({
                             error: true,
                             message: e.toString()
-                          }));
+            }));
 });
 
 // SHOW - get rating
-router.get('/:id', async(req, res) => {
-    // console.log(`GET REQUEST :: rating`);
+router.get('/:id', middleware.checkRatingParamsNullable,
+                   middleware.checkRatingNullable,  
+                   middleware.checkRatingOwnership, 
+                   async(req, res) => {
 
-    let rating = await Rating.findById(req.params.id);
-    let error;
-
-    error = await User.findById(req.params.uid) == null || await QBasic.findById(req.params.qid) == null;
-    error = error || rating.creatorId != req.params.uid || rating.questionId != req.params.qid;
-    error = error || rating == null;
-    if (error) {
-        res.status(400).json({ error: true, message: 'Invalid userId, questionId, ratingId parameters' });
-        return;
-    }
+    const rating = await Rating.findById(req.params.id);
 
     return res.status(201).send({rating});
 });
 
 // UPDATE - update rating
-router.put('/:id/edit', async(req, res) => {
-    // console.log(`PUT REQUEST :: rating`);
+router.put('/:id/edit', middleware.checkRatingParamsNullable,
+                        middleware.checkRatingNullable, 
+                        middleware.checkRatingOwnership, 
+                        middleware.checkRatingValue, 
+                        async(req, res) => {
 
-    let rating = await Rating.findById(req.params.id);
-    let value = req.body.value;
-    let error;
+    const qbasic = await QBasic.findById(req.params.qid);
+ 
+    await Rating.update({_id: req.params.id, value: req.body.value})
+                .then(ratingDB => {
+                    
+                    // update question   
 
-    error = await User.findById(req.params.uid) === null || await QBasic.findById(req.params.qid) === null;
-    error = error || rating.creatorId != req.params.uid || rating.questionId != req.params.qid;
-    error = error || rating === null;
-    if (error) {
-        res.status(400).json({ error: true, message: 'Invalid userId, questionId, ratingId parameters' });
-        return;
-    }
-
-    error = value === undefined || value <= 0 ||  value > 5;
-    if (error) {
-        res.status(400).json({ error: true, message: 'Invalid rating value' });
-        return;
-    }
-
-    await Rating.update({_id: req.params.id, value: value})
-                .then(resolve => res.status(201).send({rating: resolve}))
+                    res.status(201).send({rating: ratingDB})
+                })
                 .catch(e => res.status(500).json({
                             error: true,
                             message: e.toString()
-                          }));
+                }));
 });
 
 module.exports = router;
