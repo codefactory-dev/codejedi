@@ -60,7 +60,7 @@ describe('Rating routes', () => {
     expect(rating).not.toBeNull();
   });
 
-  it('shoudl fail to post a rating with non-existing creatorId/questionId', async () => {
+  it('should fail to post a rating with non-existing creatorId/questionId', async () => {
     const response = await request(app)
                               .post(`/users/${userTwo._id}/questions/${qOne.basic._id}/ratings`)
                               .send({ value: 3 });
@@ -82,7 +82,7 @@ describe('Rating routes', () => {
     expect(rating).toHaveLength(0);
   });
 
-  it('shoudl fail to post a rating with missing required field (value)', async () => {
+  it('should fail to post a rating with missing required field (value)', async () => {
     const response = await request(app)
                               .post(`/users/${userOne._id}/questions/${qOne.basic._id}/ratings`);
 
@@ -151,7 +151,7 @@ describe('Rating routes', () => {
     expect(rating.value).toBe(1);
   });
 
-  it('shoudl fail to update a rating with invalid value', async () => {
+  it('should fail to update a rating with invalid value', async () => {
     ratingOne.creatorId = userOne._id;
     ratingOne.questionId = qOne.basic._id;
 
@@ -168,7 +168,7 @@ describe('Rating routes', () => {
     expect(rating.value).toBe(ratingOne.value);
   });
 
-  it('shoudl fail to update a rating with missing required field (value)', async () => {
+  it('should fail to update a rating with missing required field (value)', async () => {
     ratingOne.creatorId = userOne._id;
     ratingOne.questionId = qOne.basic._id;
 
@@ -184,7 +184,7 @@ describe('Rating routes', () => {
     expect(rating.value).toBe(ratingOne.value);
   });
 
-  it('shoudl fail to update a rating with non-existing creatorId/questionId', async () => {
+  it('should fail to update a rating with non-existing creatorId/questionId', async () => {
     ratingOne.creatorId = userOne._id;
     ratingOne.questionId = qOne.basic._id;
 
