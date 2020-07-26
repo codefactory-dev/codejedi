@@ -37,7 +37,7 @@ describe('Login routes', () => {
       await request(app).post('/auth/signin').send({
           email: userOne.email,
           password: 'thisisnotmypass'
-      }).expect(200);
+      }).expect(401);
   })
 });
 

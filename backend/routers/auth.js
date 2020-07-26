@@ -5,13 +5,14 @@ const express = require('express'),
 
 // validate the user credentials
 router.post('/auth/signin', async function (req, res) {
-    const _id = req.body._id;
+    const email = req.body.email;
     const pwd = req.body.password;
   
-    console.log("signin: "+_id+" "+pwd)
+    console.log("signin: "+email+" "+pwd)
   
     try{
-        const userFromDB = await User.findById(req.body._id)
+        const userFromDB = await User.findOne({ email: req.body.email });
+        console.log("userFromDB.email: "+userFromDB.email+" userFromDB.password: "+userFromDB.password);
         if (!userFromDB)
         {
           console.error("Email/Password combination doesn't exist.");
@@ -20,8 +21,8 @@ router.post('/auth/signin', async function (req, res) {
             message: "Email/Password combination doesn't exist."
           });
         }
-        // return 400 status if _id/password is not exist
-        if (!_id || !pwd) {
+        // return 400 status if email/password is not exist
+        if (!email || !pwd) {
           console.error("Email or Password required.");
           return res.status(400).json({
             error: true,
@@ -30,7 +31,7 @@ router.post('/auth/signin', async function (req, res) {
         }
   
         // return 401 status if the credential is not match.
-        if (_id !== userFromDB._id || pwd !== userFromDB.password) {
+        if (email !== userFromDB.email || pwd !== userFromDB.password) {
           console.error("Email or Password is Wrong.");
           return res.status(401).json({
           error: true,
