@@ -27,7 +27,7 @@ describe('User routes', () => {
   // TEST CASES - INDEX (GET /users)
   // ----------------------------------------------------------------------------
   it('should be able to get all users', async () => {
-    await request(app).get('/users').send().expect(201)
+    await request(app).get('/users').send().expect(200)
   });
 
 
@@ -46,7 +46,8 @@ describe('User routes', () => {
             name: 'Jeff Zigzig',
             email: 'testing@gmail.com',
             username: 'jeffzigzig20',
-            password: 'co0lp4$$'
+            password: 'co0lp4$$',
+            validated: false
         }).expect(201)
   });
 

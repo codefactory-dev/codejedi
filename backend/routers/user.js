@@ -44,6 +44,7 @@ router.post('/users', async (req,res) => {
       email: `${firstname}@gmail.com`,
       username: firstname,
       password: `${lastname}123`,
+      validated: req.body.validated,
       qTrackSummary: {
         nbTracksPerType: {
           'Array': 0,
@@ -71,7 +72,7 @@ router.post('/users', async (req,res) => {
               res.status(201).send(newUser);
             })
           .catch((e) => {
-            console.error(`STATUS :: Ops.Something went wrong.`);
+            console.error(`STATUS :: Ops.Something went wrong. `+e.toString());
             res.status(500).json({
               error: true,
               message: e.toString()
