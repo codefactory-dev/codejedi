@@ -12,6 +12,7 @@ const users = [{
       email: 'roberta.cmota@gmail.com',
       username: 'roberta.crmota',
       password: 'roberta.crmota123',
+      validated: false,
       joinDate: new Date(),
       qTrackSummary: {
           nbTracksPerType: {
@@ -38,6 +39,7 @@ const users = [{
       email: 'grrbm2@gmail.com',
       username: 'grrbm',
       password: 'grrbm123',
+      validated: false,
       joinDate: new Date(),
       qTrackSummary: {
           nbTracksPerType: {
