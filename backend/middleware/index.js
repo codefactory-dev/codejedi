@@ -12,12 +12,10 @@ let middleware = {};
 middleware.checkRatingNullable = async (req, res, next) => {
     const rating = await Rating.findById(req.params.id);
 
-    if (!rating) {
-        res.status(400).json({ error: true, message: 'Invalid ratingId parameter' });
-        return;
-    }
-
-    next();
+    if (isNull(rating)) 
+        res.status(400).json({ error: true, message: 'Invalid rating.id parameter.' });
+    else
+        next();
 };
 
 middleware.checkRatingParamsNullable = async (req, res, next) => {
@@ -25,36 +23,30 @@ middleware.checkRatingParamsNullable = async (req, res, next) => {
     const qbasic = await QBasic.findById(req.params.qid);
     const qdetail = await QDetail.findOne({basicsId: req.params.qid});
 
-    if (isNull(user, qbasic, qdetail)) {
-        res.status(400).json({ error: true, message: 'Invalid userId, questionId parameters' });
-        return;
-    }
-
-    next();
+    if (isNull(user, qbasic, qdetail))
+        res.status(400).json({ error: true, message: 'Invalid user.id and/or question.id parameters.' });
+    else
+        next();
 };
 
 middleware.checkRatingOwnership = async (req, res, next) => {
     const rating = await Rating.findById(req.params.id);
     const error = !rating.creatorId.equals(req.params.uid) || !rating.questionId.equals(req.params.qid);
 
-    if (error) {
-        res.status(400).json({ error: true, message: 'Invalid userId, questionId, ratingId parameters' });
-        return;
-    }
-
-    next();
+    if (error)
+        res.status(400).json({ error: true, message: 'Invalid user.id and/or question.id for the given rating.' });
+    else
+        next();
 };
 
 middleware.checkRatingValue = (req, res, next) => {
     const value = req.body.value;
     const error = !value || value <= 0 ||  value > 5;
 
-    if (error) {
-        res.status(400).json({ error: true, message: 'Invalid rating value' });
-        return;
-    }
-
-    next();
+    if (error)
+        res.status(400).json({ error: true, message: 'Invalid rating value.' });
+    else
+        next();
 };
 
 module.exports = middleware;
