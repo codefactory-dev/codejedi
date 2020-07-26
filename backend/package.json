@@ -9,7 +9,7 @@
     "test": "env-cmd -f ./config/test.env jest",
     "test:user": "env-cmd -f ./config/test.env jest --watch ./tests/user.test.js",
     "test:rating": "env-cmd -f ./config/test.env jest rating",
-    "test:qtrack": "env-cmd -f ./config/test.env jest qtrack"
+    "test:qtrack": "env-cmd -f ./config/test.env jest qtrack",
     "test:auth": "env-cmd -f ./config/test.env jest --watch ./tests/auth.test.js"
   },
   "jest": {
