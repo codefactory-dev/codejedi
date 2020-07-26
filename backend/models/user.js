@@ -44,6 +44,10 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    validated: {
+        type: Boolean,
+        required: true
+    },
     ratingIds: [{ 
         type: mongoose.Schema.Types.ObjectId, 
         ref: "Rating",
