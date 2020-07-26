@@ -1,11 +1,13 @@
 const {users, questions, ratings} = require('../src/utils/seedDB'),
+      {connectDB, disconnectDB} = require('../src/utils/connectDB'),
+      {calcAvgRating} = require('../routers/utils'),
       QDetail = require('../models/qdetail'),
       Rating = require('../models/rating'),
       QBasic = require('../models/qbasic'),
       User = require('../models/user'),
-      mongoose = require('mongoose'),
       request = require('supertest'),
-      app = require('../app');
+      app = require('../app'),
+      _ = require('lodash');
 
 const qOne = questions[0], qTwo = questions[1],
       userOne = users[0], userTwo = users[1],
@@ -13,23 +15,10 @@ const qOne = questions[0], qTwo = questions[1],
 
 
 describe('Rating routes', () => {
-  let connection;
-  let db;
 
-  beforeAll(async () => {
-    connection = await mongoose.connect(process.env.MONGODB_URL, {
-      useNewUrlParser: true,
-      useCreateIndex: true,
-      useUnifiedTopology: true,
-      bufferCommands: false,
-      bufferMaxEntries: 0
-    });
-    db = mongoose.connection;
+  beforeAll(() => { let {connection, db} = connectDB() });
 
-    console.log(`connected to ${process.env.MONGODB_URL}`);
-  });
-
-  afterAll(async () => mongoose.disconnect());
+  afterAll(disconnectDB);
 
   beforeEach(async() => {
       await Rating.deleteMany({});
@@ -47,23 +36,37 @@ describe('Rating routes', () => {
   // TEST CASES - POST /users/:uid/questions/:qid/ratings 
   // ----------------------------------------------------------------------------
   it('should post a rating', async () => {
+
+    let q = await QBasic.findById(qOne.basic._id);
+    const value = 3;
+    const prevAvgRating = q.avgRatings;
+    const prevNbRating = q.nbRatings;
+    const newAvgRating = calcAvgRating(q, value);
+    
+
     const response = await request(app)
-                              .post(`/users/${userOne._id}/questions/${qOne.basic._id}/ratings`)
-                              .send({ value: 3 });
+                              .post(`/users/${userOne._id}/questions/${q._id}/ratings`)
+                              .send({value});
 
     expect(response.status).toBe(201); // success :: created
 
 
-    // additional assertions
+    // expect new rating to be saved on the db
     const rating = await Rating.findById(response.body.rating._id);
     expect(rating).not.toBeNull();
 
+    // expect user to have new rating
     const user = await User.findById(userOne._id);
-    // expect(user.ratingIds).toHaveLength(1);
-    // expect(user.ratingIds[0]._id).toEqual(rating._id);
+    expect(_.findIndex(user.ratingIds, rating._id)).not.toBe(-1);
 
-    const qdetails = await QBasic.findById(qOne.basic._id).populate('detailsId');
-    console.log(qdetails);
+    // expect question avg/nb of ratings to be updated
+    q = await QBasic.findById(qOne.basic._id);
+    expect(parseFloat(q.nbRatings)).toBe(prevNbRating+1);
+    expect(parseFloat(q.avgRatings)).toBe(newAvgRating);
+
+    // expect question to have new rating
+    const qd = await QDetail.findOne({basicsId: qOne.basic._id});
+    expect(_.findIndex(qd.ratingIds, rating._id)).not.toBe(-1);
   });
 
   it('should fail to post a rating with non-existing creatorId/questionId', async () => {

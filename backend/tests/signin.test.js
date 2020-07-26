@@ -1,32 +1,18 @@
-const mongoose = require('mongoose'),
+const {connectDB, disconnectDB} = require('../src/utils/connectDB'),
+      {users, questions} = require('../src/utils/seedDB'),
+      Rating = require('../models/rating'),
+      User = require('../models/user'),
       request = require('supertest'),
       app = require('../app');
-
-const {users, questions} = require('../src/utils/seedDB');
-const Rating = require('../models/rating'),
-      User = require('../models/user');
 
 const userOne = users[0];
 const qOne = questions[0];
 
-describe('Ratings routes', () => {
-  let connection;
-  let db;
+describe('Login routes', () => {
 
-  beforeAll(async () => {
-    connection = await mongoose.connect(process.env.MONGODB_URL, {
-      useNewUrlParser: true,
-      useCreateIndex: true,
-      useUnifiedTopology: true,
-      bufferCommands: false,
-      bufferMaxEntries: 0
-    });
-    db = mongoose.connection;
+  beforeAll(() => { let {connection, db} = connectDB() });
 
-    console.log(`connected to ${process.env.MONGODB_URL}`);
-  });
-
-  afterAll(async () => mongoose.disconnect());
+  afterAll(disconnectDB);
 
   // create test user (creator)
   beforeEach(async() => {

@@ -4,8 +4,9 @@ const express = require('express'),
       QDetail = require('../models/qdetail'),
       Rating = require('../models/rating'),
       QBasic = require('../models/qbasic'),
-      User = require('../models/user'),    
-      {isNull} = require('./utils');
+      {calcAvgRating} = require('./utils'),
+      User = require('../models/user'),  
+      _ = require('lodash');
 
 
 // PREFIX: /users/:uid/questions/:qid/ratings
@@ -16,9 +17,16 @@ router.post('/', middleware.checkRatingParamsNullable,
                  middleware.checkRatingValue, 
                  async (req, res) => {
 
-    const user = await User.findById(req.params.uid);
-    const qbasic = await QBasic.findById(req.params.qid);
-    const qdetail = await QDetail.findOne({basicsId: req.params.qid});
+    const qd   = await QDetail.findOne({basicsId: req.params.qid}),
+          user = await User.findById(req.params.uid),
+          q    = await QBasic.findById(req.params.qid);
+
+    const prevAvgRatings = q.avgRatings,
+          prevNbRatings  = q.nbRatings;
+
+    let updatedQuestion = false,
+        updatedUser     = false,
+        newRatingId     = undefined;
 
     const newRating = {
         creatorId: req.params.uid,
@@ -27,25 +35,44 @@ router.post('/', middleware.checkRatingParamsNullable,
     };
 
     await Rating.create(newRating)
-            .then(ratingDB => {
+            .then(async ratingDB => {
+                newRatingId = ratingDB._id;
 
-                // update user
+                // update user           
                 user.ratingIds.push(ratingDB._id);
-                user.save();
+                await user.save();
+                updatedUser = true;
 
-                // update question     
-                qbasic.avgRatings = ((qbasic.avgRatings*qbasic.nbRatings) + ratingDB.value) / (qbasic.nbRatings+1);
-                qbasic.nbRatings += 1;
-                qbasic.save();
-                qdetail.ratingIds.push(ratingDB._id);
-                qdetail.save(); 
+                // update question
+                q.avgRatings = calcAvgRating(q, ratingDB.value);
+                q.nbRatings++;
+                await q.save();
+                updatedQuestion = true;
 
+                qd.ratingIds.push(ratingDB._id);
+                await qd.save(); 
+                
                 res.status(201).send({rating: ratingDB});
             })
-            .catch(e => res.status(500).json({
-                            error: true,
-                            message: e.toString()
-            }));
+            .catch(async e => {
+                // backtrack user  
+                if (newRatingId && updatedUser) {
+                    user.ratingIds = _.remove(user.ratingIds, id => id.equals(newRatingId));
+                    await user.save();
+                }
+
+                // backtrack question
+                if (newRatingId && updatedQuestion) {
+                    q.avgRatings = prevAvgRatings;
+                    q.nbRatings = prevNbRatings;
+                    await q.save();
+
+                    qd.ratingIds = _.remove(qd.ratingIds, id => id.equals(newRatingId));
+                    await qd.save(); 
+                }
+
+                res.status(500).json({ error: true, message: e.toString() })
+            });
 });
 
 // SHOW - get rating
