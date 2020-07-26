@@ -14,6 +14,7 @@ router.post('/auth/signin', async function (req, res) {
         const userFromDB = await User.findById(req.body._id)
         if (!userFromDB)
         {
+          console.error("Email/Password combination doesn't exist.");
           return res.status(404).json({
             error: true,
             message: "Email/Password combination doesn't exist."
@@ -21,6 +22,7 @@ router.post('/auth/signin', async function (req, res) {
         }
         // return 400 status if _id/password is not exist
         if (!_id || !pwd) {
+          console.error("Email or Password required.");
           return res.status(400).json({
             error: true,
             message: "Email or Password required."
@@ -29,13 +31,13 @@ router.post('/auth/signin', async function (req, res) {
   
         // return 401 status if the credential is not match.
         if (_id !== userFromDB._id || pwd !== userFromDB.password) {
+          console.error("Email or Password is Wrong.");
           return res.status(401).json({
           error: true,
             message: "Email or Password is Wrong."
           });
         }
   
-        console.log("gonna generate token!!!");
         // generate token
         const token = utils.generateToken(userFromDB);
         // get basic user details
@@ -43,9 +45,10 @@ router.post('/auth/signin', async function (req, res) {
         // return the token along with user details
         return res.json({ user: userObj, token });
     } catch(error) {
+        console.error("Oops. There was an error. "+error.toString())
         return res.status(500).json({
           error: true,
-            message: error.toString()
+          message: error.toString()
         });
     }
   });

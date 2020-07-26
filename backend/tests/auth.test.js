@@ -27,14 +27,14 @@ describe('Login routes', () => {
   // ----------------------------------------------------------------------------
 
   it('should be able to login existent users', async () => {
-    await request(app).post('/users/signin').send({
+    await request(app).post('/auth/signin').send({
             email: userOne.email,
             password: userOne.password
         }).expect(200)
   });
 
   it('should not login non-existent users', async () => {
-      await request(app).post('/users/signin').send({
+      await request(app).post('/auth/signin').send({
           email: userOne.email,
           password: 'thisisnotmypass'
       }).expect(200);

@@ -21,8 +21,9 @@ app.use(cors())
 // ROUTES
 // --------------------------------------------------------------------
 
-const   UserRouter    = require('./routers/user'),
-        QTrackRouter    = require('./routers/qtrack'),
+const   AuthRouter    = require('./routers/auth'),
+        UserRouter    = require('./routers/user'),
+        QTrackRouter  = require('./routers/qtrack'),
         RatingRouter  = require('./routers/rating');
 
 // temp
@@ -30,6 +31,7 @@ const   ImgRouter    = require('./routers/img'),
         CodeRouter   = require('./routers/code'),
         EditorRouter = require('./routers/editor');
 
+app.use(proxy, AuthRouter);
 app.use(proxy, UserRouter);
 app.use(`${proxy}/users/:uid/questions/:qid/ratings`, RatingRouter);
 app.use(`${proxy}/users/:uid/qtracks`, QTrackRouter);
