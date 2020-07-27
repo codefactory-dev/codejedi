@@ -3,7 +3,10 @@ const User = require('../../models/user'),
       Rating = require('../../models/rating'),
       QTrack = require('../../models/qtrack'),
       QBasic = require('../../models/qbasic'),
-      QDetail = require('../../models/qdetail');
+      QDetail = require('../../models/qdetail'),
+      Token = require('../../models/token')
+
+const utils = require('./utils')
 
 const users = [{
       _id: new mongoose.Types.ObjectId,
@@ -62,6 +65,8 @@ const users = [{
 
 const qOneId = new mongoose.Types.ObjectId;
 const qTwoId = new mongoose.Types.ObjectId;
+const userOneToken = utils.generateToken(users[0]);
+
 const questions = [
     {
         basic: {
@@ -131,6 +136,12 @@ const ratings = [{
     value: 3,
 }];
 
+const tokens = [{
+    _id: new mongoose.Types.ObjectId,
+    userId: users[0]._id,
+    token: userOneToken
+}];
+
 
 const seedDB = async () => {
     console.log("seeding db *********************");
@@ -138,6 +149,10 @@ const seedDB = async () => {
     await User.insertMany(users)
             .then(() => console.log("created seed users."))
             .catch(err => console.error("Error: could not create seed users."));
+        
+    await Token.insertMany(tokens)
+            .then(() => console.log("created seed tokens."))
+            .catch(err => console.error("Error: could not create seed tokens. "+err));
 
     questions.forEach((q, index, arr) => {
             QBasic.create(q.basic)
@@ -152,6 +167,8 @@ const seedDB = async () => {
     await Rating.insertMany(ratings)
             .then(() => console.log("created seed ratings."))
             .catch(err => console.error("Error: could not create seed ratings."));
+        
+    
 };
 
 
@@ -160,5 +177,6 @@ module.exports ={
     qtracks,
     ratings,
     users,
+    tokens,
     seedDB
 };
