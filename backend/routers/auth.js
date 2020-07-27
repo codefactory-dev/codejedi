@@ -1,6 +1,7 @@
 const express = require('express'),
       router = express.Router({mergeParams: true}),
       User = require('../models/user'),
+      Token = require('../models/token'),
       utils = require('../src/utils/utils')
 
 // validate the user credentials
@@ -39,12 +40,17 @@ router.post('/auth/signin', async function (req, res) {
           });
         }
   
-        // generate token
-        const token = utils.generateToken(userFromDB);
-        // get basic user details
-        const userObj = utils.getCleanUser(userFromDB);
-        // return the token along with user details
-        return res.json({ user: userObj, token });
+        if (userFromDB.validated === false)
+        {
+          // generate token
+          const token = utils.generateToken(userFromDB);
+          // get basic user details
+          const userObj = utils.getCleanUser(userFromDB);
+          // return the token along with user details
+          return res.status(200).json({ validated: false, user: userObj, token });
+        }
+        return res.status(200).json({validated: true, user:userObj });
+        
     } catch(error) {
         console.error("Oops. There was an error. "+error.toString())
         return res.status(500).json({
@@ -55,17 +61,21 @@ router.post('/auth/signin', async function (req, res) {
   });
 
 //user confirmation by token
-router.post('/auth/confirm', async (req,res) => {
+router.post('/auth/validate', async (req,res) => {
     try{
       // Find a matching token
       Token.findOne({ token: req.body.token }, function (err, token) {
-        if (!token) return res.status(400).json({ error: true, message: 'We were unable to find a valid token. Your token my have expired.' });
+        if (err)
+        {
+          return res.status(501).json({ error: true, message: 'there was an error. '+err });
+        }
+        if (!token) return res.status(400).json({ error: true, message: 'We were unable to find a valid token. Your token may have expired.' });
         // If we found a token, find a matching user
-        User.findOne({ _id: token._userId, email: req.body.email }, function (err, user) {
+        User.findOne({ _id: token.userId, email: req.body.email }, function (err, user) {
             if (!user) return res.status(400).json({ error: true, message: 'We were unable to find a user for this token.' });
-            if (user.confirmed) return res.status(400).json({ error: true, message: 'This user has already been verified.' });
+            if (user.validated) return res.status(400).json({ error: true, message: 'This user has already been verified.' });
             // Verify and save the user
-            user.confirmed = true;
+            user.validated = true;
             user.save(function (err) {
                 if (err) { return res.status(500).json({ error:true, message: err.message.toString() }); }
                 res.status(200).send("The account has been verified. Please log in.");
@@ -73,6 +83,7 @@ router.post('/auth/confirm', async (req,res) => {
         });
       });
     } catch(e){
+      console.error("There was an interal server error: "+e.toString())
       res.status(500).json({error:true, message: e.toString()})
     }
 })

@@ -10,7 +10,7 @@ const userOne = users[0];
 const tokenOne = tokens[0];
 const qOne = questions[0];
 
-describe('Login routes', () => {
+describe('Auth routes', () => {
 
   beforeAll(() => { let {connection, db} = connectDB() });
 
