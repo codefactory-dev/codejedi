@@ -44,7 +44,7 @@ describe('Auth routes', () => {
       }).expect(401);
   })
 
-  it.only('Should be able to confirm existing user account when provided with a valid token', async () => {
+  it('Should be able to confirm existing user account when provided with a valid token', async () => {
     await request(app).post('/auth/validate').send({
         email: userOne.email,
         token: tokenOne.token
