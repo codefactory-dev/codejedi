@@ -1,12 +1,5 @@
-const mongoose = require('mongoose');
-const User = require('../../models/user'),
-      Rating = require('../../models/rating'),
-      QTrack = require('../../models/qtrack'),
-      QBasic = require('../../models/qbasic'),
-      QDetail = require('../../models/qdetail'),
-      Token = require('../../models/token')
-
-const utils = require('./utils')
+const mongoose = require('mongoose'),
+      utils = require('./utils');
 
 const users = [{
       _id: new mongoose.Types.ObjectId,
@@ -65,8 +58,6 @@ const users = [{
 
 const qOneId = new mongoose.Types.ObjectId;
 const qTwoId = new mongoose.Types.ObjectId;
-const userOneToken = utils.generateToken(users[0]);
-
 const questions = [
     {
         basic: {
@@ -136,6 +127,7 @@ const ratings = [{
     value: 3,
 }];
 
+const userOneToken = utils.generateToken(users[0]);
 const tokens = [{
     _id: new mongoose.Types.ObjectId,
     userId: users[0]._id,
@@ -143,40 +135,10 @@ const tokens = [{
 }];
 
 
-const seedDB = async () => {
-    console.log("seeding db *********************");
-
-    await User.insertMany(users)
-            .then(() => console.log("created seed users."))
-            .catch(err => console.error("Error: could not create seed users."));
-        
-    await Token.insertMany(tokens)
-            .then(() => console.log("created seed tokens."))
-            .catch(err => console.error("Error: could not create seed tokens. "+err));
-
-    questions.forEach((q, index, arr) => {
-            QBasic.create(q.basic)
-                .catch(err => console.error(`Error: could not create seed question basic ${q.basic.title}`))
-                .then(qbasicDB => {
-                        QDetail.create(q.detail)
-                            .catch(err => console.error(`Error: could not create seed question detail ${q.basic.title}`))
-                            .then(qDetailDB => console.log(`created seed question ${q.basic.title}`));
-                });
-    });
-
-    await Rating.insertMany(ratings)
-            .then(() => console.log("created seed ratings."))
-            .catch(err => console.error("Error: could not create seed ratings."));
-        
-    
-};
-
-
 module.exports ={
     questions,
     qtracks,
     ratings,
     users,
-    tokens,
-    seedDB
+    tokens
 };

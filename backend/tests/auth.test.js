@@ -1,8 +1,8 @@
-const {connectDB, disconnectDB} = require('../src/utils/connectDB'),
-      {users, questions, tokens} = require('../src/utils/seedDB'),
+const {users, questions, tokens} = require('../src/utils/seed'),
       Rating = require('../models/rating'),
-      User = require('../models/user'),
       Token = require('../models/token'),
+      User = require('../models/user'),    
+      db = require('../src/utils/db'),
       request = require('supertest'),
       app = require('../app');
 
@@ -12,9 +12,13 @@ const qOne = questions[0];
 
 describe('Auth routes', () => {
 
-  beforeAll(() => { let {connection, db} = connectDB() });
+  beforeAll(() => {
+    db.connect();
+    db.initCollections();
+    db.reset();
+  });
 
-  afterAll(disconnectDB);
+  afterAll(db.disconnect);
 
   // create test user (creator)
   beforeEach(async() => {

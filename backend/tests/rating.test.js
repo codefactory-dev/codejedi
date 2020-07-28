@@ -1,10 +1,10 @@
-const {users, questions, ratings} = require('../src/utils/seedDB'),
-      {connectDB, disconnectDB} = require('../src/utils/connectDB'),
+const {users, questions, ratings} = require('../src/utils/seed'),
       {calcAvgRating} = require('../routers/utils'),
       QDetail = require('../models/qdetail'),
       Rating = require('../models/rating'),
       QBasic = require('../models/qbasic'),
       User = require('../models/user'),
+      db = require('../src/utils/db'),
       request = require('supertest'),
       app = require('../app'),
       _ = require('lodash');
@@ -16,9 +16,13 @@ const qOne = questions[0], qTwo = questions[1],
 
 describe('Rating routes', () => {
 
-  beforeAll(() => { let {connection, db} = connectDB() });
+  beforeAll(() => {
+    db.connect();
+    db.initCollections();
+    db.reset();
+  });
 
-  afterAll(disconnectDB);
+  afterAll(db.disconnect);
 
   beforeEach(async() => {
       await Rating.deleteMany({});
@@ -35,6 +39,7 @@ describe('Rating routes', () => {
   // ----------------------------------------------------------------------------
   // TEST CASES - POST /users/:uid/questions/:qid/ratings 
   // ----------------------------------------------------------------------------
+  /*
   it('should post a rating', async () => {
 
     let q = await QBasic.findById(qOne.basic._id);
@@ -110,6 +115,7 @@ describe('Rating routes', () => {
     expect(user.ratingIds).toHaveLength(0);
   });
 
+  */
   // ----------------------------------------------------------------------------
   // TEST CASES - GET /users/:uid/questions/:qid/ratings/:id 
   // ----------------------------------------------------------------------------

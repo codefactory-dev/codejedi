@@ -1,9 +1,9 @@
-const {connectDB, disconnectDB} = require('../src/utils/connectDB'),
-      {users, questions, qtracks} = require('../src/utils/seedDB'),
+const {users, questions, qtracks} = require('../src/utils/seed'),
       QDetail = require('../models/qdetail'),    
       QBasic = require('../models/qbasic'),
       QTrack = require('../models/qtrack'),
       User = require('../models/user'),
+      db = require('../src/utils/db'),
       mongoose = require('mongoose'),
       request = require('supertest'),
       app = require('../app');
@@ -14,9 +14,13 @@ const qOne = questions[0],       qTwo = questions[1],
 
 describe('QTrack routes', () => {
 
-  beforeAll(() => { let {connection, db} = connectDB() });
+    beforeAll(() => {
+      db.connect();
+      db.initCollections();
+      db.reset();
+    });
 
-  afterAll(disconnectDB);
+    afterAll(db.disconnect);
   
     beforeEach(async() => {
         await QTrack.deleteMany({});
