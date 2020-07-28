@@ -6,6 +6,7 @@ const express = require('express'),
       QBasic = require('../models/qbasic'),
       {calcAvgRating} = require('./utils'),
       User = require('../models/user'),  
+      mongoose = require('mongoose'),
       _ = require('lodash');
 
 
@@ -17,62 +18,52 @@ router.post('/', middleware.checkRatingParamsNullable,
                  middleware.checkRatingValue, 
                  async (req, res) => {
 
-    const qd   = await QDetail.findOne({basicsId: req.params.qid}),
-          user = await User.findById(req.params.uid),
+
+    const user = await User.findById(req.params.uid),
+          qd   = await QDetail.findOne({basicsId: req.params.qid}),
           q    = await QBasic.findById(req.params.qid);
 
-    const prevAvgRatings = q.avgRatings,
-          prevNbRatings  = q.nbRatings;
-
-    let updatedQuestion = false,
-        updatedUser     = false,
-        newRatingId     = undefined;
-
-    const newRating = {
-        creatorId: req.params.uid,
-        questionId: req.params.qid,
+    let rating = {
+        creatorId: user._id,
+        questionId: q._id,
         value: req.body.value
     };
 
-    await Rating.create(newRating)
-            .then(async ratingDB => {
-                newRatingId = ratingDB._id;
+    const session = await mongoose.startSession();
+    const transactionOptions = {
+        readPreference: 'primary',
+        readConcern: { level: 'local' },
+        writeConcern: { w: 'majority' }
+    };
 
-                // update user           
-                user.ratingIds.push(ratingDB._id);
-                await user.save();
-                updatedUser = true;
+    try {
+        await session.withTransaction(async () => {
+            
+            await Rating.create(rating).then(res => rating = res);
 
-                // update question
-                q.avgRatings = calcAvgRating(q, ratingDB.value);
-                q.nbRatings++;
-                await q.save();
-                updatedQuestion = true;
+            // update user           
+            user.ratingIds.push(rating._id);
+            await user.save();
 
-                qd.ratingIds.push(ratingDB._id);
-                await qd.save(); 
-                
-                res.status(201).send({rating: ratingDB});
-            })
-            .catch(async e => {
-                // backtrack user  
-                if (newRatingId && updatedUser) {
-                    user.ratingIds = _.remove(user.ratingIds, id => id.equals(newRatingId));
-                    await user.save();
-                }
+             // update question
+             q.avgRatings = calcAvgRating(q, rating.value);
+             q.nbRatings++;
+             await q.save();
 
-                // backtrack question
-                if (newRatingId && updatedQuestion) {
-                    q.avgRatings = prevAvgRatings;
-                    q.nbRatings = prevNbRatings;
-                    await q.save();
+             qd.ratingIds.push(rating._id);
+             await qd.save();
 
-                    qd.ratingIds = _.remove(qd.ratingIds, id => id.equals(newRatingId));
-                    await qd.save(); 
-                }
+             res.status(201).send({rating: rating});
 
-                res.status(500).json({ error: true, message: e.toString() })
-            });
+        }, transactionOptions);
+    }
+    catch(e) {
+        console.log(e)
+        res.status(500).json({ error: true, message: e.toString()})
+    }
+    finally {
+        session.endSession();
+      }
 });
 
 // SHOW - get rating
