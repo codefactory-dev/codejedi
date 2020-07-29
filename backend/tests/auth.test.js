@@ -27,6 +27,7 @@ describe('Auth routes', () => {
       await User.deleteMany({});
       await Token.deleteMany({});
       await new User(userOne).save();
+      await new User(userTwo).save();
       await new Token(tokenOne).save();
   });
 
@@ -70,7 +71,14 @@ describe('Auth routes', () => {
     }).expect(401);
   });
 
-  
+  it(`Should not confirm an user with another user's token`, async () => {
+    await request(app).post('/auth/validate').send({
+      email: userTwo.email,
+      token: tokenOne.token
+    }).expect(400);
+    
+    
+  });
 
 
 });
