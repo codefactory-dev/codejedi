@@ -6,9 +6,10 @@ const express = require('express'),
 
 //INDEX - GET all users
 router.get('/users', async (req,res) => {
-    console.log("will try to get users");
+    console.log("REQUEST ::  get all users");
     try{
       const users = await User.find({})
+      console.log(JSON.stringify(users));
       return res.send(users)
     } catch(error) {
       return res.status(500).json({
@@ -35,15 +36,15 @@ router.get('/users/:id', async (req,res) => {
   
 // CREATE - post a new user
 router.post('/users', async (req,res) => {
-    console.log(`REQUEST :: create user  ${req.body.name}`);
+    console.log(`REQUEST :: create user  ${req.body.username}`);
   
     const [firstname, lastname] = req.body.name.split(' ');
     const newUser = {
       firstname,
       lastname,
-      email: `${firstname}@gmail.com`,
-      username: firstname,
-      password: `${lastname}123`,
+      email: req.body.email,
+      username: req.body.username,
+      password: req.body.password,
       validated: req.body.validated,
       qTrackSummary: {
         nbTracksPerType: {
@@ -64,7 +65,15 @@ router.post('/users', async (req,res) => {
       }
     };
   
-  
+    const alreadyExistent = await User.find({ $or: [ { 'email': newUser.email }, { 'username': newUser.username } ]});
+    
+    console.log("alreadyExistent: "+alreadyExistent.username);
+    if (alreadyExistent.length > 0)
+    {
+      console.error(`STATUS :: Conflict`);
+      return res.status(409).send();
+    }
+    
     await User.create(newUser)
             .then((resolve) => {
               console.log(`STATUS :: Success`);
@@ -82,6 +91,7 @@ router.post('/users', async (req,res) => {
 
 //UPDATE - updates a user
 router.patch('/users/:id', async (req,res) => {
+  console.log("REQUEST ::  update user "+req.body.username);
   const updates = Object.keys(req.body)
   console.log("keys = "+updates.toString());
   const allowedUpdates = ["firstname","lastname","email", "username", "password","joinDate",

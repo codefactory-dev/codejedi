@@ -85,7 +85,25 @@ describe('User routes', () => {
     expect(response.status).toBe(200);
   })
 
+  it('Should not be able to create a new user with the same email', async () => {
+    await request(app).post('/users').send({
+            name: 'Another Person',
+            email: userOne.email,
+            username: 'figarofi',
+            password: 'somep4ssw0rd',
+            validated: false
+        }).expect(409)
+  });
   
+  it('Should not be able to create a new user with the same username', async () => {
+    await request(app).post('/users').send({
+            name: 'Another Person',
+            email: 'someemail@gmail.com',
+            username: userOne.username,
+            password: 'somep4ssw0rd',
+            validated: false
+        }).expect(409)
+  });
     
   
 

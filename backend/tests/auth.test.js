@@ -7,6 +7,7 @@ const {users, questions, tokens} = require('../src/utils/seed'),
       app = require('../app');
 
 const userOne = users[0];
+const userTwo = users[1];
 const tokenOne = tokens[0];
 const qOne = questions[0];
 
@@ -54,6 +55,23 @@ describe('Auth routes', () => {
         token: tokenOne.token
     }).expect(200);
   });
+
+  it('Should not be able to confirm existing user account when provided with an invalid token', async () => {
+    await request(app).post('/auth/validate').send({
+        email: userOne.email,
+        token: "ThisTokenWillNeverExistEverEverEver"
+    }).expect(400);
+  });
+
+  it(`Should not be able to sign-in existent user with another user's password`, async () => {
+    await request(app).post('/auth/signin').send({
+      email: userOne.email,
+      password: userTwo.password
+    }).expect(401);
+  });
+
+  
+
 
 });
 
