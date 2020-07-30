@@ -98,4 +98,28 @@ db.seed = async (logoff = true) => new Promise(async (resolve, reject) => {
             resolve('Finished seeding db');
 });
 
+db.runAsTransaction = async (func) => new Promise(async (resolve, reject) => {
+        const session = await mongoose.startSession();
+        const transactionOptions = {
+                readPreference: 'primary',
+                readConcern: { level: 'local' },
+                writeConcern: { w: 'majority' }
+        };
+
+        try {
+                await session.withTransaction(async () => {          
+                    const result = await func();
+                    resolve(result)
+        
+                }, transactionOptions);
+            }
+            catch(e) {
+                console.log(e);
+                reject({ error: true, message: e.toString()});
+            }
+            finally {
+                session.endSession();
+            }
+});
+
 module.exports = db;
