@@ -1,9 +1,11 @@
 const express = require('express'),
       router = express.Router({mergeParams: true}),
+      middleware = require('../middleware/index'),
       QTrack = require('../models/qtrack'),
       QBasic = require('../models/qbasic'),
       User = require('../models/user'),
-      {isNull} = require('./utils');;
+      db = require('../src/utils/db'),
+      {isNull} = require('./utils');
 
 // PREFIX: /users/:uid/qtracks
 
@@ -31,10 +33,38 @@ router.get('/', async(req, res) => {
 // NEW - get creation form
 
 // CREATE - post new qtrack
-router.post('/', async (req, res) => {
+router.post('/', middleware.checkIfQTrackParamsAreNull, 
+                 middleware.checkQTrackValues,
+                 async (req, res) => {
+
+    const user = await User.findById(req.params.uid);
+    const q = await QBasic.findById(req.body.questionId);
+
+    let qtrack = {
+        creatorId: user._id,
+        questionId: q._id,
+        perceivedDifficulty: req.body.perceivedDifficulty,
+        solved: req.body.solved,
+        duration: req.body.duration,
+    };
+
+    const operation = async () => {
+            //create qtrack
+            await QTrack.create(qtrack).then(res => qtrack = res);
+
+            // update user :: TODO
+            
+            return qtrack;
+    };
+
+    db.runAsTransaction(operation)
+        .then(resolve => res.status(201).send({qtrack: resolve}))
+        .catch(reject => res.status(500).json(reject));
+
     // console.log(`CREATE REQUEST :: qtracks`);
     // console.log(req.params);
 
+    /*
     let question = await QBasic.findById(req.body.questionId);
     let user = await User.findById(req.params.uid);
     let newQTrack;
@@ -66,6 +96,7 @@ router.post('/', async (req, res) => {
                             error: true,
                             message: e.toString()
                           }));
+    */
 });
 
 // SHOW - get qtrack info

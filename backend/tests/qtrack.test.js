@@ -36,37 +36,37 @@ describe('QTrack routes', () => {
   // ----------------------------------------------------------------------------
   // TEST CASES - GET /users/:uid/qtracks
   // ----------------------------------------------------------------------------
-  it('should fetch qtracks', async () => {
-    // qtrackOne.creatorId = userOne._id;
-    // qtrackTwo.creatorId = userOne._id;
+  // it('should fetch qtracks', async () => {
+  //   // qtrackOne.creatorId = userOne._id;
+  //   // qtrackTwo.creatorId = userOne._id;
 
-    // await new QTrack(qtrackOne).save();
-    // await new QTrack(qtrackTwo).save();
+  //   // await new QTrack(qtrackOne).save();
+  //   // await new QTrack(qtrackTwo).save();
 
-    // const response = await request(app).get(`/users/${userOne._id}/qtracks`);
+  //   // const response = await request(app).get(`/users/${userOne._id}/qtracks`);
 
-    // expect(response.status).toBe(200); // success :: ok
+  //   // expect(response.status).toBe(200); // success :: ok
 
-    // console.log(response.qtracks);
-    // // additional assertions
-    // // const rating = await Rating.findById(response.body.rating._id);
-    // // expect(rating).not.toBeNull();
-  });
+  //   // console.log(response.qtracks);
+  //   // // additional assertions
+  //   // // const rating = await Rating.findById(response.body.rating._id);
+  //   // // expect(rating).not.toBeNull();
+  // });
 
   // ----------------------------------------------------------------------------
   // TEST CASES - POST /users/:uid/qtracks
   // ----------------------------------------------------------------------------
   it('should post a qtrack', async () => {
-  //   const response = await request(app)
-  //                             .post(`/users/${userOne._id}/qtracks`)
-  //                             .send({
-  //                               questionId: qOne.basic._id,
-  //                               perceivedDifficulty: "Medium",
-  //                               solved: false,
-  //                               duration: 35,
-  //                             });
+    const response = await request(app)
+                              .post(`/users/${userOne._id}/qtracks`)
+                              .send({
+                                questionId: qOne.basic._id,
+                                perceivedDifficulty: "Medium",
+                                solved: false,
+                                duration: 35,
+                              });
 
-  //   expect(response.status).toBe(201); // success :: created
+    expect(response.status).toBe(201); // success :: created
 
 
   //   // additional assertions

@@ -7,7 +7,6 @@ const express = require('express'),
       QBasic = require('../models/qbasic'),
       User = require('../models/user'), 
       db = require('../src/utils/db'), 
-      mongoose = require('mongoose'),
       _ = require('lodash');
 
 
@@ -75,8 +74,7 @@ router.put('/:id/edit', middleware.checkIfRatingParamsAreNull,
     const rating = await Rating.findById(req.params.id),
             q    = await QBasic.findById(req.params.qid);   
 
-    const operation = async () => {
-        
+    const operation = async () => {   
         // update rating
         const prevValue = rating.value;
         rating.value = req.body.value;
