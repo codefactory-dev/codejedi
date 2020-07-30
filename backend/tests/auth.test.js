@@ -80,6 +80,14 @@ describe('Auth routes', () => {
     
   });
 
+  it(`Should not signin user without token as confirmed`, async () => {
+    await request(app).post('/auth/validate').send({
+      email: userTwo.email
+    }).expect(400);
+  });
+
+  
+
 
 });
 

@@ -6,6 +6,7 @@ const {users, questions} = require('../src/utils/seed'),
       app = require('../app');
 
 const userOne = users[0];
+const userAdmin = users[2];
 const qOne = questions[0];
 
 describe('User routes', () => {
@@ -96,6 +97,7 @@ describe('User routes', () => {
   });
   
   it('Should not be able to create a new user with the same username', async () => {
+
     await request(app).post('/users').send({
             name: 'Another Person',
             email: 'someemail@gmail.com',
@@ -105,8 +107,26 @@ describe('User routes', () => {
         }).expect(409)
   });
     
-  
+  describe('routes exclusive to signed admins', () => {
+    
+    beforeEach(async() => {
+      await new User(userAdmin).save();
+      const response = await request(app).post('/auth/signin').send({
+        email: userAdmin.email,
+        password: userAdmin.password
+      });
+      expect(response.status).toBe(200);
+    });
+    
+    
+    it('Should delete another user if AUTHENTICATED AS ADMIN', async () => {
+      const response = await request(app).delete('/users/'+userOne._id).send();
+      expect(response.status).toBe(200);
+      
+    });
+    
 
+  });
   
 
   

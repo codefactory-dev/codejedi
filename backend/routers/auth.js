@@ -31,8 +31,12 @@ router.post('/auth/signin', async function (req, res) {
           });
         }
   
+        
+        console.log(pwd);
+        console.log(userFromDB.password);
+        
         // return 401 status if the credential is not match.
-        if (email !== userFromDB.email || pwd !== userFromDB.password) {
+        if (email !== userFromDB.email || (pwd !== userFromDB.password)) {
           console.error("Email or Password is Wrong.");
           return res.status(401).json({
           error: true,
