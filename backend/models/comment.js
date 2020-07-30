@@ -2,6 +2,8 @@ const QBasic = require('../models/qbasic');
 const User = require('../models/user');
 const mongoose = require('mongoose');
 
+//COMMENT    PREFIX: /users/:uid/questions/:qid 
+
 
 const commentSchema = new mongoose.Schema({
     questionId: { 
