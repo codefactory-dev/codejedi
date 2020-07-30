@@ -31,7 +31,7 @@ describe('Comment routes', () => {
   // ----------------------------------------------------------------------------
   // TEST CASES - INDEX (GET /comments)
   // ----------------------------------------------------------------------------
-  it('should be able to get all comments', async () => {
+  it.only('should be able to get all comments', async () => {
     await request(app).get('/comments').send().expect(200)
   });
 
