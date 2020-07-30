@@ -1,11 +1,12 @@
 const express = require('express'),
+      {addAvgRating, updateAvgRating} = require('./utils'),
       router = express.Router({mergeParams: true}),
       middleware = require('../middleware/index'),
       QDetail = require('../models/qdetail'),
       Rating = require('../models/rating'),
       QBasic = require('../models/qbasic'),
-      {calcAvgRating} = require('./utils'),
-      User = require('../models/user'),  
+      User = require('../models/user'), 
+      db = require('../src/utils/db'), 
       mongoose = require('mongoose'),
       _ = require('lodash');
 
@@ -29,41 +30,28 @@ router.post('/', middleware.checkIfRatingParamsAreNull,
         value: req.body.value
     };
 
-    const session = await mongoose.startSession();
-    const transactionOptions = {
-        readPreference: 'primary',
-        readConcern: { level: 'local' },
-        writeConcern: { w: 'majority' }
+    const operation = async () => {
+         //create rating
+         await Rating.create(rating).then(res => rating = res);
+
+         // update user           
+         user.ratingIds.push(rating._id);
+         await user.save();
+
+        // update question
+        q.avgRatings = addAvgRating(q, rating.value);
+        q.nbRatings++;
+        await q.save();
+
+        qd.ratingIds.push(rating._id);
+        await qd.save();
+
+        return rating;
     };
 
-    try {
-        await session.withTransaction(async () => {
-            
-            await Rating.create(rating).then(res => rating = res);
-
-            // update user           
-            user.ratingIds.push(rating._id);
-            await user.save();
-
-             // update question
-             q.avgRatings = calcAvgRating(q, rating.value);
-             q.nbRatings++;
-             await q.save();
-
-             qd.ratingIds.push(rating._id);
-             await qd.save();
-
-             res.status(201).send({rating: rating});
-
-        }, transactionOptions);
-    }
-    catch(e) {
-        console.log(e)
-        res.status(500).json({ error: true, message: e.toString()})
-    }
-    finally {
-        session.endSession();
-      }
+    db.runAsTransaction(operation)
+        .then(resolve => res.status(201).send({rating: resolve}))
+        .catch(reject => res.status(500).json(reject));
 });
 
 // SHOW - get rating
@@ -84,19 +72,26 @@ router.put('/:id/edit', middleware.checkIfRatingParamsAreNull,
                         middleware.checkRatingValue, 
                         async(req, res) => {
 
-    const qbasic = await QBasic.findById(req.params.qid);
- 
-    await Rating.update({_id: req.params.id, value: req.body.value})
-                .then(ratingDB => {
-                    
-                    // update question   
+    const rating = await Rating.findById(req.params.id),
+            q    = await QBasic.findById(req.params.qid);   
 
-                    res.status(201).send({rating: ratingDB})
-                })
-                .catch(e => res.status(500).json({
-                            error: true,
-                            message: e.toString()
-                }));
+    const operation = async () => {
+        
+        // update rating
+        const prevValue = rating.value;
+        rating.value = req.body.value;
+        rating.save();
+
+        // update question
+        q.avgRatings = updateAvgRating(q, prevValue, rating.value);
+        await q.save();
+
+        return rating;
+    };
+
+    db.runAsTransaction(operation)
+        .then(resolve => res.status(201).send({rating: resolve}))
+        .catch(reject => res.status(500).json(reject));
 });
 
 module.exports = router;

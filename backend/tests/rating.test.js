@@ -1,5 +1,5 @@
 const {users, questions, ratings} = require('../src/utils/seed'),
-      {calcAvgRating} = require('../routers/utils'),
+      {addAvgRating} = require('../routers/utils'),
       QDetail = require('../models/qdetail'),
       Rating = require('../models/rating'),
       QBasic = require('../models/qbasic'),
@@ -46,7 +46,7 @@ describe('Rating routes', () => {
     const value = 3;
     const prevAvgRating = q.avgRatings;
     const prevNbRating = q.nbRatings;
-    const newAvgRating = calcAvgRating(q, value);
+    const newAvgRating = addAvgRating(q, value);
     
 
     const response = await request(app)
@@ -162,7 +162,7 @@ describe('Rating routes', () => {
   it('should update a rating', async () => {
     ratingOne.creatorId = userOne._id;
     ratingOne.questionId = qOne.basic._id;
-
+    ratingOne.value = 3;
     await new Rating(ratingOne).save();
 
     const response = await request(app)
@@ -171,13 +171,26 @@ describe('Rating routes', () => {
 
     expect(response.status).toBe(201); // success :: created
 
-
-    // additional assertions
-    const rating = await Rating.findById(ratingOne._id);
+    // expect new rating's value to be saved on the db
+    const rating = await Rating.findById(response.body.rating._id);
     expect(rating).not.toBeNull();
     expect(rating.value).toBe(1);
+
+    // // expect user to have new rating
+    // const user = await User.findById(userOne._id);
+    // expect(_.findIndex(user.ratingIds, rating._id)).not.toBe(-1);
+
+    // // expect question avg/nb of ratings to be updated
+    // q = await QBasic.findById(qOne.basic._id);
+    // expect(parseFloat(q.nbRatings)).toBe(prevNbRating+1);
+    // expect(parseFloat(q.avgRatings)).toBe(newAvgRating);
+
+    // // expect question to have new rating
+    // const qd = await QDetail.findOne({basicsId: qOne.basic._id});
+    // expect(_.findIndex(qd.ratingIds, rating._id)).not.toBe(-1);
   });
 
+  /*
   it('should fail to update a rating with invalid value', async () => {
     ratingOne.creatorId = userOne._id;
     ratingOne.questionId = qOne.basic._id;
@@ -256,5 +269,5 @@ describe('Rating routes', () => {
     expect(rating).not.toBeNull();
     expect(rating.value).toBe(ratingOne.value);
   });
-  
+  */
 });
