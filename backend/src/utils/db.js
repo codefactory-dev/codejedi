@@ -1,19 +1,35 @@
 const {questions, qtracks, ratings, users, tokens} = require('./seed'),
+      QDifficulty = require('../../models/qdifficulty'),
       QDetail = require('../../models/qdetail'),
       Rating = require('../../models/rating'),
       QBasic = require('../../models/qbasic'),
       Editor = require('../../models/editor'),
       QTrack = require('../../models/qtrack'),
+      QType = require('../../models/qtype'),
       Token = require('../../models/token'),
       User = require('../../models/user'),
       Img = require('../../models/img'),
       mongoose = require('mongoose');
 
+      
+const qDifficulties = ["Easy", "Medium", "Hard"],
+      qTypes = ["Array", "String", "Linked List", "Stack/Queue", "Tree", "Heap", "HashTable", "Graph", "Sort", "Bit Manipulation", "Greedy", "Dynamic Programming"];
+
 const db ={};
 
 db.initCollections = () => new Promise(async (resolve, reject) => {
-    const models = [User, Rating, QTrack, QBasic, QDetail, Token ];  
+    const models = [User, Rating, QTrack, QType, QBasic, QDetail, Token ];  
     models.forEach(async model => await model.createCollection());
+
+    // init default docs
+    await QDifficulty.countDocuments({}, async (err, count) => {
+        if (!count) await QDifficulty.create({types: qDifficulties});
+    });
+
+    await QType.countDocuments({}, async (err, count) => {
+        if (!count) await QType.create({types: qTypes});
+    });
+    
 
     resolve('Finished creating collections');
 });
@@ -114,7 +130,6 @@ db.runAsTransaction = async (func) => new Promise(async (resolve, reject) => {
                 }, transactionOptions);
             }
             catch(e) {
-                console.log(e);
                 reject({ error: true, message: e.toString()});
             }
             finally {
