@@ -18,7 +18,8 @@
     "server": "cd backend && npm run dev",
     "client": "cd frontend && npm start",
     "test:user": "cd backend && npm run test:user",
-    "test:auth": "cd backend && npm run test:auth"
+    "test:auth": "cd backend && npm run test:auth",
+    "test:comment": "cd backend && npm run test:comment"
   },
   "repository": {
     "type": "git",

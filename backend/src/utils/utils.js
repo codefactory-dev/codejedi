@@ -22,8 +22,20 @@ function getCleanUser(user) {
     _id: user._id
   };
 }
+
+function compareStringsByCharCode(string_1,string_2)
+{
+  var ans = "";
+  for (var c=0; c<string_1.length; c++) {
+    if (string_1.charCodeAt(c) != string_2.charCodeAt(c)) {
+        console.log('c:'+c+' '+string_1.charCodeAt(c)+'!='+string_2.charCodeAt(c));
+        valid = false;
+    }
+  }
+}
  
 module.exports = {
   generateToken,
-  getCleanUser
+  getCleanUser,
+  compareStringsByCharCode
 }

@@ -18,7 +18,7 @@ middleware.checkRatingNullable = async (req, res, next) => {
         next();
 };
 
-middleware.checkRatingParamsNullable = async (req, res, next) => {
+middleware.checkIfRatingParamsAreNull = async (req, res, next) => {
     const user = await User.findById(req.params.uid);
     const qbasic = await QBasic.findById(req.params.qid);
     const qdetail = await QDetail.findOne({basicsId: req.params.qid});

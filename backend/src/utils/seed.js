@@ -54,7 +54,36 @@ const users = [{
               graph: 0
           }
       }
-}];
+    },
+    {
+        _id: new mongoose.Types.ObjectId,
+        firstname: 'Fulano',
+        lastname: 'Detal',
+        email: 'fulanodetal@gmail.com',
+        username: 'fulanodetal',
+        password: 'qu1testrONGP4s$!',
+        validated: false,
+        admin: true,
+        joinDate: new Date(),
+        qTrackSummary: {
+            nbTracksPerType: {
+                array: 0,
+                string: 0,
+                graph: 0
+            },
+            avgDurationPerType: {
+                array: 0,
+                string: 0,
+                graph: 0
+            },
+            nbPDifficultyPerType: {
+                array: 0,
+                string: 0,
+                graph: 0
+            }
+        }
+    }
+];
 
 const qOneId = new mongoose.Types.ObjectId;
 const qTwoId = new mongoose.Types.ObjectId;

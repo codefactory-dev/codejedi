@@ -14,7 +14,7 @@ const express = require('express'),
 
 
 // CREATE new rating
-router.post('/', middleware.checkRatingParamsNullable, 
+router.post('/', middleware.checkIfRatingParamsAreNull, 
                  middleware.checkRatingValue, 
                  async (req, res) => {
 
@@ -67,7 +67,7 @@ router.post('/', middleware.checkRatingParamsNullable,
 });
 
 // SHOW - get rating
-router.get('/:id', middleware.checkRatingParamsNullable,
+router.get('/:id', middleware.checkIfRatingParamsAreNull,
                    middleware.checkRatingNullable,  
                    middleware.checkRatingOwnership, 
                    async(req, res) => {
@@ -78,7 +78,7 @@ router.get('/:id', middleware.checkRatingParamsNullable,
 });
 
 // UPDATE - update rating
-router.put('/:id/edit', middleware.checkRatingParamsNullable,
+router.put('/:id/edit', middleware.checkIfRatingParamsAreNull,
                         middleware.checkRatingNullable, 
                         middleware.checkRatingOwnership, 
                         middleware.checkRatingValue, 

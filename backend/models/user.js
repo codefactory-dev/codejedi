@@ -29,7 +29,6 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         trim: true,
-        lowercase: true,
         required: true,
     },
     joinDate: {
@@ -47,6 +46,10 @@ const userSchema = new mongoose.Schema({
     validated: {
         type: Boolean,
         required: true
+    },
+    admin: {
+        type: Boolean,
+        default: false
     },
     ratingIds: [{ 
         type: mongoose.Schema.Types.ObjectId, 

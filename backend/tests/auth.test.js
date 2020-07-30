@@ -7,6 +7,7 @@ const {users, questions, tokens} = require('../src/utils/seed'),
       app = require('../app');
 
 const userOne = users[0];
+const userTwo = users[1];
 const tokenOne = tokens[0];
 const qOne = questions[0];
 
@@ -26,6 +27,7 @@ describe('Auth routes', () => {
       await User.deleteMany({});
       await Token.deleteMany({});
       await new User(userOne).save();
+      await new User(userTwo).save();
       await new Token(tokenOne).save();
   });
 
@@ -54,6 +56,38 @@ describe('Auth routes', () => {
         token: tokenOne.token
     }).expect(200);
   });
+
+  it('Should not be able to confirm existing user account when provided with an invalid token', async () => {
+    await request(app).post('/auth/validate').send({
+        email: userOne.email,
+        token: "ThisTokenWillNeverExistEverEverEver"
+    }).expect(400);
+  });
+
+  it(`Should not be able to sign-in existent user with another user's password`, async () => {
+    await request(app).post('/auth/signin').send({
+      email: userOne.email,
+      password: userTwo.password
+    }).expect(401);
+  });
+
+  it(`Should not confirm an user with another user's token`, async () => {
+    await request(app).post('/auth/validate').send({
+      email: userTwo.email,
+      token: tokenOne.token
+    }).expect(400);
+    
+    
+  });
+
+  it(`Should not signin user without token as confirmed`, async () => {
+    await request(app).post('/auth/validate').send({
+      email: userTwo.email
+    }).expect(400);
+  });
+
+  
+
 
 });
 

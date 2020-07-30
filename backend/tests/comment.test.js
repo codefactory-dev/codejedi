@@ -9,7 +9,7 @@ const userOne = users[0];
 const userAdmin = users[2];
 const qOne = questions[0];
 
-describe('User routes', () => {
+describe('Comment routes', () => {
   
   beforeAll(() => {
       db.connect();
@@ -29,25 +29,25 @@ describe('User routes', () => {
 
 
   // ----------------------------------------------------------------------------
-  // TEST CASES - INDEX (GET /users)
+  // TEST CASES - INDEX (GET /comments)
   // ----------------------------------------------------------------------------
-  it('should be able to get all users', async () => {
-    await request(app).get('/users').send().expect(200)
+  it.only('should be able to get all comments', async () => {
+    await request(app).get('/comments').send().expect(200)
   });
 
 
   // ----------------------------------------------------------------------------
-  // TEST CASES - NEW (GET /users/:id)
+  // TEST CASES - NEW (GET /comments/:id)
   // ----------------------------------------------------------------------------
-  it.skip('should be able to get a form to create a new user', async () => {
-    await request(app).get('/users/new').send().expect(200)
+  it.skip('should be able to get a form to create a new comment', async () => {
+    await request(app).get('/comments/new').send().expect(200)
   });
 
   // ----------------------------------------------------------------------------
-  // TEST CASES - CREATE (POST /users)
+  // TEST CASES - CREATE (POST /comments)
   // ----------------------------------------------------------------------------
-  it('should be able to create a new user', async () => {
-    await request(app).post('/users').send({
+  it('should be able to create a new comment', async () => {
+    await request(app).post('/comments').send({
             name: 'Jeff Zigzig',
             email: 'testing@gmail.com',
             username: 'jeffzigzig20',
@@ -57,37 +57,37 @@ describe('User routes', () => {
   });
 
   // ----------------------------------------------------------------------------
-  // TEST CASES - SHOW (GET /users/:id)
+  // TEST CASES - SHOW (GET /comments/:id)
   // ----------------------------------------------------------------------------
-  it(`should be able to get all the specified user's info`, async () => {
-    await request(app).get('/users/'+userOne._id).send().expect(200)
+  it(`should be able to get all the specified comment's info`, async () => {
+    await request(app).get('/comments/'+userOne._id).send().expect(200)
   });
 
   // ----------------------------------------------------------------------------
-  // TEST CASES - EDIT (GET /users/:id/edit)
+  // TEST CASES - EDIT (GET /comments/:id/edit)
   // ----------------------------------------------------------------------------
-  it.skip('should be able to get specific user info to edit', async () => {
-    await request(app).get('/users/:id/edit').send().expect(200)
+  it.skip('should be able to get specific comment info to edit', async () => {
+    await request(app).get('/comments/:id/edit').send().expect(200)
   });
 
   // ----------------------------------------------------------------------------
-  // TEST CASES - UPDATE (PATCH /users/:id)
+  // TEST CASES - UPDATE (PATCH /comments/:id)
   // ----------------------------------------------------------------------------
-  it('should be able to update the user', async () => {
-    const response = await request(app).patch('/users/'+userOne._id).send();
+  it('should be able to update the comment', async () => {
+    const response = await request(app).patch('/comments/'+userOne._id).send();
     expect(response.status).toBe(200);
   })
 
   // ----------------------------------------------------------------------------
-  // TEST CASES - DESTROY (DELETE /users/:id)
+  // TEST CASES - DESTROY (DELETE /comments/:id)
   // ----------------------------------------------------------------------------
-  it('should be able to delete the user', async () => {
-    const response = await request(app).delete('/users/'+userOne._id).send();
+  it('should be able to delete the comment', async () => {
+    const response = await request(app).delete('/comments/'+userOne._id).send();
     expect(response.status).toBe(200);
   })
 
-  it('Should not be able to create a new user with the same email', async () => {
-    await request(app).post('/users').send({
+  it('Should not be able to create a new comment with the same email', async () => {
+    await request(app).post('/comments').send({
             name: 'Another Person',
             email: userOne.email,
             username: 'figarofi',
@@ -95,40 +95,5 @@ describe('User routes', () => {
             validated: false
         }).expect(409)
   });
-  
-  it('Should not be able to create a new user with the same username', async () => {
-
-    await request(app).post('/users').send({
-            name: 'Another Person',
-            email: 'someemail@gmail.com',
-            username: userOne.username,
-            password: 'somep4ssw0rd',
-            validated: false
-        }).expect(409)
-  });
-    
-  describe('routes exclusive to signed admins', () => {
-    
-    beforeEach(async() => {
-      await new User(userAdmin).save();
-      const response = await request(app).post('/auth/signin').send({
-        email: userAdmin.email,
-        password: userAdmin.password
-      });
-      expect(response.status).toBe(200);
-    });
-    
-    
-    it('Should delete another user if AUTHENTICATED AS ADMIN', async () => {
-      const response = await request(app).delete('/users/'+userOne._id).send();
-      expect(response.status).toBe(200);
-      
-    });
-    
-
-  });
-  
-
-  
 
 });

@@ -31,8 +31,12 @@ router.post('/auth/signin', async function (req, res) {
           });
         }
   
+        
+        console.log(pwd);
+        console.log(userFromDB.password);
+        
         // return 401 status if the credential is not match.
-        if (email !== userFromDB.email || pwd !== userFromDB.password) {
+        if (email !== userFromDB.email || (pwd !== userFromDB.password)) {
           console.error("Email or Password is Wrong.");
           return res.status(401).json({
           error: true,
@@ -62,6 +66,7 @@ router.post('/auth/signin', async function (req, res) {
 
 //user confirmation by token
 router.post('/auth/validate', async (req,res) => {
+    console.log(`REQUEST :: validate user ${req.body.email} with token ${req.body.token}`);
     try{
       // Find a matching token
       Token.findOne({ token: req.body.token }, function (err, token) {
@@ -74,6 +79,7 @@ router.post('/auth/validate', async (req,res) => {
         User.findOne({ _id: token.userId, email: req.body.email }, function (err, user) {
             if (!user) return res.status(400).json({ error: true, message: 'We were unable to find a user for this token.' });
             if (user.validated) return res.status(400).json({ error: true, message: 'This user has already been verified.' });
+
             // Verify and save the user
             user.validated = true;
             user.save(function (err) {
