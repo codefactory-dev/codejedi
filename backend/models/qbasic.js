@@ -1,7 +1,6 @@
-const QDetail = require('../models/qdetail');
-const User = require('../models/user');
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const {qDifficulties, qTypes} = require('../src/utils/seed'),
+      mongoose = require('mongoose'),
+      Schema = mongoose.Schema;
 
 
 const qbasicSchema = new Schema({
@@ -30,11 +29,13 @@ const qbasicSchema = new Schema({
     },
     difficulty: { 
         type: String, 
-        required: true 
+        required: true,
+        enum: [qDifficulties, 'Invalid question difficulty level']
     },
     type: { 
         type: String, 
-        required: true 
+        required: true,
+        enum: [qTypes, 'Invalid question type'] 
     },
     hasSolution: { 
         type: Boolean, 
@@ -42,11 +43,14 @@ const qbasicSchema = new Schema({
     },
     avgRatings: { 
         type: Schema.Types.Decimal128, 
-        default: 0
+        default: 0,
+        min: 0,
+        max: 5
     },
     nbRatings: { 
         type: Number,
-        default: 0 
+        default: 0,
+        min: 0
     },
     lastUpdate: { 
         type: Date,

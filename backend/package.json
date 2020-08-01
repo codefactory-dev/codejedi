@@ -28,7 +28,8 @@
     "lodash": "^4.17.19",
     "mongodb": "^3.5.9",
     "mongoose": "^5.9.21",
-    "serverless-http": "^2.5.0"
+    "serverless-http": "^2.5.0",
+    "validator": "^13.1.1"
   },
   "devDependencies": {
     "env-cmd": "^10.1.0",

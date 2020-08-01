@@ -1,6 +1,10 @@
 const mongoose = require('mongoose'),
       utils = require('./utils');
 
+const qDifficulties = ["Easy", "Medium", "Hard"];
+const qTypes = ["Array", "String", "Linked List", "Stack/Queue", "Tree", "Heap", "HashTable", "Graph", "Sort", "Bit Manipulation", "Greedy", "Dynamic Programming"];
+
+
 const users = [{
       _id: new mongoose.Types.ObjectId,
       firstname: 'Roberta',
@@ -165,6 +169,8 @@ const tokens = [{
 
 
 module.exports ={
+    qDifficulties,
+    qTypes,
     questions,
     qtracks,
     ratings,

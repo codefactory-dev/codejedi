@@ -1,4 +1,4 @@
-const {questions, qtracks, ratings, users, tokens} = require('./seed'),
+const {questions, qtracks, ratings, users, tokens, qDifficulties, qTypes} = require('./seed'),
       QDifficulty = require('../../models/qdifficulty'),
       QDetail = require('../../models/qdetail'),
       Rating = require('../../models/rating'),
@@ -12,9 +12,6 @@ const {questions, qtracks, ratings, users, tokens} = require('./seed'),
       mongoose = require('mongoose');
 
       
-const qDifficulties = ["Easy", "Medium", "Hard"],
-      qTypes = ["Array", "String", "Linked List", "Stack/Queue", "Tree", "Heap", "HashTable", "Graph", "Sort", "Bit Manipulation", "Greedy", "Dynamic Programming"];
-
 const db ={};
 
 db.initCollections = () => new Promise(async (resolve, reject) => {

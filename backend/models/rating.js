@@ -16,7 +16,12 @@ const ratingSchema = new mongoose.Schema({
     },
     value : { 
         type: Number, 
-        required: true 
+        required: true,
+        validate(value) {
+            if (value < 0 || value > 5) {
+                throw new Error('Value should be in range 0 to 5.');
+            }
+        }
     },
     lastUpdate : { 
         type: Date,

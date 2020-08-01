@@ -2,6 +2,7 @@ const Comment = require('../models/comment');
 const Rating = require('../models/rating');
 const QTrack = require('../models/qtrack');
 const QBasic = require('../models/qbasic');
+const validator = require('validator');
 const mongoose = require('mongoose');
 
 
@@ -18,7 +19,12 @@ const userSchema = new mongoose.Schema({
         type: String,
         trim: true,
         lowercase: true,
-        required: true
+        required: true,
+        validate(value) {
+            if(!validator.isEmail(value)) {
+                throw new Error('Email is invalid');
+            }
+        }
     },
     username: {
         type: String,
