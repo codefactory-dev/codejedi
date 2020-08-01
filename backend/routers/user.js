@@ -74,19 +74,19 @@ router.post('/users', async (req,res) => {
       return res.status(409).send();
     }
     
-    await User.create(newUser)
-            .then((resolve) => {
-              console.log(`STATUS :: Success`);
-              console.log(resolve);
-              res.status(201).send(newUser);
-            })
-          .catch((e) => {
-            console.error(`STATUS :: Ops.Something went wrong. `+e.toString());
-            res.status(500).json({
-              error: true,
-              message: e.toString()
-            });
-          });
+    try{
+      const user = new User(newUser);
+      await user.save();
+      const token = await user.generateAuthToken();
+      res.status(201).send({ user, token });
+      console.log(`STATUS :: Success`);
+     } catch (e) {
+        console.error(`STATUS :: Oops. Something went wrong. `+e.toString());
+        res.status(500).json({
+          error: true,
+          message: e.toString()
+        });
+     }
 });
 
 //UPDATE - updates a user
@@ -117,6 +117,7 @@ router.patch('/users/:id', async (req,res) => {
 //DESTROY - delete user's info
 router.delete('/users/:id', async (req,res) => {
   const _id = req.params.id;
+  
   try{
     const user = await User.findByIdAndDelete(_id)
     if (!user)
