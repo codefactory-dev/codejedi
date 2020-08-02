@@ -35,24 +35,37 @@ middleware.checkQTrackParamsNull = async (req, res, next) => {
 // -----------------------------------------------------------------------------
 // Question
 // -----------------------------------------------------------------------------
-
-// TO-DO
 middleware.checkQuestionOwnership = async (req, res, next) => {
-    next();
+    const question = await QBasic.findById(req.params.id);
+    const error = !question.creator.id.equals(req.params.uid);
+
+    if (error)
+        res.status(400).json({ error: true, message: 'Invalid user.id for the given question.' });
+    else
+        next();
 }
 
 middleware.checkQuestionNull = async (req, res, next) => {
-    next();
+    const question = await QBasic.findById(req.params.id);
+
+    if (isNull(question)) 
+        res.status(400).json({ error: true, message: 'Invalid question.id parameter.' });
+    else
+        next();
 }
 
 middleware.checkQuestionParamsNull = async (req, res, next) => {
-    next();
+    const user = await User.findById(req.params.uid);
+
+    if (isNull(user))
+        res.status(400).json({ error: true, message: 'Invalid user.id parameter.' });
+    else
+        next();
 }
 
 // -----------------------------------------------------------------------------
 // Rating
 // -----------------------------------------------------------------------------
-
 middleware.checkRatingNull = async (req, res, next) => {
     const rating = await Rating.findById(req.params.id);
 
