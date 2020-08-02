@@ -74,7 +74,6 @@ describe('Rating routes', () => {
     expect(_.findIndex(qd.ratingIds, rating._id)).not.toBe(-1);
   });
 
-  
   it('should fail to post a rating with non-existing creatorId/questionId', async () => {
     const response = await request(app)
                               .post(`/users/${userTwo._id}/questions/${qOne.basic._id}/ratings`)
@@ -127,7 +126,7 @@ describe('Rating routes', () => {
     const response = await request(app)
                               .get(`/users/${userOne._id}/questions/${qOne.basic._id}/ratings/${ratingOne._id}`);
 
-    expect(response.status).toBe(201); // success :: created
+    expect(response.status).toBe(200); // success :: ok
 
 
     // additional assertions
@@ -190,7 +189,7 @@ describe('Rating routes', () => {
     // expect(_.findIndex(qd.ratingIds, rating._id)).not.toBe(-1);
   });
 
-  /*
+  
   it('should fail to update a rating with invalid value', async () => {
     ratingOne.creatorId = userOne._id;
     ratingOne.questionId = qOne.basic._id;
@@ -269,5 +268,5 @@ describe('Rating routes', () => {
     expect(rating).not.toBeNull();
     expect(rating.value).toBe(ratingOne.value);
   });
-  */
+  
 });

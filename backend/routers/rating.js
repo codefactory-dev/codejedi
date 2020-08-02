@@ -14,24 +14,24 @@ const express = require('express'),
 
 
 // CREATE new rating
-router.post('/', middleware.checkIfRatingParamsAreNull, 
-                 middleware.checkRatingValue, 
+router.post('/', middleware.checkLogIn,
+                 middleware.checkRatingParamsNull, 
                  async (req, res) => {
 
-
-    const user = await User.findById(req.params.uid),
-          qd   = await QDetail.findOne({basicsId: req.params.qid}),
-          q    = await QBasic.findById(req.params.qid);
-
-    let rating = {
-        creatorId: user._id,
-        questionId: q._id,
-        value: req.body.value
-    };
-
     const operation = async () => {
+        const user = await User.findById(req.params.uid),
+              qd   = await QDetail.findOne({basicsId: req.params.qid}),
+              q    = await QBasic.findById(req.params.qid);
+
+        let rating = {
+            creatorId: user._id,
+            questionId: q._id,
+            value: req.body.value
+        };
+
          //create rating
-         await Rating.create(rating).then(res => rating = res);
+         await Rating.create(rating)
+                    .then(res => rating = res);
 
          // update user           
          user.ratingIds.push(rating._id);
@@ -50,25 +50,26 @@ router.post('/', middleware.checkIfRatingParamsAreNull,
 
     db.runAsTransaction(operation)
         .then(resolve => res.status(201).send({rating: resolve}))
-        .catch(reject => res.status(500).json(reject));
+        .catch(e => res.status(e.status).json(e.message));
 });
 
 // SHOW - get rating
-router.get('/:id', middleware.checkIfRatingParamsAreNull,
-                   middleware.checkRatingNullable,  
+router.get('/:id', middleware.checkLogIn,
+                   middleware.checkRatingNull,
                    middleware.checkRatingOwnership, 
                    async(req, res) => {
 
-    const rating = await Rating.findById(req.params.id);
+    const rating = await Rating.findById(req.params.id)
+                                .catch(e => { res.status(500).json({error: true, message: e}) });;
 
-    return res.status(201).send({rating});
+    return res.status(200).send({rating});
 });
 
 // UPDATE - update rating
-router.put('/:id/edit', middleware.checkIfRatingParamsAreNull,
-                        middleware.checkRatingNullable, 
+router.put('/:id/edit', middleware.checkLogIn,
+                        middleware.checkRatingNull,
+                        middleware.checkRatingParamsNull, 
                         middleware.checkRatingOwnership, 
-                        middleware.checkRatingValue, 
                         async(req, res) => {
 
     const rating = await Rating.findById(req.params.id),
@@ -78,7 +79,7 @@ router.put('/:id/edit', middleware.checkIfRatingParamsAreNull,
         // update rating
         const prevValue = rating.value;
         rating.value = req.body.value;
-        rating.save();
+        await rating.save();
 
         // update question
         q.avgRatings = updateAvgRating(q, prevValue, rating.value);
@@ -89,7 +90,7 @@ router.put('/:id/edit', middleware.checkIfRatingParamsAreNull,
 
     db.runAsTransaction(operation)
         .then(resolve => res.status(201).send({rating: resolve}))
-        .catch(reject => res.status(500).json(reject));
+        .catch(e => res.status(e.status).json(e.message));
 });
 
 module.exports = router;
