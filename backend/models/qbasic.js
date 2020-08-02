@@ -1,4 +1,5 @@
 const {qDifficulties, qTypes} = require('../src/utils/seed'),
+      validator = require('validator'),
       mongoose = require('mongoose'),
       Schema = mongoose.Schema;
 
@@ -30,12 +31,20 @@ const qbasicSchema = new Schema({
     difficulty: { 
         type: String, 
         required: true,
-        enum: [qDifficulties, 'Invalid question difficulty level']
+        validate(value) {
+            if(!validator.isIn(value, qDifficulties)) {
+                throw new Error('Invalid question difficulty level');
+            }
+        }
     },
     type: { 
         type: String, 
         required: true,
-        enum: [qTypes, 'Invalid question type'] 
+        validate(value) {
+            if(!validator.isIn(value, qTypes)) {
+                throw new Error('Invalid question type');
+            }
+        }
     },
     hasSolution: { 
         type: Boolean, 

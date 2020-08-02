@@ -16,7 +16,11 @@ const qtrackSchema = new mongoose.Schema({
     perceivedDifficulty: { 
         type: String, 
         required: true,
-        enum: [qDifficulties, 'Invalid question difficulty level']
+        validate(value) {
+            if(!validator.isIn(value, qDifficulties)) {
+                throw new Error('Invalid question difficulty level');
+            }
+        }
     },
     solved: { 
         type: Boolean, 
