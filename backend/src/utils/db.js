@@ -120,18 +120,19 @@ db.runAsTransaction = async (func) => new Promise(async (resolve, reject) => {
         };
 
         try {
-                await session.withTransaction(async () => {          
-                    const result = await func();
-                    resolve(result)
-        
-                }, transactionOptions);
-            }
-            catch(e) {
-                reject({ error: true, message: e.toString()});
-            }
-            finally {
-                session.endSession();
-            }
+            await session.withTransaction(async () => {          
+                const result = await func();
+                resolve(result)
+    
+            }, transactionOptions);
+        }
+        catch(e) {
+            let status = e instanceof mongoose.Error.ValidationError ? 400 : 500;              
+            reject({status, message: e.message});
+        }
+        finally {
+            session.endSession();
+        }
 });
 
 module.exports = db;

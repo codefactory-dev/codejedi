@@ -1,5 +1,6 @@
 const mongoose = require('mongoose'),
-      utils = require('./utils');
+      utils = require('./utils'),
+      casual = require('casual');
 
 const qDifficulties = ["Easy", "Medium", "Hard"];
 const qTypes = ["Array", "String", "Linked List", "Stack/Queue", "Tree", "Heap", "HashTable", "Graph", "Sort", "Bit Manipulation", "Greedy", "Dynamic Programming"];
@@ -168,6 +169,82 @@ const tokens = [{
 }];
 
 
+const generateUsers = n => {
+    const users = [];
+
+    for(let i = 0; i < n; i++) {
+        const firstname = casual.first_name,
+              lastname = casual.last_name;
+
+        const user = {
+            _id: new mongoose.Types.ObjectId,
+            firstname: firstname,
+            lastname: lastname,
+            email: `${lastname}.${firstname}@gmail.com`,
+            username: `${firstname}.${lastname}${casual.integer(0, 1000)}`,
+            password: casual.password,
+            validated: false,
+            joinDate: casual.date(),
+            qTrackSummary: {
+                nbTracksPerType: {
+                    array: 0,
+                    string: 0,
+                    graph: 0
+                },
+                avgDurationPerType: {
+                    array: 0,
+                    string: 0,
+                    graph: 0
+                },
+                nbPDifficultyPerType: {
+                    array: 0,
+                    string: 0,
+                    graph: 0
+                }
+            }
+        }
+
+        users.push(user);
+    }
+
+    return users;
+}
+
+const generateQuestions = (n, users) => {
+    const questions = [];
+
+    for(let i = 0; i < n; i++) {
+        const id = new mongoose.Types.ObjectId;
+        const user = casual.random_element(users);
+
+        const question = {
+            basic: {
+                _id: id,
+                creator: { 
+                    id: user._id,
+                    username: user.username,
+                    joinDate: user.joinDate
+                },
+                title: casual.title,
+                difficulty: casual.random_element(qDifficulties),
+                type: casual.random_element(qTypes),
+                hasSolution: false,
+            },
+            detail: {
+                basicsId: id,
+                description: casual.description,    
+                creationDate: casual.date(),
+            }
+        }
+
+        questions.push(question);
+    }
+    
+
+    return questions;
+
+}
+
 module.exports ={
     qDifficulties,
     qTypes,
@@ -175,5 +252,8 @@ module.exports ={
     qtracks,
     ratings,
     users,
-    tokens
+    tokens,
+
+    generateUsers,
+    generateQuestions
 };
