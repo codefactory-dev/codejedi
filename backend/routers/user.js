@@ -1,8 +1,7 @@
 const express = require('express'),
       router = express.Router({mergeParams: true}),
       User = require('../models/user'),
-      QDifficulty = require('../models/qdifficulty'),
-      QType = require('../models/qtype')
+      { qDifficulties, qTypes } = require('../src/utils/seed.js');
 
 
 
@@ -41,8 +40,6 @@ router.post('/users', async (req,res) => {
     console.log(`REQUEST :: create user  ${req.body.username}`);
   
     const [firstname, lastname] = req.body.name.split(' ');
-    const difficulties = QDifficulty.findOne({});
-    const questionTypes = QType.findOne({});
     //Difficulties = ["Easy", "Medium", "Hard"],
     // qTypes = ["Array", "String", "Linked List", "Stack/Queue", "Tree", "Heap", "HashTable", "Graph", "Sort", "Bit Manipulation", "Greedy", "Dynamic Programming"];
 
@@ -55,19 +52,49 @@ router.post('/users', async (req,res) => {
       validated: req.body.validated,
       qTrackSummary: {
         nbTracksPerType: {
-          [difficulties.types[0]]: 13,
-          [questionTypes[1]]: 5,
-          [questionTypes[4]]: 8
+          [qDifficulties[0]]: 0,
+          [qTypes[0]]: 0,
+          [qTypes[1]]: 0,
+          [qTypes[2]]: 0,
+          [qTypes[3]]: 0,
+          [qTypes[4]]: 0,
+          [qTypes[5]]: 0,
+          [qTypes[6]]: 0,
+          [qTypes[7]]: 0,
+          [qTypes[8]]: 0,
+          [qTypes[9]]: 0,
+          [qTypes[10]]: 0,
+          [qTypes[11]]: 0
         },
         avgDurationPerType: {
-          [difficulties.types[1]]: 7,
-          [questionTypes[1]]: 4,
-          [questionTypes[4]]: 3
+          [qDifficulties[1]]: 0,
+          [qTypes[0]]: 0,
+          [qTypes[1]]: 0,
+          [qTypes[2]]: 0,
+          [qTypes[3]]: 0,
+          [qTypes[4]]: 0,
+          [qTypes[5]]: 0,
+          [qTypes[6]]: 0,
+          [qTypes[7]]: 0,
+          [qTypes[8]]: 0,
+          [qTypes[9]]: 0,
+          [qTypes[10]]: 0,
+          [qTypes[11]]: 0
         },
         nbPDifficultyPerType: {
-          [difficulties.types[2]]: 2,
-          [questionTypes[1]]: 1,
-          [questionTypes[4]]: 1
+          [qDifficulties[2]]: 0,
+          [qTypes[0]]: 0,
+          [qTypes[1]]: 0,
+          [qTypes[2]]: 0,
+          [qTypes[3]]: 0,
+          [qTypes[4]]: 0,
+          [qTypes[5]]: 0,
+          [qTypes[6]]: 0,
+          [qTypes[7]]: 0,
+          [qTypes[8]]: 0,
+          [qTypes[9]]: 0,
+          [qTypes[10]]: 0,
+          [qTypes[11]]: 0
         }
       }
     };

@@ -1,6 +1,8 @@
-const {users, questions} = require('../src/utils/seed'),
+const {users, questions, qDifficulties, qTypes} = require('../src/utils/seed'),
       Rating = require('../models/rating'),
       User = require('../models/user'),
+      QDifficulty = require('../models/qdifficulty'),
+      QType = require('../models/qtype'),
       db = require('../src/utils/db'),
       request = require('supertest'),
       app = require('../app');
@@ -11,10 +13,14 @@ const qOne = questions[0];
 
 describe('User routes', () => {
   
-  beforeAll(() => {
+  beforeAll(async () => {
       db.connect();
       db.initCollections();
       db.reset();
+      await new User(userOne).save();
+      await new QDifficulty({ types: qDifficulties }).save();
+      await new QType({ types: qTypes }).save();
+
   });
 
   afterAll(db.disconnect);
