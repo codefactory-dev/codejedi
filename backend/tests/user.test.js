@@ -119,16 +119,29 @@ describe('User routes', () => {
     });
     
     
-    it('Should delete another user if AUTHENTICATED AS ADMIN', async () => {
+    it('Should delete another user', async () => {
       const response = await request(app).delete('/users/'+userOne._id).send();
       expect(response.status).toBe(200);
-      
     });
     
 
   });
   
+  describe('routes where the user is guaranteed NOT to be an ADMIN', () => { 
+    beforeEach(async() => {
+      const response = await request(app).post('/auth/signin').send({
+        email: userOne.email,
+        password: userOne.password
+      });
+      expect(response.status).toBe(200);
+    });
 
+    it('Should NOT delete another user', async () => {
+      const response = await request(app).delete('/users/'+userOne._id).send();
+      expect(response.status).toBe(200);
+    });
+
+  });
   
 
 });

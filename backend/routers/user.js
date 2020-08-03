@@ -1,6 +1,8 @@
 const express = require('express'),
       router = express.Router({mergeParams: true}),
-      User = require('../models/user');
+      User = require('../models/user'),
+      QDifficulty = require('../models/qdifficulty'),
+      QType = require('../models/qtype')
 
 
 
@@ -39,6 +41,11 @@ router.post('/users', async (req,res) => {
     console.log(`REQUEST :: create user  ${req.body.username}`);
   
     const [firstname, lastname] = req.body.name.split(' ');
+    const difficulties = QDifficulty.findOne({});
+    const questionTypes = QType.findOne({});
+    //Difficulties = ["Easy", "Medium", "Hard"],
+    // qTypes = ["Array", "String", "Linked List", "Stack/Queue", "Tree", "Heap", "HashTable", "Graph", "Sort", "Bit Manipulation", "Greedy", "Dynamic Programming"];
+
     const newUser = {
       firstname,
       lastname,
@@ -48,19 +55,19 @@ router.post('/users', async (req,res) => {
       validated: req.body.validated,
       qTrackSummary: {
         nbTracksPerType: {
-          'Array': 0,
-          'String': 0,
-          'Tree': 0
+          [difficulties.types[0]]: 13,
+          [questionTypes[1]]: 5,
+          [questionTypes[4]]: 8
         },
         avgDurationPerType: {
-          'Array': 0,
-          'String': 0,
-          'Tree': 0
+          [difficulties.types[1]]: 7,
+          [questionTypes[1]]: 4,
+          [questionTypes[4]]: 3
         },
         nbPDifficultyPerType: {
-          'Array': 0,
-          'String': 0,
-          'Tree': 0
+          [difficulties.types[2]]: 2,
+          [questionTypes[1]]: 1,
+          [questionTypes[4]]: 1
         }
       }
     };
@@ -74,19 +81,19 @@ router.post('/users', async (req,res) => {
       return res.status(409).send();
     }
     
-    await User.create(newUser)
-            .then((resolve) => {
-              console.log(`STATUS :: Success`);
-              console.log(resolve);
-              res.status(201).send(newUser);
-            })
-          .catch((e) => {
-            console.error(`STATUS :: Ops.Something went wrong. `+e.toString());
-            res.status(500).json({
-              error: true,
-              message: e.toString()
-            });
-          });
+    try{
+      const user = new User(newUser);
+      await user.save();
+      const token = await user.generateAuthToken();
+      res.status(201).send({ user, token });
+      console.log(`STATUS :: Success`);
+     } catch (e) {
+        console.error(`STATUS :: Oops. Something went wrong. `+e.toString());
+        res.status(500).json({
+          error: true,
+          message: e.toString()
+        });
+     }
 });
 
 //UPDATE - updates a user
@@ -117,6 +124,7 @@ router.patch('/users/:id', async (req,res) => {
 //DESTROY - delete user's info
 router.delete('/users/:id', async (req,res) => {
   const _id = req.params.id;
+  
   try{
     const user = await User.findByIdAndDelete(_id)
     if (!user)

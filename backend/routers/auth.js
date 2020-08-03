@@ -2,7 +2,8 @@ const express = require('express'),
       router = express.Router({mergeParams: true}),
       User = require('../models/user'),
       Token = require('../models/token'),
-      utils = require('../src/utils/utils')
+      utils = require('../src/utils/utils'),
+      middleware = require('../middleware/index')
 
 // validate the user credentials
 router.post('/auth/signin', async function (req, res) {
@@ -63,6 +64,11 @@ router.post('/auth/signin', async function (req, res) {
         });
     }
   });
+
+// validate the user credentials
+router.post('/auth/signout', middleware.auth,async function (req, res) {
+
+});
 
 //user confirmation by token
 router.post('/auth/validate', async (req,res) => {

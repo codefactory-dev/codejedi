@@ -1,9 +1,10 @@
-const Comment = require('../models/comment');
-const Rating = require('../models/rating');
-const QTrack = require('../models/qtrack');
-const QBasic = require('../models/qbasic');
-const validator = require('validator');
-const mongoose = require('mongoose');
+const Comment = require('../models/comment'),
+      Rating = require('../models/rating'),
+      QTrack = require('../models/qtrack'),
+      QBasic = require('../models/qbasic'),
+      mongoose = require('mongoose'),
+      jwt = require('jsonwebtoken'),
+	  validator = require('validator');
 
 
 const userSchema = new mongoose.Schema({
@@ -51,7 +52,7 @@ const userSchema = new mongoose.Schema({
     },
     validated: {
         type: Boolean,
-        required: true
+        default: false
     },
     admin: {
         type: Boolean,
@@ -97,7 +98,23 @@ const userSchema = new mongoose.Schema({
             of: Number,
             required: true
         }
-    }
+    },
+    tokens: [{
+        token: {
+            type: String,
+            required: true
+        }
+    }]
 });
+
+userSchema.methods.generateAuthToken = async function () {
+    const user = this
+    const token = jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET)
+
+    user.tokens = user.tokens.concat({ token });
+    await user.save();
+
+    return token;
+}
 
 module.exports = mongoose.model("User", userSchema);
