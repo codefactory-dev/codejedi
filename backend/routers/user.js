@@ -52,19 +52,49 @@ router.post('/users', async (req,res) => {
       validated: req.body.validated,
       qTrackSummary: {
         nbTracksPerType: {
-          [qDifficulties[0]]: 13,
+          [qDifficulties[0]]: 0,
+          [qTypes[0]]: 0,
           [qTypes[1]]: 0,
-          [qTypes[4]]: 0
+          [qTypes[2]]: 0,
+          [qTypes[3]]: 0,
+          [qTypes[4]]: 0,
+          [qTypes[5]]: 0,
+          [qTypes[6]]: 0,
+          [qTypes[7]]: 0,
+          [qTypes[8]]: 0,
+          [qTypes[9]]: 0,
+          [qTypes[10]]: 0,
+          [qTypes[11]]: 0
         },
         avgDurationPerType: {
           [qDifficulties[1]]: 0,
+          [qTypes[0]]: 0,
           [qTypes[1]]: 0,
-          [qTypes[4]]: 0
+          [qTypes[2]]: 0,
+          [qTypes[3]]: 0,
+          [qTypes[4]]: 0,
+          [qTypes[5]]: 0,
+          [qTypes[6]]: 0,
+          [qTypes[7]]: 0,
+          [qTypes[8]]: 0,
+          [qTypes[9]]: 0,
+          [qTypes[10]]: 0,
+          [qTypes[11]]: 0
         },
         nbPDifficultyPerType: {
           [qDifficulties[2]]: 0,
+          [qTypes[0]]: 0,
           [qTypes[1]]: 0,
-          [qTypes[4]]: 0
+          [qTypes[2]]: 0,
+          [qTypes[3]]: 0,
+          [qTypes[4]]: 0,
+          [qTypes[5]]: 0,
+          [qTypes[6]]: 0,
+          [qTypes[7]]: 0,
+          [qTypes[8]]: 0,
+          [qTypes[9]]: 0,
+          [qTypes[10]]: 0,
+          [qTypes[11]]: 0
         }
       }
     };
