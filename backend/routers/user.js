@@ -1,6 +1,8 @@
 const express = require('express'),
       router = express.Router({mergeParams: true}),
-      User = require('../models/user');
+      User = require('../models/user'),
+      QDifficulty = require('../models/qdifficulty'),
+      QType = require('../models/qtype')
 
 
 
@@ -39,6 +41,11 @@ router.post('/users', async (req,res) => {
     console.log(`REQUEST :: create user  ${req.body.username}`);
   
     const [firstname, lastname] = req.body.name.split(' ');
+    const difficulties = QDifficulty.findOne({});
+    const questionTypes = QType.findOne({});
+    //Difficulties = ["Easy", "Medium", "Hard"],
+    // qTypes = ["Array", "String", "Linked List", "Stack/Queue", "Tree", "Heap", "HashTable", "Graph", "Sort", "Bit Manipulation", "Greedy", "Dynamic Programming"];
+
     const newUser = {
       firstname,
       lastname,
@@ -48,19 +55,19 @@ router.post('/users', async (req,res) => {
       validated: req.body.validated,
       qTrackSummary: {
         nbTracksPerType: {
-          'Array': 0,
-          'String': 0,
-          'Tree': 0
+          [difficulties.types[0]]: 13,
+          [questionTypes[1]]: 5,
+          [questionTypes[4]]: 8
         },
         avgDurationPerType: {
-          'Array': 0,
-          'String': 0,
-          'Tree': 0
+          [difficulties.types[1]]: 7,
+          [questionTypes[1]]: 4,
+          [questionTypes[4]]: 3
         },
         nbPDifficultyPerType: {
-          'Array': 0,
-          'String': 0,
-          'Tree': 0
+          [difficulties.types[2]]: 2,
+          [questionTypes[1]]: 1,
+          [questionTypes[4]]: 1
         }
       }
     };

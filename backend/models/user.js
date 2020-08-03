@@ -1,9 +1,9 @@
-const Comment = require('../models/comment');
-const Rating = require('../models/rating');
-const QTrack = require('../models/qtrack');
-const QBasic = require('../models/qbasic');
-const mongoose = require('mongoose');
-const jwt = require('jsonwebtoken');
+const Comment = require('../models/comment'),
+      Rating = require('../models/rating'),
+      QTrack = require('../models/qtrack'),
+      QBasic = require('../models/qbasic'),
+      mongoose = require('mongoose'),
+      jwt = require('jsonwebtoken')
 
 
 const userSchema = new mongoose.Schema({

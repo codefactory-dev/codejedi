@@ -5,6 +5,7 @@ const express = require('express'),
       Rating = require('../models/rating'),
       QBasic = require('../models/qbasic'),
       User = require('../models/user'),
+      jwt = require('jsonwebtoken'),
       _ = require('lodash');
 
 // all the middleare goes here
@@ -81,6 +82,25 @@ middleware.checkRatingValue = (req, res, next) => {
         res.status(400).json({ error: true, message: 'Invalid rating value.' });
     else
         next();
+};
+
+middleware.auth = async (req,res, next) => {
+    try{
+        const token = req.header('Authorization').replace('Bearer ','');
+        const decoded = jwt.verify(token,process.env.JWT_SECRET);
+        const user = await User.findOne({ _id: decoded._id, 'tokens.token': token})
+
+        if (!user) {
+            throw new Error()
+        }
+
+        req.token = token;
+        req.user = user;
+        next()
+    } catch (e){
+
+    }
+
 };
 
 module.exports = middleware;
