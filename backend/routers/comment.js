@@ -37,55 +37,25 @@ router.get('/comments/:id', async (req,res) => {
 router.post('/comments', async (req,res) => {
     console.log(`REQUEST :: create comment  ${req.body.username}`);
   
-    const [firstname, lastname] = req.body.name.split(' ');
-    const newUser = {
-      firstname,
-      lastname,
-      email: req.body.email,
-      username: req.body.username,
-      password: req.body.password,
-      validated: req.body.validated,
-      qTrackSummary: {
-        nbTracksPerType: {
-          'Array': 0,
-          'String': 0,
-          'Tree': 0
-        },
-        avgDurationPerType: {
-          'Array': 0,
-          'String': 0,
-          'Tree': 0
-        },
-        nbPDifficultyPerType: {
-          'Array': 0,
-          'String': 0,
-          'Tree': 0
-        }
-      }
+    const newComment = {
+      questionId: req.body.questionId,
+      creatorId: req.body.creatorId,
+      description: req.body.description,
+      creationDate: req.body.creationDate,
+      lastUpdate: req.body.lastUpdate,
     };
-  
-    const alreadyExistent = await User.find({ $or: [ { 'email': newUser.email }, { 'username': newUser.username } ]});
     
-    console.log("alreadyExistent: "+alreadyExistent.username);
-    if (alreadyExistent.length > 0)
-    {
-      console.error(`STATUS :: Conflict`);
-      return res.status(409).send();
+    try{
+      const comment = await Comment.create(newComment);
+      console.log(`STATUS :: Success`);
+      res.status(201).send(newComment);
+    } catch(e){
+      console.error(`STATUS :: Ops.Something went wrong. `+e.toString());
+      res.status(500).json({
+        error: true,
+        message: e.toString()
+      });
     }
-    
-    await User.create(newUser)
-            .then((resolve) => {
-              console.log(`STATUS :: Success`);
-              console.log(resolve);
-              res.status(201).send(newUser);
-            })
-          .catch((e) => {
-            console.error(`STATUS :: Ops.Something went wrong. `+e.toString());
-            res.status(500).json({
-              error: true,
-              message: e.toString()
-            });
-          });
 });
 
 //UPDATE - updates a user

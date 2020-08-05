@@ -7,6 +7,8 @@ const express = require('express'),
 
 //TODO: when deleting a comment, should update the user
 
+//TODO: fix update
+
 
 
 //INDEX - GET all users
