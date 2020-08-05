@@ -252,19 +252,15 @@ const generateComments = (n, users, questions) => {
     for(let i = 0; i < n; i++) {
         const id = new mongoose.Types.ObjectId;
         const user = casual.random_element(users);
-        const remainingUsers = users.filter((current)=>{ current._id !== user._id});
+        const remainingUsers = users.filter((current)=> current._id !== user._id);
         const replyingUser = casual.random_element(remainingUsers);
         const question = casual.random_element(questions);
 
         const creationDate = new Date();
 
-        const comment = {
-            //FLUXO: USUARIO LOGADO CRIA UM COMMENT
-            //
-            //PREFIX: /users/:uid/questions/:qid
-            
-            questionId: question._id, //criou em que questão
-            creatorId: user._id, //usuario que criou
+        const comment = {            
+            questionId: question.basic._id,
+            creatorId: user._id,
             description: casual.sentences(6),
             reply: {
                 creatorId: replyingUser._id,
@@ -273,7 +269,9 @@ const generateComments = (n, users, questions) => {
                 lastUpdate: creationDate
             }
         }
+        comments.push(comment);
     }
+    return comments;
 }
 
 module.exports ={

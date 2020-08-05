@@ -1,6 +1,7 @@
-const {users, questions, generateComments} = require('../src/utils/seed'),
+const {users, questions, generateComments, generateUsers, generateQuestions} = require('../src/utils/seed'),
       Rating = require('../models/rating'),
       User = require('../models/user'),
+      Comment = require('../models/comment'),
       db = require('../src/utils/db'),
       request = require('supertest'),
       app = require('../app');
@@ -24,6 +25,15 @@ describe('Comment routes', () => {
       await Rating.deleteMany({});
       await User.deleteMany({});
       await new User(userOne).save();
+      
+      //generate data
+      const users = generateUsers(3);
+      const questions = generateQuestions(20, users);  
+      await new User(users[0]).save();
+
+      const comments = generateComments(20, users, questions);     
+      await Comment.insertMany(comments);
+      
   });
 
 
