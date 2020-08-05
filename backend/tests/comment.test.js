@@ -2,14 +2,22 @@ const {users, questions, generateComments, generateUsers, generateQuestions} = r
       Rating = require('../models/rating'),
       User = require('../models/user'),
       Comment = require('../models/comment'),
+      QBasic = require('../models/qbasic'),
       db = require('../src/utils/db'),
       request = require('supertest'),
+      casual = require('casual'),
       app = require('../app');
 
 const userOne = users[0];
 const userAdmin = users[2];
-const qOne = questions[0];
+var questionsBasicList;
 
+//TODO: when deleting a comment
+//From the model:
+//a USER has comments[objectId];
+//a QUESTIONBASIC has lastCommentDescription
+//a QUESTIONDETAILS has comments[objectId]
+//
 describe('Comment routes', () => {
   
   beforeAll(() => {
@@ -28,7 +36,14 @@ describe('Comment routes', () => {
       
       //generate data
       const users = generateUsers(3);
-      const questions = generateQuestions(20, users);  
+      const questions = generateQuestions(2, users);
+      const qbasics = []; 
+      questions.forEach(q => {
+          qbasics.push(q.basic); 
+      });       
+      questionsBasicList = await QBasic.insertMany(qbasics);
+
+      
       await new User(users[0]).save();
 
       const comments = generateComments(20, users, questions);     
@@ -41,7 +56,7 @@ describe('Comment routes', () => {
   // ----------------------------------------------------------------------------
   // TEST CASES - INDEX (GET /comments)
   // ----------------------------------------------------------------------------
-  it.only('should be able to get all comments', async () => {
+  it('should be able to get all comments', async () => {
     await request(app).get('/comments').send().expect(200)
   });
 
@@ -57,19 +72,23 @@ describe('Comment routes', () => {
   // TEST CASES - CREATE (POST /comments)
   // ----------------------------------------------------------------------------
   it('should be able to create a new comment', async () => {
+    const date = new Date();
+
+    const someQuestionBasic = casual.random_element(questionsBasicList);
     await request(app).post('/comments').send({
-            name: 'Jeff Zigzig',
-            email: 'testing@gmail.com',
-            username: 'jeffzigzig20',
-            password: 'co0lp4$$',
-            validated: false
+            questionId: someQuestionBasic._id,
+            creatorId: userOne._id,
+            description: casual.sentences(3),
+            creationDate: date,
+            lastUpdate: date,
+
         }).expect(201)
   });
 
   // ----------------------------------------------------------------------------
   // TEST CASES - SHOW (GET /comments/:id)
   // ----------------------------------------------------------------------------
-  it(`should be able to get all the specified comment's info`, async () => {
+  it.skip(`should be able to get all the specified comment's info`, async () => {
     await request(app).get('/comments/'+userOne._id).send().expect(200)
   });
 
@@ -83,7 +102,7 @@ describe('Comment routes', () => {
   // ----------------------------------------------------------------------------
   // TEST CASES - UPDATE (PATCH /comments/:id)
   // ----------------------------------------------------------------------------
-  it('should be able to update the comment', async () => {
+  it.skip('should be able to update the comment', async () => {
     const response = await request(app).patch('/comments/'+userOne._id).send();
     expect(response.status).toBe(200);
   })
@@ -91,12 +110,12 @@ describe('Comment routes', () => {
   // ----------------------------------------------------------------------------
   // TEST CASES - DESTROY (DELETE /comments/:id)
   // ----------------------------------------------------------------------------
-  it('should be able to delete the comment', async () => {
+  it.skip('should be able to delete the comment', async () => {
     const response = await request(app).delete('/comments/'+userOne._id).send();
     expect(response.status).toBe(200);
   })
 
-  it('Should not be able to create a new comment with the same email', async () => {
+  it.skip('Should not be able to create a new comment with the same email', async () => {
     await request(app).post('/comments').send({
             name: 'Another Person',
             email: userOne.email,

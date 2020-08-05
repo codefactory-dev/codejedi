@@ -9,7 +9,6 @@ router.get('/comments', async (req,res) => {
     console.log("REQUEST ::  get all comments");
     try{
       const comments = await Comment.find({})
-      console.log(JSON.stringify(comments));
       return res.send(comments)
     } catch(error) {
       return res.status(500).json({
