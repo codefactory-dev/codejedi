@@ -245,6 +245,37 @@ const generateQuestions = (n, users) => {
 
 }
 
+
+const generateComments = (n, users, questions) => {
+    const comments = [];
+
+    for(let i = 0; i < n; i++) {
+        const id = new mongoose.Types.ObjectId;
+        const user = casual.random_element(users);
+        const remainingUsers = users.filter((current)=>{ current._id !== user._id});
+        const replyingUser = casual.random_element(remainingUsers);
+        const question = casual.random_element(questions);
+
+        const creationDate = new Date();
+
+        const comment = {
+            //FLUXO: USUARIO LOGADO CRIA UM COMMENT
+            //
+            //PREFIX: /users/:uid/questions/:qid
+            
+            questionId: question._id, //criou em que questão
+            creatorId: user._id, //usuario que criou
+            description: casual.sentences(6),
+            reply: {
+                creatorId: replyingUser._id,
+                description: casual.sentences(3),
+                creationDate: creationDate,
+                lastUpdate: creationDate
+            }
+        }
+    }
+}
+
 module.exports ={
     qDifficulties,
     qTypes,
@@ -255,5 +286,6 @@ module.exports ={
     tokens,
 
     generateUsers,
-    generateQuestions
+    generateQuestions,
+    generateComments
 };

@@ -1,4 +1,4 @@
-const {users, questions} = require('../src/utils/seed'),
+const {users, questions, generateComments} = require('../src/utils/seed'),
       Rating = require('../models/rating'),
       User = require('../models/user'),
       db = require('../src/utils/db'),
