@@ -4,12 +4,11 @@ const {users, questions, generateComments, generateUsers, generateQuestions} = r
       Comment = require('../models/comment'),
       QBasic = require('../models/qbasic'),
       db = require('../src/utils/db'),
+      mongoose = require('mongoose'),
       request = require('supertest'),
       casual = require('casual'),
       app = require('../app');
 
-const userOne = users[0];
-const userAdmin = users[2];
 var questionsBasicList;
 
 //TODO: when deleting a comment
@@ -18,6 +17,7 @@ var questionsBasicList;
 //a QUESTIONBASIC has lastCommentDescription
 //a QUESTIONDETAILS has comments[objectId]
 //
+
 describe('Comment routes', () => {
   
   beforeAll(() => {
@@ -32,10 +32,12 @@ describe('Comment routes', () => {
   beforeEach(async() => {
       await Rating.deleteMany({});
       await User.deleteMany({});
-      await new User(userOne).save();
       
       //generate data
       const users = generateUsers(3);
+      users.forEach(user => {
+        console.log("GENERATED USER ID: "+user._id);
+      });
       const questions = generateQuestions(2, users);
       const qbasics = []; 
       questions.forEach(q => {
@@ -44,10 +46,19 @@ describe('Comment routes', () => {
       questionsBasicList = await QBasic.insertMany(qbasics);
 
       
-      await new User(users[0]).save();
+      await User.create(users);
+      const seedComments = generateComments(20, users, questions);     
+      const comments = await Comment.create(seedComments);
 
-      const comments = generateComments(20, users, questions);     
-      await Comment.insertMany(comments);
+      for(let i=0;i<comments.length;i++)
+      {
+        var comment = comments[i];
+        const user = await User.findById(comment.creatorId);
+        console.log("found user of id: "+user._id);
+        console.log("user of name "+user.username+" going to add comment of id "+comment._id+" to its set.");
+        user.commentIds.addToSet(comment._id);
+        user.save();
+      }
       
   });
 
@@ -110,8 +121,11 @@ describe('Comment routes', () => {
   // ----------------------------------------------------------------------------
   // TEST CASES - DESTROY (DELETE /comments/:id)
   // ----------------------------------------------------------------------------
-  it.skip('should be able to delete the comment', async () => {
-    const response = await request(app).delete('/comments/'+userOne._id).send();
+  it('should be able to delete the comment and all references to it', async () => {
+    
+    const comment = Comment.findOne({});
+    const response = await request(app).delete('/comments/'+comment._id).send();
+
     expect(response.status).toBe(200);
   })
 

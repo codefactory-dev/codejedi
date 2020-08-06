@@ -1,6 +1,8 @@
 const express = require('express'),
       router = express.Router({mergeParams: true}),
-      Comment = require('../models/comment');
+      Comment = require('../models/comment'),
+      User = require('../models/user'),
+      middleware = require('../middleware/index')
 
 
 
@@ -59,7 +61,7 @@ router.post('/comments', async (req,res) => {
 });
 
 //UPDATE - updates a user
-router.patch('/users/:id', async (req,res) => {
+router.patch('/comments/:id', async (req,res) => {
   console.log("REQUEST ::  update user "+req.body.username);
   const updates = Object.keys(req.body)
   console.log("keys = "+updates.toString());
@@ -84,16 +86,37 @@ router.patch('/users/:id', async (req,res) => {
 })
 
 //DESTROY - delete user's info
-router.delete('/users/:id', async (req,res) => {
+router.delete('/comments/:id', middleware.auth, async (req,res) => {
+  //a USER has comments[objectId];
+  //a QUESTIONBASIC has lastCommentDescription
+  //a QUESTIONDETAILS has comments[objectId]
+
   const _id = req.params.id;
   try{
-    const user = await User.findByIdAndDelete(_id)
-    if (!user)
+    const comment = await Comment.findByIdAndDelete(_id)
+    const operation = async () => {
+
+      //get user associated with the question
+      //delete comment id from user list of comment ids
+      const ownerUser = await User.findById(req.user._id);
+      const commentRef = ownerUser.commentIds.id(_id);
+      commentRef.delete();
+
+
+      
+
+      return _.assign(qbasic, qdetail);
+    };
+
+    db.runAsTransaction(operation)
+        .then(resolve => res.status(201).send({question: resolve}))
+        .catch(e => res.status(e.status).json(e.message));
+    if (!comment)
     {
-      return res.status(404).send({error: 'User not found'})
+      return res.status(404).send({error: 'Comment not found'})
     }
-    res.status(200).send(user)
-    console.log("user deleted successfully");
+    res.status(200).send(comment)
+    console.log("comment deleted successfully");
 
   }catch(e){
     res.status(500).send({error: e})
