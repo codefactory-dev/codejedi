@@ -215,11 +215,13 @@ const generateQuestions = (n, users) => {
 
     for(let i = 0; i < n; i++) {
         const id = new mongoose.Types.ObjectId;
+        const detailsId = new mongoose.Types.ObjectId;
         const user = casual.random_element(users);
 
         const question = {
             basic: {
                 _id: id,
+                detailsId: detailsId,
                 creator: { 
                     id: user._id,
                     username: user.username,
@@ -231,6 +233,7 @@ const generateQuestions = (n, users) => {
                 hasSolution: false,
             },
             detail: {
+                _id: detailsId,
                 basicsId: id,
                 description: casual.description,    
                 creationDate: casual.date(),

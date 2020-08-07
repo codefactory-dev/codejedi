@@ -81,6 +81,8 @@ describe('Comment routes', () => {
       const seedComments = generateComments(7, users, seedQuestions);     
       const comments = await Comment.create(seedComments);
 
+      console.log("these are all the comments: "+JSON.stringify(comments));
+
       for(let i=0;i<comments.length;i++)
       {
         var comment = comments[i];
@@ -101,14 +103,10 @@ describe('Comment routes', () => {
       for (const comment of comments) {
         //Do somethign with the comment
         try{
-          console.log("gonna find by id = "+comment.questionId);
           var qBasicCommentBelongsTo = await QBasic.findById(comment.questionId);
-          console.log("qBasicCommentBelongsTo: "+qBasicCommentBelongsTo._id);
           var qDetailCommentBelongsTo = await QDetail.findById(qBasicCommentBelongsTo.detailsId);
-          console.log("qDetailCommentBelongsTo: "+qDetailCommentBelongsTo._id);
           await qDetailCommentBelongsTo.commentIds.addToSet(comment._id);
-          console.log("qDetailCommentBelongsTo.commentIds: "+JSON.stringify(qDetailCommentBelongsTo.commentIds));
-          await comment.save();
+          await qDetailCommentBelongsTo.save();
         } catch(e)
         {
           console.log("ERROR: "+e.toString());
