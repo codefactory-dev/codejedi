@@ -257,7 +257,6 @@ const generateComments = (n, users, questions) => {
         const question = casual.random_element(questions);
 
         const creationDate = new Date();
-        console.log("SEEDING: SETTING comment creatorId to "+user._id);
         const comment = {            
             questionId: question.basic._id,
             creatorId: user._id,

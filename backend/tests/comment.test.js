@@ -31,22 +31,50 @@ describe('Comment routes', () => {
 
   // create test user (creator)
   beforeEach(async() => {
-      await Rating.deleteMany({});
       await User.deleteMany({});
+      await Comment.deleteMany({});
+      await QBasic.deleteMany({});
+      await QDetail.deleteMany({});
       
       //generate data
       const users = generateUsers(3);
-      users.forEach(user => {
-        console.log("GENERATED USER ID: "+user._id);
-      });
       const seedQuestions = generateQuestions(2, users);  
       const qbasics = [], qdetails = [];   
       seedQuestions.forEach(q => {
             qbasics.push(q.basic); 
             qdetails.push(q.detail);
       });      
-      questionsBasicList = await QBasic.insertMany(qbasics);
-      questionDetailsList = await QDetail.insertMany(qdetails);
+      console.log("gonna create qbasics with "+JSON.stringify(qbasics));
+
+      for(let i=0;i<qbasics.length;i++)
+      {
+        var qbasic = new QBasic(qbasics[i]);
+        try{
+          console.log('before save');
+          let savedQbasic = await qbasic.save(); //when fail its goes to catch
+          console.log(savedQbasic); //when success it print.
+          console.log('after save');
+        }
+        catch(e)
+        {
+          console.log("ERROR SAVING qBasic i="+i+": "+e.toString());
+        }
+      }
+
+      for(let i=0;i<qdetails.length;i++)
+      {
+        var qdetail = new QDetail(qdetails[i]);
+        try{
+          console.log('before save');
+          let savedQdetail = await qdetail.save(); //when fail its goes to catch
+          console.log(savedQdetail); //when success it print.
+          console.log('after save');
+        }
+        catch(e)
+        {
+          console.log("ERROR SAVING qDetail i="+i+": "+e.toString());
+        }
+      }
 
       
       await User.create(users);
@@ -58,17 +86,48 @@ describe('Comment routes', () => {
         var comment = comments[i];
         const user = await User.findById(comment.creatorId);
         user.commentIds.addToSet(comment._id);
-        user.save();
+        await user.save();
       }
 
 
+      try{
+        const allQbasics = await QBasic.find({});
+        console.log("these are all the qbasics: "+JSON.stringify(allQbasics));
+      } catch(e)
+      {
+        console.log("ERROR FETCHING QBASICS: "+e.toString());
+      }
+
+      for (const comment of comments) {
+        //Do somethign with the comment
+        try{
+          console.log("gonna find by id = "+comment.questionId);
+          var qBasicCommentBelongsTo = await QBasic.findById(comment.questionId);
+          console.log("qBasicCommentBelongsTo: "+qBasicCommentBelongsTo._id);
+          var qDetailCommentBelongsTo = await QDetail.findById(qBasicCommentBelongsTo.detailsId);
+          console.log("qDetailCommentBelongsTo: "+qDetailCommentBelongsTo._id);
+          await qDetailCommentBelongsTo.commentIds.addToSet(comment._id);
+          console.log("qDetailCommentBelongsTo.commentIds: "+JSON.stringify(qDetailCommentBelongsTo.commentIds));
+          await comment.save();
+        } catch(e)
+        {
+          console.log("ERROR: "+e.toString());
+        }
+      }
+      console.log("GOT HEEEEEEERE");
+
+      /*
       comments.map(comment => {
         //Do somethign with the comment
-        var qBasicCommentBelongsTo = QBasic.findById(comment.questionBasicId);
-        var qDetailCommentBelongsTo = QDetail.findById(qBasicCommentBelongsTo.detailsId);
+        var qBasicCommentBelongsTo = await QBasic.findById(comment.questionId);
+        var qDetailCommentBelongsTo = await QDetail.findById(qBasicCommentBelongsTo.detailsId);
+        console.log("qBasicCommentBelongsTo: "+qBasicCommentBelongsTo._id);
+        console.log("qDetailCommentBelongsTo: "+qDetailCommentBelongsTo._id);
+        console.log("qDetailCommentBelongsTo.commentIds: "+JSON.stringify(qDetailCommentBelongsTo.commentIds));
         qDetailCommentBelongsTo.commentIds.addToSet(comment._id);
         comment.save();
       })
+      */
       
   });
 
@@ -96,9 +155,10 @@ describe('Comment routes', () => {
     const date = new Date();
 
     const someQuestionBasic = casual.random_element(questionsBasicList);
+    const user = User.findOne();
     await request(app).post('/comments').send({
             questionId: someQuestionBasic._id,
-            creatorId: userOne._id,
+            creatorId: user._id,
             description: casual.sentences(3),
             creationDate: date,
             lastUpdate: date,
