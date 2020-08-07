@@ -3,13 +3,14 @@ const {users, questions, generateComments, generateUsers, generateQuestions} = r
       User = require('../models/user'),
       Comment = require('../models/comment'),
       QBasic = require('../models/qbasic'),
+      QDetail = require('../models/qdetail'),
       db = require('../src/utils/db'),
       mongoose = require('mongoose'),
       request = require('supertest'),
       casual = require('casual'),
       app = require('../app');
 
-var questionsBasicList;
+var questionsBasicList, questionDetailsList;
 
 //TODO: when deleting a comment
 //From the model:
@@ -38,27 +39,36 @@ describe('Comment routes', () => {
       users.forEach(user => {
         console.log("GENERATED USER ID: "+user._id);
       });
-      const questions = generateQuestions(2, users);
-      const qbasics = []; 
-      questions.forEach(q => {
-          qbasics.push(q.basic); 
-      });       
+      const seedQuestions = generateQuestions(2, users);  
+      const qbasics = [], qdetails = [];   
+      seedQuestions.forEach(q => {
+            qbasics.push(q.basic); 
+            qdetails.push(q.detail);
+      });      
       questionsBasicList = await QBasic.insertMany(qbasics);
+      questionDetailsList = await QDetail.insertMany(qdetails);
 
       
       await User.create(users);
-      const seedComments = generateComments(20, users, questions);     
+      const seedComments = generateComments(7, users, seedQuestions);     
       const comments = await Comment.create(seedComments);
 
       for(let i=0;i<comments.length;i++)
       {
         var comment = comments[i];
         const user = await User.findById(comment.creatorId);
-        console.log("found user of id: "+user._id);
-        console.log("user of name "+user.username+" going to add comment of id "+comment._id+" to its set.");
         user.commentIds.addToSet(comment._id);
         user.save();
       }
+
+
+      comments.map(comment => {
+        //Do somethign with the comment
+        var qBasicCommentBelongsTo = QBasic.findById(comment.questionBasicId);
+        var qDetailCommentBelongsTo = QDetail.findById(qBasicCommentBelongsTo.detailsId);
+        qDetailCommentBelongsTo.commentIds.addToSet(comment._id);
+        comment.save();
+      })
       
   });
 
