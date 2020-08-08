@@ -17,7 +17,13 @@ var questionsBasicList, questionDetailsList;
 //a USER has comments[objectId];
 //a QUESTIONBASIC has lastCommentDescription
 //a QUESTIONDETAILS has comments[objectId]
-//
+
+
+function createAndSave(model){
+
+}
+
+
 
 describe('Comment routes', () => {
   
@@ -71,9 +77,16 @@ describe('Comment routes', () => {
 
       var comments;
       try{
-        await User.create(users);
+        for(let i=0;i<users.length;i++)
+        {
+          await new User(users[i]).save();
+        }
         const seedComments = generateComments(7, users, seedQuestions);     
-        comments = await Comment.create(seedComments);
+        for(let i=0;i<seedComments.length;i++)
+        {
+          await new Comment(seedComments[i]).save();
+        }
+        comments = await Comment.find();
       } catch(e){
         console.log("Error creating seed comments: "+e.toString());
       }
@@ -106,7 +119,7 @@ describe('Comment routes', () => {
           console.log("ADDED comment Id "+comment._id+" to qDetails "+qDetailCommentBelongsTo._id);
           await qDetailCommentBelongsTo.save();
         } catch(e){
-          console.log("Error: "+e.toString());
+          console.log("Error: "+e.toString()+" ===> in Comment of id "+comment._id);
         }
       }
       console.log("Finished");
