@@ -25,7 +25,8 @@ const   AuthRouter    = require('./routers/auth'),
         UserRouter    = require('./routers/user'),
         QTrackRouter  = require('./routers/qtrack'),
         RatingRouter  = require('./routers/rating'),
-        QuestionRouter  = require('./routers/question');
+        QuestionRouter  = require('./routers/question'),
+        CommentRouter = require('./routers/comment')
 
 // temp
 const   ImgRouter    = require('./routers/img'),
@@ -35,6 +36,7 @@ const   ImgRouter    = require('./routers/img'),
 app.use(proxy, AuthRouter);
 app.use(proxy, UserRouter);
 app.use(proxy, QuestionRouter);
+app.use(proxy, CommentRouter);
 //app.use(`${proxy}/users/:uid/questions/:qid/ratings`, RatingRouter);
 //app.use(`${proxy}/users/:uid/qtracks`, QTrackRouter);
 app.use(proxy, ImgRouter);

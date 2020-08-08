@@ -215,11 +215,13 @@ const generateQuestions = (n, users) => {
 
     for(let i = 0; i < n; i++) {
         const id = new mongoose.Types.ObjectId;
+        const detailsId = new mongoose.Types.ObjectId;
         const user = casual.random_element(users);
 
         const question = {
             basic: {
                 _id: id,
+                detailsId: detailsId,
                 creator: { 
                     id: user._id,
                     username: user.username,
@@ -231,6 +233,7 @@ const generateQuestions = (n, users) => {
                 hasSolution: false,
             },
             detail: {
+                _id: detailsId,
                 basicsId: id,
                 description: casual.description,    
                 creationDate: casual.date(),
@@ -245,6 +248,34 @@ const generateQuestions = (n, users) => {
 
 }
 
+
+const generateComments = (n, users, questions) => {
+    const comments = [];
+
+    for(let i = 0; i < n; i++) {
+        const id = new mongoose.Types.ObjectId;
+        const user = casual.random_element(users);
+        const remainingUsers = users.filter((current)=> current._id !== user._id);
+        const replyingUser = casual.random_element(remainingUsers);
+        const question = casual.random_element(questions);
+
+        const creationDate = new Date();
+        const comment = {            
+            questionId: question.basic._id,
+            creatorId: user._id,
+            description: casual.sentences(6),
+            reply: {
+                creatorId: replyingUser._id,
+                description: casual.sentences(3),
+                creationDate: creationDate,
+                lastUpdate: creationDate
+            }
+        }
+        comments.push(comment);
+    }
+    return comments;
+}
+
 module.exports ={
     qDifficulties,
     qTypes,
@@ -255,5 +286,6 @@ module.exports ={
     tokens,
 
     generateUsers,
-    generateQuestions
+    generateQuestions,
+    generateComments
 };

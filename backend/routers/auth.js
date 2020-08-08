@@ -65,9 +65,28 @@ router.post('/auth/signin', async function (req, res) {
     }
   });
 
-// validate the user credentials
 router.post('/auth/signout', middleware.auth,async function (req, res) {
+  try {
+    req.user.tokens = req.user.tokens.filter((token)=>{
+      return token.token !== req.token
+    })
+    await req.user.save();
 
+    res.send();
+  } catch (e) {
+    res.status(500).send();
+  }
+});
+
+router.post('/auth/signoutall', middleware.auth,async function (req, res) {
+  try {
+    req.user.tokens = [];
+    await req.user.save();
+
+    res.send();
+  } catch (e) {
+    res.status(500).send();
+  }
 });
 
 //user confirmation by token
