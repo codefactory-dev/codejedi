@@ -117,4 +117,36 @@ userSchema.methods.generateAuthToken = async function () {
     return token;
 }
 
+/** 
+    Method to add a new qtrack and update related fields
+    @param  {number} duration - newly added qtrack db document
+    @param  {number} question - qtrack's question db document
+    @return {User} updated user
+*/
+userSchema.methods.addQtrack = async function (qtrack, question) {
+    const user = this;
+
+    user.qTrackIds.push(qtrack._id);
+
+    const prevAvgDuration = user.qTrackSummary.avgDuration || 0;
+    const prevNbQtracks = user.qTrackSummary.nbTracks || 0;
+    user.qTrackSummary.avgDuration = ((prevAvgDuration*prevNbQtracks) + qtrack.duration) / (prevNbQtracks+1);
+
+    const prevNbPerType = user.qTrackSummary.nbTracksPerType.get(question.type) || 0;
+    const prevAvgPerType = user.qTrackSummary.avgDurationPerType.get(question.type) || 0;
+    const avgPerType = ((prevAvgPerType*prevNbPerType) + qtrack.duration) / (prevNbPerType+1);
+    user.qTrackSummary.avgDurationPerType.set(question.type, avgPerType);
+    
+    
+    const nbPerType = user.qTrackSummary.nbTracksPerType.get(question.type) || 0;
+    const nbPDifficultyPerType = user.qTrackSummary.nbPDifficultyPerType.get(qtrack.perceivedDifficulty) || 0;
+    user.qTrackSummary.nbTracks += 1;
+    user.qTrackSummary.nbTracksPerType.set(question.type, nbPerType+1);
+    user.qTrackSummary.nbPDifficultyPerType.set(qtrack.perceivedDifficulty, nbPDifficultyPerType+1);
+
+    await user.save();
+
+    return user;
+}
+
 module.exports = mongoose.model("User", userSchema);

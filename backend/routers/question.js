@@ -18,7 +18,7 @@ router.get('/questions', middleware.checkLogIn, async (req,res) => {
 
 //INDEX - GET all user's owned questions
 router.get('/users/:uid/questions', middleware.checkLogIn,
-                                    middleware.checkQuestionOwnership,
+                                    middleware.checkQuestionParamsNull,
                                     async (req,res) => {
     const user = await User.findById(req.params.uid).populate('questionIds');
 
@@ -41,7 +41,7 @@ router.post('/users/:uid/questions', middleware.checkLogIn,
             basicsId (required)
             description
     */
-   const user = await User.findById(req.params.uid);
+   const user = req.user;
 
    let qbasic = {
        creator: {
@@ -88,8 +88,8 @@ router.get('/users/:uid/questions/:id', middleware.checkLogIn,
                                         async (req,res) => {
 
     const qd   = await QDetail.findOne({basicsId: req.params.id}),
-          q    = await QBasic.findById(req.params.id),
-          user = await User.findById(req.params.uid);
+          q    = req.question,
+          user = req.user;
 
     res.status(200).send({question: _.assign(q, qd)});
 });
@@ -102,8 +102,8 @@ router.put('/users/:uid/questions/:id', middleware.checkLogIn,
                                           async (req,res) => {
 
     const qd   = await QDetail.findOne({basicsId: req.params.id}),
-          q    = await QBasic.findById(req.params.id),
-          user = await User.findById(req.params.uid);
+          q    = req.question,
+          user = req.user;
 
     // editable fields: title, difficulty, type, description, solution  
     let qbasic = {
@@ -140,7 +140,7 @@ router.delete('/users/:uid/questions/:id', middleware.checkLogIn,
                                            middleware.checkQuestionParamsNull,
                                            middleware.checkQuestionOwnership,
                                            async (req,res) => {
-    const user = await User.findById(req.params.uid);
+    const user = req.user;
 
     const operation = async () => {
         // update user           

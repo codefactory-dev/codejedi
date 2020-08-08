@@ -19,9 +19,9 @@ router.post('/', middleware.checkLogIn,
                  async (req, res) => {
 
     const operation = async () => {
-        const user = await User.findById(req.params.uid),
+        const user = req.user,
               qd   = await QDetail.findOne({basicsId: req.params.qid}),
-              q    = await QBasic.findById(req.params.qid);
+              q    = req.question;
 
         let rating = {
             creatorId: user._id,
@@ -59,10 +59,7 @@ router.get('/:id', middleware.checkLogIn,
                    middleware.checkRatingOwnership, 
                    async(req, res) => {
 
-    const rating = await Rating.findById(req.params.id)
-                                .catch(e => { res.status(500).json({error: true, message: e}) });;
-
-    return res.status(200).send({rating});
+    return res.status(200).send({rating: req.rating});
 });
 
 // UPDATE - update rating
@@ -72,8 +69,8 @@ router.put('/:id/edit', middleware.checkLogIn,
                         middleware.checkRatingOwnership, 
                         async(req, res) => {
 
-    const rating = await Rating.findById(req.params.id),
-            q    = await QBasic.findById(req.params.qid);   
+    const rating = req.rating,
+            q    = req.question;   
 
     const operation = async () => {   
         // update rating

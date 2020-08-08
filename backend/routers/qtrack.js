@@ -1,110 +1,123 @@
-// const express = require('express'),
-//       router = express.Router({mergeParams: true}),
-//       middleware = require('../middleware/index'),
-//       QTrack = require('../models/qtrack'),
-//       QBasic = require('../models/qbasic'),
-//       User = require('../models/user'),
-//       db = require('../src/utils/db'),
-//       {isNull} = require('./utils');
+const express = require('express'),
+      router = express.Router({mergeParams: true}),
+      middleware = require('../middleware/index'),
+      QTrack = require('../models/qtrack'),
+      QBasic = require('../models/qbasic'),
+      User = require('../models/user'),
+      db = require('../src/utils/db'),
+      {isNull} = require('./utils'),
+      _ = require('lodash');
 
-// // PREFIX: /users/:uid/qtracks
+// PREFIX: /users/:uid/qtracks
 
-// // INDEX - get all qtracks
-// router.get('/', async(req, res) => {
-//     // console.log(`INDEX REQUEST :: qtrack`);
+// INDEX - get all qtracks      /users/:uid/qtracks
+router.get('/', middleware.checkLogIn, 
+                middleware.checkQTrackParamsNull,
+                async(req, res) => {
 
-//     let user = await User.findById(req.params.uid);
-//     let qtracks;
-//     let error;
+    let qtracks;
 
-//     error = isNull(user);
-//     if (error) {
-//         res.status(400).json({ error: true, message: 'Invalid userId parameters' });
-//         return;
-//     }
-
-//     User.findById(req.params.uid).populate("qTrackIds").exec((err, tracks) => {
-//         console.log(tracks);
-//     });
+    await User.findById(req.params.uid, 'qTrackIds').populate("qTrackIds").exec((err, res) => {
+        console.log(res);
+        qtracks = res;
+    });
     
-//     return res.status(200).send({qtracks});
-// });
+    return res.status(200).send({qtracks});
+});
 
-// // NEW - get creation form
+// CREATE - post new qtrack     /users/:uid/qtracks
+router.post('/', middleware.checkLogIn, 
+                 middleware.checkQTrackParamsNull,
+                 async (req, res) => {
 
-// // CREATE - post new qtrack
-// router.post('/', middleware.checkIfQTrackParamsAreNull, 
-//                  middleware.checkQTrackValues,
-//                  async (req, res) => {
+    const user = req.user;
+    const question = await QBasic.findById(req.body.questionId);
 
-//     const user = await User.findById(req.params.uid);
-//     const q = await QBasic.findById(req.body.questionId);
+    if (isNull(user, question)) {
+        res.status(400).json({ error: true, message: 'Invalid user.id, q.id parameters.' });
+        return;
+    }
 
-//     let qtrack = {
-//         creatorId: user._id,
-//         questionId: q._id,
-//         perceivedDifficulty: req.body.perceivedDifficulty,
-//         solved: req.body.solved,
-//         duration: req.body.duration,
-//     };
+    let qtrack = {
+        creatorId: user._id,
+        questionId: question._id,
+        perceivedDifficulty: req.body.perceivedDifficulty,
+        solved: req.body.solved,
+        duration: req.body.duration,
+    };
 
-//     const operation = async () => {
-//             //create qtrack
-//             await QTrack.create(qtrack).then(res => qtrack = res);
+    const operation = async () => {
+            //create qtrack
+            await QTrack.create(qtrack).then(res => qtrack = res);
 
-//             // update user :: TODO
-            
-//             return qtrack;
-//     };
+            // update user       
+            await user.addQtrack(qtrack, question);
 
-//     db.runAsTransaction(operation)
-//         .then(resolve => res.status(201).send({qtrack: resolve}))
-//         .catch(reject => res.status(500).json(reject));
+            return qtrack;
+    };
 
-//     // console.log(`CREATE REQUEST :: qtracks`);
-//     // console.log(req.params);
+    db.runAsTransaction(operation)
+        .then(resolve => res.status(201).send({qtrack: resolve}))
+        .catch(e => res.status(e.status).json(e.message));
+  
+});
 
-//     /*
-//     let question = await QBasic.findById(req.body.questionId);
-//     let user = await User.findById(req.params.uid);
-//     let newQTrack;
-//     let error;
+// SHOW - get qtrack info       /users/:uid/qtracks/:id
+router.get('/:id', middleware.checkLogIn, 
+                   middleware.checkQTrackNull,
+                   middleware.checkQTrackParamsNull,
+                   middleware.checkQTrackOwnership, 
+                   async (req,res) => {
 
-//     error = isNull(user, question);
-//     if (error) {
-//         res.status(400).json({ error: true, message: 'Invalid userId, questionId parameters' });
-//         return;
-//     } 
+    const qtrack = await QTrack.findById(req.params.id);
+
+    res.status(200).send({qtrack});
+});
 
 
-//     newQTrack = {
-//         creatorId: req.params.uid,
-//         questionId: req.body.questionId,
-//         perceivedDifficulty: req.body.perceivedDifficulty,
-//         solved: req.body.solved,
-//         duration: req.body.duration,
-//     };
+// UPDATE - update qtrack's info    /users/:uid/qtracks/:id
+router.put('/:id', middleware.checkLogIn, 
+                   middleware.checkQTrackNull,
+                   middleware.checkQTrackParamsNull,
+                   middleware.checkQTrackOwnership,
+                   async (req,res) => {
 
-//     await QTrack.create(newQTrack)
-//             .then(qtrackDB => {
-//                 user.qTrackIds.push(qtrackDB._id);
-//                 user.save();
+    // editable fields: perceivedDifficulty, solved, duration  
+    let qtrack = {
+        perceivedDifficulty: req.body.perceivedDifficulty,
+        solved: req.body.solved,
+        duration: req.body.duration,
+        lastUpdate: new Date(),               // update qtracks's lastUpdate
+    };
 
-//                 res.status(201).send({qtrack: qtrackDB})
-//             })
-//             .catch(e => res.status(500).json({
-//                             error: true,
-//                             message: e.toString()
-//                           }));
-//     */
-// });
+    await QTrack.updateOne({_id: req.params.id}, qtrack)
+                .then(res => res.status(200).send({qtrack: res}))
+                .catch(reject => res.status(500).json(reject));
+    
+});
 
-// // SHOW - get qtrack info
+// DELETE - delete qtrack       /users/:uid/qtracks/:id
+router.delete('/:id', middleware.checkLogIn, 
+                      middleware.checkQTrackNull,
+                      middleware.checkQTrackParamsNull,
+                      middleware.checkQTrackOwnership,
+                      async (req,res) => {
+    const user = await User.findById(req.params.uid);
 
-// // EDIT - get edit form
+    const operation = async () => {
+        // update user           
+        user.qTrackIds = _.remove(user.qTrackIds, uq => uq.equals(req.params.id));
+        await user.save();
 
-// // UPDATE - update qtrack's info
+        // delete qtrack
+        await QTrack.deleteOne({ _id: req.params.id});
 
-// // DELETE - delete qtrack
+        return 'Qtrack deleted successfully';
+    };
 
-// module.exports = router;
+    db.runAsTransaction(operation)
+        .then(resolve => res.status(200).send(resolve))
+        .catch(e => res.status(e.status).json(e.message));
+});
+
+module.exports = router;

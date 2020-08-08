@@ -1,4 +1,5 @@
 const {qDifficulties} = require('../src/utils/seed'),
+      validator = require('validator'),
       mongoose = require('mongoose');
 
 

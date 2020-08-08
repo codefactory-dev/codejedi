@@ -63,6 +63,10 @@ db.reset = (logoff = true) => new Promise(async (resolve, reject) => {
             await Rating.deleteMany({})
                         .then(() => logoff || console.log("reset ratings."))
                         .catch((err) => reject("error: could not reset ratings"));
+            
+            await QTrack.deleteMany({})
+                        .then(() => logoff || console.log("reset qtracks."))
+                        .catch((err) => reject("error: could not reset qtracks"));
 
             await QDetail.deleteMany({})
                         .then(() => logoff || console.log("reset qdetails."))
@@ -70,7 +74,7 @@ db.reset = (logoff = true) => new Promise(async (resolve, reject) => {
 
             await QBasic.deleteMany({})
                         .then(() => logoff || console.log("reset qbasics."))
-                        .catch((err) => reject("error: could not rresetemove qbasics"));
+                        .catch((err) => reject("error: could not reset qbasics"));
 
             await Editor.deleteMany({})
                         .then(() => logoff || console.log("reset editors."))
@@ -127,6 +131,7 @@ db.runAsTransaction = async (func) => new Promise(async (resolve, reject) => {
             }, transactionOptions);
         }
         catch(e) {
+            console.log(e.message);
             let status = e instanceof mongoose.Error.ValidationError ? 400 : 500;              
             reject({status, message: e.message});
         }

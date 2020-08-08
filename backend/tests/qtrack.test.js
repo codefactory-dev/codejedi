@@ -1,4 +1,4 @@
-const {users, questions, qtracks} = require('../src/utils/seed'),
+const {users, questions, qtracks, generateUsers, generateQuestions, generateQTracks} = require('../src/utils/seed'),
       QDetail = require('../models/qdetail'),    
       QBasic = require('../models/qbasic'),
       QTrack = require('../models/qtrack'),
@@ -8,33 +8,40 @@ const {users, questions, qtracks} = require('../src/utils/seed'),
       request = require('supertest'),
       app = require('../app');
 
-const qOne = questions[0],       qTwo = questions[1],
-      userOne = users[0],        userTwo = users[1],
-      qtrackOne = qtracks[0],    qtrackTwo = qtracks[1];
-
 describe('QTrack routes', () => {
+    let users;
+    let questions;
+    let qtracks;
 
     beforeAll(() => {
       db.connect();
       db.initCollections();
       db.reset();
+
+      users = generateUsers(2);
+      questions = generateQuestions(2, users);
+      qtracks = generateQTracks(3, users, questions);
     });
 
     afterAll(db.disconnect);
   
     beforeEach(async() => {
-        await QTrack.deleteMany({});
-        await User.deleteMany({});
-        await QBasic.deleteMany({});
-        await QDetail.deleteMany({});
+        await db.reset();
+
+        // await QTrack.deleteMany({});
+        // await User.deleteMany({});
+        // await QBasic.deleteMany({});
+        // await QDetail.deleteMany({});
   
-        await new User(userOne).save();
-        await new QBasic(qOne.basic).save();
-        await new QDetail(qOne.detail).save();
+        // await new User(userOne).save();
+        // await new QBasic(qOne.basic).save();
+        // await new QDetail(qOne.detail).save();
     });
 
+  // PREFIX: /users/:uid/qtracks
+
   // ----------------------------------------------------------------------------
-  // TEST CASES - GET /users/:uid/qtracks
+  // TEST CASES - GET all qtracks      /users/:uid/qtracks
   // ----------------------------------------------------------------------------
   // it('should fetch qtracks', async () => {
   //   // qtrackOne.creatorId = userOne._id;
@@ -54,27 +61,55 @@ describe('QTrack routes', () => {
   // });
 
   // ----------------------------------------------------------------------------
-  // TEST CASES - POST /users/:uid/qtracks
+  // TEST CASES - POST new qtrack  /users/:uid/qtracks
   // ----------------------------------------------------------------------------
   it('should post a qtrack', async () => {
-    const response = await request(app)
-                              .post(`/users/${userOne._id}/qtracks`)
-                              .send({
-                                questionId: qOne.basic._id,
-                                perceivedDifficulty: "Medium",
-                                solved: false,
-                                duration: 35,
-                              });
+    let qbasics = [], qdetails = [];
+    questions.forEach(q => {
+      qbasics.push(q.basic);
+      qdetails.push(q.detail);
+    });
 
-    expect(response.status).toBe(201); // success :: created
+    await User.insertMany(users);
+    await QBasic.insertMany(qbasics);
+    await QDetail.insertMany(qdetails);
 
+    for(let i = 0; i < qtracks.length; i++){
+      const {creatorId, questionId, perceivedDifficulty, solved, duration} = qtracks[i];
+      const response = await request(app)
+                                .post(`/users/${creatorId}/qtracks`)
+                                .send({
+                                  questionId,
+                                  perceivedDifficulty,
+                                  solved,
+                                  duration 
+                                });
 
-  //   // additional assertions
-  //   const qtrack = await QTrack.findById(response.body.qtrack._id);
-  //   expect(qtrack).not.toBeNull();
-
-  //   const user = await User.findById(userOne._id);
-  //   expect(user.qTrackIds).toHaveLength(1);
-  //   expect(user.qTrackIds[0]._id).toEqual(qtrack._id);
+      expect(response.status).toBe(201); // success :: created
+    }
   });
+
+  // ----------------------------------------------------------------------------
+  // TEST CASES - SHOW - get qtrack info       /users/:uid/qtracks/:id
+  // ----------------------------------------------------------------------------
+  // it('should fetch a qtrack', async () => {
+  //   await new QTrack(qtrackOne).save();
+
+  //   const response = await request(app).get(`/users/${userOne._id}/qtracks/${qtrackOne._id}`);
+
+  //   console.log(response.body);
+  //   expect(response.status).toBe(200); // success :: ok
+  // });
+
+  // ----------------------------------------------------------------------------
+  // TEST CASES - UPDATE - update qtrack's info    /users/:uid/qtracks/:id
+  // ----------------------------------------------------------------------------
+
+  // ----------------------------------------------------------------------------
+  // TEST CASES - DELETE - delete qtrack       /users/:uid/qtracks/:id
+  // ----------------------------------------------------------------------------
+
+  // ----------------------------------------------------------------------------
+  // TEST CASES - POST new qtrack  /users/:uid/qtracks
+  // ----------------------------------------------------------------------------
 });
