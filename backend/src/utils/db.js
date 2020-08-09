@@ -37,7 +37,8 @@ db.connect = () => new Promise(async (resolve, reject) => {
                             useCreateIndex: true,
                             useUnifiedTopology: true,
                             bufferCommands: false,
-                            bufferMaxEntries: 0
+                            bufferMaxEntries: 0,
+                            useFindAndModify: false 
     })
     .then(()=> console.log(`connected to ${process.env.MONGODB_URL}`))
     .catch(err => reject(`Error on db connection:  ${err.message}`));

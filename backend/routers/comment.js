@@ -65,63 +65,64 @@ router.post('/comments', async (req,res) => {
     }
 });
 
-//UPDATE - updates a user
+//UPDATE - updates a comment
 router.patch('/comments/:id', async (req,res) => {
-  console.log("REQUEST ::  update user "+req.body.username);
+  console.log("REQUEST ::  update comment "+req.params.id);
   const updates = Object.keys(req.body)
   console.log("keys = "+updates.toString());
-  const allowedUpdates = ["firstname","lastname","email", "username", "password","joinDate",
-                          "profileImage","profileVisibility","qTrackSummary"];
+  const allowedUpdates = ["description","reply"];
   const updatesAreValid = updates.every((update)=>allowedUpdates.includes(update))
   if (!updatesAreValid)
   {
     return res.status(400).send({error: 'Updates not valid !'})
   }
   try{
-    const user = await User.findByIdAndUpdate(req.params.id,req.body, {runValidators: true, new:true})
+    const comment = await Comment.findByIdAndUpdate(req.params.id,req.body, {runValidators: true, new:true})
     
-    if (!user)
+    if (!comment)
     {
-      res.status(404).send({error: "User not found"})
+      console.error("Comment not found");
+      return res.status(404).send({error: "Comment not found"})
     }
-    res.send(user)
+    console.log("UPDATED COMMENT "+comment._id);
+    res.status(200).send(comment);
   } catch(e){
+    console.error("Error 500: "+e.toString());
     res.status(500).send({error: e})
   }
 })
 
 //DESTROY - delete user's info
 router.delete('/comments/:id', async (req,res) => {
-  console.log(`REQUEST :: DELETE comment  ${req.params.id}`);
-  //a USER has comments[objectId];
-  //a QUESTIONBASIC has lastCommentDescription
-  //a QUESTIONDETAILS has comments[objectId]
+  console.log(`REQUEST :: DELETE comment ${req.params.id}`);
 
-  //Need to delete comment from table COMMENT
-  //Need to delete commentIds from table USER
-  //Need to delete commentIds from some question's questionDetails
+  //1-Need to delete comment from table COMMENT
+  //2-Need to delete commentIds from table USER
+  //3-Need to delete commentIds from some question's questionDetails
 
   const commentId = req.params.id;
   try{
     
     const operation = async () => {
 
-      //Need to delete comment from table COMMENT
+      //1
       const comment = await Comment.findByIdAndDelete(commentId);
 
 
-      //Need to delete commentIds from table USER
+      //2
       const creatorId = comment.creatorId;
       const ownerUser = await User.findById(creatorId);
       ownerUser.commentIds.pull(commentId);
       await ownerUser.save();
 
-      //Need to delete commentIds from some question's questionDetails
+      //3
       const questionBasicId = comment.questionId;
       const qBasic = await QBasic.findById(questionBasicId);
       const qDetail = await QDetail.findById(qBasic.detailsId);
       qDetail.commentIds.pull(commentId);
       await qDetail.save();
+      
+      //console.log("COMMENT: "+commentId+" creatorId: "+creatorId+" qBId: "+questionBasicId);
       
     };
 

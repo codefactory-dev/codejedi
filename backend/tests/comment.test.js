@@ -146,8 +146,16 @@ describe('Comment routes', () => {
   // ----------------------------------------------------------------------------
   // TEST CASES - UPDATE (PATCH /comments/:id)
   // ----------------------------------------------------------------------------
-  it.skip('should be able to update the comment', async () => {
-    const response = await request(app).patch('/comments/'+userOne._id).send();
+  it.only('should be able to update the comment', async () => {
+    const comment = await Comment.findOne({});
+    const response = await request(app)
+                              .patch('/comments/'+comment._id)
+                              .send({
+                                  description: 'This is a new Description',
+                                  reply: {
+                                    description: 'I modified the reply !'                                    
+                                  }
+                              });
     expect(response.status).toBe(200);
   })
 
