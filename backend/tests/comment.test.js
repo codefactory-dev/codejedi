@@ -12,13 +12,6 @@ const {users, questions, generateComments, generateUsers, generateQuestions} = r
 
 var questionsBasicList, questionDetailsList;
 
-//TODO: when deleting a comment
-//From the model:
-//a USER has comments[objectId];
-//a QUESTIONBASIC has lastCommentDescription
-//a QUESTIONDETAILS has comments[objectId]
-
-
 describe('Comment routes', () => {
   
   beforeAll(async (done) => {
@@ -46,29 +39,20 @@ describe('Comment routes', () => {
             qdetails.push(q.detail);
       });      
 
-      let i;
       try{
         await QBasic.insertMany(qbasics);
         await QDetail.insertMany(qdetails);
         const allQbasics = await QBasic.find({});      
-        console.log("THESE ARE ALL THE SEED QBASICS: "+JSON.stringify(qbasics.map(e => e._id)));  
-        console.log("THESE ARE ALL THE DB QBASICS: "+JSON.stringify(allQbasics.map(e => e._id)));
       } catch(e){
-        console.log("Error saving qbasic/qdetails"+e.toString()+" ====> For loop ID: "+i);
+        console.log("Error saving qbasic/qdetails");
       }
       
 
       var comments;
       try{
-        for(let i=0;i<users.length;i++)
-        {
-          await new User(users[i]).save();
-        }
+        await User.insertMany(users);
         const seedComments = generateComments(7, users, seedQuestions);     
-        for(let i=0;i<seedComments.length;i++)
-        {
-          await new Comment(seedComments[i]).save();
-        }
+        await Comment.insertMany(seedComments);
         comments = await Comment.find();
       } catch(e){
         console.log("Error creating seed comments: "+e.toString());
@@ -86,19 +70,12 @@ describe('Comment routes', () => {
         }
       }
 
-      console.log("THESE ARE ALL THE COMMENTS: "+JSON.stringify(comments.map(e => [e._id,e.questionId])));
-      
-
-
       for (const comment of comments) {
         //Do somethign with the comment
         try{
           var qBasicCommentBelongsTo = await QBasic.findById(comment.questionId);
-          //^^THIS IS BEING RETURNED NULL
-
           var qDetailCommentBelongsTo = await QDetail.findById(qBasicCommentBelongsTo.detailsId);
           await qDetailCommentBelongsTo.commentIds.addToSet(comment._id);
-          console.log("ADDED comment Id "+comment._id+" to qDetails "+qDetailCommentBelongsTo._id);
           await qDetailCommentBelongsTo.save();
         } catch(e){
           console.log("Error: "+e.toString()+" ===> in Comment of id "+comment._id);
@@ -113,7 +90,7 @@ describe('Comment routes', () => {
   // ----------------------------------------------------------------------------
   // TEST CASES - INDEX (GET /comments)
   // ----------------------------------------------------------------------------
-  it.only('should be able to get all comments', async () => {
+  it('should be able to get all comments', async () => {
     await request(app).get('/comments').send().expect(200)
   });
 
@@ -131,8 +108,9 @@ describe('Comment routes', () => {
   it('should be able to create a new comment', async () => {
     const date = new Date();
 
-    const someQuestionBasic = casual.random_element(questionsBasicList);
-    const user = User.findOne();
+    const allQbasics = await QBasic.find({});   
+    const someQuestionBasic = casual.random_element(allQbasics);
+    const user = await User.findOne();
     await request(app).post('/comments').send({
             questionId: someQuestionBasic._id,
             creatorId: user._id,
@@ -160,8 +138,16 @@ describe('Comment routes', () => {
   // ----------------------------------------------------------------------------
   // TEST CASES - UPDATE (PATCH /comments/:id)
   // ----------------------------------------------------------------------------
-  it.skip('should be able to update the comment', async () => {
-    const response = await request(app).patch('/comments/'+userOne._id).send();
+  it('should be able to update the comment', async () => {
+    const comment = await Comment.findOne({});
+    const response = await request(app)
+                              .patch('/comments/'+comment._id)
+                              .send({
+                                  description: 'This is a new Description',
+                                  reply: {
+                                    description: 'I modified the reply !'                                    
+                                  }
+                              });
     expect(response.status).toBe(200);
   })
 
@@ -170,20 +156,10 @@ describe('Comment routes', () => {
   // ----------------------------------------------------------------------------
   it('should be able to delete the comment and all references to it', async () => {
     
-    const comment = Comment.findOne({});
+    const comment = await Comment.findOne({});
     const response = await request(app).delete('/comments/'+comment._id).send();
 
     expect(response.status).toBe(200);
   })
-
-  it.skip('Should not be able to create a new comment with the same email', async () => {
-    await request(app).post('/comments').send({
-            name: 'Another Person',
-            email: userOne.email,
-            username: 'figarofi',
-            password: 'somep4ssw0rd',
-            validated: false
-        }).expect(409)
-  });
 
 });

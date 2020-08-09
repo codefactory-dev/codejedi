@@ -36,6 +36,7 @@ const   ImgRouter    = require('./routers/img'),
 app.use(proxy, AuthRouter);
 app.use(proxy, UserRouter);
 app.use(proxy, QuestionRouter);
+app.use(proxy, CommentRouter);
 app.use(`${proxy}/users/:uid/questions/:qid/ratings`, RatingRouter);
 app.use(`${proxy}/users/:uid/qtracks`, QTrackRouter);
 app.use(proxy, ImgRouter);
