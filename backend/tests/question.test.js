@@ -15,9 +15,9 @@ const qOne = questions[0], qTwo = questions[1],
 describe('Rating routes', () => {
 
   beforeAll(() => {
-    db.connect();
-    db.initCollections();
-    db.reset();
+    await db.connect();
+    await db.initCollections();
+    await db.reset();
   });
 
   afterAll(db.disconnect);

@@ -27,16 +27,16 @@ function createAndSave(model){
 
 describe('Comment routes', () => {
   
-  beforeAll(() => {
-      db.connect();
-      db.initCollections();
-      db.reset();
+  beforeAll(async () => {
+      await db.connect();
+      await db.initCollections();
+      await db.reset();
   });
 
   afterAll(db.disconnect);
 
   // create test user (creator)
-  beforeEach(async() => {
+  beforeEach( async() => {
       await User.deleteMany({});
       await Comment.deleteMany({});
       await QBasic.deleteMany({});
@@ -53,17 +53,11 @@ describe('Comment routes', () => {
 
       let i;
       try{
-        for(i=0;i<seedQuestions.length;i++)
-        {
-          console.log("inserting qbasic of id "+qbasics[i]._id);
-          const qbasic = new QBasic(qbasics[i]);
-          await qbasic.save();
-          const qdetail = new QDetail(qdetails[i]);
-          await qdetail.save();
-        }
+        await QBasic.insertMany(qbasics);
+        await QDetail.insertMany(qdetails);
         const allQbasics = await QBasic.find({});      
         console.log("THESE ARE ALL THE SEED QBASICS: "+JSON.stringify(qbasics.map(e => e._id)));  
-        console.log("THESE ARE ALL THE DB QBASICS: "+JSON.stringify(allQbasics.map(e => [e._id,"detailsID: "+e.detailsId])));
+        console.log("THESE ARE ALL THE DB QBASICS: "+JSON.stringify(allQbasics.map(e => e._id)));
       } catch(e){
         console.log("Error saving qbasic/qdetails"+e.toString()+" ====> For loop ID: "+i);
       }
