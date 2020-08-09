@@ -12,13 +12,6 @@ const {users, questions, generateComments, generateUsers, generateQuestions} = r
 
 var questionsBasicList, questionDetailsList;
 
-//TODO: when deleting a comment
-//From the model:
-//a USER has comments[objectId];
-//a QUESTIONBASIC has lastCommentDescription
-//a QUESTIONDETAILS has comments[objectId]
-
-
 describe('Comment routes', () => {
   
   beforeAll(async (done) => {
@@ -46,13 +39,12 @@ describe('Comment routes', () => {
             qdetails.push(q.detail);
       });      
 
-      let i;
       try{
         await QBasic.insertMany(qbasics);
         await QDetail.insertMany(qdetails);
         const allQbasics = await QBasic.find({});      
       } catch(e){
-        console.log("Error saving qbasic/qdetails"+e.toString()+" ====> For loop ID: "+i);
+        console.log("Error saving qbasic/qdetails");
       }
       
 
@@ -146,7 +138,7 @@ describe('Comment routes', () => {
   // ----------------------------------------------------------------------------
   // TEST CASES - UPDATE (PATCH /comments/:id)
   // ----------------------------------------------------------------------------
-  it.only('should be able to update the comment', async () => {
+  it('should be able to update the comment', async () => {
     const comment = await Comment.findOne({});
     const response = await request(app)
                               .patch('/comments/'+comment._id)
@@ -169,15 +161,5 @@ describe('Comment routes', () => {
 
     expect(response.status).toBe(200);
   })
-
-  it.skip('Should not be able to create a new comment with the same email', async () => {
-    await request(app).post('/comments').send({
-            name: 'Another Person',
-            email: userOne.email,
-            username: 'figarofi',
-            password: 'somep4ssw0rd',
-            validated: false
-        }).expect(409)
-  });
 
 });
