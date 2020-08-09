@@ -19,24 +19,19 @@ var questionsBasicList, questionDetailsList;
 //a QUESTIONDETAILS has comments[objectId]
 
 
-function createAndSave(model){
-
-}
-
-
-
 describe('Comment routes', () => {
   
-  beforeAll(async () => {
+  beforeAll(async (done) => {
       await db.connect();
       await db.initCollections();
       await db.reset();
+      done();
   });
 
   afterAll(db.disconnect);
 
   // create test user (creator)
-  beforeEach( async() => {
+  beforeEach( async(done) => {
       await User.deleteMany({});
       await Comment.deleteMany({});
       await QBasic.deleteMany({});
@@ -110,6 +105,7 @@ describe('Comment routes', () => {
         }
       }
       console.log("Finished");
+      done();
   });
 
 
@@ -117,7 +113,7 @@ describe('Comment routes', () => {
   // ----------------------------------------------------------------------------
   // TEST CASES - INDEX (GET /comments)
   // ----------------------------------------------------------------------------
-  it('should be able to get all comments', async () => {
+  it.only('should be able to get all comments', async () => {
     await request(app).get('/comments').send().expect(200)
   });
 
