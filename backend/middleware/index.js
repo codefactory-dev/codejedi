@@ -48,7 +48,7 @@ middleware.checkQTrackNull = async (req, res, next) => {
 
     if (isNull(req.qtrack)) 
         res.status(400).json({ error: true, message: 'Invalid qtrack.id parameter.' });
-    else
+    else 
         next();
 }
 
