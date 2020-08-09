@@ -273,8 +273,6 @@ const generateQTracks = (n, users, questions) => {
 
 const generateComments = (n, users, questions) => {
     const comments = [];
-
-    console.log("BEFORE GENERATING COMMENTS");
     for(let i=0;i<n;i++)
     {
         const id = new mongoose.Types.ObjectId;
@@ -299,8 +297,6 @@ const generateComments = (n, users, questions) => {
         }
         comments.push(comment);
     }
-    
-    console.log("AFTER GENERATING COMMENTS");
     return comments;
 }
 

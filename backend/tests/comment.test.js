@@ -51,8 +51,6 @@ describe('Comment routes', () => {
         await QBasic.insertMany(qbasics);
         await QDetail.insertMany(qdetails);
         const allQbasics = await QBasic.find({});      
-        console.log("THESE ARE ALL THE SEED QBASICS: "+JSON.stringify(qbasics.map(e => e._id)));  
-        console.log("THESE ARE ALL THE DB QBASICS: "+JSON.stringify(allQbasics.map(e => e._id)));
       } catch(e){
         console.log("Error saving qbasic/qdetails"+e.toString()+" ====> For loop ID: "+i);
       }
@@ -60,15 +58,9 @@ describe('Comment routes', () => {
 
       var comments;
       try{
-        for(let i=0;i<users.length;i++)
-        {
-          await new User(users[i]).save();
-        }
+        await User.insertMany(users);
         const seedComments = generateComments(7, users, seedQuestions);     
-        for(let i=0;i<seedComments.length;i++)
-        {
-          await new Comment(seedComments[i]).save();
-        }
+        await Comment.insertMany(seedComments);
         comments = await Comment.find();
       } catch(e){
         console.log("Error creating seed comments: "+e.toString());
@@ -86,19 +78,12 @@ describe('Comment routes', () => {
         }
       }
 
-      console.log("THESE ARE ALL THE COMMENTS: "+JSON.stringify(comments.map(e => [e._id,e.questionId])));
-      
-
-
       for (const comment of comments) {
         //Do somethign with the comment
         try{
           var qBasicCommentBelongsTo = await QBasic.findById(comment.questionId);
-          //^^THIS IS BEING RETURNED NULL
-
           var qDetailCommentBelongsTo = await QDetail.findById(qBasicCommentBelongsTo.detailsId);
           await qDetailCommentBelongsTo.commentIds.addToSet(comment._id);
-          console.log("ADDED comment Id "+comment._id+" to qDetails "+qDetailCommentBelongsTo._id);
           await qDetailCommentBelongsTo.save();
         } catch(e){
           console.log("Error: "+e.toString()+" ===> in Comment of id "+comment._id);
