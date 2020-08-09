@@ -98,7 +98,7 @@ describe('Comment routes', () => {
   // ----------------------------------------------------------------------------
   // TEST CASES - INDEX (GET /comments)
   // ----------------------------------------------------------------------------
-  it.only('should be able to get all comments', async () => {
+  it('should be able to get all comments', async () => {
     await request(app).get('/comments').send().expect(200)
   });
 
@@ -116,8 +116,9 @@ describe('Comment routes', () => {
   it('should be able to create a new comment', async () => {
     const date = new Date();
 
-    const someQuestionBasic = casual.random_element(questionsBasicList);
-    const user = User.findOne();
+    const allQbasics = await QBasic.find({});   
+    const someQuestionBasic = casual.random_element(allQbasics);
+    const user = await User.findOne();
     await request(app).post('/comments').send({
             questionId: someQuestionBasic._id,
             creatorId: user._id,
@@ -155,7 +156,7 @@ describe('Comment routes', () => {
   // ----------------------------------------------------------------------------
   it('should be able to delete the comment and all references to it', async () => {
     
-    const comment = Comment.findOne({});
+    const comment = await Comment.findOne({});
     const response = await request(app).delete('/comments/'+comment._id).send();
 
     expect(response.status).toBe(200);
