@@ -149,4 +149,71 @@ userSchema.methods.addQtrack = async function (qtrack, question) {
     return user;
 }
 
+/** 
+    Method to update qtrack's related fields
+    @param  {QTrack} prevtrack - prev qtrack db document
+    @param  {QTrack} track     - newly added qtrack db document
+    @param  {QBasic} question  - qtrack's question db document
+    @return {User} updated user
+*/
+userSchema.methods.updateQtrack = async function (prevtrack, track, question) {
+    const user = this;
+
+    if (prevtrack.duration !== track.duration){
+        const prevAvgDuration = user.qTrackSummary.avgDuration || 0;
+        const prevNbQtracks = user.qTrackSummary.nbTracks || 0;
+        user.qTrackSummary.avgDuration = ((prevAvgDuration*prevNbQtracks) + (track.duration - prevtrack.duration)) / (prevNbQtracks);
+    
+        const prevNbPerType = user.qTrackSummary.nbTracksPerType.get(question.type) || 0;
+        const prevAvgPerType = user.qTrackSummary.avgDurationPerType.get(question.type) || 0;
+        const avgPerType = ((prevAvgPerType*prevNbPerType) + (track.duration - prevtrack.duration)) / (prevNbPerType);
+        user.qTrackSummary.avgDurationPerType.set(question.type, avgPerType);
+    }
+    
+    if (prevtrack.perceivedDifficulty !== track.perceivedDifficulty) {
+        let nbPDifficultyPerType = user.qTrackSummary.nbPDifficultyPerType.get(prevtrack.perceivedDifficulty) || 0;
+        user.qTrackSummary.nbPDifficultyPerType.set(prevtrack.perceivedDifficulty, nbPDifficultyPerType-1);
+
+        nbPDifficultyPerType = user.qTrackSummary.nbPDifficultyPerType.get(track.perceivedDifficulty) || 0;
+        user.qTrackSummary.nbPDifficultyPerType.set(track.perceivedDifficulty, nbPDifficultyPerType+1);
+    }
+
+    await user.save();
+
+    return user;
+}
+
+
+/** 
+    Method to remove a qtrack and update related fields
+    @param  {QTrack} qtrack - newly deleted qtrack db document
+    @param  {QBasic} question - qtrack's question db document
+    @return {User} updated user
+*/
+userSchema.methods.deleteQtrack = async function (qtrack, question) {
+    const user = this;
+
+    user.qTrackIds = user.qTrackIds.filter(qid => !qid.equals(qtrack._id));
+
+    const prevAvgDuration = user.qTrackSummary.avgDuration || 0;
+    const prevNbQtracks = user.qTrackSummary.nbTracks || 0;
+    user.qTrackSummary.avgDuration = prevNbQtracks == 1 ? 0 : ((prevAvgDuration*prevNbQtracks) - qtrack.duration) / (prevNbQtracks-1);
+
+    const prevNbPerType = user.qTrackSummary.nbTracksPerType.get(question.type) || 0;
+    const prevAvgPerType = user.qTrackSummary.avgDurationPerType.get(question.type) || 0;
+    const avgPerType = prevNbPerType == 1 ? 0 : ((prevAvgPerType*prevNbPerType) - qtrack.duration) / (prevNbPerType-1);
+    user.qTrackSummary.avgDurationPerType.set(question.type, avgPerType);
+    
+    
+    const nbPerType = user.qTrackSummary.nbTracksPerType.get(question.type) || 0;
+    const nbPDifficultyPerType = user.qTrackSummary.nbPDifficultyPerType.get(qtrack.perceivedDifficulty) || 0;
+    user.qTrackSummary.nbTracks -= 1;
+    user.qTrackSummary.nbTracksPerType.set(question.type, nbPerType-1);
+    user.qTrackSummary.nbPDifficultyPerType.set(qtrack.perceivedDifficulty, nbPDifficultyPerType-1);
+
+    await user.save();
+
+    return user;
+}
+
 module.exports = mongoose.model("User", userSchema);

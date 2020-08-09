@@ -15,14 +15,16 @@ router.get('/', middleware.checkLogIn,
                 middleware.checkQTrackParamsNull,
                 async(req, res) => {
 
-    let qtracks;
-
-    await User.findById(req.params.uid, 'qTrackIds').populate("qTrackIds").exec((err, res) => {
-        console.log(res);
-        qtracks = res;
+    await User.findOne({_id: req.params.uid}).populate("qTrackIds", (err, result) => { 
+        if(err) {
+            res.status(500).json({ error: true, message: 'Server internal error.' });
+        }
+        else {
+            res.status(200).send({qtracks: result});   
+        } 
     });
     
-    return res.status(200).send({qtracks});
+                
 });
 
 // CREATE - post new qtrack     /users/:uid/qtracks
@@ -69,9 +71,7 @@ router.get('/:id', middleware.checkLogIn,
                    middleware.checkQTrackOwnership, 
                    async (req,res) => {
 
-    const qtrack = await QTrack.findById(req.params.id);
-
-    res.status(200).send({qtrack});
+    res.status(200).send({qtrack: req.qtrack});
 });
 
 
@@ -82,6 +82,9 @@ router.put('/:id', middleware.checkLogIn,
                    middleware.checkQTrackOwnership,
                    async (req,res) => {
 
+    const user = req.user;
+    const question = await QBasic.findById(req.qtrack.questionId);
+
     // editable fields: perceivedDifficulty, solved, duration  
     let qtrack = {
         perceivedDifficulty: req.body.perceivedDifficulty,
@@ -90,9 +93,19 @@ router.put('/:id', middleware.checkLogIn,
         lastUpdate: new Date(),               // update qtracks's lastUpdate
     };
 
-    await QTrack.updateOne({_id: req.params.id}, qtrack)
-                .then(res => res.status(200).send({qtrack: res}))
-                .catch(reject => res.status(500).json(reject));
+    const operation = async () => {
+        // update user      
+        await user.updateQtrack(req.qtrack, qtrack, question);     
+
+        // update qtrack
+        await QTrack.findByIdAndUpdate(req.qtrack._id, qtrack).then(resolve => qtrack = resolve);
+
+        return qtrack;
+    };
+
+    db.runAsTransaction(operation)
+        .then(resolve => res.status(200).send(resolve))
+        .catch(e => res.status(e.status).json(e.message));
     
 });
 
@@ -102,17 +115,19 @@ router.delete('/:id', middleware.checkLogIn,
                       middleware.checkQTrackParamsNull,
                       middleware.checkQTrackOwnership,
                       async (req,res) => {
-    const user = await User.findById(req.params.uid);
+
+    const qtrack = req.qtrack;
+    const user = req.user;
+    const question = await QBasic.findById(qtrack.questionId);
 
     const operation = async () => {
-        // update user           
-        user.qTrackIds = _.remove(user.qTrackIds, uq => uq.equals(req.params.id));
-        await user.save();
+        // update user      
+        await user.deleteQtrack(qtrack, question);     
 
         // delete qtrack
-        await QTrack.deleteOne({ _id: req.params.id});
+        await QTrack.deleteOne({ _id: qtrack._id});
 
-        return 'Qtrack deleted successfully';
+        return qtrack;
     };
 
     db.runAsTransaction(operation)
