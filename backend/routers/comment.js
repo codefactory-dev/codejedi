@@ -1,8 +1,13 @@
+const qbasic = require('../models/qbasic');
+
 const express = require('express'),
       router = express.Router({mergeParams: true}),
       Comment = require('../models/comment'),
       User = require('../models/user'),
-      middleware = require('../middleware/index')
+      QBasic = require('../models/qbasic'),
+      QDetail = require('../models/qdetail'),
+      middleware = require('../middleware/index'),
+      db = require('../src/utils/db')
 
 
 
@@ -37,7 +42,7 @@ router.get('/comments/:id', async (req,res) => {
   
 // CREATE - post a new comment
 router.post('/comments', async (req,res) => {
-    console.log(`REQUEST :: create comment  ${req.body.username}`);
+    console.log(`REQUEST :: create comment  ${req.body._id}`);
   
     const newComment = {
       questionId: req.body.questionId,
@@ -86,40 +91,47 @@ router.patch('/comments/:id', async (req,res) => {
 })
 
 //DESTROY - delete user's info
-router.delete('/comments/:id', middleware.auth, async (req,res) => {
+router.delete('/comments/:id', async (req,res) => {
+  console.log(`REQUEST :: DELETE comment  ${req.params.id}`);
   //a USER has comments[objectId];
   //a QUESTIONBASIC has lastCommentDescription
   //a QUESTIONDETAILS has comments[objectId]
 
-  const _id = req.params.id;
+  //Need to delete comment from table COMMENT
+  //Need to delete commentIds from table USER
+  //Need to delete commentIds from some question's questionDetails
+
+  const commentId = req.params.id;
   try{
-    const comment = await Comment.findByIdAndDelete(_id)
+    
     const operation = async () => {
 
-      //get user associated with the question
-      //delete comment id from user list of comment ids
-      const ownerUser = await User.findById(req.user._id);
-      const commentRef = ownerUser.commentIds.id(_id);
-      commentRef.delete();
+      //Need to delete comment from table COMMENT
+      const comment = await Comment.findByIdAndDelete(commentId);
 
 
+      //Need to delete commentIds from table USER
+      const creatorId = comment.creatorId;
+      const ownerUser = await User.findById(creatorId);
+      ownerUser.commentIds.pull(commentId);
+      await ownerUser.save();
+
+      //Need to delete commentIds from some question's questionDetails
+      const questionBasicId = comment.questionId;
+      const qBasic = await QBasic.findById(questionBasicId);
+      const qDetail = await QDetail.findById(qBasic.detailsId);
+      qDetail.commentIds.pull(commentId);
+      await qDetail.save();
       
-
-      return _.assign(qbasic, qdetail);
     };
 
     db.runAsTransaction(operation)
-        .then(resolve => res.status(201).send({question: resolve}))
+        .then(resolve => res.status(200).send())
         .catch(e => res.status(e.status).json(e.message));
-    if (!comment)
-    {
-      return res.status(404).send({error: 'Comment not found'})
-    }
-    res.status(200).send(comment)
-    console.log("comment deleted successfully");
 
   }catch(e){
-    res.status(500).send({error: e})
+    console.error("Error 500: "+e.toString())
+    res.status(500).send({error: e.toString()})
   }
 })
 
