@@ -51,29 +51,23 @@ describe('Comment routes', () => {
             qdetails.push(q.detail);
       });      
 
-      for(let i=0;i<qbasics.length;i++)
-      {
-        var qbasic = new QBasic(qbasics[i]);
-        try{
-          let savedQbasic = await qbasic.save(); //when fail its goes to catch
-        }
-        catch(e)
+      let i;
+      try{
+        for(i=0;i<seedQuestions.length;i++)
         {
-          console.log("Error saving qBasic"+e.toString());
+          console.log("inserting qbasic of id "+qbasics[i]._id);
+          const qbasic = new QBasic(qbasics[i]);
+          await qbasic.save();
+          const qdetail = new QDetail(qdetails[i]);
+          await qdetail.save();
         }
+        const allQbasics = await QBasic.find({});      
+        console.log("THESE ARE ALL THE SEED QBASICS: "+JSON.stringify(qbasics.map(e => e._id)));  
+        console.log("THESE ARE ALL THE DB QBASICS: "+JSON.stringify(allQbasics.map(e => [e._id,"detailsID: "+e.detailsId])));
+      } catch(e){
+        console.log("Error saving qbasic/qdetails"+e.toString()+" ====> For loop ID: "+i);
       }
-
-      for(let i=0;i<qdetails.length;i++)
-      {
-        var qdetail = new QDetail(qdetails[i]);
-        try{
-          let savedQdetail = await qdetail.save(); //when fail its goes to catch
-        }
-        catch(e)
-        {
-          console.log("Error saving qDetail"+e.toString());
-        }
-      }
+      
 
       var comments;
       try{
@@ -103,17 +97,16 @@ describe('Comment routes', () => {
         }
       }
 
+      console.log("THESE ARE ALL THE COMMENTS: "+JSON.stringify(comments.map(e => [e._id,e.questionId])));
+      
 
-      try{
-        const allQbasics = await QBasic.find({});
-      } catch(e){
-        console.log("Error fetching qBasics: "+e.toString());
-      }
 
       for (const comment of comments) {
         //Do somethign with the comment
         try{
           var qBasicCommentBelongsTo = await QBasic.findById(comment.questionId);
+          //^^THIS IS BEING RETURNED NULL
+
           var qDetailCommentBelongsTo = await QDetail.findById(qBasicCommentBelongsTo.detailsId);
           await qDetailCommentBelongsTo.commentIds.addToSet(comment._id);
           console.log("ADDED comment Id "+comment._id+" to qDetails "+qDetailCommentBelongsTo._id);
