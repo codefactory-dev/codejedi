@@ -7,65 +7,15 @@ const express = require('express'),
 
 // validate the user credentials
 router.post('/auth/signin', async function (req, res) {
-    const email = req.body.email;
-    const pwd = req.body.password;
-  
-    console.log("signin: "+email+" "+pwd)
-  
-    try{
-        const userFromDB = await User.findOne({ email: req.body.email });
-        console.log("userFromDB.email: "+userFromDB.email+" userFromDB.password: "+userFromDB.password);
-        if (!userFromDB)
-        {
-          console.error("Email/Password combination doesn't exist.");
-          return res.status(404).json({
-            error: true,
-            message: "Email/Password combination doesn't exist."
-          });
-        }
-        // return 400 status if email/password is not exist
-        if (!email || !pwd) {
-          console.error("Email or Password required.");
-          return res.status(400).json({
-            error: true,
-            message: "Email or Password required."
-          });
-        }
-  
-        
-        console.log(pwd);
-        console.log(userFromDB.password);
-        
-        // return 401 status if the credential is not match.
-        if (email !== userFromDB.email || (pwd !== userFromDB.password)) {
-          console.error("Email or Password is Wrong.");
-          return res.status(401).json({
-          error: true,
-            message: "Email or Password is Wrong."
-          });
-        }
-  
-        if (userFromDB.validated === false)
-        {
-          // generate token
-          const token = utils.generateToken(userFromDB);
-          // get basic user details
-          const userObj = utils.getCleanUser(userFromDB);
-          // return the token along with user details
-          return res.status(200).json({ validated: false, user: userObj, token });
-        }
-        return res.status(200).json({validated: true, user:userObj });
-        
-    } catch(error) {
-        console.error("Oops. There was an error. "+error.toString())
-        return res.status(500).json({
-          error: true,
-          message: error.toString()
-        });
-    }
-  });
+  try{
+    const user = await User.findByCredentials(req.body.email, req.body.password);
+    res.status(200).send(user);
+  } catch(e){
+    res.status(400).send(e.toString());
+  }   
+});
 
-router.post('/auth/signout', middleware.auth,async function (req, res) {
+router.post('/auth/signout', middleware.auth, async function (req, res) {
   try {
     req.user.tokens = req.user.tokens.filter((token)=>{
       return token.token !== req.token
@@ -78,7 +28,7 @@ router.post('/auth/signout', middleware.auth,async function (req, res) {
   }
 });
 
-router.post('/auth/signoutall', middleware.auth,async function (req, res) {
+router.post('/auth/signoutall', middleware.auth, async function (req, res) {
   try {
     req.user.tokens = [];
     await req.user.save();

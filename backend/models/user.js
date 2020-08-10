@@ -4,7 +4,8 @@ const Comment = require('../models/comment'),
       QBasic = require('../models/qbasic'),
       mongoose = require('mongoose'),
       jwt = require('jsonwebtoken'),
-	  validator = require('validator');
+      validator = require('validator'),
+      bcrypt = require('bcryptjs')
 
 
 const userSchema = new mongoose.Schema({
@@ -21,6 +22,7 @@ const userSchema = new mongoose.Schema({
         trim: true,
         lowercase: true,
         required: true,
+        unique: true,
         validate(value) {
             if(!validator.isEmail(value)) {
                 throw new Error('Email is invalid');
@@ -32,6 +34,7 @@ const userSchema = new mongoose.Schema({
         trim: true,
         lowercase: true,
         required: true,
+        unique: true
     },
     password: {
         type: String,
@@ -106,6 +109,30 @@ const userSchema = new mongoose.Schema({
         }
     }]
 });
+
+
+userSchema.pre('save', async function (next) {
+    const user = this;
+    if (user.isModified('password'))
+    {
+        user.password = await bcrypt.hash(user.password,8);
+    }
+    next();
+})
+
+userSchema.statics.findByCredentials = async (email, password) => {
+    const user = await User.findOne({ email });
+    if (!user){
+        throw new Error('Unable to login');
+    }
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if(!isMatch){
+        throw new Error('Unable to login');
+    }
+
+    return user;
+}
 
 userSchema.methods.generateAuthToken = async function () {
     const user = this
@@ -216,4 +243,5 @@ userSchema.methods.deleteQtrack = async function (qtrack, question) {
     return user;
 }
 
-module.exports = mongoose.model("User", userSchema);
+const User = mongoose.model('User', userSchema)
+module.exports = User
