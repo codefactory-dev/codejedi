@@ -5,14 +5,13 @@ const mongoose = require('mongoose'),
 const qDifficulties = ["Easy", "Medium", "Hard"];
 const qTypes = ["Array", "String", "Linked List", "Stack/Queue", "Tree", "Heap", "HashTable", "Graph", "Sort", "Bit Manipulation", "Greedy", "Dynamic Programming"];
 
-
 const users = [{
       _id: new mongoose.Types.ObjectId,
       firstname: 'Roberta',
       lastname: 'Mota',
       email: 'roberta.cmota@gmail.com',
       username: 'roberta.crmota',
-      password: 'roberta.crmota123',
+      password: '$2a$08$HMNCu99lFY6AocGuKyqumOPhgQguK4l4dcrUI10wO7Fb0XRXAnJem',
       validated: false,
       joinDate: new Date(),
       qTrackSummary: {
@@ -39,7 +38,7 @@ const users = [{
       lastname: 'Reis',
       email: 'grrbm2@gmail.com',
       username: 'grrbm',
-      password: 'grrbm123',
+      password: '$2a$08$YPhNl9QbAaLw181l1Arx0ue.Lh.pVIkOE1QSU0dCMw96pznfyB7Vy',
       validated: false,
       joinDate: new Date(),
       qTrackSummary: {
@@ -175,6 +174,7 @@ const generateUsers = n => {
     for(let i = 0; i < n; i++) {
         const firstname = casual.first_name,
               lastname = casual.last_name;
+
 
         const user = {
             _id: new mongoose.Types.ObjectId,
