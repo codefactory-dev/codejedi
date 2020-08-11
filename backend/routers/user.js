@@ -3,9 +3,9 @@ const express = require('express'),
       User = require('../models/user'),
       { qDifficulties, qTypes } = require('../src/utils/seed.js');
 
-//TODO: user doesn't send back ALL data, such as passwords, tokens etc. to the frontend
+//(OK)TODO: user doesn't send back ALL data, such as passwords, tokens etc. to the frontend
 
-//TODO: when deleting a comment, should update the user
+//(OK)TODO: when deleting a comment, should update the user
 
 //TODO: fix update
 

@@ -155,6 +155,16 @@ userSchema.methods.generateAuthToken = async function () {
     return token;
 }
 
+userSchema.methods.generateValidationToken = async function () {
+    const user = this
+    const token = jwt.sign({ _id: user._id.toString(), validated: true }, process.env.JWT_SECRET)
+
+    user.tokens = user.tokens.concat({ token });
+    await user.save();
+
+    return token;
+}
+
 /** 
     Method to add a new qtrack and update related fields
     @param  {number} duration - newly added qtrack db document
