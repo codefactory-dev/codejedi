@@ -6,7 +6,6 @@ const {questions, qtracks, ratings, users, tokens, qDifficulties, qTypes} = requ
       Editor = require('../../models/editor'),
       QTrack = require('../../models/qtrack'),
       QType = require('../../models/qtype'),
-      Token = require('../../models/token'),
       User = require('../../models/user'),
       Img = require('../../models/img'),
       mongoose = require('mongoose');
@@ -15,7 +14,7 @@ const {questions, qtracks, ratings, users, tokens, qDifficulties, qTypes} = requ
 const db ={};
 
 db.initCollections = () => new Promise(async (resolve, reject) => {
-    const models = [User, Rating, QTrack, QType, QBasic, QDetail, Token ];  
+    const models = [User, Rating, QTrack, QType, QBasic, QDetail ];  
     models.forEach(async model => await model.createCollection());
 
     // init default docs
@@ -52,10 +51,6 @@ db.disconnect = () => new Promise(async () => mongoose.disconnect());
 
 db.reset = (logoff = true) => new Promise(async (resolve, reject) => {
             logoff || console.log("Reseting db  *********************");
-
-            await Token.deleteMany({})
-                        .then(() => logoff || console.log("reset tokens."))
-                        .catch((err) => reject('error: could not reset tokens'));
 
             await User.deleteMany({})
                         .then(() => logoff || console.log("reset users."))
@@ -94,10 +89,6 @@ db.seed = async (logoff = true) => new Promise(async (resolve, reject) => {
             await User.insertMany(users)
                     .then(() => logoff || console.log("created seed users."))
                     .catch(err => reject("Error: could not create seed users."));
-                
-            await Token.insertMany(tokens)
-                    .then(() => logoff || console.log("created seed tokens."))
-                    .catch(err => reject("Error: could not create seed tokens. "+err));
 
             questions.forEach((q, index, arr) => {
                     QBasic.create(q.basic)

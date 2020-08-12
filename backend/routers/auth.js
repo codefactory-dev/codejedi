@@ -1,7 +1,6 @@
 const express = require('express'),
       router = express.Router({mergeParams: true}),
       User = require('../models/user'),
-      Token = require('../models/token'),
       utils = require('../src/utils/utils'),
       jwt = require('jsonwebtoken'),
       middleware = require('../middleware/index'),
