@@ -3,9 +3,9 @@ const express = require('express'),
       User = require('../models/user'),
       { qDifficulties, qTypes } = require('../src/utils/seed.js');
 
-//TODO: user doesn't send back ALL data, such as passwords, tokens etc. to the frontend
+//(OK)TODO: user doesn't send back ALL data, such as passwords, tokens etc. to the frontend
 
-//TODO: when deleting a comment, should update the user
+//(OK)TODO: when deleting a comment, should update the user
 
 //TODO: fix update
 
@@ -45,13 +45,12 @@ router.get('/users/:id', async (req,res) => {
 router.post('/users', async (req,res) => {
     console.log(`REQUEST :: create user  ${req.body.username}`);
   
-    const [firstname, lastname] = req.body.name.split(' ');
     //Difficulties = ["Easy", "Medium", "Hard"],
     // qTypes = ["Array", "String", "Linked List", "Stack/Queue", "Tree", "Heap", "HashTable", "Graph", "Sort", "Bit Manipulation", "Greedy", "Dynamic Programming"];
 
     const newUser = {
-      firstname,
-      lastname,
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
       email: req.body.email,
       username: req.body.username,
       password: req.body.password,
@@ -131,10 +130,10 @@ router.post('/users', async (req,res) => {
 
 //UPDATE - updates a user
 router.patch('/users/:id', async (req,res) => {
-  console.log("REQUEST ::  update user "+req.body.username);
+  console.log("REQUEST ::  update user "+req.params.id);
   const updates = Object.keys(req.body)
   console.log("keys = "+updates.toString());
-  const allowedUpdates = ["firstname","lastname","email", "username", "password","joinDate",
+  const allowedUpdates = ["firstname","lastname","email", "username", "password",
                           "profileImage","profileVisibility","qTrackSummary"];
   const updatesAreValid = updates.every((update)=>allowedUpdates.includes(update))
   if (!updatesAreValid)
@@ -142,7 +141,10 @@ router.patch('/users/:id', async (req,res) => {
     return res.status(400).send({error: 'Updates not valid !'})
   }
   try{
-    const user = await User.findByIdAndUpdate(req.params.id,req.body, {runValidators: true, new:true})
+    const user = await User.findById(req.params.id);
+
+    updates.forEach((update) => user[update] = req.body[update]);
+    user.save();
     
     if (!user)
     {
@@ -150,7 +152,7 @@ router.patch('/users/:id', async (req,res) => {
     }
     res.send(user)
   } catch(e){
-    res.status(500).send({error: e})
+    res.status(500).send({error: e.toString()})
   }
 })
 
