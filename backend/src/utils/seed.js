@@ -89,77 +89,6 @@ const users = [{
     }
 ];
 
-const qOneId = new mongoose.Types.ObjectId;
-const qTwoId = new mongoose.Types.ObjectId;
-const questions = [
-    {
-        basic: {
-            _id: qOneId,
-            creator: { 
-                id: users[0]._id,
-                username: users[0].username,
-                joinDate: users[0].joinDate
-            },
-            title: 'Number of Islands',
-            difficulty: 'Medium',
-            type: 'Dynamic Programming',
-            hasSolution: false,
-        },
-        detail: {
-            basicsId: qOneId,
-            description: "Given a 2d grid map of '1's (land) and '0's (water), count the number of islands. " +
-                    + "An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically." +
-                    + "You may assume all four edges of the grid are all surrounded by water.",    
-            creationDate: new Date(),
-        }
-    },
-    {
-        basic: {
-            _id: qTwoId,
-            creator: { 
-                id: users[0]._id,
-                username: users[0].username,
-                joinDate: users[0].joinDate
-            },
-            title: 'Number of Islands',
-            difficulty: 'Medium',
-            type: 'Dynamic Programming',
-            hasSolution: false,
-        },
-        detail: {
-            basicsId: qTwoId,
-            description: "Given a 2d grid map of '1's (land) and '0's (water), count the number of islands. " +
-                    + "An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically." +
-                    + "You may assume all four edges of the grid are all surrounded by water.",    
-            creationDate: new Date(),
-        }
-    }
-];
-
-const qtracks = [
-    {
-        questionId: questions[0].basic._id,
-        creatorId: users[0]._id,
-        perceivedDifficulty: "Medium",
-        solved: false,
-        duration: 30
-    },
-    {
-        questionId: questions[0].basic._id,
-        creatorId: users[1]._id,
-        perceivedDifficulty: "Easy",
-        solved: true,
-        duration: 18
-    },
-];
-
-const ratings = [{
-    _id: new mongoose.Types.ObjectId,
-    creatorId: users[0]._id,
-    questionId: questions[0].basic._id,
-    value: 3,
-}];
-
 const userOneToken = utils.generateToken(users[0]);
 const tokens = [{
     _id: new mongoose.Types.ObjectId,
@@ -215,13 +144,10 @@ const generateQuestions = (n, users) => {
 
     for(let i = 0; i < n; i++) {
         const id = new mongoose.Types.ObjectId;
-        const detailsId = new mongoose.Types.ObjectId;
         const user = casual.random_element(users);
 
         const question = {
-            basic: {
                 _id: id,
-                detailsId: detailsId,
                 creator: { 
                     id: user._id,
                     username: user.username,
@@ -229,23 +155,16 @@ const generateQuestions = (n, users) => {
                 },
                 title: casual.title,
                 difficulty: casual.random_element(qDifficulties),
+                description: casual.description,
                 type: casual.random_element(qTypes),
-                hasSolution: false,
-            },
-            detail: {
-                _id: detailsId,
-                basicsId: id,
-                description: casual.description,    
                 creationDate: casual.date(),
-            }
-        }
+            
+        };
 
         questions.push(question);
     }
     
-
     return questions;
-
 }
 
 const generateQTracks = (n, users, questions) => {
@@ -259,7 +178,7 @@ const generateQTracks = (n, users, questions) => {
         const qtrack = {
             _id: id,
             creatorId: user._id,
-            questionId: question.basic._id,
+            questionId: question._id,
             perceivedDifficulty: casual.random_element(qDifficulties),
             solved: casual.boolean,
             duration: casual.integer(10, 100)
@@ -270,6 +189,27 @@ const generateQTracks = (n, users, questions) => {
 
     return qtracks;
 }
+
+const generateRatings = (n, users, questions) => {
+    const ratings = [];
+
+    for(let i = 0; i < n; i++) {
+        const id = new mongoose.Types.ObjectId;
+        const user = casual.random_element(users);
+        const question = casual.random_element(questions);
+
+        const rating = {
+            _id: id,
+            creatorId: user._id,
+            questionId: question._id,
+            value: casual.integer(1, 5)
+        }
+
+        ratings.push(rating);
+    }
+
+    return ratings;
+};
 
 const generateComments = (n, users, questions) => {
     const comments = [];
@@ -285,7 +225,7 @@ const generateComments = (n, users, questions) => {
         const creationDate = new Date();
         const comment = {   
             _id: id,         
-            questionId: question.basic._id,
+            questionId: question._id,
             creatorId: user._id,
             description: casual.sentences(6),
             reply: {
@@ -303,14 +243,12 @@ const generateComments = (n, users, questions) => {
 module.exports ={
     qDifficulties,
     qTypes,
-    questions,
-    qtracks,
-    ratings,
     users,
     tokens,
 
     generateUsers,
     generateQuestions,
     generateQTracks,
+    generateRatings,
     generateComments
 };
