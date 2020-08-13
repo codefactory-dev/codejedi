@@ -2,9 +2,8 @@ const express = require('express'),
       {addAvgRating, updateAvgRating} = require('./utils'),
       router = express.Router({mergeParams: true}),
       middleware = require('../middleware/index'),
-      QDetail = require('../models/qdetail'),
       Rating = require('../models/rating'),
-      QBasic = require('../models/qbasic'),
+      Question = require('../models/question'),
       User = require('../models/user'), 
       db = require('../src/utils/db'), 
       _ = require('lodash');
@@ -20,7 +19,6 @@ router.post('/', middleware.checkLogIn,
 
     const operation = async () => {
         const user = req.user,
-              qd   = await QDetail.findOne({basicsId: req.params.qid}),
               q    = req.question;
 
         let rating = {
@@ -40,10 +38,8 @@ router.post('/', middleware.checkLogIn,
         // update question
         q.avgRatings = addAvgRating(q, rating.value);
         q.nbRatings++;
+        q.ratingIds.push(rating._id);
         await q.save();
-
-        qd.ratingIds.push(rating._id);
-        await qd.save();
 
         return rating;
     };

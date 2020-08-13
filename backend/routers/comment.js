@@ -1,10 +1,10 @@
-const qbasic = require('../models/qbasic');
+const qbasic = require('../models/question');
 
 const express = require('express'),
       router = express.Router({mergeParams: true}),
       Comment = require('../models/comment'),
       User = require('../models/user'),
-      QBasic = require('../models/qbasic'),
+      Question = require('../models/question'),
       QDetail = require('../models/qdetail'),
       middleware = require('../middleware/index'),
       db = require('../src/utils/db')

@@ -1,15 +1,14 @@
 const express = require('express'),
       router = express.Router({mergeParams: true}),
       middleware = require('../middleware/index'),
-      QDetail = require('../models/qdetail'),
-      QBasic = require('../models/qbasic'),
+      Question = require('../models/question'),
       User = require('../models/user'),
       db = require('../src/utils/db'),
       _ = require('lodash');
 
 // get (basic info) 10 questions sorted by update date
 router.get('/questions', middleware.checkLogIn, async (req,res) => { 
-    const questions = await QBasic.find({}, {}, {sort: {lastUpdate: -1}, limit: 10});
+    const questions = await Question.find({}, {}, {sort: {lastUpdate: -1}, limit: 10});
 
     res.status(200).send({questions});
 });
@@ -29,50 +28,30 @@ router.get('/users/:uid/questions', middleware.checkLogIn,
 router.post('/users/:uid/questions', middleware.checkLogIn, 
                                      middleware.checkQuestionParamsNull,
                                      async (req,res) => {
-    /*
-        # BASIC
-            detailsId
-            creator (id, username, joinDate)
-            title
-            difficulty
-            type
-
-        # DETAILS
-            basicsId (required)
-            description
-    */
    const user = req.user;
 
-   let qbasic = {
+   let question = {
        creator: {
            id: user._id,
            username: user.username,
            joinDate: user.joinDate
        },
        title: req.body.title,
+       description: req.body.description,
        difficulty: req.body.difficulty,
        type: req.body.type,
-       hasSolution: req.body.solution !== undefined
-   };
-   
-   let qdetail = {
-           description: req.body.description,
-           solution: req.body.solution
+       solution: req.body.solution
    };
 
    const operation = async () => {
-        //create qbasic
-        await QBasic.create(qbasic).then(res => qbasic = res);
-
-        // create qdetail
-        qdetail.basicsId = qbasic._id;
-        await QDetail.create(qdetail).then(res => qdetail = res);
+        //create question
+        await Question.create(question).then(res => question = res);
 
         // update user           
-        user.questionIds.push(qbasic._id);
+        user.questionIds.push(question._id);
         await user.save();
 
-        return _.assign(qbasic, qdetail);
+        return question;
     };
 
     db.runAsTransaction(operation)
@@ -87,11 +66,10 @@ router.get('/users/:uid/questions/:id', middleware.checkLogIn,
                                         middleware.checkQuestionOwnership, 
                                         async (req,res) => {
 
-    const qd   = await QDetail.findOne({basicsId: req.params.id}),
-          q    = req.question,
+    const question = req.question,
           user = req.user;
 
-    res.status(200).send({question: _.assign(q, qd)});
+    res.status(200).send({question});
 });
 
 //UPDATE - update a question
@@ -101,32 +79,24 @@ router.put('/users/:uid/questions/:id', middleware.checkLogIn,
                                           middleware.checkQuestionOwnership,
                                           async (req,res) => {
 
-    const qd   = await QDetail.findOne({basicsId: req.params.id}),
-          q    = req.question,
+    const q    = req.question,
           user = req.user;
 
     // editable fields: title, difficulty, type, description, solution  
-    let qbasic = {
+    let question = {
         title: req.body.title,
         difficulty: req.body.difficulty,
         type: req.body.type,
         lastUpdate: new Date(),               // update questions's lastUpdate
-        hasSolution: req.body.solution !== undefined
-    };
-    
-    let qdetail = {
         description: req.body.description,
         solution: req.body.solution
     };
 
     const operation = async () => {
-        // update qdetail
-        await QDetail.updateOne({_id: qd._id}, qdetail).then(res => qdetail = res);
+        // update question
+        await Question.updateOne({_id: q._id}, question).then(res => question = res);
 
-        // update qbasic
-        await QBasic.updateOne({_id: q._id}, qbasic).then(res => qbasic = res);
-
-        return _.assign(qbasic, qdetail);
+        return question;
     };
 
     db.runAsTransaction(operation)
@@ -147,11 +117,8 @@ router.delete('/users/:uid/questions/:id', middleware.checkLogIn,
         user.questionIds = _.remove(user.questionIds, uq => uq.equals(req.params.id));
         await user.save();
 
-        // delete qdetail
-        await QDetail.deleteOne({basicsId: req.params.id}).exec();
-
-        // delete qbasic
-        await QBasic.deleteOne({ _id: req.params.id});
+        // delete question
+        await Question.deleteOne({ _id: req.params.id});
 
         return 'Question deleted successfully';
     };

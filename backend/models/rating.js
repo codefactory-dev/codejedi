@@ -1,5 +1,5 @@
 const User = require('../models/user'),
-      QBasic = require('../models/qbasic'),
+Question = require('./question'),
       mongoose = require('mongoose');
 
 
@@ -11,7 +11,7 @@ const ratingSchema = new mongoose.Schema({
     },
     questionId: { 
         type: mongoose.Schema.Types.ObjectId, 
-        ref: "QBasic", 
+        ref: "Question", 
         required: true 
     },
     value : { 

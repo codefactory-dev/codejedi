@@ -1,4 +1,4 @@
-const QBasic = require('../models/qbasic');
+const Question = require('./question');
 const Rating = require('../models/rating');
 const Comment = require('../models/comment');
 const mongoose = require('mongoose');
@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 const qdetailSchema = new mongoose.Schema({
     basicsId: { 
         type: mongoose.Schema.Types.ObjectId, 
-        ref: "QBasic",
+        ref: "Question",
         required: true 
     },
     description: { 

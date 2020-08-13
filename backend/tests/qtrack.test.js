@@ -1,6 +1,5 @@
 const {users, questions, qtracks, generateUsers, generateQuestions, generateQTracks} = require('../src/utils/seed'),
-      QDetail = require('../models/qdetail'),    
-      QBasic = require('../models/qbasic'),
+      Question = require('../models/question'),
       QTrack = require('../models/qtrack'),
       User = require('../models/user'),
       db = require('../src/utils/db'),
@@ -10,7 +9,7 @@ const {users, questions, qtracks, generateUsers, generateQuestions, generateQTra
 
 describe('QTrack routes', () => {
     let users = [];
-    let questions = [], qbasics = [], qdetails = [];
+    let questions = [];
     let qtracks = [];
 
     beforeAll(async () => {
@@ -21,11 +20,6 @@ describe('QTrack routes', () => {
       users = generateUsers(2);
       questions = generateQuestions(2, users);
       qtracks = generateQTracks(3, users, questions);
-
-      questions.forEach(q => {
-        qbasics.push(q.basic);
-        qdetails.push(q.detail);
-      });
     });
 
     afterAll(db.disconnect);
@@ -41,8 +35,7 @@ describe('QTrack routes', () => {
   // ----------------------------------------------------------------------------
   it('should fetch qtracks', async () => {
     await User.insertMany(users);
-    await QBasic.insertMany(qbasics);
-    await QDetail.insertMany(qdetails);
+    await Question.insertMany(questions);
     
     for(let i = 0; i < qtracks.length; i++){
       const {creatorId, questionId, perceivedDifficulty, solved, duration} = qtracks[i];
@@ -67,8 +60,7 @@ describe('QTrack routes', () => {
   // ----------------------------------------------------------------------------
   it('should post a qtrack', async () => {
     await User.insertMany(users);
-    await QBasic.insertMany(qbasics);
-    await QDetail.insertMany(qdetails);
+    await Question.insertMany(questions);
 
     for(let i = 0; i < qtracks.length; i++){
       const {creatorId, questionId, perceivedDifficulty, solved, duration} = qtracks[i];
@@ -90,8 +82,7 @@ describe('QTrack routes', () => {
   // ----------------------------------------------------------------------------
   it('should fetch a qtrack', async () => {
     await User.insertMany(users);
-    await QBasic.insertMany(qbasics);
-    await QDetail.insertMany(qdetails);
+    await Question.insertMany(questions);
 
     await new QTrack(qtracks[0]).save();
 
@@ -105,8 +96,7 @@ describe('QTrack routes', () => {
   // ----------------------------------------------------------------------------
   it('should update a qtrack', async () => {
     await User.insertMany(users);
-    await QBasic.insertMany(qbasics);
-    await QDetail.insertMany(qdetails);
+    await Question.insertMany(questions);
     
     const qtracksDB = [];
     for(let i = 0; i < qtracks.length; i++){
@@ -140,8 +130,7 @@ describe('QTrack routes', () => {
   // ----------------------------------------------------------------------------
   it('should delete a qtrack', async () => {
     await User.insertMany(users);
-    await QBasic.insertMany(qbasics);
-    await QDetail.insertMany(qdetails);
+    await Question.insertMany(questions);
     
     const qtracksDB = [];
     for(let i = 0; i < qtracks.length; i++){

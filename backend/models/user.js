@@ -1,7 +1,7 @@
 const Comment = require('../models/comment'),
       Rating = require('../models/rating'),
       QTrack = require('../models/qtrack'),
-      QBasic = require('../models/qbasic'),
+      Question = require('./question'),
       mongoose = require('mongoose'),
       jwt = require('jsonwebtoken'),
       validator = require('validator'),
@@ -71,7 +71,7 @@ const userSchema = new mongoose.Schema({
     }],
     questionIds: [{
         type: mongoose.Schema.Types.ObjectId, 
-        ref: "QBasic"
+        ref: "Question"
     }],
     qTrackIds: [{
         type: mongoose.Schema.Types.ObjectId, 
@@ -205,7 +205,7 @@ userSchema.methods.addQtrack = async function (qtrack, question) {
     Method to update qtrack's related fields
     @param  {QTrack} prevtrack - prev qtrack db document
     @param  {QTrack} track     - newly added qtrack db document
-    @param  {QBasic} question  - qtrack's question db document
+    @param  {Question} question  - qtrack's question db document
     @return {User} updated user
 */
 userSchema.methods.updateQtrack = async function (prevtrack, track, question) {
@@ -239,7 +239,7 @@ userSchema.methods.updateQtrack = async function (prevtrack, track, question) {
 /** 
     Method to remove a qtrack and update related fields
     @param  {QTrack} qtrack - newly deleted qtrack db document
-    @param  {QBasic} question - qtrack's question db document
+    @param  {Question} question - qtrack's question db document
     @return {User} updated user
 */
 userSchema.methods.deleteQtrack = async function (qtrack, question) {

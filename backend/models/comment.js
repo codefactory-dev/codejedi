@@ -1,4 +1,4 @@
-const QBasic = require('../models/qbasic');
+const Question = require('./question');
 const User = require('../models/user');
 const mongoose = require('mongoose');
 
@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 const commentSchema = new mongoose.Schema({
     questionId: { 
         type: mongoose.Schema.Types.ObjectId, 
-        ref: "QBasic",
+        ref: "Question",
         required: true 
     },
     creatorId: { 

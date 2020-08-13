@@ -2,7 +2,7 @@ const express = require('express'),
       router = express.Router({mergeParams: true}),
       middleware = require('../middleware/index'),
       QTrack = require('../models/qtrack'),
-      QBasic = require('../models/qbasic'),
+      Question = require('../models/question'),
       User = require('../models/user'),
       db = require('../src/utils/db'),
       {isNull} = require('./utils'),
@@ -33,7 +33,7 @@ router.post('/', middleware.checkLogIn,
                  async (req, res) => {
 
     const user = req.user;
-    const question = await QBasic.findById(req.body.questionId);
+    const question = await Question.findById(req.body.questionId);
 
     if (isNull(user, question)) {
         res.status(400).json({ error: true, message: 'Invalid user.id, q.id parameters.' });
@@ -83,7 +83,7 @@ router.put('/:id', middleware.checkLogIn,
                    async (req,res) => {
 
     const user = req.user;
-    const question = await QBasic.findById(req.qtrack.questionId);
+    const question = await Question.findById(req.qtrack.questionId);
 
     // editable fields: perceivedDifficulty, solved, duration  
     let qtrack = {
@@ -118,7 +118,7 @@ router.delete('/:id', middleware.checkLogIn,
 
     const qtrack = req.qtrack;
     const user = req.user;
-    const question = await QBasic.findById(qtrack.questionId);
+    const question = await Question.findById(qtrack.questionId);
 
     const operation = async () => {
         // update user      

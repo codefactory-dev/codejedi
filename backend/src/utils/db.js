@@ -1,8 +1,7 @@
 const {questions, qtracks, ratings, users, tokens, qDifficulties, qTypes} = require('./seed'),
       QDifficulty = require('../../models/qdifficulty'),
-      QDetail = require('../../models/qdetail'),
       Rating = require('../../models/rating'),
-      QBasic = require('../../models/qbasic'),
+      Question = require('../../models/question'),
       Editor = require('../../models/editor'),
       QTrack = require('../../models/qtrack'),
       QType = require('../../models/qtype'),
@@ -14,7 +13,7 @@ const {questions, qtracks, ratings, users, tokens, qDifficulties, qTypes} = requ
 const db ={};
 
 db.initCollections = () => new Promise(async (resolve, reject) => {
-    const models = [User, Rating, QTrack, QType, QBasic, QDetail ];  
+    const models = [User, Rating, QTrack, QType, Question ];  
     models.forEach(async model => await model.createCollection());
 
     // init default docs
@@ -64,13 +63,9 @@ db.reset = (logoff = true) => new Promise(async (resolve, reject) => {
                         .then(() => logoff || console.log("reset qtracks."))
                         .catch((err) => reject("error: could not reset qtracks"));
 
-            await QDetail.deleteMany({})
-                        .then(() => logoff || console.log("reset qdetails."))
-                        .catch((err) => reject("error: could not reset qdetails"));
-
-            await QBasic.deleteMany({})
-                        .then(() => logoff || console.log("reset qbasics."))
-                        .catch((err) => reject("error: could not reset qbasics"));
+            await Question.deleteMany({})
+                        .then(() => logoff || console.log("reset questions."))
+                        .catch((err) => reject("error: could not reset questions"));
 
             await Editor.deleteMany({})
                         .then(() => logoff || console.log("reset editors."))
@@ -90,15 +85,9 @@ db.seed = async (logoff = true) => new Promise(async (resolve, reject) => {
                     .then(() => logoff || console.log("created seed users."))
                     .catch(err => reject("Error: could not create seed users."));
 
-            questions.forEach((q, index, arr) => {
-                    QBasic.create(q.basic)
-                        .catch(err => reject(`Error: could not create seed question basic ${q.basic.title}`))
-                        .then(qbasicDB => {
-                                QDetail.create(q.detail)
-                                    .catch(err => reject(`Error: could not create seed question detail ${q.basic.title}`))
-                                    .then(qDetailDB => logoff || console.log(`created seed question ${q.basic.title}`));
-                        });
-            });
+            await Question.insertMany(questions)
+                        .then(() => logoff || console.log("created seed questions."))
+                        .catch(err => reject("Error: could not create seed questions."));
 
             await Rating.insertMany(ratings)
                     .then(() => logoff || console.log("created seed ratings."))
@@ -123,7 +112,7 @@ db.runAsTransaction = async (func) => new Promise(async (resolve, reject) => {
             }, transactionOptions);
         }
         catch(e) {
-            console.log(e.message);
+            // console.log(e.message);
             let status = e instanceof mongoose.Error.ValidationError ? 400 : 500;              
             reject({status, message: e.message});
         }

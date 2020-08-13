@@ -1,10 +1,9 @@
 const express = require('express'),
-      QDifficulty = require('../models/qdifficulty'), 
-      QDetail = require('../models/qdetail'),     
+      QDifficulty = require('../models/qdifficulty'),   
       {isNull} = require('../routers/utils'),
       Rating = require('../models/rating'),
       QTrack = require('../models/qtrack'),
-      QBasic = require('../models/qbasic'),
+      Question = require('../models/question'),
       User = require('../models/user'),
       jwt = require('jsonwebtoken'),
       _ = require('lodash');
@@ -75,7 +74,7 @@ middleware.checkQTrackOwnership = async (req, res, next) => {
 // Question
 // -----------------------------------------------------------------------------
 middleware.checkQuestionNull = async (req, res, next) => {
-    const question = await QBasic.findById(req.params.id);
+    const question = await Question.findById(req.params.id);
 
     if (isNull(question)) 
         res.status(400).json({ error: true, message: 'Invalid question.id parameter.' });
@@ -97,7 +96,7 @@ middleware.checkQuestionParamsNull = async (req, res, next) => {
 }
 
 middleware.checkQuestionOwnership = async (req, res, next) => {
-    const question = req.question || await QBasic.findById(req.params.id);
+    const question = req.question || await Question.findById(req.params.id);
     const error = !question.creator.id.equals(req.params.uid);
 
     if (error)
@@ -125,7 +124,7 @@ middleware.checkRatingNull = async (req, res, next) => {
 
 middleware.checkRatingParamsNull = async (req, res, next) => {
     const user = await User.findById(req.params.uid);
-    const question = await QBasic.findById(req.params.qid);
+    const question = await Question.findById(req.params.qid);
 
     if (isNull(user, question))
         res.status(400).json({ error: true, message: 'Invalid user.id and/or question.id parameters.' });

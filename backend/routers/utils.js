@@ -13,7 +13,7 @@ const isNull = (...values) => values.reduce((acc, v) => acc || v == null, false)
 /** 
     Function to calculate the average rating given a newly added rating
 
-    @param  {QBasic} question - question with a newly added rating
+    @param  {Question} question - question with a newly added rating
     @param  {number} newValue - newly added rating's value 
     @return {number} updated average rating
 */
@@ -26,7 +26,7 @@ const addAvgRating = (question, newValue) => {
 /** 
     Function to calculate the average rating given a newly updated rating
 
-    @param  {QBasic} question - question with a newly added rating
+    @param  {Question} question - question with a newly added rating
     @param  {number} prevValue - previous rating's value 
     @param  {number} newValue - newly added rating's value 
     @return {number} updated average rating
