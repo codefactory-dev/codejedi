@@ -41,10 +41,10 @@ const userSchema = new mongoose.Schema({
         trim: true,
         required: true,
     },
-    joinDate: {
-        type: Date,
-        default: Date.now
-    },
+    // joinDate: {
+    //     type: Date,
+    //     default: Date.now
+    // },
     profileImage: {
         type: Buffer,
         default: undefined
@@ -108,6 +108,8 @@ const userSchema = new mongoose.Schema({
             required: true
         }
     }]
+}, {
+    timestamps: true
 });
 
 

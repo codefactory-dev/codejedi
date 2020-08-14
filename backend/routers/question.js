@@ -34,7 +34,7 @@ router.post('/users/:uid/questions', middleware.checkLogIn,
        creator: {
            id: user._id,
            username: user.username,
-           joinDate: user.joinDate
+           createdAt: user.createdAt
        },
        title: req.body.title,
        description: req.body.description,
@@ -87,7 +87,6 @@ router.put('/users/:uid/questions/:id', middleware.checkLogIn,
         title: req.body.title,
         difficulty: req.body.difficulty,
         type: req.body.type,
-        lastUpdate: new Date(),               // update questions's lastUpdate
         description: req.body.description,
         solution: req.body.solution
     };

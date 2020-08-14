@@ -113,7 +113,7 @@ const generateUsers = n => {
             username: `${firstname}.${lastname}${casual.integer(0, 1000)}`,
             password: casual.password,
             validated: false,
-            joinDate: casual.date(),
+            createdAt: casual.date(),
             qTrackSummary: {
                 nbTracksPerType: {
                     array: 0,
@@ -151,14 +151,13 @@ const generateQuestions = (n, users) => {
                 creator: { 
                     id: user._id,
                     username: user.username,
-                    joinDate: user.joinDate
+                    createdAt: user.createdAt
                 },
                 title: casual.title,
                 difficulty: casual.random_element(qDifficulties),
                 description: casual.description,
                 type: casual.random_element(qTypes),
-                creationDate: casual.date(),
-            
+                createdAt: casual.date(),          
         };
 
         questions.push(question);

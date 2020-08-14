@@ -15,7 +15,7 @@ const questionSchema = new Schema({
             type: String,
             required: true
         },
-        joinDate: {
+        createdAt: {
             type: Date,
             required: true
         }
@@ -61,14 +61,14 @@ const questionSchema = new Schema({
         default: 0,
         min: 0
     },
-    lastUpdate: { 
-        type: Date,
-        default: Date.now 
-    },  
-    creationDate: {
-        type: Date,
-        default: Date.now
-    },
+    // lastUpdate: { 
+    //     type: Date,
+    //     default: Date.now 
+    // },  
+    // creationDate: {
+    //     type: Date,
+    //     default: Date.now
+    // },
     ratingIds: [{ 
         type: mongoose.Schema.Types.ObjectId, 
         ref: "Rating"
@@ -77,6 +77,8 @@ const questionSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId, 
         ref: "Comment"
     }]
+}, {
+    timestamps: true
 });
 
 module.exports = mongoose.model("Question", questionSchema);

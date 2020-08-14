@@ -114,15 +114,27 @@ describe('QTrack routes', () => {
       qtracksDB.push(response.body.qtrack);
     }
 
-    const response = await request(app)
-                                .put(`/users/${qtracksDB[0].creatorId}/qtracks/${qtracksDB[0]._id}`)
-                                .send({
-                                  perceivedDifficulty: "Medium",
-                                  solved: true,
-                                  duration: 100,
-                                });
+    async function wait(ms) {
+      return new Promise(resolve => {
+        setTimeout(resolve, ms);
+      });
+    }
 
-    expect(response.status).toBe(200); // success :: ok
+    async function doRequest() {
+        await wait(2000);
+      
+        const response = await request(app)
+                            .put(`/users/${qtracksDB[0].creatorId}/qtracks/${qtracksDB[0]._id}`)
+                            .send({
+                              perceivedDifficulty: "Medium",
+                              solved: true,
+                              duration: 100,
+                            });
+
+        expect(response.status).toBe(200); // success :: ok
+    }  
+
+    await doRequest();
   });
 
   // ----------------------------------------------------------------------------

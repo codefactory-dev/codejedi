@@ -32,14 +32,8 @@ const qtrackSchema = new mongoose.Schema({
         required: true,
         min: 0
     },
-    creationDate: {
-        type: Date,
-        default: Date.now
-    },
-    lastUpdate: { 
-        type: Date,
-        default: Date.now 
-    }
+}, {
+    timestamps: true
 });
 
 module.exports = mongoose.model("QTrack", qtrackSchema);

@@ -90,7 +90,6 @@ router.put('/:id', middleware.checkLogIn,
         perceivedDifficulty: req.body.perceivedDifficulty,
         solved: req.body.solved,
         duration: req.body.duration,
-        lastUpdate: new Date(),               // update qtracks's lastUpdate
     };
 
     const operation = async () => {

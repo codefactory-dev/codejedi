@@ -22,11 +22,9 @@ const ratingSchema = new mongoose.Schema({
                 throw new Error('Value should be in range 0 to 5.');
             }
         }
-    },
-    lastUpdate : { 
-        type: Date,
-        default: Date.now 
-    },
+    }
+}, {
+    timestamps: true
 });
 
 module.exports = mongoose.model("Rating", ratingSchema);

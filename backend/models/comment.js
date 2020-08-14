@@ -20,14 +20,6 @@ const commentSchema = new mongoose.Schema({
         type: String, 
         required: true 
     },
-    creationDate: {
-        type: Date,
-        default: Date.now
-    },
-    lastUpdate: {
-        type: Date,
-        default: Date.now
-    },
     reply: {
         creatorId: { 
             type: mongoose.Schema.Types.ObjectId, 
@@ -47,6 +39,8 @@ const commentSchema = new mongoose.Schema({
             default: undefined
         },
     }
+},{
+    timestamps: true
 });
 
 module.exports = mongoose.model("Comment", commentSchema);
