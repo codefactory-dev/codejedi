@@ -1,4 +1,4 @@
-const {users, questions, tokens} = require('../src/utils/seed'),
+const {users, tokens} = require('../src/utils/seed'),
       Rating = require('../models/rating'),
       Token = require('../models/token'),
       User = require('../models/user'),    
@@ -9,7 +9,6 @@ const {users, questions, tokens} = require('../src/utils/seed'),
 const userOne = users[0];
 const userTwo = users[1];
 const tokenOne = tokens[0];
-const qOne = questions[0];
 
 describe('Auth routes', () => {
 

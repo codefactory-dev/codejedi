@@ -1,4 +1,4 @@
-const {questions, qtracks, ratings, users, tokens, qDifficulties, qTypes} = require('./seed'),
+const {questions, qtracks, users, tokens, qDifficulties, qTypes} = require('./seed'),
       QDifficulty = require('../../models/qdifficulty'),
       Rating = require('../../models/rating'),
       Question = require('../../models/question'),
@@ -85,13 +85,13 @@ db.seed = async (logoff = true) => new Promise(async (resolve, reject) => {
                     .then(() => logoff || console.log("created seed users."))
                     .catch(err => reject("Error: could not create seed users."));
 
-            await Question.insertMany(questions)
-                        .then(() => logoff || console.log("created seed questions."))
-                        .catch(err => reject("Error: could not create seed questions."));
+            // await Question.insertMany(questions)
+            //             .then(() => logoff || console.log("created seed questions."))
+            //             .catch(err => reject("Error: could not create seed questions. "+err));
 
-            await Rating.insertMany(ratings)
-                    .then(() => logoff || console.log("created seed ratings."))
-                    .catch(err => reject("Error: could not create seed ratings."));
+            // await Rating.insertMany(ratings)
+            //         .then(() => logoff || console.log("created seed ratings."))
+            //         .catch(err => reject("Error: could not create seed ratings. "+err));
             
             resolve('Finished seeding db');
 });

@@ -61,14 +61,6 @@ const questionSchema = new Schema({
         default: 0,
         min: 0
     },
-    // lastUpdate: { 
-    //     type: Date,
-    //     default: Date.now 
-    // },  
-    // creationDate: {
-    //     type: Date,
-    //     default: Date.now
-    // },
     ratingIds: [{ 
         type: mongoose.Schema.Types.ObjectId, 
         ref: "Rating"

@@ -5,7 +5,6 @@ const express = require('express'),
       Comment = require('../models/comment'),
       User = require('../models/user'),
       Question = require('../models/question'),
-      QDetail = require('../models/qdetail'),
       middleware = require('../middleware/index'),
       db = require('../src/utils/db')
 
