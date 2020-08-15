@@ -6,34 +6,5 @@
 */
 const isNull = (...values) => values.reduce((acc, v) => acc || v == null, false); 
 
-// -----------------------------------------------------------------------------
-// Rating
-// -----------------------------------------------------------------------------
 
-/** 
-    Function to calculate the average rating given a newly added rating
-
-    @param  {Question} question - question with a newly added rating
-    @param  {number} newValue - newly added rating's value 
-    @return {number} updated average rating
-*/
-const addAvgRating = (question, newValue) => {
-    const prevAvgRating = question.avgRatings || 0;
-    const prevNbRating = question.nbRatings || 0;
-    return ((prevAvgRating*prevNbRating) + newValue) / (prevNbRating+1);
-}
-
-/** 
-    Function to calculate the average rating given a newly updated rating
-
-    @param  {Question} question - question with a newly added rating
-    @param  {number} prevValue - previous rating's value 
-    @param  {number} newValue - newly added rating's value 
-    @return {number} updated average rating
-*/
-const updateAvgRating = (question, prevValue, newValue) => {
-    const prevAvgRating = question.avgRatings;
-    return ((prevAvgRating * question.nbRatings) + (newValue - prevValue)) / question.nbRatings;
-}
-
-module.exports = { isNull, addAvgRating, updateAvgRating }
+module.exports = { isNull }

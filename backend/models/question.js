@@ -73,4 +73,42 @@ const questionSchema = new Schema({
     timestamps: true
 });
 
+// -------------------------------------------------------------------
+// METHODS
+// -------------------------------------------------------------------
+
+/** 
+    Function to add a new rating
+    
+    @param  {Rating} newRating - newly added rating 
+
+*/
+questionSchema.methods.addRating = async function (rating) {
+    const question = this;
+    
+    const prevAvgRating = question.avgRatings || 0;
+    const prevNbRating = question.nbRatings || 0;
+    question.avgRatings = ((prevAvgRating*prevNbRating) + rating.value) / (prevNbRating+1);
+
+    question.nbRatings++;
+    question.ratingIds.push(rating._id);
+    await question.save();
+}
+
+/** 
+    Function to calculate the average rating given a newly updated rating
+
+    @param  {number} prevValue - previous rating's value 
+    @param  {number} newValue - newly added rating's value 
+
+*/
+questionSchema.methods.updateAvgRating = async function (prevValue, newValue) {
+    const question = this;
+
+    const prevAvgRating = question.avgRatings;
+    question.avgRatings = ((prevAvgRating * question.nbRatings) + (newValue - prevValue)) / question.nbRatings;
+
+    await question.save();
+}
+
 module.exports = mongoose.model("Question", questionSchema);

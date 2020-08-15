@@ -1,5 +1,4 @@
 const {generateUsers, generateQuestions} = require('../src/utils/seed'),
-      {addAvgRating} = require('../routers/utils'),
       Question = require('../models/question'),
       User = require('../models/user'),
       db = require('../src/utils/db'),

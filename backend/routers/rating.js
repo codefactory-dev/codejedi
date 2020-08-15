@@ -1,5 +1,4 @@
 const express = require('express'),
-      {addAvgRating, updateAvgRating} = require('./utils'),
       router = express.Router({mergeParams: true}),
       middleware = require('../middleware/index'),
       Rating = require('../models/rating'),
@@ -34,13 +33,10 @@ router.post('/', middleware.checkLogIn,
          // update user           
          user.ratingIds.push(rating._id);
          await user.save();
-
+         
         // update question
-        q.avgRatings = addAvgRating(q, rating.value);
-        q.nbRatings++;
-        q.ratingIds.push(rating._id);
-        await q.save();
-
+        await q.addRating(rating);
+        
         return rating;
     };
 
@@ -75,8 +71,7 @@ router.put('/:id/edit', middleware.checkLogIn,
         await rating.save();
 
         // update question
-        q.avgRatings = updateAvgRating(q, prevValue, rating.value);
-        await q.save();
+        await q.updateAvgRating(prevValue, rating.value);
 
         return rating;
     };
