@@ -5,6 +5,10 @@ const mongoose = require('mongoose'),
 const qDifficulties = ["Easy", "Medium", "Hard"];
 const qTypes = ["Array", "String", "Linked List", "Stack/Queue", "Tree", "Heap", "HashTable", "Graph", "Sort", "Bit Manipulation", "Greedy", "Dynamic Programming"];
 
+//plain text passwords:
+//users[0]: roberta.crmota123
+//users[1]: grrbm123
+
 const users = [{
       _id: new mongoose.Types.ObjectId,
       firstname: 'Roberta',
