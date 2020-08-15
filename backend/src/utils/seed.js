@@ -30,7 +30,8 @@ const users = [{
               string: 0,
               graph: 0
           }
-      }
+      },
+      tokens: [{ token:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjMzMWY5OTY3ZDgyZDQ0MmMyMmU4MTIiLCJpYXQiOjE1OTcxODU5NDUsImV4cCI6MTU5NzI3MjM0NX0._lQEBaTkDAfomECRFun_u6t_e6JTY46zXv9M_enRd3c"} ]
     },
     {
       _id: new mongoose.Types.ObjectId,
@@ -90,11 +91,6 @@ const users = [{
 ];
 
 const userOneToken = utils.generateToken(users[0]);
-const tokens = [{
-    _id: new mongoose.Types.ObjectId,
-    userId: users[0]._id,
-    token: userOneToken
-}];
 
 
 const generateUsers = n => {
@@ -243,7 +239,6 @@ module.exports ={
     qDifficulties,
     qTypes,
     users,
-    tokens,
 
     generateUsers,
     generateQuestions,

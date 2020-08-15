@@ -1,6 +1,5 @@
-const {users, tokens} = require('../src/utils/seed'),
+const {users} = require('../src/utils/seed'),
       Rating = require('../models/rating'),
-      Token = require('../models/token'),
       User = require('../models/user'),    
       db = require('../src/utils/db'),
       request = require('supertest'),
@@ -8,7 +7,7 @@ const {users, tokens} = require('../src/utils/seed'),
 
 const userOne = users[0];
 const userTwo = users[1];
-const tokenOne = tokens[0];
+const tokenOne = userOne.tokens[0];
 
 describe('Auth routes', () => {
 
@@ -24,10 +23,8 @@ describe('Auth routes', () => {
   beforeEach(async() => {
       await Rating.deleteMany({});
       await User.deleteMany({});
-      await Token.deleteMany({});
       await new User(userOne).save();
       await new User(userTwo).save();
-      await new Token(tokenOne).save();
   });
 
 
@@ -46,7 +43,7 @@ describe('Auth routes', () => {
       await request(app).post('/auth/signin').send({
           email: userOne.email,
           password: 'thisisnotmypass'
-      }).expect(401);
+      }).expect(400);
   })
 
   it('Should be able to confirm existing user account when provided with a valid token', async () => {
