@@ -1,4 +1,4 @@
-const {users, questions, qDifficulties, qTypes} = require('../src/utils/seed'),
+const {users, qDifficulties, qTypes} = require('../src/utils/seed'),
       Rating = require('../models/rating'),
       User = require('../models/user'),
       QDifficulty = require('../models/qdifficulty'),
@@ -9,7 +9,6 @@ const {users, questions, qDifficulties, qTypes} = require('../src/utils/seed'),
 
 const userOne = users[0];
 const userAdmin = users[2];
-const qOne = questions[0];
 
 describe('User routes', () => {
   
