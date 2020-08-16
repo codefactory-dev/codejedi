@@ -1,0 +1,17 @@
+import React from 'react';
+import './QuestionPage.scss';
+import Navbar from '../Navbar/Navbar.js'
+
+function QuestionPage() { 
+   
+
+    return (
+        <div id="question-page">
+            <Navbar />
+            Question Page
+        </div> 
+    );
+
+}
+
+export default QuestionPage;
