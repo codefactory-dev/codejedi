@@ -6,7 +6,7 @@ import axios from 'axios';
 
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/monokai.css';
-import './css/CodeEditor.css';
+import './scss/CodeEditor.scss';
 
 
 
