@@ -5,7 +5,7 @@ import App from './App';
 import Img from './Img';
 //import CodeEditor from './CodeEditor';
 //import QuestionSubmitter from './QuestionSubmitter'
-import QuestionPage from './QuestionPage/QuestionPage.js'
+import QuestionPage from './pages/QuestionPage/QuestionPage.js'
 import { ThemeProvider } from '@material-ui/styles'
 import theme from './components/ui/Theme.js'
 
