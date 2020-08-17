@@ -45,8 +45,9 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
     height: '32em',
-    marginTop: '2em'
-  },
+    marginTop: '2em',
+    color: 'black'
+  }
 }));
 
 export default function SimpleTabs() {
@@ -61,10 +62,10 @@ export default function SimpleTabs() {
     <div className={classes.root}>
       <AppBar position="static">
         <Tabs 
-          value={value} 
-          onChange={handleChange} 
-          aria-label="simple tabs example"
-          variant="fullWidth"
+            value={value} 
+            onChange={handleChange} 
+            aria-label="simple tabs example"
+            variant="fullWidth"
           >
           <Tab label="Item One" {...a11yProps(0)} />
           <Tab label="Item Two" {...a11yProps(1)} />
@@ -72,7 +73,7 @@ export default function SimpleTabs() {
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        Item One
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vehicula leo ut odio aliquam blandit. Curabitur id suscipit neque. Sed pretium elit pellentesque massa aliquam, ut pellentesque urna hendrerit. Sed quis dapibus dui. Aenean faucibus dignissim ullamcorper. Cras ac ante dapibus, dignissim diam eget, aliquam justo. Etiam ut hendrerit velit, non consequat augue. In hac habitasse platea dictumst. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vivamus vestibulum malesuada sapien, ac consectetur nisl malesuada ut. Etiam et blandit eros.
       </TabPanel>
       <TabPanel value={value} index={1}>
         Item Two
