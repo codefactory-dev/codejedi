@@ -10,17 +10,19 @@ import MenuIcon from '@material-ui/icons/Menu';
 
 function NavBar() { 
     const classes = useStyles();
-    
+    const yodaGreen = '#D7E2C6';
 
     return (
         <AppBar position="static">
         <Toolbar>
-            <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            <MenuIcon />
-            </IconButton>
+            
             <Typography variant="h6" className={classes.title}>
-            News
+            <span>CODE</span>
+            <span style={{color:`${yodaGreen}`}}> JEDI</span>
             </Typography>
+            <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+                <MenuIcon />
+            </IconButton>
             <Button color="inherit">Login</Button>
         </Toolbar>
         </AppBar>
@@ -33,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
       flexGrow: 1,
     },
     menuButton: {
-      marginRight: theme.spacing(2),
+      marginRight: theme.spacing(0),
     },
     title: {
       flexGrow: 1,
