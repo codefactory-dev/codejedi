@@ -1,6 +1,6 @@
 import React from 'react';
 import './QuestionPage.scss';
-import Navbar from '../Navbar/Navbar.js'
+import Navbar from '../components/Navbar/Navbar.js'
 
 function QuestionPage() { 
    
