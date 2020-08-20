@@ -20,16 +20,22 @@ function NavBar() {
         <AppBar position="static">
         <Toolbar>
             
-            <Typography variant="h6" className={classes.title}>
+            
               
             <SvgIcon component={YodaLogo} style={{ fontSize: 30, verticalAlign: 'middle' }} viewBox="0 0 42 42" />
-            <span style={{marginLeft: '8px'}}>CODE</span>
-            <span style={{color:`${yodaGreen}`}}> JEDI</span>
-            <span style={{marginLeft: '8px'}}>BROWSE</span>
-            <span style={{marginLeft: '8px'}}>PROFILE</span>
+            <Typography variant="h6" className={classes.logo}>
+              <span style={{marginLeft: '8px'}}>CODE</span>
+              <span style={{color:`${yodaGreen}`}}> JEDI</span>
             </Typography>
+            <Typography variant="h6" className={classes.menuOption}>
+              <span style={{marginLeft: '8px'}}>BROWSE</span>
+              <span style={{marginLeft: '8px'}}>PROFILE</span>
+            </Typography>
+            
             <Avatar alt="Remy Sharp" src={placeholderAvatar} />
-            <Button color="inherit">roberta.cmota</Button>
+            <Typography variant="body1" className={classes.avatarName}>
+              roberta.cmota
+            </Typography>
         </Toolbar>
         </AppBar>
     );
@@ -43,9 +49,19 @@ const useStyles = makeStyles((theme) => ({
     menuButton: {
       marginRight: theme.spacing(0),
     },
-    title: {
-      flexGrow: 1,
+    logo: {
+      flexShrink: 1,
+      fontWeight: theme.typography.fontWeightLight
     },
+    menuOption: {
+      flexGrow: 1,
+      marginLeft: '60px',
+      fontWeight: theme.typography.fontWeightLight
+    },
+    avatarName: {
+      marginLeft: '10px'
+    }
+
 }));
 
 export default NavBar;
