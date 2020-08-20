@@ -6,7 +6,9 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import MenuIcon from '@material-ui/icons/Menu';
+import SvgIcon from '@material-ui/core/SvgIcon';
 //import './Navbar.scss';
+import { ReactComponent as YodaLogo } from '../../imgs/Yoda Logo.svg';
 
 function NavBar() { 
     const classes = useStyles();
@@ -17,6 +19,8 @@ function NavBar() {
         <Toolbar>
             
             <Typography variant="h6" className={classes.title}>
+              
+            <SvgIcon component={YodaLogo} viewBox="0 0 42 42" />
             <span>CODE</span>
             <span style={{color:`${yodaGreen}`}}> JEDI</span>
             </Typography>
@@ -33,6 +37,9 @@ function NavBar() {
 const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
+      '& > svg': {
+        margin: theme.spacing(2),
+      }
     },
     menuButton: {
       marginRight: theme.spacing(0),
@@ -41,5 +48,13 @@ const useStyles = makeStyles((theme) => ({
       flexGrow: 1,
     },
 }));
+
+function HomeIcon(props) {
+  return (
+    <SvgIcon {...props}>
+      <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+    </SvgIcon>
+  );
+}
 
 export default NavBar;
