@@ -28,8 +28,8 @@ function NavBar() {
               <span style={{color:`${yodaGreen}`}}> JEDI</span>
             </Typography>
             <Typography variant="h6" className={classes.menuOption}>
-              <span style={{marginLeft: '8px'}}>BROWSE</span>
-              <span style={{marginLeft: '8px'}}>PROFILE</span>
+              <span>BROWSE</span>
+              <span style={{marginLeft: '54px'}}>PROFILE</span>
             </Typography>
             
             <Avatar alt="Remy Sharp" src={placeholderAvatar} />
@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
     },
     menuOption: {
       flexGrow: 1,
-      marginLeft: '60px',
+      marginLeft: '78px',
       fontWeight: theme.typography.fontWeightLight
     },
     avatarName: {
