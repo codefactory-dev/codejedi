@@ -18,7 +18,12 @@ export default function QuestionPage() {
                 <SimpleTabs />
                 <Box>
                     <div className={classes.grow} />
-                    <Button className={classes.button} variant="contained" color="primary">
+                    <Button 
+                        className={classes.button} 
+                        variant="contained" 
+                        color="primary"
+                        onClick={()=>{console.log("test")}}
+                    >
                         Primary
                     </Button>
                 </Box>
