@@ -9,6 +9,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Box from '@material-ui/core/Box';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import Avatar from '@material-ui/core/Avatar';
+import Icon from '@material-ui/core/Icon';
 //import './Navbar.scss';
 import { ReactComponent as YodaLogo } from '../../imgs/Yoda Logo.svg';
 import placeholderAvatar from '../../imgs/profile pic.png'
@@ -26,16 +27,19 @@ function NavBar() {
               <span style={{marginLeft: '8px'}}>CODE</span>
               <span style={{color:`${yodaGreen}`}}> JEDI</span>
             </Typography>
-            <Typography variant="h6" className={classes.sectionDesktop}>
+            <Typography variant="h6" className={classes.menuOptions}>
               <span>BROWSE</span>
               <span style={{marginLeft: '54px'}}>PROFILE</span>
             </Typography>
             <div className={classes.grow} />
-            <Toolbar>
+            <Toolbar className={classes.sectionDesktop}>
               <Avatar alt="Remy Sharp" src={placeholderAvatar} />
               <Typography variant="body1" className={classes.avatarName}>
                 roberta.cmota
               </Typography>
+            </Toolbar>
+            <Toolbar className={classes.sectionMobile}>
+              <Icon className="fa fa-plus-circle" />
             </Toolbar>
         </Toolbar>
         </AppBar>
@@ -44,6 +48,15 @@ function NavBar() {
 }
 
 const useStyles = makeStyles((theme) => ({
+    menuOptions: {
+      flexGrow: 1,
+      marginLeft: '78px',
+      fontWeight: theme.typography.fontWeightLight,
+      display: 'none',
+      [theme.breakpoints.up('md')]: {
+        display: 'flex',
+      },
+    },
     grow: {
       flexGrow: 1,
     },
@@ -62,9 +75,6 @@ const useStyles = makeStyles((theme) => ({
     },
     sectionDesktop: {
       display: 'none',
-      flexGrow: 1,
-      marginLeft: '78px',
-      fontWeight: theme.typography.fontWeightLight,
       [theme.breakpoints.up('md')]: {
         display: 'flex',
       },
