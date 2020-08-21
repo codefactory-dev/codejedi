@@ -6,7 +6,8 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import CodeEditor from '../../CodeEditor.js'
+import CodeEditor from '../../CodeEditor.js';
+import EditorTestcases from '../../EditorTestcases.js';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -45,6 +46,7 @@ export default function SimpleTabs() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [code, setCode] = useState('');
+  const [editorValue, setEditorValue] = useState();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -71,8 +73,13 @@ export default function SimpleTabs() {
       <TabPanel value={value} index={1}>
         Item Two
       </TabPanel>
-      <TabPanel value={value} index={2}>
-        Item Three
+      <TabPanel className={classes.editorTestCases} value={value} index={2}>
+        <EditorTestcases 
+          editorValue={editorValue} 
+          setEditorValue={setEditorValue} 
+          height='34.7em'
+          width='100%'          
+          />
       </TabPanel>
     </div>
   );
@@ -82,7 +89,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
-    height: '32.2em',
+    height: '32.08em',
     marginTop: '2em',
     color: 'black',
     padding: 0
@@ -92,6 +99,11 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: theme.typography.fontWeightRegular,
   },
   tabsPanel: {
+    '& > div': {
+      padding: 1
+    }
+  },
+  editorTestCases: {
     '& > div': {
       padding: 1
     }
