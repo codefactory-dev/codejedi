@@ -12,7 +12,9 @@ import Avatar from '@material-ui/core/Avatar';
 import Icon from '@material-ui/core/Icon';
 //import './Navbar.scss';
 import { ReactComponent as YodaLogo } from '../../imgs/Yoda Logo.svg';
+import { ReactComponent as bars } from '../../imgs/bars.svg'
 import placeholderAvatar from '../../imgs/profile pic.png'
+
 
 function NavBar() { 
     const classes = useStyles();
@@ -39,7 +41,7 @@ function NavBar() {
               </Typography>
             </Toolbar>
             <Toolbar className={classes.sectionMobile}>
-              <Icon className="fa fa-bars" />
+              <SvgIcon component={bars} style={{ fontSize: 22, verticalAlign: 'middle' }} viewBox="0 0 29 29" />
             </Toolbar>
         </Toolbar>
         </AppBar>

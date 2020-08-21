@@ -67,9 +67,9 @@ export default function SimpleTabs() {
             aria-label="simple tabs example"
             variant="fullWidth"
           >
-          <Tab label="Item One" {...a11yProps(0)} />
-          <Tab label="Item Two" {...a11yProps(1)} />
-          <Tab label="Item Three" {...a11yProps(2)} />
+          <Tab label="Question" {...a11yProps(0)} />
+          <Tab label="Solution" {...a11yProps(1)} />
+          <Tab label="Test Cases" {...a11yProps(2)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
