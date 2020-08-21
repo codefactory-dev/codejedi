@@ -8,6 +8,10 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import CodeEditor from '../../CodeEditor.js';
 import EditorTestcases from '../../EditorTestcases.js';
+import Parse from '../../utils/Parser'
+import CodeScaffolding from '../../utils/CodeScaffolding'
+import { ConvertCodeToOneLiner } from '../../utils/TextReadingUtils'
+import axios from 'axios'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -47,10 +51,62 @@ export default function SimpleTabs() {
   const [value, setValue] = React.useState(0);
   const [code, setCode] = useState('');
   const [editorValue, setEditorValue] = useState();
+  const [answer, setAnswer] = useState();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  function submitAll()
+  {
+      
+      //get question from somewhere
+      var questionText = code;
+      
+      //get test cases from file
+  
+      var testCasesText = editorValue;
+  
+      //parse test cases into javascript
+      var structure = Parse(testCasesText);
+      console.log("---PARSED STRUCTURE---");
+      console.log(structure);
+  
+      //insert test cases into question
+      var togetherText = questionText;
+      togetherText+=CodeScaffolding(structure);
+  
+      console.log("---TOGETHER TEXT---");
+      console.log(togetherText);
+  
+      //transform question into a "sendable" one-line string for json
+      var oneLiner = ConvertCodeToOneLiner(togetherText);
+      console.log("---ONE LINER---");
+      console.log(oneLiner);
+  
+  
+      createEditor();
+  
+      // POST both the question and the test cases
+      async function createEditor() {
+          
+          const result = await axios({
+              method: 'post',
+              url: '/compile',
+              data: { 
+                  code:oneLiner
+              }
+          });            
+          console.log(Object.getOwnPropertyNames(result))
+          const {stdout, stderr, error} = result.data;
+          console.log("stdout: "+stdout+", stderr: "+stderr+", error: "+error);
+          if (stderr || error)
+          {
+              return setAnswer(stderr +' '+ error)
+          }
+          return setAnswer(stdout);
+      }
+  }
+  
 
   return (
     <div className={classes.root}>
