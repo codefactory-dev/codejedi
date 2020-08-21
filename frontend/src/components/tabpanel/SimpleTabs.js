@@ -60,7 +60,6 @@ export default function SimpleTabs() {
             onChange={handleChange} 
             aria-label="simple tabs example"
             variant="fullWidth"
-            style={{padding: 0}}
           >
           <Tab className={classes.removeCaps} label="Question" {...a11yProps(0)} />
           <Tab className={classes.removeCaps} label="Solution" {...a11yProps(1)} />
