@@ -39,7 +39,7 @@ function NavBar() {
               </Typography>
             </Toolbar>
             <Toolbar className={classes.sectionMobile}>
-              <Icon className="fa fa-plus-circle" />
+              <Icon className="fa fa-bars" />
             </Toolbar>
         </Toolbar>
         </AppBar>
