@@ -54,7 +54,7 @@ function CodeEditor({code, setCode, codemirror}) {
     // --------------------------------------------------------------------
 
     return (
-        <div className={'codemirrorContainer'}>
+        <div style= {{width:'100%', height:'100%'}} className={'codemirrorContainer'}>
             <textarea
 					ref={textareaNode}
                     autoComplete="off"

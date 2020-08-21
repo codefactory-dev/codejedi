@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -6,6 +6,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import CodeEditor from '../../CodeEditor.js'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -43,6 +44,7 @@ function a11yProps(index) {
 export default function SimpleTabs() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
+  const [code, setCode] = useState('');
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -56,14 +58,15 @@ export default function SimpleTabs() {
             onChange={handleChange} 
             aria-label="simple tabs example"
             variant="fullWidth"
+            style={{padding: 0}}
           >
           <Tab className={classes.removeCaps} label="Question" {...a11yProps(0)} />
           <Tab className={classes.removeCaps} label="Solution" {...a11yProps(1)} />
           <Tab className={classes.removeCaps} label="Test Cases" {...a11yProps(2)} />
         </Tabs>
       </AppBar>
-      <TabPanel value={value} index={0}>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vehicula leo ut odio aliquam blandit. Curabitur id suscipit neque. Sed pretium elit pellentesque massa aliquam, ut pellentesque urna hendrerit. Sed quis dapibus dui. Aenean faucibus dignissim ullamcorper. Cras ac ante dapibus, dignissim diam eget, aliquam justo. Etiam ut hendrerit velit, non consequat augue. In hac habitasse platea dictumst. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vivamus vestibulum malesuada sapien, ac consectetur nisl malesuada ut. Etiam et blandit eros.
+      <TabPanel className={classes.tabsPanel} value={value} index={0}>
+        <CodeEditor code={code} setCode={setCode} />
       </TabPanel>
       <TabPanel value={value} index={1}>
         Item Two
@@ -81,10 +84,16 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     height: '32em',
     marginTop: '2em',
-    color: 'black'
+    color: 'black',
+    padding: 0
   },
   removeCaps: {
     textTransform: 'none',
     fontWeight: theme.typography.fontWeightRegular,
+  },
+  tabsPanel: {
+    '& > div': {
+      padding: 1
+    }
   }
 }));
