@@ -40,16 +40,6 @@ function a11yProps(index) {
   };
 }
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
-    height: '32em',
-    marginTop: '2em',
-    color: 'black'
-  }
-}));
-
 export default function SimpleTabs() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
@@ -67,9 +57,9 @@ export default function SimpleTabs() {
             aria-label="simple tabs example"
             variant="fullWidth"
           >
-          <Tab label="Question" {...a11yProps(0)} />
-          <Tab label="Solution" {...a11yProps(1)} />
-          <Tab label="Test Cases" {...a11yProps(2)} />
+          <Tab className={classes.removeCaps} label="Question" {...a11yProps(0)} />
+          <Tab className={classes.removeCaps} label="Solution" {...a11yProps(1)} />
+          <Tab className={classes.removeCaps} label="Test Cases" {...a11yProps(2)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
@@ -84,3 +74,17 @@ export default function SimpleTabs() {
     </div>
   );
 }
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.paper,
+    height: '32em',
+    marginTop: '2em',
+    color: 'black'
+  },
+  removeCaps: {
+    textTransform: 'none',
+    fontWeight: theme.typography.fontWeightRegular,
+  }
+}));
