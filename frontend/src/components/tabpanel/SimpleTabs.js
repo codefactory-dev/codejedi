@@ -66,7 +66,7 @@ export default function SimpleTabs() {
         </Tabs>
       </AppBar>
       <TabPanel className={classes.tabsPanel} value={value} index={0}>
-        <CodeEditor code={code} setCode={setCode} />
+        <CodeEditor code={code} setCode={setCode} height='29em' />
       </TabPanel>
       <TabPanel value={value} index={1}>
         Item Two
@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
-    height: '32em',
+    height: '32.2em',
     marginTop: '2em',
     color: 'black',
     padding: 0

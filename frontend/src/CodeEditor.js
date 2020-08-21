@@ -10,7 +10,7 @@ import './scss/CodeEditor.scss';
 
 
 
-function CodeEditor({code, setCode, codemirror}) { 
+function CodeEditor({code, setCode, height, codemirror}) { 
     const textareaNode = useRef();
     const languageModes = new Map([['javascript', 'javascript'], ['java', 'text/x-java'], ['c++', 'text/x-c++src']]);
     let selectedLanguage = 'java';
@@ -54,7 +54,7 @@ function CodeEditor({code, setCode, codemirror}) {
     // --------------------------------------------------------------------
 
     return (
-        <div style= {{width:'100%', height:'100%'}} className={'codemirrorContainer'}>
+        <div style= {{width:'100%', height: height}} className={'codemirrorContainer'}>
             <textarea
 					ref={textareaNode}
                     autoComplete="off"
