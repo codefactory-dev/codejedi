@@ -3,13 +3,13 @@ import axios from 'axios';
 
 import './scss/EditorTestcases.scss';
 
-function EditorTestcases({editorValue, setEditorValue}) { 
+function EditorTestcases({editorValue, setEditorValue, width, height}) { 
     function handleChange(event){
         console.log(event.target.value);
         setEditorValue(event.target.value);
     }
     return(
-        <textarea id="editor-testcases" value={editorValue} onChange={handleChange} />
+        <textarea style={{width,height}} id="editor-testcases" value={editorValue} onChange={handleChange} />
     )
  
 }

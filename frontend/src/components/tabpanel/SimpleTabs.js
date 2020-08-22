@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -6,6 +6,12 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import CodeEditor from '../../CodeEditor.js';
+import EditorTestcases from '../../EditorTestcases.js';
+import Parse from '../../utils/Parser'
+import CodeScaffolding from '../../utils/CodeScaffolding'
+import { ConvertCodeToOneLiner } from '../../utils/TextReadingUtils'
+import axios from 'axios'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -40,13 +46,76 @@ function a11yProps(index) {
   };
 }
 
-export default function SimpleTabs() {
+export default function SimpleTabs(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
+  const [code, setCode] = useState('');
+  const [editorValue, setEditorValue] = useState();
+
+
+  useEffect(()=>{
+    if (props.shouldSubmit)
+    {
+      console.log("calling submitAll");
+      submitAll();
+      props.setShouldSubmit(false);
+    }
+  },[props.shouldSubmit])
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  function submitAll()
+  {
+      
+      //get question from somewhere
+      var questionText = code;
+      
+      //get test cases from file
+  
+      var testCasesText = editorValue;
+  
+      //parse test cases into javascript
+      var structure = Parse(testCasesText);
+      console.log("---PARSED STRUCTURE---");
+      console.log(structure);
+  
+      //insert test cases into question
+      var togetherText = questionText;
+      togetherText+=CodeScaffolding(structure);
+  
+      console.log("---TOGETHER TEXT---");
+      console.log(togetherText);
+  
+      //transform question into a "sendable" one-line string for json
+      var oneLiner = ConvertCodeToOneLiner(togetherText);
+      console.log("---ONE LINER---");
+      console.log(oneLiner);
+  
+  
+      createEditor();
+  
+      // POST both the question and the test cases
+      async function createEditor() {
+          
+          const result = await axios({
+              method: 'post',
+              url: '/compile',
+              data: { 
+                  code:oneLiner
+              }
+          });            
+          console.log(Object.getOwnPropertyNames(result))
+          const {stdout, stderr, error} = result.data;
+          console.log("stdout: "+stdout+", stderr: "+stderr+", error: "+error);
+          if (stderr || error)
+          {
+              return props.setAnswer(stderr +' '+ error)
+          }
+          return props.setAnswer(stdout);
+      }
+  }
+  
 
   return (
     <div className={classes.root}>
@@ -62,14 +131,19 @@ export default function SimpleTabs() {
           <Tab className={classes.removeCaps} label="Test Cases" {...a11yProps(2)} />
         </Tabs>
       </AppBar>
-      <TabPanel value={value} index={0}>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vehicula leo ut odio aliquam blandit. Curabitur id suscipit neque. Sed pretium elit pellentesque massa aliquam, ut pellentesque urna hendrerit. Sed quis dapibus dui. Aenean faucibus dignissim ullamcorper. Cras ac ante dapibus, dignissim diam eget, aliquam justo. Etiam ut hendrerit velit, non consequat augue. In hac habitasse platea dictumst. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vivamus vestibulum malesuada sapien, ac consectetur nisl malesuada ut. Etiam et blandit eros.
+      <TabPanel className={classes.tabsPanel} value={value} index={0}>
+        <CodeEditor code={code} setCode={setCode} height='29em' />
       </TabPanel>
       <TabPanel value={value} index={1}>
         Item Two
       </TabPanel>
-      <TabPanel value={value} index={2}>
-        Item Three
+      <TabPanel className={classes.editorTestCases} value={value} index={2}>
+        <EditorTestcases 
+          editorValue={editorValue} 
+          setEditorValue={setEditorValue} 
+          height='34.7em'
+          width='100%'          
+          />
       </TabPanel>
     </div>
   );
@@ -79,12 +153,23 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
-    height: '32em',
+    height: '32.08em',
     marginTop: '2em',
-    color: 'black'
+    color: 'black',
+    padding: 0
   },
   removeCaps: {
     textTransform: 'none',
     fontWeight: theme.typography.fontWeightRegular,
+  },
+  tabsPanel: {
+    '& > div': {
+      padding: 1
+    }
+  },
+  editorTestCases: {
+    '& > div': {
+      padding: 1
+    }
   }
 }));

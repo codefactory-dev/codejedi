@@ -10,12 +10,16 @@ import './scss/CodeEditor.scss';
 
 
 
-function CodeEditor({code, setCode, codemirror}) { 
+function CodeEditor({code, setCode, height, codemirror}) { 
     const textareaNode = useRef();
     const languageModes = new Map([['javascript', 'javascript'], ['java', 'text/x-java'], ['c++', 'text/x-c++src']]);
     let selectedLanguage = 'java';
 
     useEffect(()=> {
+        console.log("codemirror updated");
+        if (code) {
+            textareaNode.current.innerHTML = code;
+        }
         codemirror = CodeMirror.fromTextArea(textareaNode.current, {
             lineNumbers: true,
             mode: `${languageModes.get(selectedLanguage)}`,
@@ -54,7 +58,7 @@ function CodeEditor({code, setCode, codemirror}) {
     // --------------------------------------------------------------------
 
     return (
-        <div className={'codemirrorContainer'}>
+        <div style= {{width:'100%', height: height}} className={'codemirrorContainer'}>
             <textarea
 					ref={textareaNode}
                     autoComplete="off"
