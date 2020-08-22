@@ -16,6 +16,10 @@ function CodeEditor({code, setCode, height, codemirror}) {
     let selectedLanguage = 'java';
 
     useEffect(()=> {
+        console.log("codemirror updated");
+        if (code) {
+            textareaNode.current.innerHTML = code;
+        }
         codemirror = CodeMirror.fromTextArea(textareaNode.current, {
             lineNumbers: true,
             mode: `${languageModes.get(selectedLanguage)}`,
