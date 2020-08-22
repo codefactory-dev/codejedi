@@ -20,7 +20,7 @@ export default function QuestionPage() {
         <div id="question-page">
             <Navbar />
             <Container maxWidth="sm">
-                <SimpleTabs shouldSubmit={shouldSubmit} />
+                <SimpleTabs shouldSubmit={shouldSubmit} setShouldSubmit={setShouldSubmit} />
                 <Box>
                     <div className={classes.grow} />
                     <Button 
