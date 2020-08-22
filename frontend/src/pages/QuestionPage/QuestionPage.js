@@ -5,22 +5,36 @@ import SimpleTabs from '../../components/tabpanel/SimpleTabs.js'
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
+import Swal from 'sweetalert2'
 
 import './QuestionPage.scss';
 
 export default function QuestionPage() { 
     const classes = useStyles();
     const [shouldSubmit, setShouldSubmit] = useState(false);
+    const [answer,setAnswer] = useState("");
 
     function triggerSubmitAll(){
         setShouldSubmit(true);
     }
+    useEffect(()=>{
+        if(answer.length > 0)
+        {
+            Swal.fire(answer);
+        }
+        setAnswer("");
+    },[answer])
 
     return (
         <div id="question-page">
             <Navbar />
             <Container maxWidth="sm">
-                <SimpleTabs shouldSubmit={shouldSubmit} setShouldSubmit={setShouldSubmit} />
+                <SimpleTabs 
+                    shouldSubmit={shouldSubmit} 
+                    setShouldSubmit={setShouldSubmit}
+                    answer={answer}
+                    setAnswer={setAnswer}
+                    />
                 <Box>
                     <div className={classes.grow} />
                     <Button 
@@ -29,7 +43,7 @@ export default function QuestionPage() {
                         color="primary"
                         onClick={triggerSubmitAll}
                     >
-                        Primary
+                        Submit Question
                     </Button>
                 </Box>
             </Container>
@@ -40,11 +54,16 @@ export default function QuestionPage() {
 }
 
 const useStyles = makeStyles((theme) => ({
+    answer: {
+        color:'green',
+    },
     grow: {
       flexGrow: 1,
     },
     button: {
       marginTop: '20px',
-      float: 'right'
+      float: 'right',
+      textTransform: 'none',
+      fontWeight: theme.typography.fontWeightRegular,
     }
 }));

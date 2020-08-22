@@ -51,7 +51,6 @@ export default function SimpleTabs(props) {
   const [value, setValue] = React.useState(0);
   const [code, setCode] = useState('');
   const [editorValue, setEditorValue] = useState();
-  const [answer, setAnswer] = useState();
 
 
   useEffect(()=>{
@@ -111,9 +110,9 @@ export default function SimpleTabs(props) {
           console.log("stdout: "+stdout+", stderr: "+stderr+", error: "+error);
           if (stderr || error)
           {
-              return setAnswer(stderr +' '+ error)
+              return props.setAnswer(stderr +' '+ error)
           }
-          return setAnswer(stdout);
+          return props.setAnswer(stdout);
       }
   }
   
