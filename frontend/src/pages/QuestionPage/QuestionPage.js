@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Navbar from '../../components/Navbar/Navbar.js'
 import SimpleTabs from '../../components/tabpanel/SimpleTabs.js'
@@ -10,19 +10,24 @@ import './QuestionPage.scss';
 
 export default function QuestionPage() { 
     const classes = useStyles();
+    const [shouldSubmit, setShouldSubmit] = useState(false);
+
+    function triggerSubmitAll(){
+        setShouldSubmit(true);
+    }
 
     return (
         <div id="question-page">
             <Navbar />
             <Container maxWidth="sm">
-                <SimpleTabs />
+                <SimpleTabs shouldSubmit={shouldSubmit} />
                 <Box>
                     <div className={classes.grow} />
                     <Button 
                         className={classes.button} 
                         variant="contained" 
                         color="primary"
-                        onClick={()=>{console.log("test")}}
+                        onClick={triggerSubmitAll}
                     >
                         Primary
                     </Button>

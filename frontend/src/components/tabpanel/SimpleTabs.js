@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -46,12 +46,22 @@ function a11yProps(index) {
   };
 }
 
-export default function SimpleTabs() {
+export default function SimpleTabs(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [code, setCode] = useState('');
   const [editorValue, setEditorValue] = useState();
   const [answer, setAnswer] = useState();
+
+
+  useEffect(()=>{
+    if (props.shouldSubmit)
+    {
+      console.log("calling submitAll");
+      submitAll();
+      props.setShouldSubmit(false);
+    }
+  },[props.shouldSubmit])
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
