@@ -8,7 +8,12 @@ import Button from '@material-ui/core/Button';
 export default function Table(){
     const classes = useStyles();
     const [selectedRow, setSelectedRow] = useState(null);
-    const hardStyle = {
+    const colorsMap = {
+      Easy: '#21BA45',
+      Medium: '#FBBD08',
+      Hard: '#DB2828'
+    }
+    const difficultyStyle = {
       display: 'flex',
       color:'white', 
       backgroundColor:'#DB2828', 
@@ -18,32 +23,6 @@ export default function Table(){
       fontFamily: 'Roboto',
       fontSize:'14px',
       padding: '2px 6px 2px 6px'
-    
-      
-    };
-    const mediumStyle = {
-      display: 'flex',
-      color:'white', 
-      backgroundColor:'#FBBD08', 
-      width:'80px', 
-      justifyContent:'center',
-      borderRadius: '12px',
-      fontFamily: 'Roboto',
-      fontSize:'14px',
-      padding: '2px 6px 2px 6px'
-      
-    };
-    const easyStyle = {
-      display: 'flex',
-      color:'white', 
-      backgroundColor:'#21BA45', 
-      width:'80px', 
-      justifyContent:'center',
-      borderRadius: '12px',
-      fontFamily: 'Roboto',
-      fontSize:'14px',
-      padding: '2px 6px 2px 6px'
-      
     };
     return (
         <div className={classes.root}>
@@ -54,14 +33,7 @@ export default function Table(){
               { title: 'Creator', field: 'creator' },
               { title: 'Creator Join Date', field: 'creatorJoinDate', type: 'numeric' },
               { title: 'Difficulty', field: 'difficulty', render: rowData => {
-                switch(rowData.difficulty){
-                  case "Easy":
-                    return <p style={easyStyle}>{rowData.difficulty}</p>;
-                  case "Medium":
-                    return <p style={mediumStyle}>{rowData.difficulty}</p>;
-                  case "Hard":
-                    return <p style={hardStyle}>{rowData.difficulty}</p>;
-                }
+                return <p style={ {...difficultyStyle, backgroundColor: colorsMap[rowData.difficulty]} }>{rowData.difficulty}</p>;
               } }
             ]}
             data={[
