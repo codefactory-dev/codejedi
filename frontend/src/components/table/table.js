@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import MaterialTable from "material-table";
+import MTableToolbar from "material-table/dist/components/m-table-toolbar.js";
+import Chip from '@material-ui/core/Chip';
 import { makeStyles } from '@material-ui/core/styles';
 import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
 import SvgIcon from '@material-ui/core/SvgIcon';
@@ -54,6 +56,20 @@ export default function Table(){
               rowStyle: rowData => ({
                 backgroundColor: (selectedRow === rowData.tableData.id) ? '#EEE' : '#FFF'
               })
+            }}
+            components={{
+              Toolbar: props => (
+                <div>
+                  <MTableToolbar {...props} />
+                  <div style={{padding: '0px 10px'}}>
+                    <Chip label="Chip 1" color="secondary" style={{marginRight: 5}}/>
+                    <Chip label="Chip 2" color="secondary" style={{marginRight: 5}}/>
+                    <Chip label="Chip 3" color="secondary" style={{marginRight: 5}}/>
+                    <Chip label="Chip 4" color="secondary" style={{marginRight: 5}}/>
+                    <Chip label="Chip 5" color="secondary" style={{marginRight: 5}}/>
+                  </div>
+                </div>
+              ),
             }}
           />
         </div>
