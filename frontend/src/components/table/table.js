@@ -32,28 +32,29 @@ export default function Table(){
               { title: 'Title', field: 'title' },
               { title: 'Creator', field: 'creator' },
               { title: 'Creator Join Date', field: 'creatorJoinDate', type: 'numeric' },
+              { title: 'Solution', field: 'solution'},
+              { title: 'Rating', field: 'rating'},
               { title: 'Difficulty', field: 'difficulty', render: rowData => {
                 return <p style={ {...difficultyStyle, backgroundColor: colorsMap[rowData.difficulty]} }>{rowData.difficulty}</p>;
-              } }
+              } },
+              { title: 'Last Comment', field: 'lastComment'},
+              { title: 'Last Updated', field: 'lastUpdated'},
+              
+
             ]}
             data={[
-              { title: 'Mehmet', creator: 'Baran', creatorJoinDate: 1987, difficulty: 'Medium' },
-              { title: 'Zerya Betül', creator: 'Baran', creatorJoinDate: 2017, difficulty: 'Easy' },
-              { title: 'Maria do Carmo', creator: 'Baran', creatorJoinDate: 2017, difficulty: 'Hard' },
+              { title: 'Two Sum', creator: 'grrbm2', creatorJoinDate: 1987, solution: 'Yes', rating:'4.54  85 votes', difficulty: 'Medium', lastComment:'At vero eos et accusamus et iusto odio digníssimos ...', lastUpdated:'2020' },
+              { title: 'Number of Islands', creator: 'roberta.cmota', creatorJoinDate: 1987, solution: 'No', rating:'4.54  85 votes', difficulty: 'Hard', lastComment:'ducimus qui blanditiis praesentium voluptatum ...', lastUpdated:'2020' },
+              { title: 'Two Sum', creator: 'grrbm2', creatorJoinDate: 1987, solution: 'Yes', rating:'4.54  85 votes', difficulty: 'Easy', lastComment:'deleniti atque corrupti quos dolores et quas moléstia ...', lastUpdated:'2020' },
+              
             ]}
             onRowClick={((evt, selectedRow) => setSelectedRow(selectedRow.tableData.id))}
             options={{
+              filtering: true,
               rowStyle: rowData => ({
                 backgroundColor: (selectedRow === rowData.tableData.id) ? '#EEE' : '#FFF'
               })
             }}
-            actions={[
-              {
-                icon: 'save',
-                tooltip: 'Save User',
-                onClick: (event, rowData) => alert("You saved " + rowData.name)
-              }
-            ]}
           />
         </div>
     );
