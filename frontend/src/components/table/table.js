@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import MaterialTable from "material-table";
 import { makeStyles } from '@material-ui/core/styles';
 import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
@@ -7,36 +7,74 @@ import Button from '@material-ui/core/Button';
 
 export default function Table(){
     const classes = useStyles();
+    const [selectedRow, setSelectedRow] = useState(null);
+    const hardStyle = {
+      display: 'flex',
+      color:'white', 
+      backgroundColor:'#DB2828', 
+      width:'80px', 
+      justifyContent:'center',
+      borderRadius: '12px',
+      fontFamily: 'Roboto',
+      fontSize:'14px',
+      padding: '2px 6px 2px 6px'
+    
+      
+    };
+    const mediumStyle = {
+      display: 'flex',
+      color:'white', 
+      backgroundColor:'#FBBD08', 
+      width:'80px', 
+      justifyContent:'center',
+      borderRadius: '12px',
+      fontFamily: 'Roboto',
+      fontSize:'14px',
+      padding: '2px 6px 2px 6px'
+      
+    };
+    const easyStyle = {
+      display: 'flex',
+      color:'white', 
+      backgroundColor:'#21BA45', 
+      width:'80px', 
+      justifyContent:'center',
+      borderRadius: '12px',
+      fontFamily: 'Roboto',
+      fontSize:'14px',
+      padding: '2px 6px 2px 6px'
+      
+    };
     return (
         <div className={classes.root}>
-          <p style={{
-                    display: 'flex',
-                    color:'white', 
-                    backgroundColor:'#FBBD08', 
-                    width:'80px', 
-                    justifyContent:'center',
-                    borderRadius: '12px',
-                    fontFamily: 'Roboto',
-                    fontSize:'14px',
-                    padding: '2px 6px 2px 6px'
-                    
-                    }}>Medium</p>
           <MaterialTable
             title="Action Overriding Preview"
             columns={[
-              { title: 'Name', field: 'name' },
-              { title: 'Surname', field: 'surname' },
-              { title: 'Birth Year', field: 'birthYear', type: 'numeric' },
-              {
-                title: 'Birth Place',
-                field: 'birthCity',
-                lookup: { 34: 'İstanbul', 63: 'Şanlıurfa' },
-              },
+              { title: 'Title', field: 'title' },
+              { title: 'Creator', field: 'creator' },
+              { title: 'Creator Join Date', field: 'creatorJoinDate', type: 'numeric' },
+              { title: 'Difficulty', field: 'difficulty', render: rowData => {
+                switch(rowData.difficulty){
+                  case "Easy":
+                    return <p style={easyStyle}>{rowData.difficulty}</p>;
+                  case "Medium":
+                    return <p style={mediumStyle}>{rowData.difficulty}</p>;
+                  case "Hard":
+                    return <p style={hardStyle}>{rowData.difficulty}</p>;
+                }
+              } }
             ]}
             data={[
-              { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-              { name: 'Zerya Betül', surname: 'Baran', birthYear: 2017, birthCity: 34 },
+              { title: 'Mehmet', creator: 'Baran', creatorJoinDate: 1987, difficulty: 'Medium' },
+              { title: 'Zerya Betül', creator: 'Baran', creatorJoinDate: 2017, difficulty: 'Easy' },
+              { title: 'Maria do Carmo', creator: 'Baran', creatorJoinDate: 2017, difficulty: 'Hard' },
             ]}
+            onRowClick={((evt, selectedRow) => setSelectedRow(selectedRow.tableData.id))}
+            options={{
+              rowStyle: rowData => ({
+                backgroundColor: (selectedRow === rowData.tableData.id) ? '#EEE' : '#FFF'
+              })
+            }}
             actions={[
               {
                 icon: 'save',
@@ -44,22 +82,6 @@ export default function Table(){
                 onClick: (event, rowData) => alert("You saved " + rowData.name)
               }
             ]}
-            components={{
-              Action: props => (
-                <p style={{
-                  display: 'flex',
-                  color:'white', 
-                  backgroundColor:'#FBBD08', 
-                  width:'80px', 
-                  justifyContent:'center',
-                  borderRadius: '12px',
-                  fontFamily: 'Roboto',
-                  fontSize:'14px',
-                  padding: '2px 6px 2px 6px'
-                  
-                  }}>Medium</p>
-              ),
-            }}
           />
         </div>
     );
