@@ -1,15 +1,26 @@
+import 'date-fns';
 import React, { useState } from 'react'
 import MaterialTable from "material-table";
 import MTableToolbar from "material-table/dist/components/m-table-toolbar.js";
+import MTableFilterRow from "material-table/dist/components/m-table-filter-row.js";
+
 import Chip from '@material-ui/core/Chip';
 import { makeStyles } from '@material-ui/core/styles';
 import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import Button from '@material-ui/core/Button';
+import DateFnsUtils from '@date-io/date-fns';
+import { MuiPickersUtilsProvider,KeyboardDatePicker} from '@material-ui/pickers';
+import Grid from '@material-ui/core/Grid';
 
 export default function Table(){
     const classes = useStyles();
     const [selectedRow, setSelectedRow] = useState(null);
+    const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
+
+    const handleDateChange = (date) => {
+      setSelectedDate(date);
+    };
     const colorsMap = {
       Easy: '#21BA45',
       Medium: '#FBBD08',
@@ -28,12 +39,13 @@ export default function Table(){
     };
     return (
         <div className={classes.root}>
+          
           <MaterialTable
             title="Action Overriding Preview"
             columns={[
               { title: 'Title', field: 'title' },
               { title: 'Creator', field: 'creator' },
-              { title: 'Creator Join Date', field: 'creatorJoinDate', type: 'numeric' },
+              { title: 'Creator Join Date', field: 'creatorJoinDate',render: row => <span>{ row["creatorJoinDate"] /*formatting code here*/ }</span> },
               { title: 'Solution', field: 'solution'},
               { title: 'Rating', field: 'rating'},
               { title: 'Difficulty', field: 'difficulty', render: rowData => {
@@ -70,6 +82,10 @@ export default function Table(){
                   </div>
                 </div>
               ),
+              FilterRow: props => {
+                return <MTableFilterRow {...props} filterPlaceholder={"lalala"}                 
+                />
+              }
             }}
           />
         </div>
