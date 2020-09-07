@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Navbar from '../../components/Navbar/Navbar.js'
-import Table from '../../components/table/table.js'
+import Table from '../../components/Table/Table.js'
 import axios from 'axios'
 
 import './InitialPage.scss';

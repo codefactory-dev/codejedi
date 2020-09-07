@@ -6,7 +6,7 @@ import Img from './Img';
 //import QuestionPage from './pages/QuestionPage/QuestionPage.js'
 import InitialPage from './pages/InitialPage/InitialPage.js'
 import { ThemeProvider } from '@material-ui/styles'
-import theme from './components/ui/Theme.js'
+import theme from './components/Ui/Theme.js'
 
 ReactDOM.render(
                 <React.StrictMode>

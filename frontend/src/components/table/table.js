@@ -1,10 +1,7 @@
 import 'date-fns';
 import React, { useState } from 'react'
 import MaterialTable from "material-table";
-import MTableToolbar from "material-table/dist/components/m-table-toolbar.js";
-import MTableFilterRow from "material-table/dist/components/m-table-filter-row.js";
-
-import Chip from '@material-ui/core/Chip';
+import CustomRow from "../CustomRow/CustomRow.js";
 import { makeStyles } from '@material-ui/core/styles';
 import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
 import SvgIcon from '@material-ui/core/SvgIcon';
@@ -58,11 +55,10 @@ export default function Table(){
             ]}
             data={[
               { title: 'Two Sum', creator: 'grrbm2', creatorJoinDate: 1987, solution: 'Yes', rating:'4.54  85 votes', difficulty: 'Medium', lastComment:'At vero eos et accusamus et iusto odio digníssimos ...', lastUpdated:'2020' },
-              { title: 'Number of Islands', creator: 'roberta.cmota', creatorJoinDate: 1987, solution: 'No', rating:'4.54  85 votes', difficulty: 'Hard', lastComment:'ducimus qui blanditiis praesentium voluptatum ...', lastUpdated:'2020' },
+              { title: 'Numberr of Islands', creator: 'roberta.cmota', creatorJoinDate: 1987, solution: 'No', rating:'4.54  85 votes', difficulty: 'Hard', lastComment:'ducimus qui blanditiis praesentium voluptatum ...', lastUpdated:'2020' },
               { title: 'Two Sum', creator: 'grrbm2', creatorJoinDate: 1987, solution: 'Yes', rating:'4.54  85 votes', difficulty: 'Easy', lastComment:'deleniti atque corrupti quos dolores et quas moléstia ...', lastUpdated:'2020' },
               
             ]}
-            onRowClick={((evt, selectedRow) => setSelectedRow(selectedRow.tableData.id))}
             options={{
               filtering: true,
               rowStyle: rowData => ({
@@ -70,21 +66,8 @@ export default function Table(){
               })
             }}
             components={{
-              Toolbar: props => (
-                <div>
-                  <MTableToolbar {...props} />
-                  <div style={{padding: '0px 10px'}}>
-                    <Chip label="Chip 1" color="secondary" style={{marginRight: 5}}/>
-                    <Chip label="Chip 2" color="secondary" style={{marginRight: 5}}/>
-                    <Chip label="Chip 3" color="secondary" style={{marginRight: 5}}/>
-                    <Chip label="Chip 4" color="secondary" style={{marginRight: 5}}/>
-                    <Chip label="Chip 5" color="secondary" style={{marginRight: 5}}/>
-                  </div>
-                </div>
-              ),
-              FilterRow: props => {
-                return <MTableFilterRow {...props} filterPlaceholder={"lalala"}                 
-                />
+              Row: props => {
+                return <CustomRow {...props} />
               }
             }}
           />
