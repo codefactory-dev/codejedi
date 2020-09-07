@@ -73,13 +73,11 @@ var CustomRow = /*#__PURE__*/function (_React$Component) {
     
     const itemHeight = 50;
     var _this =
-    <stylish.Container>
       <SwipeToDelete key={'item.content'} height={itemHeight} onDelete={() => this.handleDelete()}>
         <stylish.Item itemHeight={itemHeight}>
           <span>Lalala</span>
         </stylish.Item>
-      </SwipeToDelete>
-    </stylish.Container>;
+      </SwipeToDelete>;
     
 
     _classCallCheck2["default"](this, CustomRow);

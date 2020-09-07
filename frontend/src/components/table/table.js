@@ -2,6 +2,7 @@ import 'date-fns';
 import React, { useState } from 'react'
 import MaterialTable from "material-table";
 import CustomRow from "../CustomRow/CustomRow.js";
+import CustomBody from "../CustomBody/CustomBody.js"
 import { makeStyles } from '@material-ui/core/styles';
 import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
 import SvgIcon from '@material-ui/core/SvgIcon';
@@ -68,6 +69,9 @@ export default function Table(){
             components={{
               Row: props => {
                 return <CustomRow {...props} />
+              },
+              Body: props => {
+                return <CustomBody {...props} />
               }
             }}
           />
