@@ -56,23 +56,34 @@ function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflec
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
+function handleDelete(){
+  console.log("handling delete");
+}
+
+
 /* eslint-enable no-unused-vars */
 var CustomRow = /*#__PURE__*/function (_React$Component) {
-  (0, _inherits2["default"])(CustomRow, _React$Component);
+  _inherits2["default"](CustomRow, _React$Component);
 
   var _super = _createSuper(CustomRow);
 
   function CustomRow() {
     var _this;
 
-    (0, _classCallCheck2["default"])(this, CustomRow);
+    _classCallCheck2["default"](this, CustomRow);
 
     for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      //console.log("ARGUMENTS["+_key+"] = "+JSON.stringify(arguments[_key]));
       args[_key] = arguments[_key];
     }
 
     _this = _super.call.apply(_super, [this].concat(args));
-    (0, _defineProperty2["default"])((0, _assertThisInitialized2["default"])(_this), "rotateIconStyle", function (isOpen) {
+    
+    //console.log("THIS IS _THIS: "+JSON.stringify(_this));
+
+    const checkedThis = _assertThisInitialized2["default"](_this);
+
+    _defineProperty2["default"](checkedThis,"rotateIconStyle", function (isOpen) {
       return {
         transform: isOpen ? "rotate(90deg)" : "none"
       };
