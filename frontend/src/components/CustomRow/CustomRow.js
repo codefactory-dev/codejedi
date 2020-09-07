@@ -59,8 +59,9 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function handleDelete(){
   console.log("handling delete");
 }
-
-
+var SwipeToDelete = _interopRequireDefault(require('react-swipe-to-delete-ios'));
+var stylish = _interopRequireDefault(require('../SwipeableList/SwipeableListStyle'));
+//import { GlobalStyle, Container, Item, Dot } from '../SwipeableList/SwipeableListStyle'
 /* eslint-enable no-unused-vars */
 var CustomRow = /*#__PURE__*/function (_React$Component) {
   _inherits2["default"](CustomRow, _React$Component);
@@ -68,7 +69,18 @@ var CustomRow = /*#__PURE__*/function (_React$Component) {
   var _super = _createSuper(CustomRow);
 
   function CustomRow() {
-    var _this;
+
+    
+    const itemHeight = 50;
+    var _this =
+    <stylish.Container>
+      <SwipeToDelete key={'item.content'} height={itemHeight} onDelete={() => this.handleDelete()}>
+        <stylish.Item itemHeight={itemHeight}>
+          <span>Lalala</span>
+        </stylish.Item>
+      </SwipeToDelete>
+    </stylish.Container>;
+    
 
     _classCallCheck2["default"](this, CustomRow);
 
@@ -91,7 +103,7 @@ var CustomRow = /*#__PURE__*/function (_React$Component) {
     return _this;
   }
 
-  (0, _createClass2["default"])(CustomRow, [{
+  _createClass2["default"](CustomRow, [{
     key: "renderColumns",
     value: function renderColumns() {
       var _this2 = this;

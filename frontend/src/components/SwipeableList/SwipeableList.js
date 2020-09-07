@@ -77,10 +77,6 @@ class App extends React.Component {
         {this.state.items.map(item => (
           <SwipeToDelete key={item.content} height={itemHeight} onDelete={() => this.handleDelete(item)}>
             <Item itemHeight={itemHeight}>
-              <Dot
-                itemHeight={itemHeight}
-                color={item.color}
-              />
               <span>{item.content}</span>
             </Item>
           </SwipeToDelete>
