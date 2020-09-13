@@ -37,18 +37,30 @@ function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflec
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
+var stylish = _interopRequireDefault(require('../SwipeableList/SwipeableListStyle'));
+
+
+var tableBody = function(_React$Component) { 
+    _inherits2["default"](tableBody, _React$Component);
+    return (<stylish.Container>
+
+    </stylish.Container>)
+};
+
+
 /* eslint-enable no-unused-vars */
 var MTableBody = /*#__PURE__*/function (_React$Component) {
-  (0, _inherits2["default"])(MTableBody, _React$Component);
+  _inherits2["default"](MTableBody, _React$Component);
 
   var _super = _createSuper(MTableBody);
 
   function MTableBody() {
-    (0, _classCallCheck2["default"])(this, MTableBody);
-    return _super.apply(this, arguments);
+    
+    _classCallCheck2["default"](tableBody, MTableBody);
+    return _super.apply(tableBody, arguments);
   }
 
-  (0, _createClass2["default"])(MTableBody, [{
+  _createClass2["default"](MTableBody, [{
     key: "renderEmpty",
     value: function renderEmpty(emptyRowCount, renderData) {
       var rowHeight = this.props.options.padding === "default" ? 49 : 36;

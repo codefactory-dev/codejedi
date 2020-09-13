@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Navbar from '../../components/Navbar/Navbar.js'
-import Table from '../../components/Table/Table.js'
+import CodeTable from '../../components/CodeTable/CodeTable.js'
 import axios from 'axios'
 
 import './InitialPage.scss';
@@ -26,7 +26,7 @@ export default function InitialPage() {
     return (
         <div id="initial-page">
             <Navbar />
-            <Table />
+            <CodeTable />
         </div>
     )
 
