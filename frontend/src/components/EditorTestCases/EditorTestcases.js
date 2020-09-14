@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-import './scss/EditorTestcases.scss';
+import './EditorTestcases.scss';
 
 function EditorTestcases({editorValue, setEditorValue, width, height}) { 
     function handleChange(event){
