@@ -1,11 +1,11 @@
-var someFunction = function(entry) {
-    var sum = 0;
-    for(var i=0;i<entry.length;i++)
+function solution(S){
+    const n = S.length;
+
+    for(let i=0;i<n;i+=1)
     {
-        if (entry[i] !== null)
-        {
-            sum+=entry[i];
+        if (S[i] < S[i-1]){
+            return S.substring(0,i-1) + S.substring(i);
         }
     }
-    return sum;
-};
+    return S.substring(0,n-1);
+}
