@@ -14,7 +14,7 @@ for(var i=0;i<entries.length;i++)
     let entry = entries[i].substring(1,entries[i].length-1);
     var result = userSolution(entry);
     var hiddenResult = hiddenSolution(entry);
-    console.log("testcase "+i+": "+result+":"+hiddenResult);
+    console.log("case "+i+": "+result+":"+hiddenResult);
     if (result === hiddenResult)
     {
         gotRightAmount++;
