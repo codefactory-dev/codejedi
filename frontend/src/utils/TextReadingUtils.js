@@ -29,7 +29,7 @@ function removeNewLine(val, replace)
 }
 function ConvertCodeToOneLiner(code)
 {
-    var response = removeNewLine(code,' ')
+    var response = removeNewLine(code.toString('utf-8'),' ')
     console.log(response);
     return response;
 
