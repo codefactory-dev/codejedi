@@ -32,7 +32,8 @@ router.post('/compile', async (req,res) => {
   for (key in payload){
     console.log( key + ": " + payload[key]);
   }
-  var text = unescape(req.body.code);
+  //var text = unescape(req.body.code);
+  var text = (req.body.code);
   console.log("text = "+text+"\n\n\n");
   const body = {
     files: [

@@ -1,18 +1,27 @@
-function CodeScaffolding(entries)
+
+
+function CodeScaffolding(entries, userSolution, hiddenSolution)
 {
     var CodeScaffolding = 
 ` /*---------------ENTRIES---------------*/
 var entries = ${JSON.stringify(entries)};
+var userSolution = ${userSolution};
+var hiddenSolution = ${hiddenSolution};
 var gotRightAmount = 0;
-for(var i=0;i<entries.length;i+=2)
+for(var i=0;i<entries.length;i++)
 {
-    var result = someFunction(entries[i]);
-    if (result === entries[i+1][0])
+
+    let entry = entries[i].substring(1,entries[i].length-1);
+    var result = userSolution(entry);
+    var hiddenResult = hiddenSolution(entry);
+    console.log("case "+i+": "+result+":"+hiddenResult);
+    if (result === hiddenResult)
     {
         gotRightAmount++;
     }
 }
-console.log('Accepted ! Cases passed: '+gotRightAmount);`
+
+console.log('Accepted ! Cases passed: '+gotRightAmount+ '/'+entries.length);`
     return CodeScaffolding;
 }
 

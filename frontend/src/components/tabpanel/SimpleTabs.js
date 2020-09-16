@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import CodeEditor from '../CodeEditor/CodeEditor.js';
 import EditorTestcases from '../EditorTestCases/EditorTestcases.js';
-import Parse from '../../utils/Parser'
+import { ParseString } from '../../utils/Parser'
 import CodeScaffolding from '../../utils/CodeScaffolding'
 import { ConvertCodeToOneLiner } from '../../utils/TextReadingUtils'
 import axios from 'axios'
@@ -49,8 +49,8 @@ function a11yProps(index) {
 export default function SimpleTabs(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
-  const [code, setCode] = useState('');
-  const [editorValue, setEditorValue] = useState();
+  const [code, setCode] = useState("function solution(S){ \n    const n = S.length;\n    for(let i=0;i<n;i+=1)\n    { \n        if (S[i] < S[i-1])\n        {         \n            return S.substring(0,i-1) + S.substring(i);       \n        }\n    } \n    return S.substring(0,n-1); \n}");
+  const [editorValue, setEditorValue] = useState('');
 
 
   useEffect(()=>{
@@ -70,19 +70,21 @@ export default function SimpleTabs(props) {
       
       //get question from somewhere
       var questionText = code;
-      
-      //get test cases from file
-  
+
+      //get solution from database
+      var hiddenSolution = "function solution(S){ const n = S.length; for(let i=0;i<n;i+=1) { if (S[i] < S[i-1]){ return S.substring(0,i-1) + S.substring(i); } } return S.substring(0,n-1); }";
+            
+      //get test cases from file  
       var testCasesText = editorValue;
   
       //parse test cases into javascript
-      var structure = Parse(testCasesText);
+      var structure = ParseString(testCasesText);
       console.log("---PARSED STRUCTURE---");
       console.log(structure);
   
       //insert test cases into question
       var togetherText = questionText;
-      togetherText+=CodeScaffolding(structure);
+      togetherText+=CodeScaffolding(structure, code, hiddenSolution);
   
       console.log("---TOGETHER TEXT---");
       console.log(togetherText);
