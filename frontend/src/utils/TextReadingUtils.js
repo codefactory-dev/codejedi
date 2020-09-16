@@ -24,7 +24,7 @@ function appendToFileSync(filename,data)
 }
 function removeNewLine(val, replace)
 {
-    assert.equal(typeof val, 'string', 'newline-remove: val should be a string');
+    assert.strictEqual(typeof val, 'string', 'newline-remove: val should be a string');
     return val.replace(/(\r\n|\n|\r)/gm, replace);
 }
 function ConvertCodeToOneLiner(code)

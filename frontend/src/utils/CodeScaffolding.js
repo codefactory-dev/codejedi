@@ -5,7 +5,8 @@ function CodeScaffolding(entries, userSolution, hiddenSolution)
     var CodeScaffolding = 
 ` /*---------------ENTRIES---------------*/
 var entries = ${JSON.stringify(entries)};
-var solution = ${hiddenSolution};
+var userSolution = ${userSolution};
+var hiddenSolution = ${hiddenSolution};
 var gotRightAmount = 0;
 for(var i=0;i<entries.length;i++)
 {
@@ -15,6 +16,7 @@ for(var i=0;i<entries.length;i++)
         gotRightAmount++;
     }
 }
+
 console.log('Accepted ! Cases passed: '+gotRightAmount+ '/'+entries.length);`
     return CodeScaffolding;
 }

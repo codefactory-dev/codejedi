@@ -78,13 +78,13 @@ export default function SimpleTabs(props) {
       var testCasesText = editorValue;
   
       //parse test cases into javascript
-      var structure = ParseString(testCasesText,solution,solution);
+      var structure = ParseString(testCasesText);
       console.log("---PARSED STRUCTURE---");
       console.log(structure);
   
       //insert test cases into question
       var togetherText = questionText;
-      togetherText+=CodeScaffolding(structure);
+      togetherText+=CodeScaffolding(structure, solution, solution);
   
       console.log("---TOGETHER TEXT---");
       console.log(togetherText);
