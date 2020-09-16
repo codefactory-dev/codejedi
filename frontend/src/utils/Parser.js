@@ -1,10 +1,10 @@
 function ParseString(text)
 {
     var array = text.split("\n");
-    console.log("stringified array: "+JSON.stringify(array));
     array.forEach(str => {
-        console.log("str[0] = "+str[0]);
-        if (str[0] !== `\"` || str[1] !== `\"`)
+        var cond1 = str.substring(0,1) !== "\"";
+        var cond2 = str.substring(str.length-1,str.length) !== "\"";
+        if ( cond1 || cond2 )
         {
             throw new Error("Inputs should be strings separated by line breaks.");
         }

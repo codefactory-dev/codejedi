@@ -50,7 +50,7 @@ export default function SimpleTabs(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [code, setCode] = useState("function solution(S){ \n    const n = S.length;\n    for(let i=0;i<n;i+=1)\n    { \n        if (S[i] < S[i-1])\n        {         \n            return S.substring(0,i-1) + S.substring(i);       \n        }\n    } \n    return S.substring(0,n-1); \n}");
-  const [editorValue, setEditorValue] = useState(`"acb"\n"hot"\n"codility"\n"aaaa"`);
+  const [editorValue, setEditorValue] = useState('');
 
 
   useEffect(()=>{
