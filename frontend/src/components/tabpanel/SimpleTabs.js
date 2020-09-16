@@ -72,7 +72,7 @@ export default function SimpleTabs(props) {
       var questionText = code;
 
       //get solution from database
-      var solution = "function solution(S){ const n = S.length; for(let i=0;i<n;i+=1) { if (S[i] < S[i-1]){ return S.substring(0,i-1) + S.substring(i); } } return S.substring(0,n-1); }";
+      var hiddenSolution = "function solution(S){ const n = S.length; for(let i=0;i<n;i+=1) { if (S[i] < S[i-1]){ return S.substring(0,i-1) + S.substring(i); } } return S.substring(0,n-1); }";
             
       //get test cases from file  
       var testCasesText = editorValue;
@@ -84,7 +84,7 @@ export default function SimpleTabs(props) {
   
       //insert test cases into question
       var togetherText = questionText;
-      togetherText+=CodeScaffolding(structure, solution, solution);
+      togetherText+=CodeScaffolding(structure, code, hiddenSolution);
   
       console.log("---TOGETHER TEXT---");
       console.log(togetherText);
