@@ -1,3 +1,5 @@
+const questionTypes = require('./questionTypes.js');
+
 function ParseString(text)
 {
     var array = text.split("\n");
@@ -70,8 +72,23 @@ function nextOp(str,index){
     }
     return {op:op, k:index};
 }
+
+
+function Parse(text, parseType)
+{
+    switch(parseType){
+        case questionTypes.Array: 
+            return ParseArray(text);
+        case questionTypes.String:
+            return ParseString(text);
+        case questionTypes.Integer:
+            return ParseInt(text);
+    }
+}
+
 module.exports = {
     ParseArray,
     ParseInt,
-    ParseString
+    ParseString,
+    Parse
 }

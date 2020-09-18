@@ -10,4 +10,4 @@ function solution(A){
 
 
 
-function solution(S){ \n    const n = S.length;\n    for(let i=0;i<n;i+=1)\n    { \n        if (S[i] < S[i-1])\n        {         \n            return S.substring(0,i-1) + S.substring(i);       \n        }\n    } \n    return S.substring(0,n-1); \n}
+"function solution(A){ \n    let answer = -9; \n    A.forEach(x => { \n        if(x/10 < 1){ \n            answer = answer > x ? answer : x; \n        } \n    }) \n    return answer; \n}"
