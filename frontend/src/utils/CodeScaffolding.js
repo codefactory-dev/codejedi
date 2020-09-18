@@ -30,14 +30,13 @@ console.log('Accepted ! Cases passed: '+gotRightAmount+ '/'+entries.length);`
             CodeScaffolding = 
 ` /*---------------ENTRIES---------------*/
 const convertedEntries = ${JSON.stringify(entries)};
-console.log("these are the entries: "+convertedEntries);
 var userSolution = ${userSolution};
 var hiddenSolution = ${hiddenSolution};
 var gotRightAmount = 0;
 for(var i=0;i<convertedEntries.length;i++)
 {
 
-    let entry = convertedEntries[i].substring(1,convertedEntries[i].length-1);
+    let entry = convertedEntries[i];
     var result = userSolution(entry);
     var hiddenResult = hiddenSolution(entry);
     console.log("case "+i+": "+result+":"+hiddenResult);
