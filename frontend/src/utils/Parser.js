@@ -51,7 +51,12 @@ function ParseArray(text){
         {
             throw new Error("Testcases should be arrays separated by line breaks.");
         }
-        const parsed = ParseSingleArray(elem);
+        let parsed;
+        try{
+            parsed = ParseSingleArray(elem);
+        } catch(e){
+            throw new Error("Testcases should be arrays separated by line breaks.");
+        }
         console.log("parsed "+(cont++)+": "+parsed);
         res.push(parsed);
     });
