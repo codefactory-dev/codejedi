@@ -28,7 +28,23 @@ function ParseInt(text)
     return res;
 }
 
-function ParseArray(text)
+function ParseArray(text){
+    var array = text.split("\n");
+    var res = [];
+    array.forEach(elem => {
+        var cond1 = elem.substring(0,1) !== "[";
+        var cond2 = elem.substring(elem.length-1,elem.length) !== "]";
+        if ( cond1 || cond2 )
+        {
+            throw new Error("Testcases should be arrays separated by line breaks.");
+        }
+        var parsed = ParseSingleArray(elem);
+        res.push(parsed);
+    });
+    return array;
+}
+
+function ParseSingleArray(text)
 {
     var ans = [];
     var i = 0;

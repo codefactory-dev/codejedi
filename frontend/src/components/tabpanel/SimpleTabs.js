@@ -53,7 +53,7 @@ export default function SimpleTabs(props) {
   const [value, setValue] = React.useState(0);
   const [editorValue, setEditorValue] = useState(``);
   const [code, setCode] = useState("function solution(A){ \n    let answer = -9; \n    A.forEach(x => { \n        if(x/10 < 1){ \n            answer = answer > x ? answer : x; \n        } \n    }) \n    return answer; \n}");
-  const [editorTestcasesValue, setEditorTestcasesValue] = useState('[-6, -91, 1011,-100,84,-22, 0, 1, 473]\n[-6, -91, 1011,-100,84,-22, 0, 1, 9 473]\n[-6, -3, -1, -12]');
+  const [editorTestcasesValue, setEditorTestcasesValue] = useState('[-6,-91,1011,-100,84,-22,0,1,473]\n[-6,-91,1011,-100,84,-22,0,1,9,473]\n[-6,-3,-1,-12]');
   const [questionType,setQuestionType] = useState(questionTypes.Array);
   
 
