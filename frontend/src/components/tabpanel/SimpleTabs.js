@@ -133,11 +133,11 @@ export default function SimpleTabs(props) {
           <Tab className={classes.removeCaps} label="Test Cases" {...a11yProps(2)} />
         </Tabs>
       </AppBar>
-      <TabPanel className={classes.tabsPanel} value={value} index={0}>
-        <CodeEditor code={code} setCode={setCode} height='29em' />
+      <TabPanel value={value} index={0}>
+        Item One
       </TabPanel>
-      <TabPanel value={value} index={1}>
-        Item Two
+      <TabPanel className={classes.tabsPanel} value={value} index={1}>
+        <CodeEditor code={code} setCode={setCode} height='29em' />
       </TabPanel>
       <TabPanel className={classes.editorTestCases} value={value} index={2}>
         <EditorTestcases 
