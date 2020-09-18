@@ -9,7 +9,7 @@ function Editor({editorValue, setEditorValue, width, height}) {
         setEditorValue(event.target.value);
     }
     return(
-        <textarea style={{width,height}} id="editor" value={editorValue} onChange={handleChange} />
+        <textarea style={{width,height}} className="editor" value={editorValue} onChange={handleChange} readOnly/>
     )
  
 }

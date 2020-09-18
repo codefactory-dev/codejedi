@@ -51,7 +51,8 @@ export default function SimpleTabs(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [code, setCode] = useState("function solution(S){ \n    const n = S.length;\n    for(let i=0;i<n;i+=1)\n    { \n        if (S[i] < S[i-1])\n        {         \n            return S.substring(0,i-1) + S.substring(i);       \n        }\n    } \n    return S.substring(0,n-1); \n}");
-  const [editorValue, setEditorValue] = useState('');
+  const [editorValue, setEditorValue] = useState(`\nWrite a function solution that, given a string S consisting of N\ncharacters, returns the alphabetically smallest string that can be obtained by removing exactly one letter from S.\n\nExamples:\n\n1. Given S="acb", by removing one letter, you can obtain "ac", "ab" or\n"cb". Your function should return "ab" (after removing 'c') since it is\nalphabetically smaller than "ac" and "bc".\n\n2. Given S = "hot", your function should return "ho", which is alphabetically smaller than "ht" and "ot".\n\n3. Given S = "codility", your function should return "cdility", which can be obtained by removing the second letter.\n\n4. Given S = "aaaa", your function should return "aaa". Any occurrence of\n'a' can be removed.\n\nWrite an efficient algorithm for the following assumptions:\n\n    * N is an integer within the range [2..100,000];\n\n    * string S consists only of lowercase letters (a-z).`);
+  const [editorTestcasesValue, setEditorTestcasesValue] = useState('');
 
 
   useEffect(()=>{
@@ -147,8 +148,8 @@ export default function SimpleTabs(props) {
       </TabPanel>
       <TabPanel className={classes.editorTestCases} value={value} index={2}>
         <EditorTestcases 
-          editorValue={editorValue} 
-          setEditorValue={setEditorValue} 
+          editorValue={editorTestcasesValue} 
+          setEditorValue={setEditorTestcasesValue} 
           height='34.7em'
           width='100%'          
           />

@@ -1,5 +1,14 @@
-#editor-testcases {
+.editor-testcases {
     padding:0;
     margin:0;
     border: 0;
+    outline: none !important;
+    box-shadow: 0 0 10px #719ECE;
+}
+.editor-testcases:focus {
+    padding:0;
+    margin:0;
+    border: 0;
+    outline: none !important;
+    box-shadow: 0 0 10px #719ECE;
 }
