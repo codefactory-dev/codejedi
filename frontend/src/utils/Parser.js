@@ -1,5 +1,17 @@
 const questionTypes = require('./questionTypes.js');
 
+function Parse(text, parseType)
+{
+    switch(parseType){
+        case questionTypes.Array: 
+            return ParseArray(text);
+        case questionTypes.String:
+            return ParseString(text);
+        case questionTypes.Integer:
+            return ParseInteger(text);
+    }
+}
+
 function ParseString(text)
 {
     var array = text.split("\n");
@@ -43,6 +55,7 @@ function ParseArray(text){
         console.log("parsed "+(cont++)+": "+parsed);
         res.push(parsed);
     });
+    console.log("returning parsed array: "+JSON.stringify(res));
     return res;
 }
 
@@ -66,7 +79,7 @@ function ParseSingleArray(text)
         {
             var input = JSON.parse(text.substring(i+1,k));
             temp.push(input);
-            ans.push(temp);
+            ans.push(...temp);
             temp = [];
             i = k+2;
         }
@@ -89,19 +102,6 @@ function nextOp(str,index){
         op = "close";
     }
     return {op:op, k:index};
-}
-
-
-function Parse(text, parseType)
-{
-    switch(parseType){
-        case questionTypes.Array: 
-            return ParseArray(text);
-        case questionTypes.String:
-            return ParseString(text);
-        case questionTypes.Integer:
-            return ParseInteger(text);
-    }
 }
 
 module.exports = {

@@ -7,7 +7,7 @@ function CodeScaffolding(entries, userSolution, hiddenSolution, questionType)
         case questionTypes.String:
             CodeScaffolding = 
 ` /*---------------ENTRIES---------------*/
-var entries = ${JSON.stringify(entries)};
+const entries = ${JSON.stringify(entries)};
 var userSolution = ${userSolution};
 var hiddenSolution = ${hiddenSolution};
 var gotRightAmount = 0;
@@ -29,7 +29,7 @@ console.log('Accepted ! Cases passed: '+gotRightAmount+ '/'+entries.length);`
         case questionTypes.Array:
             CodeScaffolding = 
 ` /*---------------ENTRIES---------------*/
-const convertedEntries = ${(entries)};
+const convertedEntries = ${JSON.stringify(entries)};
 console.log("these are the entries: "+convertedEntries);
 var userSolution = ${userSolution};
 var hiddenSolution = ${hiddenSolution};
