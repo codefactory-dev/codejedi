@@ -9,7 +9,7 @@ function EditorTestcases({editorValue, setEditorValue, width, height}) {
         setEditorValue(event.target.value);
     }
     return(
-        <textarea style={{width,height}} id="editor-testcases" value={editorValue} onChange={handleChange} />
+        <textarea style={{width,height}} className="editor-testcases" value={editorValue} onChange={handleChange} />
     )
  
 }

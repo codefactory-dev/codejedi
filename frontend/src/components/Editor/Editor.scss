@@ -1,39 +1,14 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Roboto';
+.editor {
+    padding:0;
+    margin:0;
+    border: 0;
+    outline: none !important;
+    box-shadow: 0 0 10px #719ECE;
 }
-
-.container {
-    margin: 10px;
-}
-
-.iconContainer i {
-    margin-right: 10px;
-}
-
-.iconContainer i:hover {
-    cursor: pointer;
-    color: #848484
-}
-
-iframe {
-    display: block;
-    width: 30rem;
-    border: 1px solid #cecece;
-    margin: 10px 0;
-}
-
-button {
-    background-color: #fff;
-    border: 1px solid #cecece;
-    padding: 5px 10px;
-    margin: 5px 0 15px 0;
-}
-
-button:hover {
-    cursor: pointer;
-    color: #848484;
-    
+.editor:focus {
+    padding:0;
+    margin:0;
+    border: 0;
+    outline: none !important;
+    box-shadow: 0 0 10px #719ECE;
 }
