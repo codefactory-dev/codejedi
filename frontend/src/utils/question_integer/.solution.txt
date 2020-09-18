@@ -1,0 +1,1 @@
+"function solution(N) { \n    for (let i = 1; i< N; i+=1){\n        process.stdout.write('L\\n'); \n    }\n\n    process.stdout.write('L'.repeat(N) + '\\n')\n\n}"
