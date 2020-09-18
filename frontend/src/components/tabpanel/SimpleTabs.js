@@ -52,7 +52,7 @@ export default function SimpleTabs(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [editorValue, setEditorValue] = useState(``);
-  const [code, setCode] = useState("function solution(A){ \n    let answer = -9; \n    A.forEach(x => { \n        if(x/10 < 1){ \n            answer = answer > x ? answer : x; \n        } \n    }) \n    return answer; \n}");
+  const [code, setCode] = useState("function solution(A){ \n    let answer = -9; \n    A.forEach(x => { \n        if(x/10 < 1){ \n            answer = answer > x ? answer : x; \n        } \n    }); \n    return answer; \n}");
   const [editorTestcasesValue, setEditorTestcasesValue] = useState('[-6,-91,1011,-100,84,-22,0,1,473]\n[-6,-91,1011,-100,84,-22,0,1,9,473]\n[-6,-3,-1,-12]');
   const [questionType,setQuestionType] = useState(questionTypes.Array);
   
@@ -77,7 +77,7 @@ export default function SimpleTabs(props) {
       var questionText = code;
 
       //get solution from database
-      var hiddenSolution = "function solution(S){ const n = S.length; for(let i=0;i<n;i+=1) { if (S[i] < S[i-1]){ return S.substring(0,i-1) + S.substring(i); } } return S.substring(0,n-1); }";
+      var hiddenSolution = "function solution(A){ \n    let answer = -9; \n    A.forEach(x => { \n        if(x/10 < 1){ \n            answer = answer > x ? answer : x; \n        } \n    }); \n    return answer; \n}";
             
       //get test cases from file  
       var testCasesText = editorTestcasesValue;
@@ -89,7 +89,7 @@ export default function SimpleTabs(props) {
   
       //insert test cases into question
       var togetherText = questionText;
-      togetherText+=CodeScaffolding(structure, code, hiddenSolution);
+      togetherText+=CodeScaffolding(structure, code, hiddenSolution, questionType);
   
       console.log("---TOGETHER TEXT---");
       console.log(togetherText);

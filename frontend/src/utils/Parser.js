@@ -13,12 +13,12 @@ function ParseString(text)
     });
     return array;
 }
-function ParseInt(text)
+function ParseInteger(text)
 {
     var array = text.split("\n");
     var res = [];
     array.forEach(num => {
-        var parsed = ParseInt(num);
+        var parsed = parseInt(num);
         if (parsed === NaN)
         {
             throw new Error("Inputs should be strings separated by line breaks.");
@@ -31,6 +31,7 @@ function ParseInt(text)
 function ParseArray(text){
     var array = text.split("\n");
     var res = [];
+    let cont=0;
     array.forEach(elem => {
         var cond1 = elem.substring(0,1) !== "[";
         var cond2 = elem.substring(elem.length-1,elem.length) !== "]";
@@ -38,10 +39,11 @@ function ParseArray(text){
         {
             throw new Error("Testcases should be arrays separated by line breaks.");
         }
-        var parsed = ParseSingleArray(elem);
+        const parsed = ParseSingleArray(elem);
+        console.log("parsed "+(cont++)+": "+parsed);
         res.push(parsed);
     });
-    return array;
+    return res;
 }
 
 function ParseSingleArray(text)
@@ -98,13 +100,13 @@ function Parse(text, parseType)
         case questionTypes.String:
             return ParseString(text);
         case questionTypes.Integer:
-            return ParseInt(text);
+            return ParseInteger(text);
     }
 }
 
 module.exports = {
     ParseArray,
-    ParseInt,
+    ParseInteger,
     ParseString,
     Parse
 }
