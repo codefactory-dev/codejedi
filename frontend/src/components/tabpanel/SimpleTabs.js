@@ -52,9 +52,9 @@ export default function SimpleTabs(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [editorValue, setEditorValue] = useState(``);
-  const [code, setCode] = useState("function solution(N) { \n    for (let i = 1; i< N; i+=1){\n        process.stdout.write('L\\n'); \n    }\n\n    process.stdout.write('L'.repeat(N) + '\\n')\n\n}");
-  const [editorTestcasesValue, setEditorTestcasesValue] = useState('5\n4\n12');
-  const [questionType,setQuestionType] = useState(questionTypes.Array);
+  const [code, setCode] = useState("function integerReplacement(n) {\n    var min = Number.POSITIVE_INFINITY;\n    var stack = [{ num: n, step: 0 }];\n    var set = new Set();\n    var nextStep;\n    var item;\n    \n    while (stack.length) {\n        item = stack.shift();\n        \n        if (item.num === 1) {\n            if (min > item.step) {\n                min = item.step;\n            }\n            continue;\n        }\n        \n        if (set.has(item.num) || item.step >= min) {\n            continue;\n        }\n        set.add(item.num);\n        \n        nextStep = item.step + 1;\n        if (item.num % 2 === 0) {\n            item.num /= 2;\n            stack.push({ num: item.num, step: nextStep });\n        } else {\n            stack.push({ num: item.num - 1, step: nextStep });\n            stack.push({ num: item.num + 1, step: nextStep });\n        }\n    }\n    \n    return min;\n};");
+  const [editorTestcasesValue, setEditorTestcasesValue] = useState('8\n7');
+  const [questionType,setQuestionType] = useState(questionTypes.Integer);
   
 
 
@@ -77,7 +77,7 @@ export default function SimpleTabs(props) {
       var questionText = code;
 
       //get solution from database
-      var hiddenSolution = "function solution(A){ \n    let answer = -9; \n    A.forEach(x => { \n        if(x/10 < 1){ \n            answer = answer > x ? answer : x; \n        } \n    }) \n    return answer; \n}";
+      var hiddenSolution = "function integerReplacement(n) {\n    var min = Number.POSITIVE_INFINITY;\n    var stack = [{ num: n, step: 0 }];\n    var set = new Set();\n    var nextStep;\n    var item;\n    \n    while (stack.length) {\n        item = stack.shift();\n        \n        if (item.num === 1) {\n            if (min > item.step) {\n                min = item.step;\n            }\n            continue;\n        }\n        \n        if (set.has(item.num) || item.step >= min) {\n            continue;\n        }\n        set.add(item.num);\n        \n        nextStep = item.step + 1;\n        if (item.num % 2 === 0) {\n            item.num /= 2;\n            stack.push({ num: item.num, step: nextStep });\n        } else {\n            stack.push({ num: item.num - 1, step: nextStep });\n            stack.push({ num: item.num + 1, step: nextStep });\n        }\n    }\n    \n    return min;\n};";
             
       //get test cases from file  
       var testCasesText = editorTestcasesValue;
