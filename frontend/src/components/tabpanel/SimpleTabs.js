@@ -9,10 +9,11 @@ import Box from '@material-ui/core/Box';
 import CodeEditor from '../CodeEditor/CodeEditor.js';
 import EditorTestcases from '../EditorTestCases/EditorTestcases.js';
 import Editor from '../Editor/Editor.js'
-import { ParseString } from '../../utils/Parser'
+import { Parse, ParseString } from '../../utils/Parser'
 import CodeScaffolding from '../../utils/CodeScaffolding'
 import { ConvertCodeToOneLiner } from '../../utils/TextReadingUtils'
 import axios from 'axios'
+import questionTypes from '../../utils/questionTypes.js'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -50,9 +51,11 @@ function a11yProps(index) {
 export default function SimpleTabs(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
-  const [code, setCode] = useState("function solution(S){ \n    const n = S.length;\n    for(let i=0;i<n;i+=1)\n    { \n        if (S[i] < S[i-1])\n        {         \n            return S.substring(0,i-1) + S.substring(i);       \n        }\n    } \n    return S.substring(0,n-1); \n}");
-  const [editorValue, setEditorValue] = useState(`\nWrite a function solution that, given a string S consisting of N\ncharacters, returns the alphabetically smallest string that can be obtained by removing exactly one letter from S.\n\nExamples:\n\n1. Given S="acb", by removing one letter, you can obtain "ac", "ab" or\n"cb". Your function should return "ab" (after removing 'c') since it is\nalphabetically smaller than "ac" and "bc".\n\n2. Given S = "hot", your function should return "ho", which is alphabetically smaller than "ht" and "ot".\n\n3. Given S = "codility", your function should return "cdility", which can be obtained by removing the second letter.\n\n4. Given S = "aaaa", your function should return "aaa". Any occurrence of\n'a' can be removed.\n\nWrite an efficient algorithm for the following assumptions:\n\n    * N is an integer within the range [2..100,000];\n\n    * string S consists only of lowercase letters (a-z).`);
-  const [editorTestcasesValue, setEditorTestcasesValue] = useState('');
+  const [editorValue, setEditorValue] = useState(`\nWrite a function:\n\n    function solution(A);\n\nthat, given an array A consisting of N integers, returns the maximum among all one-digit integers.\n\nFor example, given array A as follows:\n    [-6, -91, 1011, -100, 84, -22, 0, 1, 473]\n\nthe function should return 1.\n\nAssume that:\n\n    * N is an integer within the range [1..1,000];\n    * each element of array A is an integer within the range\n      [-10,000..10,000];\n    * there is at least one element in array A which satisfies the\n      condition in the task statement.\n\nIn your solution, focus on correctness. The performance of your solution will not be the focus of the assessment.`);
+  const [code, setCode] = useState("function solution(A){ \n    let answer = -9; \n    A.forEach(x => { \n        if(x/10 < 1){ \n            answer = answer > x ? answer : x; \n        } \n    }) \n    return answer; \n}");
+  const [editorTestcasesValue, setEditorTestcasesValue] = useState('[-6,-91,1011,-100,84,-22,0,1,473]\n[-6,-91,1011,-100,84,-22,0,1,9,473]\n[-6,-3,-1,-12]');
+  const [questionType,setQuestionType] = useState(questionTypes.Array);
+  
 
 
   useEffect(()=>{
@@ -74,19 +77,19 @@ export default function SimpleTabs(props) {
       var questionText = code;
 
       //get solution from database
-      var hiddenSolution = "function solution(S){ const n = S.length; for(let i=0;i<n;i+=1) { if (S[i] < S[i-1]){ return S.substring(0,i-1) + S.substring(i); } } return S.substring(0,n-1); }";
+      var hiddenSolution = "function solution(A){ \n    let answer = -9; \n    A.forEach(x => { \n        if(x/10 < 1){ \n            answer = answer > x ? answer : x; \n        } \n    }) \n    return answer; \n}";
             
       //get test cases from file  
       var testCasesText = editorTestcasesValue;
   
       //parse test cases into javascript
-      var structure = ParseString(testCasesText);
+      var structure = Parse(testCasesText, questionType);
       console.log("---PARSED STRUCTURE---");
       console.log(structure);
   
       //insert test cases into question
       var togetherText = questionText;
-      togetherText+=CodeScaffolding(structure, code, hiddenSolution);
+      togetherText+=CodeScaffolding(structure, code, hiddenSolution, questionType);
   
       console.log("---TOGETHER TEXT---");
       console.log(togetherText);
