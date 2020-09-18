@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import CodeEditor from '../CodeEditor/CodeEditor.js';
 import EditorTestcases from '../EditorTestCases/EditorTestcases.js';
+import Editor from '../Editor/Editor.js'
 import { ParseString } from '../../utils/Parser'
 import CodeScaffolding from '../../utils/CodeScaffolding'
 import { ConvertCodeToOneLiner } from '../../utils/TextReadingUtils'
@@ -133,8 +134,13 @@ export default function SimpleTabs(props) {
           <Tab className={classes.removeCaps} label="Test Cases" {...a11yProps(2)} />
         </Tabs>
       </AppBar>
-      <TabPanel value={value} index={0}>
-        Item One
+      <TabPanel className={classes.editor} value={value} index={0}>
+        <Editor
+            editorValue={editorValue} 
+            setEditorValue={setEditorValue} 
+            height='34.7em'
+            width='100%'          
+            />
       </TabPanel>
       <TabPanel className={classes.tabsPanel} value={value} index={1}>
         <CodeEditor code={code} setCode={setCode} height='29em' />
@@ -165,6 +171,11 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: theme.typography.fontWeightRegular,
   },
   tabsPanel: {
+    '& > div': {
+      padding: 1
+    }
+  },
+  editor: {
     '& > div': {
       padding: 1
     }
