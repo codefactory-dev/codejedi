@@ -52,7 +52,7 @@ export default function SimpleTabs(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [editorValue, setEditorValue] = useState(`\nWrite a function:\n\n    function solution(A);\n\nthat, given an array A consisting of N integers, returns the maximum among all one-digit integers.\n\nFor example, given array A as follows:\n    [-6, -91, 1011, -100, 84, -22, 0, 1, 473]\n\nthe function should return 1.\n\nAssume that:\n\n    * N is an integer within the range [1..1,000];\n    * each element of array A is an integer within the range\n      [-10,000..10,000];\n    * there is at least one element in array A which satisfies the\n      condition in the task statement.\n\nIn your solution, focus on correctness. The performance of your solution will not be the focus of the assessment.`);
-  const [code, setCode] = useState("function solution(A){ \n    let answer = -9; \n    A.forEach(x => { \n        if(x/10 < 1){ \n            answer = answer > x ? answer : x; \n        } \n    }); \n    return answer; \n}");
+  const [code, setCode] = useState("function solution(A){ \n    let answer = -9; \n    A.forEach(x => { \n        if(x/10 < 1){ \n            answer = answer > x ? answer : x; \n        } \n    }) \n    return answer; \n}");
   const [editorTestcasesValue, setEditorTestcasesValue] = useState('[-6,-91,1011,-100,84,-22,0,1,473]\n[-6,-91,1011,-100,84,-22,0,1,9,473]\n[-6,-3,-1,-12]');
   const [questionType,setQuestionType] = useState(questionTypes.Array);
   
@@ -77,7 +77,7 @@ export default function SimpleTabs(props) {
       var questionText = code;
 
       //get solution from database
-      var hiddenSolution = "function solution(A){ \n    let answer = -9; \n    A.forEach(x => { \n        if(x/10 < 1){ \n            answer = answer > x ? answer : x; \n        } \n    }); \n    return answer; \n}";
+      var hiddenSolution = "function solution(A){ \n    let answer = -9; \n    A.forEach(x => { \n        if(x/10 < 1){ \n            answer = answer > x ? answer : x; \n        } \n    }) \n    return answer; \n}";
             
       //get test cases from file  
       var testCasesText = editorTestcasesValue;
