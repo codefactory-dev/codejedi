@@ -50,6 +50,7 @@ function CodeEditor({code, setCode, height, codemirror}) {
         }
     }
     function handleChange(changeObj) {
+        console.log("QUESTION CODE: "+changeObj.doc.getValue());
         setCode(changeObj.doc.getValue());
     }
 
