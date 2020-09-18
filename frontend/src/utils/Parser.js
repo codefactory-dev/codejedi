@@ -6,7 +6,7 @@ function ParseString(text)
         var cond2 = str.substring(str.length-1,str.length) !== "\"";
         if ( cond1 || cond2 )
         {
-            throw new Error("Inputs should be strings separated by line breaks.");
+            throw new Error("Testcases should be strings separated by line breaks.");
         }
     });
     return array;

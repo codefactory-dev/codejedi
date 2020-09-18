@@ -77,7 +77,7 @@ export default function SimpleTabs(props) {
       var hiddenSolution = "function solution(S){ const n = S.length; for(let i=0;i<n;i+=1) { if (S[i] < S[i-1]){ return S.substring(0,i-1) + S.substring(i); } } return S.substring(0,n-1); }";
             
       //get test cases from file  
-      var testCasesText = editorValue;
+      var testCasesText = editorTestcasesValue;
   
       //parse test cases into javascript
       var structure = ParseString(testCasesText);
