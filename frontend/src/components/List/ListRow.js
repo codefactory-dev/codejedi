@@ -9,7 +9,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import React from 'react';
-
+import SwipeProvider from '../SwipeableList/SwipeProvider';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -92,85 +92,88 @@ export default function ListRow() {
     );
 
     return (
-        <List className={classes.root}>
-            <ListItem className={classes.row} alignItems="flex-start">
-                {matchesSM ? undefined:
-                    <ListItemAvatar>
-                        {avatar}
-                    </ListItemAvatar>
-                }
-                
-                <ListItemText
-                    primary= {  
-                            <div className={classes.headerContainer}>
-                                {matchesSM 
-                                    ? avatar
-                                    : undefined
-                                }
-                                {header}
-                            </div>                                 
-                    }
-                    secondary={
-                        <React.Fragment>                
-                            <div className={classes.text}>
-                                {text.length > maxTextLength ? text.substring(0, maxTextLength) + '[...]' : text}
-                            </div>
+        <SwipeProvider onSwipe={() => console.log()} height={50}>
+        </SwipeProvider>
 
-                            <Button className={classes.readButton} variant={text.length > maxTextLength ? undefined : 'disabled'} disableElevation>
-                                Read more
-                            </Button>
+        // <List className={classes.root}>      
+        //         <ListItem className={classes.row} alignItems="flex-start">
+        //             {matchesSM ? undefined:
+        //                 <ListItemAvatar>
+        //                     {avatar}
+        //                 </ListItemAvatar>
+        //             }
+                    
+        //             <ListItemText
+        //                 primary= {  
+        //                         <div className={classes.headerContainer}>
+        //                             {matchesSM 
+        //                                 ? avatar
+        //                                 : undefined
+        //                             }
+        //                             {header}
+        //                         </div>                                 
+        //                 }
+        //                 secondary={
+        //                     <React.Fragment>                
+        //                         <div className={classes.text}>
+        //                             {text.length > maxTextLength ? text.substring(0, maxTextLength) + '[...]' : text}
+        //                         </div>
 
-                            {reply 
-                                ?
-                                <List component="div" disablePadding>
-                                    <ListItem className={classes.nested} alignItems="flex-start">
-                                        {matchesSM 
-                                            ? 
-                                            undefined
-                                            :
-                                            <ListItemAvatar>
-                                                {avatar}
-                                            </ListItemAvatar>
-                                        }
-                                        <ListItemText 
-                                            primary= {  
-                                                <div className={classes.headerContainer}>
-                                                    {matchesSM 
-                                                        ? avatar
-                                                        : undefined
-                                                    }
-                                                    {header}
-                                                </div>                                 
-                                            }
-                                            secondary={
-                                                <React.Fragment>                
-                                                    <div className={classes.text}>
-                                                        {text.length > maxTextLength ? text.substring(0, maxTextLength) + '[...]' : text}
-                                                    </div>
+        //                         <Button className={classes.readButton} variant={text.length > maxTextLength ? undefined : 'disabled'} disableElevation>
+        //                             Read more
+        //                         </Button>
 
-                                                    <Button className={classes.readButton} variant={text.length > maxTextLength ? undefined : 'disabled'} disableElevation>
-                                                        Read more
-                                                    </Button>
-                                                </React.Fragment>
-                                            }>
-                                        </ListItemText>
-                                    </ListItem>
-                                </List>
-                                :
-                                isOwner && !reply 
-                                    ?
-                                    <Button className={classes.replyButton} disableElevation variant='outlined'>
-                                            Reply
-                                    </Button>
-                                    :
-                                    undefined
-                                
-                            }                  
-                        </React.Fragment>        
-                    }
-                />
-            </ListItem>
-            <Divider variant="inset"/>
-        </List>
+        //                         {reply 
+        //                             ?
+        //                             <List component="div" disablePadding>
+        //                                 <ListItem className={classes.nested} alignItems="flex-start">
+        //                                     {matchesSM 
+        //                                         ? 
+        //                                         undefined
+        //                                         :
+        //                                         <ListItemAvatar>
+        //                                             {avatar}
+        //                                         </ListItemAvatar>
+        //                                     }
+        //                                     <ListItemText 
+        //                                         primary= {  
+        //                                             <div className={classes.headerContainer}>
+        //                                                 {matchesSM 
+        //                                                     ? avatar
+        //                                                     : undefined
+        //                                                 }
+        //                                                 {header}
+        //                                             </div>                                 
+        //                                         }
+        //                                         secondary={
+        //                                             <React.Fragment>                
+        //                                                 <div className={classes.text}>
+        //                                                     {text.length > maxTextLength ? text.substring(0, maxTextLength) + '[...]' : text}
+        //                                                 </div>
+
+        //                                                 <Button className={classes.readButton} variant={text.length > maxTextLength ? undefined : 'disabled'} disableElevation>
+        //                                                     Read more
+        //                                                 </Button>
+        //                                             </React.Fragment>
+        //                                         }>
+        //                                     </ListItemText>
+        //                                 </ListItem>
+        //                             </List>
+        //                             :
+        //                             isOwner && !reply 
+        //                                 ?
+        //                                 <Button className={classes.replyButton} disableElevation variant='outlined'>
+        //                                         Reply
+        //                                 </Button>
+        //                                 :
+        //                                 undefined
+                                    
+        //                         }                  
+        //                     </React.Fragment>        
+        //                 }
+        //             />
+        //         </ListItem>
+        //     <Divider variant="inset"/>
+        // </List>
     );
 }
