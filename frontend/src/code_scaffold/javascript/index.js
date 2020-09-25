@@ -38,10 +38,13 @@ for(var i=0;i<convertedEntries.length;i++)
 
 console.log('Accepted ! Cases passed: '+gotRightAmount+ '/'+convertedEntries.length);`;
 
-const integerScaffold = (entries, userSolution, hiddenSolution) =>
+const integerScaffold = (entries, userSolution, hiddenSolution, entryFunction) =>
 ` /*---------------ENTRIES---------------*/
 const convertedEntries = ${JSON.stringify(entries)};
-var userSolution = ${userSolution};
+var userSolution = function(argument){
+    ${userSolution}
+    return ${entryFunction}(argument);
+};
 var hiddenSolution = ${hiddenSolution};
 var gotRightAmount = 0;
 for(var i=0;i<convertedEntries.length;i++)
@@ -59,10 +62,13 @@ for(var i=0;i<convertedEntries.length;i++)
 
 console.log('Accepted ! Cases passed: '+gotRightAmount+ '/'+convertedEntries.length);`;
 
-const stringScaffold = (entries, userSolution, hiddenSolution) =>
+const stringScaffold = (entries, userSolution, hiddenSolution, entryFunction) =>
 ` /*---------------ENTRIES---------------*/
 const entries = ${JSON.stringify(entries)};
-var userSolution = ${userSolution};
+var userSolution = function(argument){
+    ${userSolution}
+    return ${entryFunction}(argument);
+};
 var hiddenSolution = ${hiddenSolution};
 var gotRightAmount = 0;
 for(var i=0;i<entries.length;i++)
