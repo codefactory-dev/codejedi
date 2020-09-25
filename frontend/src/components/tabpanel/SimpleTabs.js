@@ -111,7 +111,8 @@ export default function SimpleTabs(props) {
               method: 'post',
               url: '/compile',
               data: { 
-                  code:oneLiner
+                  code:oneLiner,
+                  language:languageType
               }
           });            
           console.log(Object.getOwnPropertyNames(result))
