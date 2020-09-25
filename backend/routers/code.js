@@ -1,7 +1,8 @@
 const express = require('express'),
       router = express.Router({mergeParams: true}),
       axios = require('axios'),
-      Code = require('../models/code');
+      Code = require('../models/code'),
+      languageTypes = require('../src/utils/languageTypes.js');
 
 // API calls
 router.get('/hello', (req, res) => {
@@ -22,6 +23,30 @@ function unescape(str) {
   }
 }
 
+function languageToParam(language){
+  let res;
+  let fileName;
+  switch(language){
+
+    case languageTypes.Javascript:
+      res = "javascript";
+      fileName = "main.js";
+      break;
+    case languageTypes.Java:
+      res = "java";
+      fileName = "Main.java"
+      break;
+    default:
+      res = "javascript";
+      fileName = "main.js";
+      break;
+  }
+  return {
+    languageName: res,
+    fileName: fileName
+  };
+}
+
 router.post('/compile', async (req,res) => {
   const payload = {
     'Content-Type': 'application/json',
@@ -35,10 +60,11 @@ router.post('/compile', async (req,res) => {
   //var text = unescape(req.body.code);
   var text = (req.body.code);
   console.log("text = "+text+"\n\n\n");
+  const {lang, file} = languageToParam(req.body.language);
   const body = {
     files: [
         {
-            name: "main.js", 
+            name: file, 
             content: text
         }
     ]
@@ -47,7 +73,7 @@ router.post('/compile', async (req,res) => {
   try{
     const result = await axios({
       method: 'post',
-      url: 'https://run.glot.io/languages/javascript/latest',
+      url: `https://run.glot.io/languages/${lang}/latest`,
       data: body,
       headers: payload
     });
