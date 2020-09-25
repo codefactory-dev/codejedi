@@ -14,11 +14,13 @@ function CodeScaffolding(entries, userSolution, hiddenSolution, questionType)
 
 }
 
-
 const arrayScaffold = (entries, userSolution, hiddenSolution) =>
 ` /*---------------ENTRIES---------------*/
 const convertedEntries = ${JSON.stringify(entries)};
-var userSolution = ${userSolution};
+var userSolution = function(argument){
+    ${userSolution}
+    return solution(argument);
+};
 var hiddenSolution = ${hiddenSolution};
 var gotRightAmount = 0;
 for(var i=0;i<convertedEntries.length;i++)

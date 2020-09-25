@@ -53,7 +53,7 @@ export default function SimpleTabs(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [editorValue, setEditorValue] = useState(`\nGiven an array, return the sum of all elements in the array.\n\n    Example:\n\n        Input:\n\n        [1,2,3,4,5]\n\n        Output:\n\n        15`);
-  const [code, setCode] = useState("function sum(arr) {\n\n};");
+  const [code, setCode] = useState("function solution(arr) {\n\n};");
   const [editorTestcasesValue, setEditorTestcasesValue] = useState('[-6,-91,1011,-100,84,-22,0,1,473]\n[-6, -91, 1011,-100,84,-22, 0, 1, 9, 473]\n[-6,-3,-1,-12]');
   const [questionType,setQuestionType] = useState(questionTypes.Array);
   const [languageType, setLanguageType] = useState(languageTypes.Javascript)
