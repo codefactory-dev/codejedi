@@ -1,0 +1,5 @@
+`function sum(arr) {\n\n};`
+
+function sum(arr) {
+
+};

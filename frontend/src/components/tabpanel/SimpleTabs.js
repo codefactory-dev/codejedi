@@ -51,9 +51,9 @@ function a11yProps(index) {
 export default function SimpleTabs(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
-  const [editorValue, setEditorValue] = useState(`\nGiven a positive integer n and you can do operations as follow:\n\n	1. If n is even, replace n with n/2.\n	2. If n is odd, you can replace n with either n + 1 or n - 1.\n	\nWhat is the minimum number of replacements needed for n to become 1?\n\nExample 1:\n\n	Input:\n	8\n\n	Output:\n	3\n\n	Explanation:\n	8 -> 4 -> 2 -> 1\n	\nExample 2:\n\n	Input:\n	7\n\n	Output:\n	4\n\n	Explanation:\n	7 -> 8 -> 4 -> 2 -> 1\n	or\n	7 -> 6 -> 3 -> 2 -> 1\n`);
-  const [code, setCode] = useState("function integerReplacement(n) {\n    var min = Number.POSITIVE_INFINITY;\n    var stack = [{ num: n, step: 0 }];\n    var set = new Set();\n    var nextStep;\n    var item;\n    \n    while (stack.length) {\n        item = stack.shift();\n        \n        if (item.num === 1) {\n            if (min > item.step) {\n                min = item.step;\n            }\n            continue;\n        }\n        \n        if (set.has(item.num) || item.step >= min) {\n            continue;\n        }\n        set.add(item.num);\n        \n        nextStep = item.step + 1;\n        if (item.num % 2 === 0) {\n            item.num /= 2;\n            stack.push({ num: item.num, step: nextStep });\n        } else {\n            stack.push({ num: item.num - 1, step: nextStep });\n            stack.push({ num: item.num + 1, step: nextStep });\n        }\n    }\n    \n    return min;\n};");
-  const [editorTestcasesValue, setEditorTestcasesValue] = useState('8\n7');
+  const [editorValue, setEditorValue] = useState(`\nGiven an array, return the sum of all elements in the array.\n\n    Example:\n\n        Input:\n\n        [1,2,3,4,5]\n\n        Output:\n\n        15`);
+  const [code, setCode] = useState("function sum(arr) {\n\n};");
+  const [editorTestcasesValue, setEditorTestcasesValue] = useState('[-6, -91, 1011,-100,84,-22, 0, 1, 473]\n[-6, -91, 1011,-100,84,-22, 0, 1, 9 473]\n[-6, -3, -1, -12]');
   const [questionType,setQuestionType] = useState(questionTypes.Integer);
   
 
