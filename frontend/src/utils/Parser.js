@@ -42,20 +42,24 @@ function ParseInteger(text)
 
 function ParseArray(text){
     var array = text.split("\n");
+    console.log("THIS IS THE ARRAY: "+array);
     var res = [];
     let cont=0;
     array.forEach(elem => {
+        console.log("substring 1: "+(elem.substring(0,1)));
+        console.log("substring 2: "+(elem.substring(elem.length-1,elem.length)));
         var cond1 = elem.substring(0,1) !== "[";
         var cond2 = elem.substring(elem.length-1,elem.length) !== "]";
         if ( cond1 || cond2 )
         {
+            console.log("entered here");
             throw new Error("Testcases should be arrays separated by line breaks.");
         }
         let parsed;
         try{
             parsed = ParseSingleArray(elem);
         } catch(e){
-            throw new Error("Testcases should be arrays separated by line breaks.");
+            throw new Error("Error parsing an array content.");
         }
         console.log("parsed "+(cont++)+": "+parsed);
         res.push(parsed);

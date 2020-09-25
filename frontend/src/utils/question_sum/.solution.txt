@@ -5,3 +5,5 @@ function sum(arr) {
     }
     return total;
 };
+
+`function sum(arr) {\n var total = 0;\nfor(let i=0;i<arr.length;i++){\ntotal+=arr[i];\n}\nreturn total;\n};`

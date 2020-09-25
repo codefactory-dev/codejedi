@@ -14,6 +14,7 @@ import CodeScaffolding from '../../utils/CodeScaffolding'
 import { ConvertCodeToOneLiner } from '../../utils/TextReadingUtils'
 import axios from 'axios'
 import questionTypes from '../../utils/questionTypes.js'
+import languageTypes from '../../utils/languageTypes.js'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -53,8 +54,9 @@ export default function SimpleTabs(props) {
   const [value, setValue] = React.useState(0);
   const [editorValue, setEditorValue] = useState(`\nGiven an array, return the sum of all elements in the array.\n\n    Example:\n\n        Input:\n\n        [1,2,3,4,5]\n\n        Output:\n\n        15`);
   const [code, setCode] = useState("function sum(arr) {\n\n};");
-  const [editorTestcasesValue, setEditorTestcasesValue] = useState('[-6, -91, 1011,-100,84,-22, 0, 1, 473]\n[-6, -91, 1011,-100,84,-22, 0, 1, 9 473]\n[-6, -3, -1, -12]');
-  const [questionType,setQuestionType] = useState(questionTypes.Integer);
+  const [editorTestcasesValue, setEditorTestcasesValue] = useState('[-6,-91,1011,-100,84,-22,0,1,473]\n[-6, -91, 1011,-100,84,-22, 0, 1, 9, 473]\n[-6,-3,-1,-12]');
+  const [questionType,setQuestionType] = useState(questionTypes.Array);
+  const [languageType, setLanguageType] = useState(languageTypes.Javascript)
   
 
 
@@ -77,7 +79,7 @@ export default function SimpleTabs(props) {
       var questionText = code;
 
       //get solution from database
-      var hiddenSolution = "function integerReplacement(n) {\n    var min = Number.POSITIVE_INFINITY;\n    var stack = [{ num: n, step: 0 }];\n    var set = new Set();\n    var nextStep;\n    var item;\n    \n    while (stack.length) {\n        item = stack.shift();\n        \n        if (item.num === 1) {\n            if (min > item.step) {\n                min = item.step;\n            }\n            continue;\n        }\n        \n        if (set.has(item.num) || item.step >= min) {\n            continue;\n        }\n        set.add(item.num);\n        \n        nextStep = item.step + 1;\n        if (item.num % 2 === 0) {\n            item.num /= 2;\n            stack.push({ num: item.num, step: nextStep });\n        } else {\n            stack.push({ num: item.num - 1, step: nextStep });\n            stack.push({ num: item.num + 1, step: nextStep });\n        }\n    }\n    \n    return min;\n};";
+      var hiddenSolution = `function sum(arr) {\n    var total = 0;\n    for(let i=0;i<arr.length;i++){\n        total+=arr[i];\n    }\n    return total;\n};`;
             
       //get test cases from file  
       var testCasesText = editorTestcasesValue;
@@ -89,7 +91,7 @@ export default function SimpleTabs(props) {
   
       //insert test cases into question
       var togetherText = questionText;
-      togetherText+=CodeScaffolding(structure, code, hiddenSolution, questionType);
+      togetherText+=CodeScaffolding(structure, code, hiddenSolution, questionType,languageType);
   
       console.log("---TOGETHER TEXT---");
       console.log(togetherText);
