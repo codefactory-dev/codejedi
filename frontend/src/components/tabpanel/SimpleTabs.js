@@ -91,7 +91,7 @@ export default function SimpleTabs(props) {
   
       //insert test cases into question
       var togetherText = questionText;
-      togetherText+=CodeScaffolding(structure, code, hiddenSolution, questionType,languageType);
+      togetherText+=CodeScaffolding(structure, code, hiddenSolution, questionType,languageType,"solution");
   
       console.log("---TOGETHER TEXT---");
       console.log(togetherText);

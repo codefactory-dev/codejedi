@@ -1,25 +1,25 @@
 const questionTypes = require('../../utils/questionTypes.js');
 
-function CodeScaffolding(entries, userSolution, hiddenSolution, questionType)
+function CodeScaffolding(entries, userSolution, hiddenSolution,questionType, entryFunction="solution")
 {
     let CodeScaffolding;
     switch(questionType){
         case questionTypes.String:
-            return stringScaffold(entries,userSolution,hiddenSolution);
+            return stringScaffold(entries,userSolution,hiddenSolution,entryFunction);
         case questionTypes.Array:
-            return arrayScaffold(entries,userSolution,hiddenSolution);
+            return arrayScaffold(entries,userSolution,hiddenSolution,entryFunction);
         case questionTypes.Integer:
-            return integerScaffold(entries,userSolution,hiddenSolution);
+            return integerScaffold(entries,userSolution,hiddenSolution,entryFunction);
     }
 
 }
 
-const arrayScaffold = (entries, userSolution, hiddenSolution) =>
+const arrayScaffold = (entries, userSolution, hiddenSolution,entryFunction) =>
 ` /*---------------ENTRIES---------------*/
 const convertedEntries = ${JSON.stringify(entries)};
 var userSolution = function(argument){
     ${userSolution}
-    return solution(argument);
+    return ${entryFunction}(argument);
 };
 var hiddenSolution = ${hiddenSolution};
 var gotRightAmount = 0;
