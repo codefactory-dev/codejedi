@@ -55,7 +55,7 @@ export default function SimpleTabs(props) {
   const [editorValue, setEditorValue] = useState(`Count the number of prime numbers less than a non-negative number, n.\n\n \n\n    Example 1:\n\n    Input: n = 10\n    Output: 4\n    Explanation: There are 4 prime numbers less than 10, they are 2, 3, 5, \n    7.\n\n    Example 2:\n\n    Input: n = 0\n    Output: 0\n\n    Example 3:\n\n    Input: n = 1\n    Output: 0\n \n\n    Constraints:\n\n    0 <= n <= 5 * 106`);
   const [code, setCode] = useState("class Solution {\n    public int countPrimes(int n) {\n        \n    }\n}");
   const [editorTestcasesValue, setEditorTestcasesValue] = useState('10\n22\n99');
-  const [questionType,setQuestionType] = useState(questionTypes.Array);
+  const [questionType,setQuestionType] = useState(questionTypes.Integer);
   const [languageType, setLanguageType] = useState(languageTypes.Java)
   
 

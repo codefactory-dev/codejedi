@@ -39,28 +39,37 @@ public void run (String[] args) throws Exception
 }`;
 
 const integerScaffold = (entries, userSolution, hiddenSolution, entryFunction) =>
-` /*---------------ENTRIES---------------*/
-const convertedEntries = ${JSON.stringify(entries)};
-var userSolution = function(argument){
-    ${userSolution}
-    return ${entryFunction}(argument);
-};
-var hiddenSolution = ${hiddenSolution};
-var gotRightAmount = 0;
-for(var i=0;i<convertedEntries.length;i++)
-{
-
-    let entry = convertedEntries[i];
-    var result = userSolution(entry);
-    var hiddenResult = hiddenSolution(entry);
-    console.log("case "+i+": "+result+":"+hiddenResult);
-    if (result === hiddenResult)
-    {
-        gotRightAmount++;
+`/*---------------ENTRIES---------------*/
+int[] convertedEntries = new int[]${JSON.stringify(entries).replace('[','{').replace(']','}')};
+int gotRightAmount = 0;
+${userSolution}
+${hiddenSolution}
+class Main {
+ 
+    public static void main(String[] args) {
+        try
+        {
+            Solution objUser = new Solution();
+            Solution objHidden = new Solution();
+            for(var i=0;i<convertedEntries.length;i++)
+            {
+                let entry = convertedEntries[i];
+                int userResult = objUser.countPrimes(entry);
+                int hiddenResult = objHidden.countPrimes(entry);
+                console.log("case "+i+": "+result+":"+hiddenResult);
+                if (result == hiddenResult)
+                {
+                    gotRightAmount++;
+                }
+            }
+            System.out.println("Accepted ! Cases passed: "+gotRightAmount+ "/"+convertedEntries.length);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace ();
+        }
     }
-}
-
-console.log('Accepted ! Cases passed: '+gotRightAmount+ '/'+convertedEntries.length);`;
+}`
 
 const stringScaffold = (entries, userSolution, hiddenSolution, entryFunction) =>
 ` /*---------------ENTRIES---------------*/
