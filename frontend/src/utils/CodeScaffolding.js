@@ -1,6 +1,6 @@
 const languageTypes = require('./languageTypes.js')
 
-function CodeScaffolding(entries, userSolution, hiddenSolution, questionType,languageType)
+function CodeScaffolding(entries, userSolution, hiddenSolution, questionType,languageType,entryFunction="solution")
 {
     let CodeScaffolding;
     switch(languageType){
@@ -13,7 +13,7 @@ function CodeScaffolding(entries, userSolution, hiddenSolution, questionType,lan
         default:
             CodeScaffolding = require('../code_scaffold/javascript/index.js');
     }
-    return CodeScaffolding(entries, userSolution, hiddenSolution, questionType);
+    return CodeScaffolding(entries, userSolution, hiddenSolution, questionType,entryFunction);
 }
 
 module.exports = CodeScaffolding

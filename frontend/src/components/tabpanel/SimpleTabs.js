@@ -52,10 +52,10 @@ function a11yProps(index) {
 export default function SimpleTabs(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
-  const [editorValue, setEditorValue] = useState(`Count the number of prime numbers less than a non-negative number, n.\n\n \n\n    Example 1:\n\n    Input: n = 10\n    Output: 4\n    Explanation: There are 4 prime numbers less than 10, they are 2, 3, 5, \n    7.\n\n    Example 2:\n\n    Input: n = 0\n    Output: 0\n\n    Example 3:\n\n    Input: n = 1\n    Output: 0\n \n\n    Constraints:\n\n    0 <= n <= 5 * 106`);
-  const [code, setCode] = useState("class Solution {\n    public int countPrimes(int n) {\n        \n    }\n}");
-  const [editorTestcasesValue, setEditorTestcasesValue] = useState('10\n22\n99');
-  const [questionType,setQuestionType] = useState(questionTypes.Integer);
+  const [editorValue, setEditorValue] = useState(`Given a string s of lower and upper case English letters.\n\nA good string is a string which doesn't have two adjacent characters s[i] and s[i + 1] where:\n\n0 <= i <= s.length - 2\ns[i] is a lower-case letter and s[i + 1] is the same letter but in upper-case or vice-versa.\nTo make the string good, you can choose two adjacent characters that make the string bad and remove them. You can keep doing this until the string becomes good.\n\nReturn the string after making it good. The answer is guaranteed to be unique under the given constraints.\n\nNotice that an empty string is also good.\n\n \n\nExample 1:\n\nInput: s = "leEeetcode"\nOutput: "leetcode"\nExplanation: In the first step, either you choose i = 1 or i = 2, both will result "leEeetcode" to be reduced to "leetcode".\nExample 2:\n\nInput: s = "abBAcC"\nOutput: ""\nExplanation: We have many possible scenarios, and all lead to the same answer. For example:\n"abBAcC" --> "aAcC" --> "cC" --> ""\n"abBAcC" --> "abBA" --> "aA" --> ""\nExample 3:\n\nInput: s = "s"\nOutput: "s"\n \n\nConstraints:\n\n1 <= s.length <= 100\ns contains only lower and upper case English letters.`);
+  const [code, setCode] = useState("class Solution {\n    public String makeGood(String s) {\n        \n    }\n}");
+  const [editorTestcasesValue, setEditorTestcasesValue] = useState('"leEeetcode"\n"abBAcC"\n"s"');
+  const [questionType,setQuestionType] = useState(questionTypes.String);
   const [languageType, setLanguageType] = useState(languageTypes.Java)
   
 
@@ -79,7 +79,7 @@ export default function SimpleTabs(props) {
       var questionText = code;
 
       //get solution from database
-      var hiddenSolution = `class HiddenSolution {\n    public int countPrimes(int n) {\n        boolean[] notPrime = new boolean[n];\n        int count = 0;\n        for (int i = 2; i < n; i++) {\n            if (notPrime[i] == false) {\n                count++;\n                for (int j = 2; i*j < n; j++) {\n                    notPrime[i*j] = true;\n                }\n            }\n        }\n        \n        return count;\n    }\n}`;
+      var hiddenSolution = `class HiddenSolution {\n  public String makeGood(String s) {\n    \n    /*\n    Runtime: 1 ms, faster than 100.00% of Java online submissions for Make The String Great.\n    Memory Usage: 37.9 MB, less than 100.00% of Java online submissions for Make The String Great.\n	Runtime complexity: O(n)\n	Space complexity: O(n), since we duplicate the input String in a StringBuilder\n    */\n\n    // edge case\n    if (s.isEmpty()) {\n      return s; // an empty String is a good String per problem requirements\n    }\n\n    StringBuilder sb = new StringBuilder(s); // our working space and what we'll return\n    \n    int index = 0; // to keep track of where in the StringBuilder we are\n    \n    while (index < sb.length() - 1) {\n      if (Math.abs(sb.charAt(index) - sb.charAt(index + 1)) == 32) { // if lower-upper pair is found\n        sb.deleteCharAt(index);\n        sb.deleteCharAt(index);\n        index = Math.max(index - 1, 0); // thanks to @prdp89 for the tip!\n      } else {\n        ++index; // move on to next char\n      }\n    }\n    \n    return sb.toString();\n  }\n}`;
             
       //get test cases from file  
       var testCasesText = editorTestcasesValue;
@@ -91,7 +91,8 @@ export default function SimpleTabs(props) {
   
       //insert test cases into question
       var togetherText = questionText;
-      togetherText+=CodeScaffolding(structure, code, hiddenSolution, questionType,languageType,"solution");
+      togetherText+=CodeScaffolding(structure, code, hiddenSolution, questionType,languageType,"makeGood");
+      
   
       console.log("---TOGETHER TEXT---");
       console.log(togetherText);
