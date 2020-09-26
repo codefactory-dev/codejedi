@@ -60,20 +60,22 @@ router.post('/compile', async (req,res) => {
   //var text = unescape(req.body.code);
   var text = (req.body.code);
   console.log("text = "+text+"\n\n\n");
-  const {lang, file} = languageToParam(req.body.language);
+  const {languageName, fileName} = languageToParam(req.body.language);
   const body = {
     files: [
         {
-            name: file, 
+            name: fileName, 
             content: text
         }
     ]
   }
   console.log("body = "+body);
+  console.log("lang = "+languageName);
+  console.log("file = "+fileName);
   try{
     const result = await axios({
       method: 'post',
-      url: `https://run.glot.io/languages/${lang}/latest`,
+      url: `https://run.glot.io/languages/${languageName}/latest`,
       data: body,
       headers: payload
     });

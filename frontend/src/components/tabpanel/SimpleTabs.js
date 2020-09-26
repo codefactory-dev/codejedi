@@ -79,7 +79,7 @@ export default function SimpleTabs(props) {
       var questionText = code;
 
       //get solution from database
-      var hiddenSolution = `public class Solution {\n    public int countPrimes(int n) {\n        boolean[] notPrime = new boolean[n];\n        int count = 0;\n        for (int i = 2; i < n; i++) {\n            if (notPrime[i] == false) {\n                count++;\n                for (int j = 2; i*j < n; j++) {\n                    notPrime[i*j] = true;\n                }\n            }\n        }\n        \n        return count;\n    }\n}`;
+      var hiddenSolution = `class HiddenSolution {\n    public int countPrimes(int n) {\n        boolean[] notPrime = new boolean[n];\n        int count = 0;\n        for (int i = 2; i < n; i++) {\n            if (notPrime[i] == false) {\n                count++;\n                for (int j = 2; i*j < n; j++) {\n                    notPrime[i*j] = true;\n                }\n            }\n        }\n        \n        return count;\n    }\n}`;
             
       //get test cases from file  
       var testCasesText = editorTestcasesValue;

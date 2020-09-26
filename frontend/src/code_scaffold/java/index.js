@@ -39,25 +39,23 @@ public void run (String[] args) throws Exception
 }`;
 
 const integerScaffold = (entries, userSolution, hiddenSolution, entryFunction) =>
-`/*---------------ENTRIES---------------*/
-int[] convertedEntries = new int[]${JSON.stringify(entries).replace('[','{').replace(']','}')};
-int gotRightAmount = 0;
-${userSolution}
+`
 ${hiddenSolution}
 class Main {
- 
     public static void main(String[] args) {
+        int[] convertedEntries = new int[]${JSON.stringify(entries).replace('[','{').replace(']','}')};
+        int gotRightAmount = 0;
         try
         {
             Solution objUser = new Solution();
-            Solution objHidden = new Solution();
-            for(var i=0;i<convertedEntries.length;i++)
+            HiddenSolution objHidden = new HiddenSolution();
+            for(int i=0;i<convertedEntries.length;i++)
             {
-                let entry = convertedEntries[i];
+                int entry = convertedEntries[i];
                 int userResult = objUser.countPrimes(entry);
                 int hiddenResult = objHidden.countPrimes(entry);
-                console.log("case "+i+": "+result+":"+hiddenResult);
-                if (result == hiddenResult)
+                System.out.println("case "+i+": "+userResult+":"+hiddenResult);
+                if (userResult == hiddenResult)
                 {
                     gotRightAmount++;
                 }
@@ -69,7 +67,7 @@ class Main {
             e.printStackTrace ();
         }
     }
-}`
+}`;
 
 const stringScaffold = (entries, userSolution, hiddenSolution, entryFunction) =>
 ` /*---------------ENTRIES---------------*/
