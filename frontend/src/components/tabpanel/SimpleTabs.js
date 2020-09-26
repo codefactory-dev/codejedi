@@ -52,11 +52,11 @@ function a11yProps(index) {
 export default function SimpleTabs(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
-  const [editorValue, setEditorValue] = useState(`\nGiven an array, return the sum of all elements in the array.\n\n    Example:\n\n        Input:\n\n        [1,2,3,4,5]\n\n        Output:\n\n        15`);
-  const [code, setCode] = useState("function solution(arr) {\n\n};");
-  const [editorTestcasesValue, setEditorTestcasesValue] = useState('[-6,-91,1011,-100,84,-22,0,1,473]\n[-6, -91, 1011,-100,84,-22, 0, 1, 9, 473]\n[-6,-3,-1,-12]');
+  const [editorValue, setEditorValue] = useState(`Count the number of prime numbers less than a non-negative number, n.\n\n \n\n    Example 1:\n\n    Input: n = 10\n    Output: 4\n    Explanation: There are 4 prime numbers less than 10, they are 2, 3, 5, \n    7.\n\n    Example 2:\n\n    Input: n = 0\n    Output: 0\n\n    Example 3:\n\n    Input: n = 1\n    Output: 0\n \n\n    Constraints:\n\n    0 <= n <= 5 * 106`);
+  const [code, setCode] = useState("class Solution {\n    public int countPrimes(int n) {\n        \n    }\n}");
+  const [editorTestcasesValue, setEditorTestcasesValue] = useState('10\n22\n99');
   const [questionType,setQuestionType] = useState(questionTypes.Array);
-  const [languageType, setLanguageType] = useState(languageTypes.Javascript)
+  const [languageType, setLanguageType] = useState(languageTypes.Java)
   
 
 
@@ -79,7 +79,7 @@ export default function SimpleTabs(props) {
       var questionText = code;
 
       //get solution from database
-      var hiddenSolution = `function sum(arr) {\n    var total = 0;\n    for(let i=0;i<arr.length;i++){\n        total+=arr[i];\n    }\n    return total;\n};`;
+      var hiddenSolution = `public class Solution {\n    public int countPrimes(int n) {\n        boolean[] notPrime = new boolean[n];\n        int count = 0;\n        for (int i = 2; i < n; i++) {\n            if (notPrime[i] == false) {\n                count++;\n                for (int j = 2; i*j < n; j++) {\n                    notPrime[i*j] = true;\n                }\n            }\n        }\n        \n        return count;\n    }\n}`;
             
       //get test cases from file  
       var testCasesText = editorTestcasesValue;
