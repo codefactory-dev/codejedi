@@ -10,19 +10,30 @@ import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import React from 'react';
 import SwipeProvider from '../SwipeableList/SwipeProvider';
+import PropTypes from 'prop-types';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
     root: {
-      width: '100%',      
-      backgroundColor: theme.palette.common.black1
-    },
-    row: {
+        backgroundColor: theme.palette.common.black,
+        boxSizing: 'border-box',
+        width: '100%',
+        padding: '20px 0',
+        margin: '0',
         '&:hover': {
             backgroundColor: theme.palette.common.black3
         }
     },
+    contentContainer: {
+        ... theme.typography.body2,
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100%',
+    },
     headerContainer: {
         display: 'flex'
+    },
+    avatarContainer: {
+        marginTop: '0px'
     },
     avatar: {
         border: `1.5px solid ${theme.palette.common.greyLight}`
@@ -38,7 +49,6 @@ const useStyles = makeStyles((theme) => ({
         }
     },
     date: {
-        ... theme.typography.body2,
         marginLeft: 'auto',
         fontSize: '.75rem',
         fontWeight: 'bold',
@@ -64,116 +74,70 @@ const useStyles = makeStyles((theme) => ({
         
     },
     nested: {
-        paddingLeft: 0,
-        paddingRight: 0
+        padding: '0 0 20px 30px',
     },
   }));
 
 const maxTextLength = 100;
 
-export default function ListRow() {
+export default function ListRow(props) {
     const classes = useStyles();
     const theme = useTheme();
     const matchesSM = useMediaQuery(theme.breakpoints.down('xs'));
 
-    const username = "Bessie Berry";
-    const date = "05.18.2020";
-    const text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore  et dolore magna aliqua. Ut enim ad minim veniam.";
-    const owner = "Roberta Mota";
-    const reply = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."
-    const replyDate = "10min ago";
-    const isOwner = true;
 
-    const avatar = <Avatar className={classes.avatar} alt="user avatar" src="/static/images/avatar/1.jpg" /> ;
+    const avatar = <Avatar className={classes.avatar} alt="user avatar" src={props.userAvatarURL} /> ;
     const header = (<div className={classes.header}>
-                        <div>{username}</div>
-                        <div className={classes.date}>{date}</div>
+                        <div>{props.username}</div>
+                        <div className={classes.date}>{props.date}</div>
                     </div>            
     );
+    
+    const classesReply = props.isReply ? classes.nested : undefined;
 
-    return (
-        <SwipeProvider onSwipe={() => console.log()} height={50}>
-        </SwipeProvider>
+    return (    
+        <ListItem component="div" alignItems="flex-start" disableGutters className={`${classes.root} ${classesReply}`}>
+            {matchesSM 
+                ? 
+                undefined 
+                :
+                <ListItemAvatar className={classes.avatarContainer}>
+                    {avatar}
+                </ListItemAvatar>
+            }
+            <div className={classes.contentContainer}>
+                <div className={classes.headerContainer}>
+                    {matchesSM ? avatar : undefined }
+                    {header}
+                </div>
+                <div>                
+                    <div className={classes.text}>
+                        {props.text.length > maxTextLength ? props.text.substring(0, maxTextLength) + '[...]' : props.text}
+                    </div>
+                    <Button className={classes.readButton} variant={props.text.length > maxTextLength ? undefined : 'disabled'} disableElevation>
+                        Read more
+                    </Button>
 
-        // <List className={classes.root}>      
-        //         <ListItem className={classes.row} alignItems="flex-start">
-        //             {matchesSM ? undefined:
-        //                 <ListItemAvatar>
-        //                     {avatar}
-        //                 </ListItemAvatar>
-        //             }
-                    
-        //             <ListItemText
-        //                 primary= {  
-        //                         <div className={classes.headerContainer}>
-        //                             {matchesSM 
-        //                                 ? avatar
-        //                                 : undefined
-        //                             }
-        //                             {header}
-        //                         </div>                                 
-        //                 }
-        //                 secondary={
-        //                     <React.Fragment>                
-        //                         <div className={classes.text}>
-        //                             {text.length > maxTextLength ? text.substring(0, maxTextLength) + '[...]' : text}
-        //                         </div>
-
-        //                         <Button className={classes.readButton} variant={text.length > maxTextLength ? undefined : 'disabled'} disableElevation>
-        //                             Read more
-        //                         </Button>
-
-        //                         {reply 
-        //                             ?
-        //                             <List component="div" disablePadding>
-        //                                 <ListItem className={classes.nested} alignItems="flex-start">
-        //                                     {matchesSM 
-        //                                         ? 
-        //                                         undefined
-        //                                         :
-        //                                         <ListItemAvatar>
-        //                                             {avatar}
-        //                                         </ListItemAvatar>
-        //                                     }
-        //                                     <ListItemText 
-        //                                         primary= {  
-        //                                             <div className={classes.headerContainer}>
-        //                                                 {matchesSM 
-        //                                                     ? avatar
-        //                                                     : undefined
-        //                                                 }
-        //                                                 {header}
-        //                                             </div>                                 
-        //                                         }
-        //                                         secondary={
-        //                                             <React.Fragment>                
-        //                                                 <div className={classes.text}>
-        //                                                     {text.length > maxTextLength ? text.substring(0, maxTextLength) + '[...]' : text}
-        //                                                 </div>
-
-        //                                                 <Button className={classes.readButton} variant={text.length > maxTextLength ? undefined : 'disabled'} disableElevation>
-        //                                                     Read more
-        //                                                 </Button>
-        //                                             </React.Fragment>
-        //                                         }>
-        //                                     </ListItemText>
-        //                                 </ListItem>
-        //                             </List>
-        //                             :
-        //                             isOwner && !reply 
-        //                                 ?
-        //                                 <Button className={classes.replyButton} disableElevation variant='outlined'>
-        //                                         Reply
-        //                                 </Button>
-        //                                 :
-        //                                 undefined
-                                    
-        //                         }                  
-        //                     </React.Fragment>        
-        //                 }
-        //             />
-        //         </ListItem>
-        //     <Divider variant="inset"/>
-        // </List>
+                    {props.isOwner && !props.hasReply && !props.isReply
+                        ?
+                        <Button className={classes.replyButton} disableElevation variant='outlined'>
+                            Reply
+                        </Button>
+                        :
+                        undefined
+                    }
+                </div>
+            </div>
+        </ListItem>
     );
+}
+
+ListRow.propTypes = {
+    username: PropTypes.string.isRequired,
+    userAvatarURL: PropTypes.string.isRequired,
+    isOwner: PropTypes.bool.isRequired,
+    date: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
+    hasReply : PropTypes.bool.isRequired,
+    isReply: PropTypes.bool.isRequired,
 }

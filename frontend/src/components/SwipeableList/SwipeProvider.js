@@ -2,9 +2,33 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {cursorPosition} from './helper';
 import {Container, Content, SwipeContent } from './styles';
+import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core/styles';
 
+import editIcon from '../../icons/edit.svg';
+import deleteIcon from '../../icons/delete.svg';
+
+const styles = theme => ({
+    button: {
+      minWidth: '0',
+      width: '48px',
+      height: '48px',
+      margin: '0 10px',
+      padding: '0',
+      border: `1.5px solid ${theme.palette.primary.main}`,
+      borderRadius: '5px',
+      '& img': {
+          width: '70%',
+      },
+      '& .icon': {
+        fill: 'black'
+      }
+    }
+});
 
 class SwipeProvider extends React.Component {
+    
     state = {
         touching: null,
         translate: 0,
@@ -62,38 +86,48 @@ class SwipeProvider extends React.Component {
     }
 
     render() {
+        const {classes} = this.props;
         const cssProps = {transitionDuration: 5, height: this.props.height};
 
         return (
+            this.props.disabled
+            ?
+            this.props.children
+            :
             <Container {...cssProps}
-                        ref={c => {
-                            if (c) {
-                            this.container = c
-                            this.containerWidth = c.getBoundingClientRect().width;
+                        ref={c => { if (c) {
+                                this.container = c
+                                this.containerWidth = c.getBoundingClientRect().width;
                             }
                         }}>
                 <SwipeContent translate={this.state.translate}
                               transition={!this.state.touching}
-                              buttonMarginLeft={this.containerWidth + this.state.translate}
+                              buttonMarginLeft={-this.state.translate}
                               {...cssProps}>
-                    <div>swipe</div>
+                    <div>
+                        <Button variant="outlined" className={classes.button}>
+                            <img src={editIcon} alt="edit icon" />
+                        </Button>
+                        <Button variant="outlined" className={classes.button}>
+                            <img src={deleteIcon} alt="delete icon" />
+                        </Button>                        
+                    </div>
                 </SwipeContent>
                 <Content    onMouseDown={this.onMouseDown} onTouchStart={this.onMouseDown}
                             translate={this.state.translate}
                             transition={!this.state.touching}
                             {...cssProps}>   
                     <div>
-                        list item
+                        {this.props.children}
                     </div>
                 </Content>
-            </Container>
+            </Container>         
         );
     }
 }
 
 SwipeProvider.propTypes = {
-    onSwipe: PropTypes.func.isRequired,
-    height: PropTypes.number.isRequired,
+    height: PropTypes.string,
     transitionDuration: PropTypes.number,
     swipeComponentWidth: PropTypes.number,
     swipeComponent: PropTypes.node,
@@ -103,8 +137,10 @@ SwipeProvider.propTypes = {
 SwipeProvider.defaultProps = {
     transitionDuration: 250,
     swipeComponentWidth: 75,
-    disabled: false
+    swipeComponent: undefined,
+    disabled: false,
+    height: '100%'
 }
 
 
-export default SwipeProvider;
+export default withStyles(styles, { withTheme: true })(SwipeProvider);

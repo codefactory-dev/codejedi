@@ -1,17 +1,21 @@
 
 import styled, { css } from 'styled-components'
+import theme from '../ui/Theme'
 
 const Container = styled.div`
     box-sizing: border-box;
     position: relative;
-    background-color: #262626;
-    color: #F2F2F2;
     height: ${props => props.height}px;
     max-height: ${props  => props.height + 10}px;
+    ${'' /* background-color: #262626; */}
+    color: #F2F2F2;
+    overflow: hidden;
 `;
 
 const Content = styled.div`
   position: relative;
+  top: 0;
+  right: 0;
   height: 100%;
   width: 100%;
   transform: translateX(${({ translate }) => translate}px);
@@ -23,19 +27,15 @@ const SwipeContent = styled.div`
   right: 0;
   height: 100%;
   width: 100%;
-  display: inline-flex;
+  display: flex;
   justify-content: flex-start;
   align-items: center;
-  ${'' /* background-color: #aa0000; */}
+  background-color: ${props => theme.palette.common.black2};
   overflow-y: hidden;
-  
+
   div {
-      height: 100%;
-      width: 100%;
-      background-color: #3C3C3C;
-      color: #00B5AD;
-      transition: margin ${({ transitionDuration }) => transitionDuration}ms ease-out;
-      margin-left: ${({ buttonMarginLeft }) => buttonMarginLeft}px;
+      position: absolute;
+      right: 0;
   }
 `
 
