@@ -42,6 +42,7 @@ function ParseInteger(text)
 
 function ParseArray(text){
     var array = text.split("\n");
+    console.log("THIS IS THE ARRAY: "+array);
     var res = [];
     let cont=0;
     array.forEach(elem => {
@@ -55,7 +56,7 @@ function ParseArray(text){
         try{
             parsed = ParseSingleArray(elem);
         } catch(e){
-            throw new Error("Testcases should be arrays separated by line breaks.");
+            throw new Error("Error parsing an array content.");
         }
         console.log("parsed "+(cont++)+": "+parsed);
         res.push(parsed);

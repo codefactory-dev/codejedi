@@ -14,6 +14,7 @@ import CodeScaffolding from '../../utils/CodeScaffolding'
 import { ConvertCodeToOneLiner } from '../../utils/TextReadingUtils'
 import axios from 'axios'
 import questionTypes from '../../utils/questionTypes.js'
+import languageTypes from '../../utils/languageTypes.js'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -51,10 +52,11 @@ function a11yProps(index) {
 export default function SimpleTabs(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
-  const [editorValue, setEditorValue] = useState(`\nGiven a positive integer n and you can do operations as follow:\n\n	1. If n is even, replace n with n/2.\n	2. If n is odd, you can replace n with either n + 1 or n - 1.\n	\nWhat is the minimum number of replacements needed for n to become 1?\n\nExample 1:\n\n	Input:\n	8\n\n	Output:\n	3\n\n	Explanation:\n	8 -> 4 -> 2 -> 1\n	\nExample 2:\n\n	Input:\n	7\n\n	Output:\n	4\n\n	Explanation:\n	7 -> 8 -> 4 -> 2 -> 1\n	or\n	7 -> 6 -> 3 -> 2 -> 1\n`);
-  const [code, setCode] = useState("function integerReplacement(n) {\n    var min = Number.POSITIVE_INFINITY;\n    var stack = [{ num: n, step: 0 }];\n    var set = new Set();\n    var nextStep;\n    var item;\n    \n    while (stack.length) {\n        item = stack.shift();\n        \n        if (item.num === 1) {\n            if (min > item.step) {\n                min = item.step;\n            }\n            continue;\n        }\n        \n        if (set.has(item.num) || item.step >= min) {\n            continue;\n        }\n        set.add(item.num);\n        \n        nextStep = item.step + 1;\n        if (item.num % 2 === 0) {\n            item.num /= 2;\n            stack.push({ num: item.num, step: nextStep });\n        } else {\n            stack.push({ num: item.num - 1, step: nextStep });\n            stack.push({ num: item.num + 1, step: nextStep });\n        }\n    }\n    \n    return min;\n};");
-  const [editorTestcasesValue, setEditorTestcasesValue] = useState('8\n7');
-  const [questionType,setQuestionType] = useState(questionTypes.Integer);
+  const [editorValue, setEditorValue] = useState(`Given an initial array arr, every day you produce a new array using the array of the previous day.\n\nOn the i-th day, you do the following operations on the array of day i-1 to produce the array of day i:\n\nIf an element is smaller than both its left neighbor and its right neighbor, then this element is incremented.\nIf an element is bigger than both its left neighbor and its right neighbor, then this element is decremented.\nThe first and last elements never change.\nAfter some days, the array does not change. Return that final array.\n\n \n\nExample 1:\n\nInput: arr = [6,2,3,4]\nOutput: [6,3,3,4]\nExplanation: \nOn the first day, the array is changed from [6,2,3,4] to [6,3,3,4].\nNo more operations can be done to this array.\nExample 2:\n\nInput: arr = [1,6,3,4,3,5]\nOutput: [1,4,4,4,4,5]\nExplanation: \nOn the first day, the array is changed from [1,6,3,4,3,5] to [1,5,4,3,4,5].\nOn the second day, the array is changed from [1,5,4,3,4,5] to [1,4,4,4,4,5].\nNo more operations can be done to this array.\n \n\nConstraints:\n\n3 <= arr.length <= 100\n1 <= arr[i] <= 100`);
+  const [code, setCode] = useState("class Solution {\n    public List<Integer> transformArray(int[] arr) {\n        \n    }\n}");
+  const [editorTestcasesValue, setEditorTestcasesValue] = useState('[6,2,3,4]\n[1,6,3,4,3,5]');
+  const [questionType,setQuestionType] = useState(questionTypes.Array);
+  const [languageType, setLanguageType] = useState(languageTypes.Java)
   
 
 
@@ -77,7 +79,7 @@ export default function SimpleTabs(props) {
       var questionText = code;
 
       //get solution from database
-      var hiddenSolution = "function integerReplacement(n) {\n    var min = Number.POSITIVE_INFINITY;\n    var stack = [{ num: n, step: 0 }];\n    var set = new Set();\n    var nextStep;\n    var item;\n    \n    while (stack.length) {\n        item = stack.shift();\n        \n        if (item.num === 1) {\n            if (min > item.step) {\n                min = item.step;\n            }\n            continue;\n        }\n        \n        if (set.has(item.num) || item.step >= min) {\n            continue;\n        }\n        set.add(item.num);\n        \n        nextStep = item.step + 1;\n        if (item.num % 2 === 0) {\n            item.num /= 2;\n            stack.push({ num: item.num, step: nextStep });\n        } else {\n            stack.push({ num: item.num - 1, step: nextStep });\n            stack.push({ num: item.num + 1, step: nextStep });\n        }\n    }\n    \n    return min;\n};";
+      var hiddenSolution = `class HiddenSolution {\n    public List<Integer> transformArray(int[] arr) {\n        while (true) {\n            int[] tmp = new int[arr.length];\n            boolean change = false;\n            tmp[0] = arr[0];\n            tmp[arr.length - 1] = arr[arr.length - 1];\n            for (int i = 1; i < arr.length - 1; i++) {\n                if (arr[i] > arr[i - 1] && arr[i] > arr[i + 1]) {\n                    tmp[i] = arr[i] - 1;\n                    change = true;\n                } else if (arr[i] < arr[i - 1] && arr[i] < arr[i + 1]) {\n                    tmp[i] = arr[i] + 1;\n                    change = true;\n                } else {\n                    tmp[i] = arr[i];\n                }\n            }\n            arr = tmp;\n            if (!change) break;\n        }\n        List<Integer> res = new ArrayList<>();\n        for (int num : arr) res.add(num);\n        return res;\n    }\n}`;
             
       //get test cases from file  
       var testCasesText = editorTestcasesValue;
@@ -88,8 +90,9 @@ export default function SimpleTabs(props) {
       console.log(structure);
   
       //insert test cases into question
-      var togetherText = questionText;
-      togetherText+=CodeScaffolding(structure, code, hiddenSolution, questionType);
+      //var togetherText = questionText;
+      const togetherText=CodeScaffolding(structure, code, hiddenSolution, questionType,languageType,"transformArray");
+
   
       console.log("---TOGETHER TEXT---");
       console.log(togetherText);
@@ -109,7 +112,8 @@ export default function SimpleTabs(props) {
               method: 'post',
               url: '/compile',
               data: { 
-                  code:oneLiner
+                  code:oneLiner,
+                  language:languageType
               }
           });            
           console.log(Object.getOwnPropertyNames(result))
