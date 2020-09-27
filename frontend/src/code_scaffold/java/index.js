@@ -16,8 +16,7 @@ function CodeScaffolding(entries, userSolution, hiddenSolution,questionType, ent
 
 const arrayScaffold = (entries, userSolution, hiddenSolution,entryFunction) =>
 `
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 ${userSolution}
 ${hiddenSolution}
 class Main {
@@ -50,6 +49,7 @@ class Main {
 
 const integerScaffold = (entries, userSolution, hiddenSolution, entryFunction) =>
 `
+import java.util.*;
 ${userSolution}
 ${hiddenSolution}
 class Main {
@@ -82,6 +82,7 @@ class Main {
 
 const stringScaffold = (entries, userSolution, hiddenSolution, entryFunction) =>
 `
+import java.util.*;
 ${userSolution}
 ${hiddenSolution}
 class Main {
