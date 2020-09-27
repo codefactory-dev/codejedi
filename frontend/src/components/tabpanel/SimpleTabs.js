@@ -52,10 +52,10 @@ function a11yProps(index) {
 export default function SimpleTabs(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
-  const [editorValue, setEditorValue] = useState(`Given a string s of lower and upper case English letters.\n\nA good string is a string which doesn't have two adjacent characters s[i] and s[i + 1] where:\n\n0 <= i <= s.length - 2\ns[i] is a lower-case letter and s[i + 1] is the same letter but in upper-case or vice-versa.\nTo make the string good, you can choose two adjacent characters that make the string bad and remove them. You can keep doing this until the string becomes good.\n\nReturn the string after making it good. The answer is guaranteed to be unique under the given constraints.\n\nNotice that an empty string is also good.\n\n \n\nExample 1:\n\nInput: s = "leEeetcode"\nOutput: "leetcode"\nExplanation: In the first step, either you choose i = 1 or i = 2, both will result "leEeetcode" to be reduced to "leetcode".\nExample 2:\n\nInput: s = "abBAcC"\nOutput: ""\nExplanation: We have many possible scenarios, and all lead to the same answer. For example:\n"abBAcC" --> "aAcC" --> "cC" --> ""\n"abBAcC" --> "abBA" --> "aA" --> ""\nExample 3:\n\nInput: s = "s"\nOutput: "s"\n \n\nConstraints:\n\n1 <= s.length <= 100\ns contains only lower and upper case English letters.`);
-  const [code, setCode] = useState("class Solution {\n    public String makeGood(String s) {\n        \n    }\n}");
-  const [editorTestcasesValue, setEditorTestcasesValue] = useState('"leEeetcode"\n"abBAcC"\n"s"');
-  const [questionType,setQuestionType] = useState(questionTypes.String);
+  const [editorValue, setEditorValue] = useState(`Given an initial array arr, every day you produce a new array using the array of the previous day.\n\nOn the i-th day, you do the following operations on the array of day i-1 to produce the array of day i:\n\nIf an element is smaller than both its left neighbor and its right neighbor, then this element is incremented.\nIf an element is bigger than both its left neighbor and its right neighbor, then this element is decremented.\nThe first and last elements never change.\nAfter some days, the array does not change. Return that final array.\n\n \n\nExample 1:\n\nInput: arr = [6,2,3,4]\nOutput: [6,3,3,4]\nExplanation: \nOn the first day, the array is changed from [6,2,3,4] to [6,3,3,4].\nNo more operations can be done to this array.\nExample 2:\n\nInput: arr = [1,6,3,4,3,5]\nOutput: [1,4,4,4,4,5]\nExplanation: \nOn the first day, the array is changed from [1,6,3,4,3,5] to [1,5,4,3,4,5].\nOn the second day, the array is changed from [1,5,4,3,4,5] to [1,4,4,4,4,5].\nNo more operations can be done to this array.\n \n\nConstraints:\n\n3 <= arr.length <= 100\n1 <= arr[i] <= 100`);
+  const [code, setCode] = useState("class Solution {\n    public List<Integer> transformArray(int[] arr) {\n        \n    }\n}");
+  const [editorTestcasesValue, setEditorTestcasesValue] = useState('[6,2,3,4]\n[1,6,3,4,3,5]');
+  const [questionType,setQuestionType] = useState(questionTypes.Array);
   const [languageType, setLanguageType] = useState(languageTypes.Java)
   
 
@@ -79,7 +79,7 @@ export default function SimpleTabs(props) {
       var questionText = code;
 
       //get solution from database
-      var hiddenSolution = `class HiddenSolution {\n  public String makeGood(String s) {\n    \n    /*\n    Runtime: 1 ms, faster than 100.00% of Java online submissions for Make The String Great.\n    Memory Usage: 37.9 MB, less than 100.00% of Java online submissions for Make The String Great.\n	Runtime complexity: O(n)\n	Space complexity: O(n), since we duplicate the input String in a StringBuilder\n    */\n\n    // edge case\n    if (s.isEmpty()) {\n      return s; // an empty String is a good String per problem requirements\n    }\n\n    StringBuilder sb = new StringBuilder(s); // our working space and what we'll return\n    \n    int index = 0; // to keep track of where in the StringBuilder we are\n    \n    while (index < sb.length() - 1) {\n      if (Math.abs(sb.charAt(index) - sb.charAt(index + 1)) == 32) { // if lower-upper pair is found\n        sb.deleteCharAt(index);\n        sb.deleteCharAt(index);\n        index = Math.max(index - 1, 0); // thanks to @prdp89 for the tip!\n      } else {\n        ++index; // move on to next char\n      }\n    }\n    \n    return sb.toString();\n  }\n}`;
+      var hiddenSolution = `class HiddenSolution {\n    public List<Integer> transformArray(int[] arr) {\n        while (true) {\n            int[] tmp = new int[arr.length];\n            boolean change = false;\n            tmp[0] = arr[0];\n            tmp[arr.length - 1] = arr[arr.length - 1];\n            for (int i = 1; i < arr.length - 1; i++) {\n                if (arr[i] > arr[i - 1] && arr[i] > arr[i + 1]) {\n                    tmp[i] = arr[i] - 1;\n                    change = true;\n                } else if (arr[i] < arr[i - 1] && arr[i] < arr[i + 1]) {\n                    tmp[i] = arr[i] + 1;\n                    change = true;\n                } else {\n                    tmp[i] = arr[i];\n                }\n            }\n            arr = tmp;\n            if (!change) break;\n        }\n        List<Integer> res = new ArrayList<>();\n        for (int num : arr) res.add(num);\n        return res;\n    }\n}`;
             
       //get test cases from file  
       var testCasesText = editorTestcasesValue;
@@ -90,9 +90,9 @@ export default function SimpleTabs(props) {
       console.log(structure);
   
       //insert test cases into question
-      var togetherText = questionText;
-      togetherText+=CodeScaffolding(structure, code, hiddenSolution, questionType,languageType,"makeGood");
-      
+      //var togetherText = questionText;
+      const togetherText=CodeScaffolding(structure, code, hiddenSolution, questionType,languageType,"transformArray");
+
   
       console.log("---TOGETHER TEXT---");
       console.log(togetherText);

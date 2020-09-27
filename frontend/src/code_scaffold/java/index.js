@@ -16,10 +16,13 @@ function CodeScaffolding(entries, userSolution, hiddenSolution,questionType, ent
 
 const arrayScaffold = (entries, userSolution, hiddenSolution,entryFunction) =>
 `
+import java.util.List;
+import java.util.ArrayList;
+${userSolution}
 ${hiddenSolution}
 class Main {
     public static void main(String[] args) {
-        int[] convertedEntries = new int[]${JSON.stringify(entries).replace('[','{').replace(']','}')};
+        int[][] convertedEntries = new int[][]${JSON.stringify(entries).replaceAll('[','{').replaceAll(']','}')};
         int gotRightAmount = 0;
         try
         {
@@ -27,11 +30,11 @@ class Main {
             HiddenSolution objHidden = new HiddenSolution();
             for(int i=0;i<convertedEntries.length;i++)
             {
-                int entry = convertedEntries[i];
-                int userResult = objUser.countPrimes(entry);
-                int hiddenResult = objHidden.countPrimes(entry);
+                int[] entry = convertedEntries[i];
+                List<Integer> userResult = objUser.${entryFunction}(entry);
+                List<Integer> hiddenResult = objHidden.${entryFunction}(entry);
                 System.out.println("case "+i+": "+userResult+":"+hiddenResult);
-                if (userResult == hiddenResult)
+                if (userResult.equals(hiddenResult))
                 {
                     gotRightAmount++;
                 }
@@ -47,6 +50,7 @@ class Main {
 
 const integerScaffold = (entries, userSolution, hiddenSolution, entryFunction) =>
 `
+${userSolution}
 ${hiddenSolution}
 class Main {
     public static void main(String[] args) {
@@ -59,8 +63,8 @@ class Main {
             for(int i=0;i<convertedEntries.length;i++)
             {
                 int entry = convertedEntries[i];
-                int userResult = objUser.countPrimes(entry);
-                int hiddenResult = objHidden.countPrimes(entry);
+                int userResult = objUser.${entryFunction}(entry);
+                int hiddenResult = objHidden.${entryFunction}(entry);
                 System.out.println("case "+i+": "+userResult+":"+hiddenResult);
                 if (userResult == hiddenResult)
                 {
@@ -78,6 +82,7 @@ class Main {
 
 const stringScaffold = (entries, userSolution, hiddenSolution, entryFunction) =>
 `
+${userSolution}
 ${hiddenSolution}
 class Main {
     public static void main(String[] args) {
