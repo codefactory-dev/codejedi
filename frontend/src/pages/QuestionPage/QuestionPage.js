@@ -7,8 +7,6 @@ import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import Swal from 'sweetalert2'
 
-import './QuestionPage.scss';
-
 export default function QuestionPage() { 
     const classes = useStyles();
     const [shouldSubmit, setShouldSubmit] = useState(false);
