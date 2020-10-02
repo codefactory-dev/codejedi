@@ -40,11 +40,19 @@ function SigninPage() {
             justify="center"
             alignItems="center"
         >
-            <Hidden smDown>
-                <SvgIcon component={Illustration} style={{ fontSize: 500, verticalAlign: 'middle' }} viewBox="0 0 960 1080" />
-            </Hidden>
-            <Grid item
-                container
+            <Grid 
+                className={classes.sectionDesktop}
+                item
+                >
+                <SvgIcon 
+                    component={Illustration}
+                    style={{ fontSize: 500, verticalAlign: 'middle' }} 
+                    viewBox="0 0 960 1080" 
+                    className={classes.initialPage}
+                />
+            </Grid>
+            <Grid 
+                item
                 direction="column"
                 justify="center"
                 alignItems="center"
@@ -91,12 +99,12 @@ const useStyles = makeStyles((theme) => ({
         height: '900px',
         backgroundColor:'#1B1C1D',
         color:'white'
-    }
+    },
+    sectionDesktop: {
+        [theme.breakpoints.down('sm')]: {
+          display: 'none',
+        },
+    },
 }));
 
-
-SigninPage.propTypes = {
-    width: PropTypes.oneOf(['lg', 'md', 'sm', 'xl', 'xs']).isRequired,
-};
-  
-export default withWidth()(SigninPage);
+export default SigninPage;
