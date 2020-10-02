@@ -26,7 +26,7 @@ export default function QuestionPage() {
     },[answer])
 
     return (
-        <div id="question-page">
+        <div className={classes.questionPage}>
             <Navbar />
             <Container maxWidth="sm">
                 <SimpleTabs 
@@ -54,6 +54,11 @@ export default function QuestionPage() {
 }
 
 const useStyles = makeStyles((theme) => ({
+    questionPage: {
+        height:'900px',
+        backgroundColor:'#1B1C1D',
+        color:'white'
+    },    
     answer: {
         color:'green',
     },

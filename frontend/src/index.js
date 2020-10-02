@@ -4,7 +4,7 @@ import App from './App';
 
 import Img from './Img';
 import QuestionPage from './pages/QuestionPage/QuestionPage.js'
-//import InitialPage from './pages/InitialPage/InitialPage.js'
+//import SigninPage from './pages/SigninPage/SigninPage.js'
 import { ThemeProvider } from '@material-ui/styles'
 import theme from './components/Ui/Theme.js'
 

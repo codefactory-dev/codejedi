@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react'
+import { makeStyles } from '@material-ui/core/styles'
 import Navbar from '../../components/Navbar/Navbar.js'
 import CodeTable from '../../components/CodeTable/CodeTable.js'
 import axios from 'axios'
 
-import './InitialPage.scss';
-
-export default function InitialPage() {
-
+export default function SigninPage() {
+    const classes = useStyles();
     const [fetchedQuestions,setFetchedQuestions] = useState(false);
     useEffect(()=>{
         async function fetchQuestions() {
@@ -24,10 +23,18 @@ export default function InitialPage() {
 
     },[])
     return (
-        <div id="initial-page">
+        <div className={classes.initialPage}>
             <Navbar />
             <CodeTable />
         </div>
     )
 
 }
+
+const useStyles = makeStyles((theme) => ({
+    initialPage: {
+        height: '900px',
+        backgroundColor:'#1B1C1D',
+        color:'white'
+    }
+}));
