@@ -8,9 +8,14 @@ import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
 import TextField from '@material-ui/core/TextField'
 import Box from '@material-ui/core/Box'
-import Grid from '@material-ui/core/Grid';
+import Grid from '@material-ui/core/Grid'
+import SvgIcon from '@material-ui/core/SvgIcon';
+import { ReactComponent as Illustration } from '../../imgs/illustration.svg'
+import Hidden from '@material-ui/core/Hidden';
+import PropTypes from 'prop-types';
+import withWidth from '@material-ui/core/withWidth';
 
-export default function SigninPage() {
+function SigninPage() {
     const classes = useStyles();
     const [fetchedQuestions,setFetchedQuestions] = useState(false);
     useEffect(()=>{
@@ -31,33 +36,45 @@ export default function SigninPage() {
     return (
         <Grid
             container
-            direction="column"
+            direction="row"
             justify="center"
             alignItems="center"
-            className={classes.initialPage}
         >
-                <Typography variant="h3">SIGN IN</Typography>
-                <Typography variant="subtitle2" gutterBottom>Welcome back ! Please login to your account.</Typography>
+            <Hidden smDown>
+                <SvgIcon component={Illustration} style={{ fontSize: 500, verticalAlign: 'middle' }} viewBox="0 0 960 1080" />
+            </Hidden>
+            <Grid item
+                container
+                direction="column"
+                justify="center"
+                alignItems="center"
+                className={classes.initialPage}
+            >
+                    <Typography variant="h3">SIGN IN</Typography>
+                    <Typography variant="subtitle2" gutterBottom>Welcome back ! Please login to your account.</Typography>
 
-                <form className={classes.root} noValidate autoComplete="off">
-                    <TextField id="standard-basic" label="Standard" />
-                    <TextField id="standard-basic" label="Standard" />
-                </form>
+                    <form className={classes.root} noValidate autoComplete="off">
+                        <Grid>
+                            <TextField id="standard-basic" label="Username" />
+                            <TextField id="standard-basic-2" label="Password" />
+                        </Grid>
+                    </form>
 
-                <Checkbox
-                    defaultChecked
-                    color="primary"
-                    inputProps={{ 'aria-label': 'secondary checkbox' }}
-                />
-                <Button variant="contained" color="primary">
-                    Primary
-                </Button>
+                    <Checkbox
+                        defaultChecked
+                        color="primary"
+                        inputProps={{ 'aria-label': 'secondary checkbox' }}
+                    />
+                    <Button variant="contained" color="primary">
+                        Login
+                    </Button>
 
-                <h2>Forgot your password? Reset</h2>
-                <h2>Don't have an account? Sign Up</h2>
+                    <h2>Forgot your password? Reset</h2>
+                    <h2>Don't have an account? Sign Up</h2>
 
 
-                <h3>Term of use. Privacy policy</h3>
+                    <h3>Term of use. Privacy policy</h3>
+            </Grid>
         </Grid>
     )
 
@@ -76,3 +93,10 @@ const useStyles = makeStyles((theme) => ({
         color:'white'
     }
 }));
+
+
+SigninPage.propTypes = {
+    width: PropTypes.oneOf(['lg', 'md', 'sm', 'xl', 'xs']).isRequired,
+};
+  
+export default withWidth()(SigninPage);
