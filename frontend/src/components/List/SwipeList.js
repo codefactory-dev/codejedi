@@ -12,6 +12,10 @@ import React from 'react';
 import SwipeProvider from '../SwipeableList/SwipeProvider';
 import ListRow from  './ListRow';
 import PropTypes from 'prop-types';
+import IconButton from '../Buttons/IconButton';
+
+import {ReactComponent as EditIcon} from '../../icons/edit.svg';
+import {ReactComponent as DeleteIcon} from '../../icons/delete.svg';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -23,7 +27,8 @@ const useStyles = makeStyles(theme => ({
     },
     divider: {
         backgroundColor: theme.palette.common.black3
-    }
+    },
+      
   }));
 
 export default function SwipeList() {
@@ -53,11 +58,18 @@ export default function SwipeList() {
 
     const comments = [comment, reply, comment];
 
+    const swipeButtons = (
+                <React.Fragment>
+                    <IconButton onClick={() => console.log("oeoeoeoe")} icon={<EditIcon />} />
+                    <IconButton onClick={() => console.log("aeaeaeae")} icon={<DeleteIcon />}/>
+                </React.Fragment>
+    );
+    
     return (
         <List component="div" disablePadding={true} className={classes.root}>
             {comments.map((comment, idx) => (
                     <div key={`comment-${idx}-${comment.date}`}>
-                        <SwipeProvider  disabled={!matchesSM}  swipeComponent={<p>swwwwiiiippeeee</p>}>
+                        <SwipeProvider  disabled={!matchesSM}  swipeComponent={swipeButtons}>
                             <ListRow {... comment}/>  
                         </SwipeProvider>
                         {comment.hasReply ? undefined : <Divider variant="fullWidth" className={classes.divider}/>}

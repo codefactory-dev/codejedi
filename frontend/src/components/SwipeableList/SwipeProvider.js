@@ -1,31 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {cursorPosition} from './helper';
-import {Container, Content, SwipeContent } from './styles';
-import IconButton from '@material-ui/core/IconButton';
-import Button from '@material-ui/core/Button';
+import {cursorPosition} from './util';
+import {Container, Content, SwipeContent } from './style';
+
 import { withStyles } from '@material-ui/core/styles';
 
-import editIcon from '../../icons/edit.svg';
-import deleteIcon from '../../icons/delete.svg';
 
-const styles = theme => ({
-    button: {
-      minWidth: '0',
-      width: '48px',
-      height: '48px',
-      margin: '0 10px',
-      padding: '0',
-      border: `1.5px solid ${theme.palette.primary.main}`,
-      borderRadius: '5px',
-      '& img': {
-          width: '70%',
-      },
-      '& .icon': {
-        fill: 'black'
-      }
-    }
-});
+
+const styles = theme => ({});
 
 class SwipeProvider extends React.Component {
     
@@ -65,10 +47,13 @@ class SwipeProvider extends React.Component {
         this.setState({ translate: cursorPosition(e) - this.startTouchPosition + this.initTranslate });
     };
 
-    onMouseUp = () => {
+    onMouseUp = (e) => {
+        const maxSwipe = this.props.maxSwipeWidth ? this.props.maxSwipeWidth : this.swipeContainerWidth + 10;
+        const translate = cursorPosition(e) < this.containerWidth - maxSwipe ? -maxSwipe : this.state.translate;
         this.startTouchPosition = null;
-        this.setState({touching: false});
+        this.setState({touching: false, translate});
         this.addEventListenerToMoveAndUp(true);
+        console.log(cursorPosition(e), this.state.translate, maxSwipe);
     }
 
     addEventListenerToMoveAndUp = (remove = false) => {
@@ -103,14 +88,14 @@ class SwipeProvider extends React.Component {
                 <SwipeContent translate={this.state.translate}
                               transition={!this.state.touching}
                               buttonMarginLeft={-this.state.translate}
-                              {...cssProps}>
-                    <div>
-                        <Button variant="outlined" className={classes.button}>
-                            <img src={editIcon} alt="edit icon" />
-                        </Button>
-                        <Button variant="outlined" className={classes.button}>
-                            <img src={deleteIcon} alt="delete icon" />
-                        </Button>                        
+                              {...cssProps}
+                              >
+                    <div ref={sc => { if (sc) {
+                                this.swipeContainer = sc
+                                this.swipeContainerWidth = sc.getBoundingClientRect().width;
+                            }
+                        }}>
+                        {this.props.swipeComponent}               
                     </div>
                 </SwipeContent>
                 <Content    onMouseDown={this.onMouseDown} onTouchStart={this.onMouseDown}
@@ -129,14 +114,13 @@ class SwipeProvider extends React.Component {
 SwipeProvider.propTypes = {
     height: PropTypes.string,
     transitionDuration: PropTypes.number,
-    swipeComponentWidth: PropTypes.number,
+    maxSwipeWidth: PropTypes.number,
     swipeComponent: PropTypes.node,
     disabled: PropTypes.bool
 }
   
 SwipeProvider.defaultProps = {
     transitionDuration: 250,
-    swipeComponentWidth: 75,
     swipeComponent: undefined,
     disabled: false,
     height: '100%'
