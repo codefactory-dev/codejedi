@@ -30,14 +30,22 @@ const useStyles = makeStyles((theme) => ({
         backgroundPosition: 'center',
     },
     initialPage: {
+        display: 'flex',
         backgroundColor:'#1B1C1D',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     paper: {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         backgroundColor:'#1B1C1D',
-        color:'white'
+        color:'white',
+        margin: theme.spacing(8, 4),
+    },
+    form: {
+        width: '100%', // Fix IE 11 issue.
+        marginTop: theme.spacing(1),
     },
     codejediLogo: {
         backgroundColor:'#1B1C1D',
@@ -79,11 +87,15 @@ function SigninPage() {
                     <Typography variant="h3">SIGN IN</Typography>
                     <Typography variant="subtitle2" gutterBottom>Welcome back ! Please login to your account.</Typography>
 
-                    <form className={classes.root} noValidate autoComplete="off">
-                        <Grid>
-                            <TextField id="standard-basic" label="Username" />
-                            <TextField id="standard-basic-2" label="Password" />
-                        </Grid>
+                    <form className={classes.form} noValidate autoComplete="off">
+                        <TextField 
+                            label="Username"
+                            fullWidth
+                        />
+                        <TextField 
+                            label="Password" 
+                            fullWidth
+                        />
                     </form>
 
                     <Checkbox

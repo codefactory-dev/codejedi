@@ -14,9 +14,9 @@ const black3 = '#3C3C3C';
 const greyLight = '#F2F2F2';
 
 export default createMuiTheme({
-    logo: {
-        yoda: `${yodaGreen}`
-    },
+    // -------------------------------------------
+    // palette
+    // -------------------------------------------
     palette: {
         common: {
             black: `${mainBlack}`,
@@ -36,6 +36,78 @@ export default createMuiTheme({
     },
 
     // -------------------------------------------
+    // typography
+    // -------------------------------------------
+
+    typography: {
+        tab: {
+          fontFamily: "Lato",
+          textTransform: "none",
+          fontWeight: 700,
+          color: "white",
+          fontSize: "1rem"
+        },
+        estimate: {
+          fontFamily: "Lato",
+          fontSize: "1rem",
+          textTransform: "none",
+          color: "white"
+        },
+        h2: {
+          fontFamily: "Lato",
+          fontWeight: 700,
+          fontSize: "2.5rem",
+          color: mainBlack,
+          lineHeight: 1.5
+        },
+        h3: {
+          fontFamily: "Lato",
+          fontSize: "2.5rem",
+          color: mainGrey
+        },
+        h4: {
+          fontFamily: "Lato",
+          fontSize: "1.75rem",
+          color: mainBlack,
+          fontWeight: 700
+        },
+        h6: {
+          fontWeight: 500,
+          fontFamily: "Lato",
+          color: mainBlack
+        },
+        subtitle1: {
+          fontSize: "1.25rem",
+          fontWeight: 300,
+          color: mainGrey
+        },
+        subtitle2: {
+          color: "white",
+          fontWeight: 300,
+          fontSize: "1.25rem"
+        },
+        body1: {
+          fontSize: "1.25rem",
+          color: mainGrey,
+          fontWeight: 300
+        },
+        caption: {
+          fontSize: "1rem",
+          fontWeight: 300,
+          color: mainGrey
+        },
+        learnButton: {
+          borderColor: mainBlack,
+          borderWidth: 2,
+          textTransform: "none",
+          color: mainBlack,
+          borderRadius: 50,
+          fontFamily: "Lato",
+          fontWeight: "bold"
+        }
+    },
+
+    // -------------------------------------------
     // components
     // -------------------------------------------
 
@@ -51,5 +123,8 @@ export default createMuiTheme({
         fontSize: '.9rem',
         textTransform: 'none',
         fontWeight: '200',
-    }
+    },    
+    logo: {
+        yoda: `${yodaGreen}`
+    },
 })
