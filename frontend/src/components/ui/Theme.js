@@ -1,7 +1,7 @@
 import { createMuiTheme } from "@material-ui/core/styles";
 
 const mainBlack = "#1B1C1D";
-const mainGrey = "#F4F4F4";
+const grey = "#767676";
 const yodaGreen = '#D7E2C6';
 
 const teal = '#00B5AD';
@@ -20,7 +20,7 @@ export default createMuiTheme({
     palette: {
         common: {
             black: `${mainBlack}`,
-            grey: `${mainGrey}`,
+            grey: `${grey}`,
 
             black1: `${black1}`,
             black2: `${black2}`,
@@ -34,6 +34,10 @@ export default createMuiTheme({
             main: `${salmon}`
         }
     },
+
+    // -------------------------------------------
+    // typography
+    // -------------------------------------------
 
     // -------------------------------------------
     // components
