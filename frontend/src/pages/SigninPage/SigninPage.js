@@ -11,7 +11,7 @@ import Box from '@material-ui/core/Box'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Grid from '@material-ui/core/Grid'
 import SvgIcon from '@material-ui/core/SvgIcon';
-import Illustration from '../../imgs/illustration.svg'
+import Illustration from '../../imgs/CompleteLogo.svg'
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 
@@ -98,8 +98,12 @@ function SigninPage() {
             <Grid container xs={12} sm={8} md={5} component={Paper} elevation={6} className={classes.initialPage} square>
                 <Grid item>
                     <div className={classes.paper}>
-                        <Typography variant="h3">SIGN IN</Typography>
-                        <Typography variant="subtitle2" gutterBottom>Welcome back ! Please login to your account.</Typography>
+                        <Typography variant="DisplayHeader" component="h1">
+                                SIGN IN
+                        </Typography>
+                        <Typography component="subtitle1">
+                            Welcome back ! Please login to your account.
+                        </Typography>
 
                         <form className={classes.form} noValidate autoComplete="off">
                             <TextField 

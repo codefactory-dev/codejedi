@@ -10,7 +10,6 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 //<SigninPage>
 ReactDOM.render(
                 <React.StrictMode>
-                    <CssBaseline />
                     <ThemeProvider theme={theme}>
                         <SigninPage />
                     </ThemeProvider>

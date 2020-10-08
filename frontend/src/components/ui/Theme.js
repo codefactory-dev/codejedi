@@ -40,71 +40,56 @@ export default createMuiTheme({
     // -------------------------------------------
 
     typography: {
-        tab: {
+        DisplayHeader: {
           fontFamily: "Lato",
           textTransform: "none",
-          fontWeight: 700,
-          color: "white",
+          fontSize: "66px",
+          color: "red",
           fontSize: "1rem"
         },
-        estimate: {
+        Display2: {
           fontFamily: "Lato",
           fontSize: "1rem",
           textTransform: "none",
           color: "white"
         },
-        h2: {
+        h1: {
           fontFamily: "Lato",
           fontWeight: 700,
           fontSize: "2.5rem",
-          color: mainBlack,
+          color: mainGrey,
           lineHeight: 1.5
         },
-        h3: {
+        h2: {
           fontFamily: "Lato",
           fontSize: "2.5rem",
           color: mainGrey
         },
-        h4: {
+        h3: {
           fontFamily: "Lato",
           fontSize: "1.75rem",
           color: mainBlack,
           fontWeight: 700
         },
-        h6: {
-          fontWeight: 500,
+        h4: {
           fontFamily: "Lato",
-          color: mainBlack
+          color: greyLight
         },
-        subtitle1: {
+        h5: {
+            fontWeight: 500,
+            fontFamily: "Lato",
+            color: mainBlack
+        },
+        Paragraph: {
           fontSize: "1.25rem",
           fontWeight: 300,
           color: mainGrey
         },
-        subtitle2: {
+        Placeholder: {
           color: "white",
           fontWeight: 300,
           fontSize: "1.25rem"
         },
-        body1: {
-          fontSize: "1.25rem",
-          color: mainGrey,
-          fontWeight: 300
-        },
-        caption: {
-          fontSize: "1rem",
-          fontWeight: 300,
-          color: mainGrey
-        },
-        learnButton: {
-          borderColor: mainBlack,
-          borderWidth: 2,
-          textTransform: "none",
-          color: mainBlack,
-          borderRadius: 50,
-          fontFamily: "Lato",
-          fontWeight: "bold"
-        }
     },
 
     // -------------------------------------------
