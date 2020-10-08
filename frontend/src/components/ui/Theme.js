@@ -12,6 +12,7 @@ const black2 = '#313233';
 const black3 = '#3C3C3C';
 
 const greyLight = '#F2F2F2';
+const greyDark = '#8F8F8F';
 
 export default createMuiTheme({
     // -------------------------------------------
@@ -25,7 +26,7 @@ export default createMuiTheme({
             black1: `${black1}`,
             black2: `${black2}`,
             black3: `${black3}`,
-            greyLight: `${greyLight}`
+            greyLight: `${greyLight}`,
         },
         primary: {
             main: `${teal}`
@@ -40,14 +41,12 @@ export default createMuiTheme({
     // -------------------------------------------
 
     typography: {
-        DisplayHeader: {
+        caption: { //DisplayHeader
           fontFamily: "Lato",
           textTransform: "none",
-          fontSize: "66px",
-          color: "red",
-          fontSize: "1rem"
+          fontSize: "2.5rem",
         },
-        Display2: {
+        overline: { //Display2
           fontFamily: "Lato",
           fontSize: "1rem",
           textTransform: "none",
@@ -68,24 +67,25 @@ export default createMuiTheme({
         h3: {
           fontFamily: "Lato",
           fontSize: "1.75rem",
+          textTransform: "none",
           color: mainBlack,
-          fontWeight: 700
         },
         h4: {
           fontFamily: "Lato",
-          color: greyLight
+          fontSize: "1rem",
+          color: greyDark
         },
         h5: {
             fontWeight: 500,
             fontFamily: "Lato",
             color: mainBlack
         },
-        Paragraph: {
+        body1: { //Paragraph
           fontSize: "1.25rem",
           fontWeight: 300,
           color: mainGrey
         },
-        Placeholder: {
+        body2: { //Placeholder
           color: "white",
           fontWeight: 300,
           fontSize: "1.25rem"

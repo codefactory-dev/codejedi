@@ -68,7 +68,8 @@ const useStyles = makeStyles((theme) => ({
     },
     privacyPolicy: {
         display: 'flex',
-        alignSelf: 'center'
+        alignSelf: 'center',
+        color: 'white'
     }
 }));
 
@@ -98,46 +99,53 @@ function SigninPage() {
             <Grid container xs={12} sm={8} md={5} component={Paper} elevation={6} className={classes.initialPage} square>
                 <Grid item>
                     <div className={classes.paper}>
-                        <Typography variant="DisplayHeader" component="h1">
+                        <Typography variant="caption">
                                 SIGN IN
                         </Typography>
-                        <Typography component="subtitle1">
+                        <Typography variant="h4">
                             Welcome back ! Please login to your account.
                         </Typography>
 
                         <form className={classes.form} noValidate autoComplete="off">
-                            <TextField 
-                                label="Username"
-                                fullWidth
-                            />
-                            <TextField 
-                                label="Password" 
-                                fullWidth
-                            />
-                            <FormControlLabel
-                                control={<Checkbox value="remember" color="primary" />}
-                                label="Remember me"
-                            />
+                            <Typography variant="body2">
+                                <TextField 
+                                    label="Username"
+                                    fullWidth
+                                />
+                                <TextField 
+                                    label="Password" 
+                                    fullWidth
+                                />
+                            </Typography>
+                            <Typography variant="h5">
+                                <FormControlLabel
+                                    control={<Checkbox value="remember" color="primary" />}
+                                    label="Remember me"
+                                />
+                            </Typography>
+                            
                             <Button 
                                 variant="contained" 
                                 color="primary"
                                 fullWidth
                                 className={classes.submit}
                             >
-                                Login
+                                <Typography variant="h3">Login</Typography>
                             </Button>
-
-                            <Grid container className={classes.extraInfo}>
-                                <Typography variant="subtitle">Forgot your password? Reset</Typography>
-                                <Typography variant="subtitle">Don't have an account? Sign Up</Typography>
-                            </Grid>
+                            
+                            <Typography variant="h4">
+                                <Grid container className={classes.extraInfo}>
+                                    <div>Forgot your password? Reset</div>
+                                    <div>Don't have an account? Sign Up</div>
+                                </Grid>
+                            </Typography>
                             
                         </form>
                     </div>
                 </Grid> 
                 <Grid item>
                     <Box className={classes.privacyPolicy}>
-                        <Typography variant="subtitle">Term of use. Privacy policy</Typography>
+                        <Typography variant="h5">Term of use. Privacy policy</Typography>
                     </Box>  
                 </Grid>
             </Grid>
