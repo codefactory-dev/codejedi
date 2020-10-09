@@ -11,10 +11,14 @@ import Grid from '@material-ui/core/Grid'
 import Illustration from '../../imgs/CompleteLogo.svg'
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
-
+import Container from '@material-ui/core/Container';
 
 
 const useStyles = makeStyles((theme) => ({
+    centered: {
+        display: 'flex',
+        justifyContent: 'center'
+    },
     white: {
         color: theme.palette.common.white
     },
@@ -136,14 +140,15 @@ function SigninPage() {
                                 label="Remember me"
                             />
                             
-                            <Button 
-                                variant="contained" 
-                                color="primary"
-                                fullWidth
-                                className={classes.submit}
-                            >
-                                <Typography variant="h3">Login</Typography>
-                            </Button>
+                            <Container className={classes.centered}>
+                                <Button 
+                                    variant="contained" 
+                                    color="primary"
+                                    className={classes.submit}
+                                >
+                                    <Typography variant="h3">Login</Typography>
+                                </Button>
+                            </Container>
                             
                             <Typography variant="h4">
                                 <Grid container className={classes.extraInfo}>
