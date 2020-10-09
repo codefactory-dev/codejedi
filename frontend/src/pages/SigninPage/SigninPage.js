@@ -15,6 +15,12 @@ import Paper from '@material-ui/core/Paper';
 
 
 const useStyles = makeStyles((theme) => ({
+    white: {
+        color: theme.palette.common.white
+    },
+    green: {
+        color: theme.palette.common.codejediGreen
+    },
     checkbox: {
         ... theme.checkbox
     },
@@ -141,8 +147,8 @@ function SigninPage() {
                             
                             <Typography variant="h4">
                                 <Grid container className={classes.extraInfo}>
-                                    <div>Forgot your password? Reset</div>
-                                    <div>Don't have an account? Sign Up</div>
+                                    <div className={classes.white}>Forgot your password? <span className={classes.green}>Reset</span></div>
+                                    <div className={classes.white}>Don't have an account? <span className={classes.green}>Sign Up</span></div>
                                 </Grid>
                             </Typography>
                             

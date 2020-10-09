@@ -2,7 +2,9 @@ import { createMuiTheme } from "@material-ui/core/styles";
 
 const mainBlack = "#1B1C1D";
 const mainGrey = "#F4F4F4";
+const mainWhite = "#FFFFFF";
 const yodaGreen = '#D7E2C6';
+const codejediGreen = '#00B5AD';
 
 const teal = '#00B5AD';
 const salmon = '#FF6565';
@@ -22,12 +24,16 @@ export default createMuiTheme({
         common: {
             black: `${mainBlack}`,
             grey: `${mainGrey}`,
+            white: `${mainWhite}`,
 
             black1: `${black1}`,
             black2: `${black2}`,
             black3: `${black3}`,
             greyLight: `${greyLight}`,
-            greyDark: `${greyDark}`
+            greyDark: `${greyDark}`,
+
+            yodaGreen: `${yodaGreen}`,
+            codejediGreen: `${codejediGreen}`
         },
         primary: {
             main: `${teal}`
@@ -140,6 +146,9 @@ export default createMuiTheme({
       },
     },  
     logo: {
-        yoda: `${yodaGreen}`
+        color: `${yodaGreen}`
+    },
+    logo: {
+      color: `${yodaGreen}`
     },
 })
