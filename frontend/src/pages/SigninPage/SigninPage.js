@@ -142,11 +142,11 @@ function SigninPage() {
                             
                             <Container className={classes.centered}>
                                 <Button 
-                                    variant="contained" 
+                                    variant="outlined" 
                                     color="primary"
                                     className={classes.submit}
                                 >
-                                    <Typography variant="h3">Login</Typography>
+                                    <Typography variant="button">Login</Typography>
                                 </Button>
                             </Container>
                             

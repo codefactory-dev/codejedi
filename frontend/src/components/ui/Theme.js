@@ -99,6 +99,14 @@ export default createMuiTheme({
             color: mainGrey,
             fontSize: "0.75rem"
         },
+        button: {
+          fontFamily: 'Lato',
+          fontSize: "0.8rem",
+          textTransform: 'none',
+          fontWeight: 700,
+          padding: '0px 20px 0px 20px',
+          color: codejediGreen
+        },
         body1: { //Paragraph
           fontFamily: 'Lato',
           fontSize: "1.25rem",
@@ -147,8 +155,5 @@ export default createMuiTheme({
     },  
     logo: {
         color: `${yodaGreen}`
-    },
-    logo: {
-      color: `${yodaGreen}`
     },
 })
