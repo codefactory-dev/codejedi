@@ -83,12 +83,13 @@ export default createMuiTheme({
         },
         h4: {
           fontFamily: 'Lato',
-          fontSize: "1rem",
+          fontSize: "0.85rem",
+          fontWeight: 700,
           color: greyDark
         },
         h5: {
             fontFamily: 'Lato',
-            fontWeight: 500,
+            fontWeight: 700,
             color: mainGrey,
             fontSize: "0.75rem"
         },
@@ -128,13 +129,14 @@ export default createMuiTheme({
     },
     formControlLabel: {
       color: mainGrey,
-      fontWeight: '400',
-      fontSize: '1rem'
+      fontWeight: 700,
+      fontSize: '0.8rem'
     },
     inputTextField: {
       '& label': {
           color: greyDark,
-          fontSize: '1rem'
+          fontSize: '0.8rem',
+          fontWeight: 700
       },
     },  
     logo: {
