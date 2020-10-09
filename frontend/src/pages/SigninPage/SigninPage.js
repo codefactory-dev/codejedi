@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import Navbar from '../../components/Navbar/Navbar.js'
-import CodeTable from '../../components/CodeTable/CodeTable.js'
 import axios from 'axios'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
@@ -10,16 +8,16 @@ import TextField from '@material-ui/core/TextField'
 import Box from '@material-ui/core/Box'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Grid from '@material-ui/core/Grid'
-import SvgIcon from '@material-ui/core/SvgIcon';
 import Illustration from '../../imgs/CompleteLogo.svg'
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 
-import Hidden from '@material-ui/core/Hidden';
-import PropTypes from 'prop-types';
-import withWidth from '@material-ui/core/withWidth';
+
 
 const useStyles = makeStyles((theme) => ({
+    textField: {
+        ... theme.inputTextField
+    },
     container: {
         height: '100vh'        
     },
@@ -107,16 +105,16 @@ function SigninPage() {
                         </Typography>
 
                         <form className={classes.form} noValidate autoComplete="off">
-                            <Typography variant="body2">
-                                <TextField 
-                                    label="Username"
-                                    fullWidth
-                                />
-                                <TextField 
-                                    label="Password" 
-                                    fullWidth
-                                />
-                            </Typography>
+                            <TextField 
+                                classes={{ root: classes.textField }}
+                                label="Username"
+                                fullWidth
+                            />
+                            <TextField 
+                                classes={{ root: classes.textField }}
+                                label="Password" 
+                                fullWidth
+                            />
                             <Typography variant="h5">
                                 <FormControlLabel
                                     control={<Checkbox value="remember" color="primary" />}

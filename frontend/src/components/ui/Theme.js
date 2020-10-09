@@ -27,6 +27,7 @@ export default createMuiTheme({
             black2: `${black2}`,
             black3: `${black3}`,
             greyLight: `${greyLight}`,
+            greyDark: `${greyDark}`
         },
         primary: {
             main: `${teal}`
@@ -78,7 +79,8 @@ export default createMuiTheme({
         h5: {
             fontWeight: 500,
             fontFamily: "Lato",
-            color: mainBlack
+            color: mainGrey,
+            fontSize: "0.75rem"
         },
         body1: { //Paragraph
           fontSize: "1.25rem",
@@ -86,9 +88,9 @@ export default createMuiTheme({
           color: mainGrey
         },
         body2: { //Placeholder
-          color: "white",
+          color: "red",
           fontWeight: 300,
-          fontSize: "1.25rem"
+          fontSize: "1rem"
         },
     },
 
@@ -108,7 +110,13 @@ export default createMuiTheme({
         fontSize: '.9rem',
         textTransform: 'none',
         fontWeight: '200',
-    },    
+    },  
+    inputTextField: {
+      '& label': {
+          color: greyDark,
+          fontSize: '1rem'
+      },
+    },  
     logo: {
         yoda: `${yodaGreen}`
     },
