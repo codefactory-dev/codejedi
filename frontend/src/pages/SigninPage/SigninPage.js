@@ -48,7 +48,8 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         backgroundColor:'#1B1C1D',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        padding: '0px 50px 0px 50px'
     },
     paper: {
         display: 'flex',
@@ -109,14 +110,14 @@ function SigninPage() {
     return (
         <Grid container className={classes.container}>
             <CssBaseline />
-            <Grid item xs={false} sm={4} md={7} className={classes.image}/>
-            <Grid container xs={12} sm={8} md={5} component={Paper} elevation={6} className={classes.initialPage} square>
+            <Grid item xs={false} sm={3} md={7} className={classes.image}/>
+            <Grid container xs={12} sm={9} md={5} component={Paper} elevation={6} className={classes.initialPage} square>
                 <Grid item>
                     <div className={classes.paper}>
                         <Typography variant="caption">
                                 SIGN IN
                         </Typography>
-                        <Typography variant="h4">
+                        <Typography variant="h4" style={{marginTop: '30px'}}>
                             Welcome back ! Please login to your account.
                         </Typography>
 
@@ -152,8 +153,8 @@ function SigninPage() {
                             
                             <Typography variant="h4">
                                 <Grid container className={classes.extraInfo}>
-                                    <div className={classes.white}>Forgot your password? <span className={classes.green}>Reset</span></div>
-                                    <div className={classes.white}>Don't have an account? <span className={classes.green}>Sign Up</span></div>
+                                    <div className={classes.white} style={{marginTop: '30px'}}>Forgot your password? <span className={classes.green}>Reset</span></div>
+                                    <div className={classes.white} style={{marginTop: '10px'}}>Don't have an account? <span className={classes.green}>Sign Up</span></div>
                                 </Grid>
                             </Typography>
                             
