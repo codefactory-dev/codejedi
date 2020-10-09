@@ -42,52 +42,64 @@ export default createMuiTheme({
     // -------------------------------------------
 
     typography: {
+        fontFamily: [
+          'Lato', 
+          'sans-serif',
+          'Roboto',
+          '"Helvetica Neue"',
+          'Arial',
+          'sans-serif',
+        ].join(','),
         caption: { //DisplayHeader
-          fontFamily: "Lato",
+          fontFamily: 'Lato',
+          fontWeight: 700,
+          letterSpacing: 10,
           textTransform: "none",
           fontSize: "2.5rem",
         },
         overline: { //Display2
-          fontFamily: "Lato",
+          fontFamily: 'Lato',
           fontSize: "1rem",
           textTransform: "none",
           color: "white"
         },
         h1: {
-          fontFamily: "Lato",
+          fontFamily: 'Lato',
           fontWeight: 700,
           fontSize: "2.5rem",
           color: mainGrey,
           lineHeight: 1.5
         },
         h2: {
-          fontFamily: "Lato",
+          fontFamily: 'Lato',
           fontSize: "2.5rem",
           color: mainGrey
         },
         h3: {
-          fontFamily: "Lato",
+          fontFamily: 'Lato',
           fontSize: "1.75rem",
           textTransform: "none",
           color: mainBlack,
         },
         h4: {
-          fontFamily: "Lato",
+          fontFamily: 'Lato',
           fontSize: "1rem",
           color: greyDark
         },
         h5: {
+            fontFamily: 'Lato',
             fontWeight: 500,
-            fontFamily: "Lato",
             color: mainGrey,
             fontSize: "0.75rem"
         },
         body1: { //Paragraph
+          fontFamily: 'Lato',
           fontSize: "1.25rem",
           fontWeight: 300,
           color: mainGrey
         },
         body2: { //Placeholder
+          fontFamily: 'Lato',
           color: "red",
           fontWeight: 300,
           fontSize: "1rem"
