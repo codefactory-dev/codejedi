@@ -111,6 +111,11 @@ export default createMuiTheme({
         textTransform: 'none',
         fontWeight: '200',
     },  
+    formControlLabel: {
+      color: mainGrey,
+      fontWeight: '400',
+      fontSize: '1rem'
+    },
     inputTextField: {
       '& label': {
           color: greyDark,

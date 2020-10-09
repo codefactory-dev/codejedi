@@ -15,6 +15,9 @@ import Paper from '@material-ui/core/Paper';
 
 
 const useStyles = makeStyles((theme) => ({
+    formControlLabel: {
+        ... theme.formControlLabel
+    },
     textField: {
         ... theme.inputTextField
     },
@@ -115,12 +118,13 @@ function SigninPage() {
                                 label="Password" 
                                 fullWidth
                             />
-                            <Typography variant="h5">
-                                <FormControlLabel
-                                    control={<Checkbox value="remember" color="primary" />}
-                                    label="Remember me"
-                                />
-                            </Typography>
+                            <FormControlLabel
+                                classes={{label:classes.formControlLabel}} 
+                                control={<Checkbox 
+                                            value="remember" 
+                                            color="primary"/>}
+                                label="Remember me"
+                            />
                             
                             <Button 
                                 variant="contained" 
