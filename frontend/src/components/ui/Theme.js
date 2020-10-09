@@ -111,6 +111,9 @@ export default createMuiTheme({
         textTransform: 'none',
         fontWeight: '200',
     },  
+    checkbox: {
+      color: mainGrey
+    },
     formControlLabel: {
       color: mainGrey,
       fontWeight: '400',

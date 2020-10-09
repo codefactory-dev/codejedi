@@ -15,6 +15,9 @@ import Paper from '@material-ui/core/Paper';
 
 
 const useStyles = makeStyles((theme) => ({
+    checkbox: {
+        ... theme.checkbox
+    },
     formControlLabel: {
         ... theme.formControlLabel
     },
@@ -121,6 +124,7 @@ function SigninPage() {
                             <FormControlLabel
                                 classes={{label:classes.formControlLabel}} 
                                 control={<Checkbox 
+                                            classes={{root:classes.checkbox}} 
                                             value="remember" 
                                             color="primary"/>}
                                 label="Remember me"
