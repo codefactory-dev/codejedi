@@ -116,7 +116,7 @@ function SigninPage() {
                         <Typography variant="caption">
                                 SIGN IN
                         </Typography>
-                        <Typography variant="h4">
+                        <Typography variant="h4" style={{marginTop: '30px'}}>
                             Welcome back ! Please login to your account.
                         </Typography>
 
@@ -152,8 +152,8 @@ function SigninPage() {
                             
                             <Typography variant="h4">
                                 <Grid container className={classes.extraInfo}>
-                                    <div className={classes.white}>Forgot your password? <span className={classes.green}>Reset</span></div>
-                                    <div className={classes.white}>Don't have an account? <span className={classes.green}>Sign Up</span></div>
+                                    <div className={classes.white} style={{marginTop: '30px'}}>Forgot your password? <span className={classes.green}>Reset</span></div>
+                                    <div className={classes.white} style={{marginTop: '10px'}}>Don't have an account? <span className={classes.green}>Sign Up</span></div>
                                 </Grid>
                             </Typography>
                             
