@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor:'#1B1C1D',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '0px 50px 0px 50px'
+        padding: '0px 21px 0px 21px'
     },
     paper: {
         display: 'flex',

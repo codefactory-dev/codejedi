@@ -91,6 +91,7 @@ export default createMuiTheme({
           fontFamily: 'Lato',
           fontSize: "0.85rem",
           fontWeight: 700,
+          textAlign: 'center',
           color: greyDark
         },
         h5: {
