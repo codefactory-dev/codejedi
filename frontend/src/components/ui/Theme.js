@@ -148,6 +148,11 @@ export default createMuiTheme({
       fontSize: '0.8rem'
     },
     inputTextField: {
+      caretColor: mainGrey,
+      '& input': {
+        color: mainGrey,
+        borderBottom: `2px solid ${greyDark}`,
+      },
       '& label': {
           color: greyDark,
           fontSize: '0.8rem',
