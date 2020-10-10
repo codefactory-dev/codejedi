@@ -1,6 +1,6 @@
 
 import styled, { css } from 'styled-components'
-import theme from '../Ui/Theme'
+import theme from '../ui/Theme'
 
 const Container = styled.div`
     box-sizing: border-box;

@@ -1,20 +1,24 @@
 import { createMuiTheme } from "@material-ui/core/styles";
 
-const mainBlack = "#1B1C1D";
-const mainGrey = "#F4F4F4";
-const mainWhite = "#FFFFFF";
-const yodaGreen = '#D7E2C6';
-const codejediGreen = '#00B5AD';
 
 const teal = '#00B5AD';
+const tealDark = '#005b57';
 const salmon = '#FF6565';
 
-const black1 = '#262626';
+const black1 = "#1B1C1D";
 const black2 = '#313233';
 const black3 = '#3C3C3C';
 
+const grey = "#767676";
+const grey2 = "#707070";  // placeholder
+const grey3 = "#989898";  // disabled
 const greyLight = '#F2F2F2';
 const greyDark = '#8F8F8F';
+
+const white = "#FFFFFF";
+
+const yodaGreen = '#D7E2C6';
+const codejediGreen = '#00B5AD';
 
 export default createMuiTheme({
     // -------------------------------------------
@@ -22,16 +26,15 @@ export default createMuiTheme({
     // -------------------------------------------
     palette: {
         common: {
-            black: `${mainBlack}`,
-            grey: `${mainGrey}`,
-            white: `${mainWhite}`,
-
-            black1: `${black1}`,
+            white: `${white}`,
+            black: `${black1}`,
             black2: `${black2}`,
             black3: `${black3}`,
+            grey: `${grey}`,
+            grey2: `${grey2}`,
+            grey3: `${grey3}`,
             greyLight: `${greyLight}`,
             greyDark: `${greyDark}`,
-
             yodaGreen: `${yodaGreen}`,
             codejediGreen: `${codejediGreen}`
         },
@@ -73,19 +76,19 @@ export default createMuiTheme({
           fontFamily: 'Lato',
           fontWeight: 700,
           fontSize: "2.5rem",
-          color: mainGrey,
+          color: grey,
           lineHeight: 1.5
         },
         h2: {
           fontFamily: 'Lato',
           fontSize: "2.5rem",
-          color: mainGrey
+          color: grey
         },
         h3: {
           fontFamily: 'Lato',
           fontSize: "1.75rem",
           textTransform: "none",
-          color: mainBlack,
+          color: black1,
         },
         h4: {
           fontFamily: 'Lato',
@@ -96,7 +99,7 @@ export default createMuiTheme({
         h5: {
             fontFamily: 'Lato',
             fontWeight: 700,
-            color: mainGrey,
+            color: grey,
             fontSize: "0.75rem"
         },
         button: {
@@ -111,7 +114,7 @@ export default createMuiTheme({
           fontFamily: 'Lato',
           fontSize: "1.25rem",
           fontWeight: 300,
-          color: mainGrey
+          color: grey
         },
         body2: { //Placeholder
           fontFamily: 'Lato',
@@ -130,19 +133,45 @@ export default createMuiTheme({
         borderColor: `${teal}`,
         textTransform: 'none',
         fontSize: '.9rem',
-        fontWeight: '200',
+        fontFamily: 'Lato',
+        fontWeight: '400',
+        transition: 'background 50ms linear',
+        '&:hover': {
+          cursor: 'pointer',
+          backgroundColor: `${teal}`,
+          color: `${white}`
+      },
+      '&:active': {
+         backgroundColor: tealDark,
+      }
     },
     btnPrimaryText: {
         color: `${teal}`,
+        fontFamily: 'Lato',
         fontSize: '.9rem',
         textTransform: 'none',
         fontWeight: '200',
     },  
+    listSubtitle: {
+      fontFamily: 'Lato',
+      fontSize: '.9rem',
+      fontWeight: '700',
+      padding: '0',
+      margin: '0',
+      color: `${grey3}`,
+    },
+    divider: {
+      backgroundColor: `${black2}`,
+      height: '.75px',
+      border: '0',
+      margin: '0',
+      padding: '0'
+    },
     checkbox: {
-      color: mainGrey
+      color: grey
     },
     formControlLabel: {
-      color: mainGrey,
+      color: grey,
       fontWeight: 700,
       fontSize: '0.8rem'
     },
