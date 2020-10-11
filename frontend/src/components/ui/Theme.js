@@ -169,10 +169,10 @@ export default createMuiTheme({
       padding: '0'
     },
     checkbox: {
-      color: grey
+      color: greyLight
     },
     formControlLabel: {
-      color: grey,
+      color: greyLight,
       fontWeight: 700,
       fontSize: '0.8rem'
     },

@@ -84,7 +84,7 @@ const useStyles = makeStyles((theme) => ({
     privacyPolicy: {
         display: 'flex',
         alignSelf: 'center',
-        color: 'white'
+        color: theme.palette.common.greyLight
     }
 }));
 
@@ -162,8 +162,8 @@ function SigninPage() {
                     </div>
                 </Grid> 
                 <Grid item>
-                    <Box className={classes.privacyPolicy}>
-                        <Typography variant="h5">Term of use. Privacy policy</Typography>
+                    <Box>
+                        <Typography variant="h5" className={classes.privacyPolicy}>Term of use. Privacy policy</Typography>
                     </Box>  
                 </Grid>
             </Grid>
