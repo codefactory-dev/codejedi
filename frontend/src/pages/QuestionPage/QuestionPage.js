@@ -15,6 +15,9 @@ export default function QuestionPage() {
     function triggerSubmitAll(){
         setShouldSubmit(true);
     }
+    function triggerSave(){
+        console.log("triggered save");
+    }
     useEffect(()=>{
         if(answer.length > 0)
         {
@@ -36,12 +39,20 @@ export default function QuestionPage() {
                 <Box>
                     <div className={classes.grow} />
                     <Button 
-                        className={classes.button} 
+                        className={classes.submitBtn} 
                         variant="contained" 
                         color="primary"
                         onClick={triggerSubmitAll}
                     >
                         Submit Question
+                    </Button>
+                    <Button 
+                        className={classes.saveBtn} 
+                        variant="contained" 
+                        color="primary"
+                        onClick={triggerSave}
+                    >
+                        Save
                     </Button>
                 </Box>
             </Container>
@@ -63,10 +74,18 @@ const useStyles = makeStyles((theme) => ({
     grow: {
       flexGrow: 1,
     },
-    button: {
+    submitBtn: {
       marginTop: '20px',
       float: 'right',
       textTransform: 'none',
       fontWeight: theme.typography.fontWeightRegular,
+    },
+    saveBtn: {
+        marginTop: '20px',
+        marginRight: '20px',
+        float: 'right',
+        textTransform: 'none',
+        fontWeight: theme.typography.fontWeightRegular,
     }
+
 }));

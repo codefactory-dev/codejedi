@@ -151,7 +151,7 @@ export default function SimpleTabs(props) {
             />
       </TabPanel>
       <TabPanel className={classes.tabsPanel} value={value} index={1}>
-        <CodeEditor code={code} setCode={setCode} height='29em' />
+        <CodeEditor code={code} setCode={setCode} height='29rem' />
       </TabPanel>
       <TabPanel className={classes.editorTestCases} value={value} index={2}>
         <EditorTestcases 
