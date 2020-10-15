@@ -10,6 +10,7 @@ import Swal from 'sweetalert2'
 export default function QuestionPage() { 
     const classes = useStyles();
     const [shouldSubmit, setShouldSubmit] = useState(false);
+    const [shouldSave, setShouldSave] = useState(false);
     const [answer,setAnswer] = useState("");
 
     function triggerSubmitAll(){
@@ -32,6 +33,8 @@ export default function QuestionPage() {
             <Container maxWidth="sm">
                 <SimpleTabs 
                     shouldSubmit={shouldSubmit} 
+                    setShouldSubmit={setShouldSubmit}
+                    shouldSave={shouldSave}
                     setShouldSubmit={setShouldSubmit}
                     answer={answer}
                     setAnswer={setAnswer}

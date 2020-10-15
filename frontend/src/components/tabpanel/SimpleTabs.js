@@ -59,6 +59,14 @@ export default function SimpleTabs(props) {
   const [languageType, setLanguageType] = useState(languageTypes.Java)
   
 
+  useEffect(()=>{
+    if (props.shouldSave)
+    {
+      console.log("calling saveAll");
+      saveAll();
+      props.setShouldSave(false);
+    }
+  },[props.shouldSave])
 
   useEffect(()=>{
     if (props.shouldSubmit)
@@ -72,6 +80,53 @@ export default function SimpleTabs(props) {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  function saveAll()
+  {
+      //get question from somewhere
+      var questionText = code;
+
+      //get solution from database
+      var hiddenSolution = `class HiddenSolution {\n    public List<Integer> transformArray(int[] arr) {\n        while (true) {\n            int[] tmp = new int[arr.length];\n            boolean change = false;\n            tmp[0] = arr[0];\n            tmp[arr.length - 1] = arr[arr.length - 1];\n            for (int i = 1; i < arr.length - 1; i++) {\n                if (arr[i] > arr[i - 1] && arr[i] > arr[i + 1]) {\n                    tmp[i] = arr[i] - 1;\n                    change = true;\n                } else if (arr[i] < arr[i - 1] && arr[i] < arr[i + 1]) {\n                    tmp[i] = arr[i] + 1;\n                    change = true;\n                } else {\n                    tmp[i] = arr[i];\n                }\n            }\n            arr = tmp;\n            if (!change) break;\n        }\n        List<Integer> res = new ArrayList<>();\n        for (int num : arr) res.add(num);\n        return res;\n    }\n}`;
+            
+      //get test cases from file  
+      var testCasesText = editorTestcasesValue;
+  
+      //parse test cases into javascript
+      var structure = Parse(testCasesText, questionType);
+      console.log("---PARSED STRUCTURE---");
+      console.log(structure);
+  
+      //insert test cases into question
+      //var togetherText = questionText;
+      const togetherText=CodeScaffolding(structure, code, hiddenSolution, questionType,languageType,"transformArray");
+
+  
+      console.log("---TOGETHER TEXT---");
+      console.log(togetherText);
+  
+      //transform question into a "sendable" one-line string for json
+      var oneLiner = ConvertCodeToOneLiner(togetherText);
+      console.log("---ONE LINER---");
+      console.log(oneLiner);
+  
+  
+      saveQuestion();
+  
+      // POST both the question and the test cases
+      async function saveQuestion() {
+          
+          const result = await axios({
+              method: 'post',
+              url: '/compile',
+              data: { 
+                  code:oneLiner,
+                  language:languageType
+              }
+          });            
+      }    
+  }
+
   function submitAll()
   {
       
