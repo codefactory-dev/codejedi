@@ -115,15 +115,22 @@ export default function SimpleTabs(props) {
   
       // POST both the question and the test cases
       async function saveQuestion() {
-          
+        try{
+          const userId = '5f38583b37175e3850a5814c';
           const result = await axios({
               method: 'post',
-              url: '/compile',
+              url: `/users/${userId}/questions`,
               data: { 
-                  code:oneLiner,
-                  language:languageType
+                title: 'TestTest',
+                difficulty: 'TestTestTest',
+                type: 'Array',
+                description: 'TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest.'
               }
-          });            
+          });  
+          console.log("posted ! data: "+JSON.stringify(result.data));          
+        } catch(e) {
+          console.log(e.message+": "+(e.response.data.message));
+        }
       }    
   }
 

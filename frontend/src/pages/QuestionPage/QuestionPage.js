@@ -18,6 +18,7 @@ export default function QuestionPage() {
     }
     function triggerSave(){
         console.log("triggered save");
+        setShouldSave(true);
     }
     useEffect(()=>{
         if(answer.length > 0)
@@ -35,7 +36,7 @@ export default function QuestionPage() {
                     shouldSubmit={shouldSubmit} 
                     setShouldSubmit={setShouldSubmit}
                     shouldSave={shouldSave}
-                    setShouldSubmit={setShouldSubmit}
+                    setShouldSave={setShouldSave}
                     answer={answer}
                     setAnswer={setAnswer}
                     />
