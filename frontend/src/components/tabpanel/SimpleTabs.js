@@ -116,7 +116,13 @@ export default function SimpleTabs(props) {
       // POST both the question and the test cases
       async function saveQuestion() {
         try{
-          const userId = '5f38583b37175e3850a5814c';
+          
+          const allUsers = await axios({
+            method: 'get',
+            url: `/users`
+          });  
+          //console.log("got all users ! "+JSON.stringify(allUsers.data));
+          const userId = allUsers.data[0]._id;
           const result = await axios({
               method: 'post',
               url: `/users/${userId}/questions`,

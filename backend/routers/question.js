@@ -28,8 +28,6 @@ router.get('/users/:uid/questions', middleware.checkLogIn,
 router.post('/users/:uid/questions', middleware.checkLogIn, 
                                      middleware.checkQuestionParamsNull,
                                      async (req,res) => {
-   console.log("GOT HERE");      
-
    const user = req.user;
 
    let question = {
