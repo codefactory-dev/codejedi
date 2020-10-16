@@ -43,6 +43,7 @@ router.post('/users/:uid/questions', middleware.checkLogIn,
        solution: req.body.solution
    };
 
+   
    const operation = async () => {
         //create question
         await Question.create(question).then(res => question = res);
@@ -56,7 +57,9 @@ router.post('/users/:uid/questions', middleware.checkLogIn,
 
     db.runAsTransaction(operation)
         .then(resolve => res.status(201).send({question: resolve}))
-        .catch(e => res.status(e.status).json(e.message));
+        .catch(e => {
+            res.status(e.status).json({message: e.message, errors: e.errors})
+        });
 });
 
 // SHOW - get (all info) specific question

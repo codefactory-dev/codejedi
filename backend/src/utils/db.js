@@ -112,9 +112,8 @@ db.runAsTransaction = async (func) => new Promise(async (resolve, reject) => {
             }, transactionOptions);
         }
         catch(e) {
-            // console.log(e.message);
-            let status = e instanceof mongoose.Error.ValidationError ? 400 : 500;              
-            reject({status, message: e.message});
+            let status = e instanceof mongoose.Error.ValidationError ? 400 : 500;  
+            reject({status, message: e.message, errors: e.errors});
         }
         finally {
             session.endSession();

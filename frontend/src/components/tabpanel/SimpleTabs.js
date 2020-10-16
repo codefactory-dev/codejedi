@@ -128,14 +128,14 @@ export default function SimpleTabs(props) {
               url: `/users/${userId}/questions`,
               data: { 
                 title: 'TestTest',
-                difficulty: 'TestTestTest',
+                difficulty: 'Easy',
                 type: 'Array',
                 description: 'TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest.'
               }
           });  
           console.log("posted ! data: "+JSON.stringify(result.data));          
         } catch(e) {
-          console.log(e.message+": "+(e.response.data.message));
+          console.log(e.message+": "+(e.response.data.message)+". errors list: "+JSON.stringify(e.response.data.errors));
         }
       }    
   }
