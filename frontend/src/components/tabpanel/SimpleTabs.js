@@ -60,6 +60,10 @@ export default function SimpleTabs(props) {
   
 
   useEffect(()=>{
+
+  },[props.questionDescription])
+
+  useEffect(()=>{
     if (props.shouldSave)
     {
       console.log("calling saveAll");

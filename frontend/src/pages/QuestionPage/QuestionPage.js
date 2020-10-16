@@ -6,16 +6,49 @@ import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import Swal from 'sweetalert2'
+import questionTypes from '../../utils/questionTypes.js';
+import axios from 'axios'
 
 export default function QuestionPage() { 
     const classes = useStyles();
     const [shouldSubmit, setShouldSubmit] = useState(false);
     const [shouldSave, setShouldSave] = useState(false);
     const [answer,setAnswer] = useState("");
+    const [questionLoaded, setQuestionLoaded] = useState(false);
+    const [questionDescription, setQuestionDescription] = useState('');
+    const [questionSolution, setQuestionSolution] = useState('');
+    const [questionTestcases, setQuestionTestcases] = useState('');
+
+
+
+    async function loadQuestion(){
+        const allUsers = await axios({
+            method: 'get',
+            url: `/users`
+        });  
+        const userId = allUsers.data[0]._id;
+        const allQuestions = await axios({
+            method: 'get',
+            url: `/users/${userId}/questions`,
+        });  
+        console.log("all questions from user "+allUsers.data[0].username+": "+JSON.stringify(allQuestions.data))
+    }
 
     function triggerSubmitAll(){
         setShouldSubmit(true);
     }
+
+    function triggerLoad(){
+        if (!questionLoaded){
+            async function performQuestionLoading(){
+              await loadQuestion();
+              setQuestionLoaded(true);
+            }
+            performQuestionLoading();
+            console.log("finished loading questions");
+         } 
+    }
+
     function triggerSave(){
         console.log("triggered save");
         setShouldSave(true);
@@ -37,6 +70,9 @@ export default function QuestionPage() {
                     setShouldSubmit={setShouldSubmit}
                     shouldSave={shouldSave}
                     setShouldSave={setShouldSave}
+                    questionDescription={questionDescription}
+                    questionSolution={questionSolution}
+                    questionTestcases={questionTestcases}
                     answer={answer}
                     setAnswer={setAnswer}
                     />
@@ -57,6 +93,14 @@ export default function QuestionPage() {
                         onClick={triggerSave}
                     >
                         Save
+                    </Button>
+                    <Button 
+                        className={classes.loadBtn} 
+                        variant="contained" 
+                        color="primary"
+                        onClick={triggerLoad}
+                    >
+                        Load
                     </Button>
                 </Box>
             </Container>
@@ -90,6 +134,13 @@ const useStyles = makeStyles((theme) => ({
         float: 'right',
         textTransform: 'none',
         fontWeight: theme.typography.fontWeightRegular,
-    }
+    },
+    loadBtn: {
+        marginTop: '20px',
+        marginRight: '20px',
+        float: 'right',
+        textTransform: 'none',
+        fontWeight: theme.typography.fontWeightRegular,
+    },
 
 }));
