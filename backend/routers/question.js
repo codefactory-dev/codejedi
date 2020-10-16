@@ -40,7 +40,8 @@ router.post('/users/:uid/questions', middleware.checkLogIn,
        description: req.body.description,
        difficulty: req.body.difficulty,
        type: req.body.type,
-       solution: req.body.solution
+       solution: req.body.solution,
+       testcases: req.body.testcases
    };
 
    

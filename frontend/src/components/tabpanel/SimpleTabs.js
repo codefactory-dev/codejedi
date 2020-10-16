@@ -61,6 +61,8 @@ export default function SimpleTabs(props) {
 
   useEffect(()=>{
     console.log("question description updated to "+props.questionDescription);
+    setCode(props.questionSolution);
+    setEditorTestcasesValue(props.questionTestcases);
     setEditorValue(props.questionDescription);
   },[props.questionDescription])
 
@@ -135,7 +137,9 @@ export default function SimpleTabs(props) {
                 title: 'TestTest',
                 difficulty: 'Easy',
                 type: 'Array',
-                description: 'TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest.'
+                description: 'Count the number of prime numbers less than a non-negative number, n.\n\n \n\n    Example 1:\n\n    Input: n = 10\n    Output: 4\n    Explanation: There are 4 prime numbers less than 10, they are 2, 3, 5, \n    7.\n\n    Example 2:\n\n    Input: n = 0\n    Output: 0\n\n    Example 3:\n\n    Input: n = 1\n    Output: 0\n \n\n    Constraints:\n\n    0 <= n <= 5 * 106',
+                solution: 'public class Solution {\n    public int countPrimes(int n) {\n        boolean[] notPrime = new boolean[n];\n        int count = 0;\n        for (int i = 2; i < n; i++) {\n            if (notPrime[i] == false) {\n                count++;\n                for (int j = 2; i*j < n; j++) {\n                    notPrime[i*j] = true;\n                }\n            }\n        }\n        \n        return count;\n    }\n}',
+                testcases: '10\n22\n99'
               }
           });  
           console.log("posted ! data: "+JSON.stringify(result.data));          

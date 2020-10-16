@@ -31,6 +31,8 @@ export default function QuestionPage() {
             method: 'get',
             url: `/users/${userId}/questions`,
         });  
+        setQuestionSolution(allQuestions.data.questions[0].solution);
+        setQuestionTestcases(allQuestions.data.questions[0].testcases);
         setQuestionDescription(allQuestions.data.questions[0].description);
     }
 
