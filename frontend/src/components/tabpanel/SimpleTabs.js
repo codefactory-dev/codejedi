@@ -60,7 +60,8 @@ export default function SimpleTabs(props) {
   
 
   useEffect(()=>{
-
+    console.log("question description updated to "+props.questionDescription);
+    setEditorValue(props.questionDescription);
   },[props.questionDescription])
 
   useEffect(()=>{

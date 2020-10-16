@@ -31,7 +31,7 @@ export default function QuestionPage() {
             method: 'get',
             url: `/users/${userId}/questions`,
         });  
-        console.log("all questions from user "+allUsers.data[0].username+": "+JSON.stringify(allQuestions.data))
+        setQuestionDescription(allQuestions.data.questions[0].description);
     }
 
     function triggerSubmitAll(){
@@ -39,14 +39,12 @@ export default function QuestionPage() {
     }
 
     function triggerLoad(){
-        if (!questionLoaded){
-            async function performQuestionLoading(){
-              await loadQuestion();
-              setQuestionLoaded(true);
-            }
-            performQuestionLoading();
-            console.log("finished loading questions");
-         } 
+        async function performQuestionLoading(){
+            await loadQuestion();
+            setQuestionLoaded(true);
+        }
+        performQuestionLoading();
+        console.log("finished loading questions");
     }
 
     function triggerSave(){
