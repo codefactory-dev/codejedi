@@ -40,6 +40,10 @@ const questionSchema = new Schema({
         type: Number,
         default: undefined
     },
+    languageType: {
+        type: Number,
+        default: undefined
+    },
     difficulty: { 
         type: String, 
         required: true,
