@@ -36,6 +36,10 @@ const questionSchema = new Schema({
         type: String,
         default: undefined
     },
+    testcasesType: {
+        type: Number,
+        default: undefined
+    },
     difficulty: { 
         type: String, 
         required: true,

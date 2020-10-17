@@ -18,6 +18,7 @@ export default function QuestionPage() {
     const [questionDescription, setQuestionDescription] = useState('');
     const [questionSolution, setQuestionSolution] = useState('');
     const [questionTestcases, setQuestionTestcases] = useState('');
+    const [questionTestcasesType, setQuestionTestcasesType] = useState();
 
 
 
@@ -33,6 +34,7 @@ export default function QuestionPage() {
         });  
         setQuestionSolution(allQuestions.data.questions[0].solution);
         setQuestionTestcases(allQuestions.data.questions[0].testcases);
+        setQuestionTestcasesType(allQuestions.data.questions[0].testcasesType);
         setQuestionDescription(allQuestions.data.questions[0].description);
     }
 
@@ -73,6 +75,7 @@ export default function QuestionPage() {
                     questionDescription={questionDescription}
                     questionSolution={questionSolution}
                     questionTestcases={questionTestcases}
+                    questionTestcasesType={questionTestcasesType}
                     answer={answer}
                     setAnswer={setAnswer}
                     />
