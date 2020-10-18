@@ -55,6 +55,7 @@ export default function SimpleTabs(props) {
   const [editorValue, setEditorValue] = useState(`Given an initial array arr, every day you produce a new array using the array of the previous day.\n\nOn the i-th day, you do the following operations on the array of day i-1 to produce the array of day i:\n\nIf an element is smaller than both its left neighbor and its right neighbor, then this element is incremented.\nIf an element is bigger than both its left neighbor and its right neighbor, then this element is decremented.\nThe first and last elements never change.\nAfter some days, the array does not change. Return that final array.\n\n \n\nExample 1:\n\nInput: arr = [6,2,3,4]\nOutput: [6,3,3,4]\nExplanation: \nOn the first day, the array is changed from [6,2,3,4] to [6,3,3,4].\nNo more operations can be done to this array.\nExample 2:\n\nInput: arr = [1,6,3,4,3,5]\nOutput: [1,4,4,4,4,5]\nExplanation: \nOn the first day, the array is changed from [1,6,3,4,3,5] to [1,5,4,3,4,5].\nOn the second day, the array is changed from [1,5,4,3,4,5] to [1,4,4,4,4,5].\nNo more operations can be done to this array.\n \n\nConstraints:\n\n3 <= arr.length <= 100\n1 <= arr[i] <= 100`);
   const [code, setCode] = useState("public class Solution {\n    public List<Integer> transformArray(int[] arr) {\n        \n    }\n}");
   const [editorTestcasesValue, setEditorTestcasesValue] = useState('[6,2,3,4]\n[1,6,3,4,3,5]');
+  const [loadedCode, setLoadedCode] = useState();
   const [questionType,setQuestionType] = useState(questionTypes.Array);
   const [languageType, setLanguageType] = useState(languageTypes.Java)
   const [solutionName, setSolutionName] = useState("transformArray");
@@ -64,6 +65,7 @@ export default function SimpleTabs(props) {
     if (props.questionDescription.length > 0){  
       setQuestionType(props.questionTestcasesType);
       setCode(props.questionSolution);
+      setLoadedCode(props.questionSolution);
       setEditorTestcasesValue(props.questionTestcases);
       setLanguageType(props.languageType);
       setSolutionName(props.solutionName);
@@ -208,7 +210,7 @@ export default function SimpleTabs(props) {
             />
       </TabPanel>
       <TabPanel className={classes.tabsPanel} value={value} index={1}>
-        <CodeEditor code={code} setCode={setCode} height='29rem' />
+        <CodeEditor code={code} setCode={setCode} height='29rem' loadedCode={loadedCode}/>
       </TabPanel>
       <TabPanel className={classes.editorTestCases} value={value} index={2}>
         <EditorTestcases 

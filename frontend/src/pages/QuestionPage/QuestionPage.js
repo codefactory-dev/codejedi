@@ -34,12 +34,22 @@ export default function QuestionPage() {
             method: 'get',
             url: `/users/${userId}/questions`,
         });  
-        setQuestionSolution(allQuestions.data.questions[0].solution);
-        setQuestionTestcases(allQuestions.data.questions[0].testcases);
-        setQuestionTestcasesType(allQuestions.data.questions[0].testcasesType);
-        setLanguageType(allQuestions.data.questions[0].languageType);
-        setSolutionName(allQuestions.data.questions[0].solutionName);
-        setQuestionDescription(allQuestions.data.questions[0].description);
+        let question = allQuestions.data.questions[0];
+        let defaultQuestion = {
+            solution: "",
+            testcases: "",
+            testcasesType: "",
+            languageType: "",
+            solutionName: "",
+            description: ""
+        }
+        const chosenQuestion = question ? question : defaultQuestion;
+        setQuestionSolution(chosenQuestion.solution);
+        setQuestionTestcases(chosenQuestion.testcases);
+        setQuestionTestcasesType(chosenQuestion.testcasesType);
+        setLanguageType(chosenQuestion.languageType);
+        setSolutionName(chosenQuestion.solutionName);
+        setQuestionDescription(chosenQuestion.description);
     }
 
     function triggerSubmitAll(){
