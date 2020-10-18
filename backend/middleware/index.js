@@ -86,9 +86,9 @@ middleware.checkQuestionNull = async (req, res, next) => {
 
 middleware.checkQuestionParamsNull = async (req, res, next) => {
     const user = await User.findById(req.params.uid);
-
-    if (isNull(user))
+    if (isNull(user)){
         res.status(400).json({ error: true, message: 'Invalid user.id parameter.' });
+    }
     else{
         req.user = user;
         next();

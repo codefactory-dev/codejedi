@@ -16,7 +16,6 @@ router.get('/users', async (req,res) => {
     console.log("REQUEST ::  get all users");
     try{
       const users = await User.find({})
-      console.log(JSON.stringify(users));
       return res.send(users)
     } catch(error) {
       return res.status(500).json({

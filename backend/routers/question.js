@@ -40,9 +40,14 @@ router.post('/users/:uid/questions', middleware.checkLogIn,
        description: req.body.description,
        difficulty: req.body.difficulty,
        type: req.body.type,
-       solution: req.body.solution
+       solution: req.body.solution,
+       testcases: req.body.testcases,
+       testcasesType: req.body.testcasesType,
+       languageType: req.body.languageType,
+       solutionName: req.body.solutionName
    };
 
+   
    const operation = async () => {
         //create question
         await Question.create(question).then(res => question = res);
@@ -56,7 +61,9 @@ router.post('/users/:uid/questions', middleware.checkLogIn,
 
     db.runAsTransaction(operation)
         .then(resolve => res.status(201).send({question: resolve}))
-        .catch(e => res.status(e.status).json(e.message));
+        .catch(e => {
+            res.status(e.status).json({message: e.message, errors: e.errors})
+        });
 });
 
 // SHOW - get (all info) specific question

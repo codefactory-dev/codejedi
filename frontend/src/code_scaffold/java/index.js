@@ -17,8 +17,8 @@ function CodeScaffolding(entries, userSolution, hiddenSolution,questionType, ent
 const arrayScaffold = (entries, userSolution, hiddenSolution,entryFunction) =>
 `
 import java.util.*;
-${userSolution}
-${hiddenSolution}
+${userSolution.replace('public class Solution','class Solution')}
+${hiddenSolution.replace('public class Solution', 'class HiddenSolution')}
 class Main {
     public static void main(String[] args) {
         int[][] convertedEntries = new int[][]${JSON.stringify(entries).replaceAll('[','{').replaceAll(']','}')};
@@ -50,8 +50,8 @@ class Main {
 const integerScaffold = (entries, userSolution, hiddenSolution, entryFunction) =>
 `
 import java.util.*;
-${userSolution}
-${hiddenSolution}
+${userSolution.replace('public class Solution','class Solution')}
+${hiddenSolution.replace('public class Solution', 'class HiddenSolution')}
 class Main {
     public static void main(String[] args) {
         int[] convertedEntries = new int[]${JSON.stringify(entries).replace('[','{').replace(']','}')};
@@ -83,8 +83,8 @@ class Main {
 const stringScaffold = (entries, userSolution, hiddenSolution, entryFunction) =>
 `
 import java.util.*;
-${userSolution}
-${hiddenSolution}
+${userSolution.replace('public class Solution','class Solution')}
+${hiddenSolution.replace('public class Solution', 'class HiddenSolution')}
 class Main {
     public static void main(String[] args) {
         String[] convertedEntries = new String[]${JSON.stringify(entries).replace('[','{').replace(']','}')};
