@@ -98,7 +98,8 @@ export default function SimpleTabs(props) {
       var questionText = code;
 
       //get solution from database
-      var hiddenSolution = `class HiddenSolution {\n    public List<Integer> transformArray(int[] arr) {\n        while (true) {\n            int[] tmp = new int[arr.length];\n            boolean change = false;\n            tmp[0] = arr[0];\n            tmp[arr.length - 1] = arr[arr.length - 1];\n            for (int i = 1; i < arr.length - 1; i++) {\n                if (arr[i] > arr[i - 1] && arr[i] > arr[i + 1]) {\n                    tmp[i] = arr[i] - 1;\n                    change = true;\n                } else if (arr[i] < arr[i - 1] && arr[i] < arr[i + 1]) {\n                    tmp[i] = arr[i] + 1;\n                    change = true;\n                } else {\n                    tmp[i] = arr[i];\n                }\n            }\n            arr = tmp;\n            if (!change) break;\n        }\n        List<Integer> res = new ArrayList<>();\n        for (int num : arr) res.add(num);\n        return res;\n    }\n}`;
+      //var hiddenSolution = `class HiddenSolution {\n    public List<Integer> transformArray(int[] arr) {\n        while (true) {\n            int[] tmp = new int[arr.length];\n            boolean change = false;\n            tmp[0] = arr[0];\n            tmp[arr.length - 1] = arr[arr.length - 1];\n            for (int i = 1; i < arr.length - 1; i++) {\n                if (arr[i] > arr[i - 1] && arr[i] > arr[i + 1]) {\n                    tmp[i] = arr[i] - 1;\n                    change = true;\n                } else if (arr[i] < arr[i - 1] && arr[i] < arr[i + 1]) {\n                    tmp[i] = arr[i] + 1;\n                    change = true;\n                } else {\n                    tmp[i] = arr[i];\n                }\n            }\n            arr = tmp;\n            if (!change) break;\n        }\n        List<Integer> res = new ArrayList<>();\n        for (int num : arr) res.add(num);\n        return res;\n    }\n}`;
+      var hiddenSolution = props.questionSolution;
             
       //get test cases from file  
       var testCasesText = editorTestcasesValue;
@@ -110,7 +111,7 @@ export default function SimpleTabs(props) {
   
       //insert test cases into question
       //var togetherText = questionText;
-      const togetherText=CodeScaffolding(structure, code, hiddenSolution, questionType,languageType,"transformArray");
+      const togetherText=CodeScaffolding(structure, code, hiddenSolution, questionType,languageType,"countPrimes");
 
   
       console.log("---TOGETHER TEXT---");
@@ -162,7 +163,7 @@ export default function SimpleTabs(props) {
       var questionText = code;
 
       //get solution from database
-      var hiddenSolution = `class HiddenSolution {\n    public List<Integer> transformArray(int[] arr) {\n        while (true) {\n            int[] tmp = new int[arr.length];\n            boolean change = false;\n            tmp[0] = arr[0];\n            tmp[arr.length - 1] = arr[arr.length - 1];\n            for (int i = 1; i < arr.length - 1; i++) {\n                if (arr[i] > arr[i - 1] && arr[i] > arr[i + 1]) {\n                    tmp[i] = arr[i] - 1;\n                    change = true;\n                } else if (arr[i] < arr[i - 1] && arr[i] < arr[i + 1]) {\n                    tmp[i] = arr[i] + 1;\n                    change = true;\n                } else {\n                    tmp[i] = arr[i];\n                }\n            }\n            arr = tmp;\n            if (!change) break;\n        }\n        List<Integer> res = new ArrayList<>();\n        for (int num : arr) res.add(num);\n        return res;\n    }\n}`;
+      var hiddenSolution = props.questionSolution;
             
       //get test cases from file  
       var testCasesText = editorTestcasesValue;
@@ -174,7 +175,7 @@ export default function SimpleTabs(props) {
   
       //insert test cases into question
       //var togetherText = questionText;
-      const togetherText=CodeScaffolding(structure, code, hiddenSolution, questionType,languageType,"transformArray");
+      const togetherText=CodeScaffolding(structure, code, hiddenSolution, questionType,languageType,"countPrimes");
 
   
       console.log("---TOGETHER TEXT---");
