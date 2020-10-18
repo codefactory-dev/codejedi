@@ -10,26 +10,38 @@ import './CodeEditor.scss';
 
 
 
-function CodeEditor({code, setCode, height, codemirror}) { 
+function CodeEditor({code, setCode, height, loadedCode}) { 
+    const codemirror = useRef(null);
+    const [firstTime, setFirstTime] = useState(false);
     const textareaNode = useRef();
     const languageModes = new Map([['javascript', 'javascript'], ['java', 'text/x-java'], ['c++', 'text/x-c++src']]);
     let selectedLanguage = 'java';
 
     useEffect(()=> {
-        console.log("codemirror updated");
-        if (code) {
-            textareaNode.current.innerHTML = code;
+        if (!firstTime) {
+            console.log("codemirror updated");
+            if (code) {
+                textareaNode.current.innerHTML = code;
+            }
+            codemirror.current = CodeMirror.fromTextArea(textareaNode.current, {
+                lineNumbers: true,
+                mode: `${languageModes.get(selectedLanguage)}`,
+                matchBrackets: true
+            });
+            codemirror.current.focus();
+            codemirror.current.on("change",(changeObj)=>{    
+                //console.log("property names: "+Object.getOwnPropertyNames(changeObj));
+                handleChange(changeObj)
+            });
+            setFirstTime(true)
         }
-        codemirror = CodeMirror.fromTextArea(textareaNode.current, {
-            lineNumbers: true,
-            mode: `${languageModes.get(selectedLanguage)}`,
-            matchBrackets: true
-        });
-        codemirror.focus();
-        codemirror.on("change",(changeObj)=>{    
-            handleChange(changeObj)
-        });
-    }, []);
+        else {
+            if (loadedCode) {
+                codemirror.current.setValue(code);
+            }
+        }
+        
+    }, [loadedCode]);
 
     // --------------------------------------------------------------------
     // HANDLERS
@@ -40,12 +52,12 @@ function CodeEditor({code, setCode, height, codemirror}) {
 
         // POST request
         async function createCode() {
-            const result = await axios.post('/.netlify/functions/server/api/codes', {mode: codemirror.doc.modeOption, text: codemirror.doc.getValue()});
+            const result = await axios.post('/.netlify/functions/server/api/codes', {mode: codemirror.current.doc.modeOption, text: codemirror.current.doc.getValue()});
 
             // console.log(result);
-            codemirror.setOption('mode', result.data.mode);
-            codemirror.setValue(result.data.text);
-            codemirror.setOption('readOnly', 'nocursor');
+            codemirror.current.setOption('mode', result.data.mode);
+            codemirror.current.setValue(result.data.text);
+            codemirror.current.setOption('readOnly', 'nocursor');
             setCode(result.data);
         }
     }

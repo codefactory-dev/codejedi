@@ -6,14 +6,68 @@ import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import Swal from 'sweetalert2'
+import questionTypes from '../../utils/questionTypes.js';
+import axios from 'axios'
 
 export default function QuestionPage() { 
     const classes = useStyles();
     const [shouldSubmit, setShouldSubmit] = useState(false);
+    const [shouldSave, setShouldSave] = useState(false);
     const [answer,setAnswer] = useState("");
+    const [questionLoaded, setQuestionLoaded] = useState(false);
+    const [questionDescription, setQuestionDescription] = useState('');
+    const [questionSolution, setQuestionSolution] = useState('');
+    const [questionTestcases, setQuestionTestcases] = useState('');
+    const [questionTestcasesType, setQuestionTestcasesType] = useState();
+    const [languageType, setLanguageType] = useState();
+    const [solutionName, setSolutionName] = useState();
+
+
+
+    async function loadQuestion(){
+        const allUsers = await axios({
+            method: 'get',
+            url: `/users`
+        });  
+        const userId = allUsers.data[0]._id;
+        const allQuestions = await axios({
+            method: 'get',
+            url: `/users/${userId}/questions`,
+        });  
+        let question = allQuestions.data.questions[0];
+        let defaultQuestion = {
+            solution: "",
+            testcases: "",
+            testcasesType: "",
+            languageType: "",
+            solutionName: "",
+            description: ""
+        }
+        const chosenQuestion = question ? question : defaultQuestion;
+        setQuestionSolution(chosenQuestion.solution);
+        setQuestionTestcases(chosenQuestion.testcases);
+        setQuestionTestcasesType(chosenQuestion.testcasesType);
+        setLanguageType(chosenQuestion.languageType);
+        setSolutionName(chosenQuestion.solutionName);
+        setQuestionDescription(chosenQuestion.description);
+    }
 
     function triggerSubmitAll(){
         setShouldSubmit(true);
+    }
+
+    function triggerLoad(){
+        async function performQuestionLoading(){
+            await loadQuestion();
+            setQuestionLoaded(true);
+        }
+        performQuestionLoading();
+        console.log("finished loading questions");
+    }
+
+    function triggerSave(){
+        console.log("triggered save");
+        setShouldSave(true);
     }
     useEffect(()=>{
         if(answer.length > 0)
@@ -30,18 +84,42 @@ export default function QuestionPage() {
                 <SimpleTabs 
                     shouldSubmit={shouldSubmit} 
                     setShouldSubmit={setShouldSubmit}
+                    shouldSave={shouldSave}
+                    setShouldSave={setShouldSave}
+                    questionDescription={questionDescription}
+                    questionSolution={questionSolution}
+                    questionTestcases={questionTestcases}
+                    questionTestcasesType={questionTestcasesType}
+                    languageType={languageType}
+                    solutionName={solutionName}
                     answer={answer}
                     setAnswer={setAnswer}
                     />
                 <Box>
                     <div className={classes.grow} />
                     <Button 
-                        className={classes.button} 
+                        className={classes.submitBtn} 
                         variant="contained" 
                         color="primary"
                         onClick={triggerSubmitAll}
                     >
                         Submit Question
+                    </Button>
+                    <Button 
+                        className={classes.saveBtn} 
+                        variant="contained" 
+                        color="primary"
+                        onClick={triggerSave}
+                    >
+                        Save
+                    </Button>
+                    <Button 
+                        className={classes.loadBtn} 
+                        variant="contained" 
+                        color="primary"
+                        onClick={triggerLoad}
+                    >
+                        Load
                     </Button>
                 </Box>
             </Container>
@@ -63,10 +141,25 @@ const useStyles = makeStyles((theme) => ({
     grow: {
       flexGrow: 1,
     },
-    button: {
+    submitBtn: {
       marginTop: '20px',
       float: 'right',
       textTransform: 'none',
       fontWeight: theme.typography.fontWeightRegular,
-    }
+    },
+    saveBtn: {
+        marginTop: '20px',
+        marginRight: '20px',
+        float: 'right',
+        textTransform: 'none',
+        fontWeight: theme.typography.fontWeightRegular,
+    },
+    loadBtn: {
+        marginTop: '20px',
+        marginRight: '20px',
+        float: 'right',
+        textTransform: 'none',
+        fontWeight: theme.typography.fontWeightRegular,
+    },
+
 }));

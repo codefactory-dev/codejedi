@@ -53,12 +53,34 @@ export default function SimpleTabs(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [editorValue, setEditorValue] = useState(`Given an initial array arr, every day you produce a new array using the array of the previous day.\n\nOn the i-th day, you do the following operations on the array of day i-1 to produce the array of day i:\n\nIf an element is smaller than both its left neighbor and its right neighbor, then this element is incremented.\nIf an element is bigger than both its left neighbor and its right neighbor, then this element is decremented.\nThe first and last elements never change.\nAfter some days, the array does not change. Return that final array.\n\n \n\nExample 1:\n\nInput: arr = [6,2,3,4]\nOutput: [6,3,3,4]\nExplanation: \nOn the first day, the array is changed from [6,2,3,4] to [6,3,3,4].\nNo more operations can be done to this array.\nExample 2:\n\nInput: arr = [1,6,3,4,3,5]\nOutput: [1,4,4,4,4,5]\nExplanation: \nOn the first day, the array is changed from [1,6,3,4,3,5] to [1,5,4,3,4,5].\nOn the second day, the array is changed from [1,5,4,3,4,5] to [1,4,4,4,4,5].\nNo more operations can be done to this array.\n \n\nConstraints:\n\n3 <= arr.length <= 100\n1 <= arr[i] <= 100`);
-  const [code, setCode] = useState("class Solution {\n    public List<Integer> transformArray(int[] arr) {\n        \n    }\n}");
+  const [code, setCode] = useState("public class Solution {\n    public List<Integer> transformArray(int[] arr) {\n        \n    }\n}");
   const [editorTestcasesValue, setEditorTestcasesValue] = useState('[6,2,3,4]\n[1,6,3,4,3,5]');
+  const [loadedCode, setLoadedCode] = useState();
   const [questionType,setQuestionType] = useState(questionTypes.Array);
   const [languageType, setLanguageType] = useState(languageTypes.Java)
-  
+  const [solutionName, setSolutionName] = useState("transformArray");
 
+  useEffect(()=>{
+    console.log("question description updated to "+props.questionDescription);
+    if (props.questionDescription.length > 0){  
+      setQuestionType(props.questionTestcasesType);
+      setCode(props.questionSolution);
+      setLoadedCode(props.questionSolution);
+      setEditorTestcasesValue(props.questionTestcases);
+      setLanguageType(props.languageType);
+      setSolutionName(props.solutionName);
+      setEditorValue(props.questionDescription);
+    }
+  },[props.questionDescription])
+
+  useEffect(()=>{
+    if (props.shouldSave)
+    {
+      console.log("calling saveAll");
+      saveAll();
+      props.setShouldSave(false);
+    }
+  },[props.shouldSave])
 
   useEffect(()=>{
     if (props.shouldSubmit)
@@ -72,6 +94,43 @@ export default function SimpleTabs(props) {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  function saveAll()
+  { 
+      saveQuestion();
+  
+      // POST both the question and the test cases
+      async function saveQuestion() {
+        try{
+          
+          const allUsers = await axios({
+            method: 'get',
+            url: `/users`
+          });  
+          //console.log("got all users ! "+JSON.stringify(allUsers.data));
+          const userId = allUsers.data[0]._id;
+          const result = await axios({
+              method: 'post',
+              url: `/users/${userId}/questions`,
+              data: { 
+                title: 'TestTest',
+                difficulty: 'Easy',
+                type: 'Array',
+                description: 'Count the number of prime numbers less than a non-negative number, n.\n\n \n\n    Example 1:\n\n    Input: n = 10\n    Output: 4\n    Explanation: There are 4 prime numbers less than 10, they are 2, 3, 5, \n    7.\n\n    Example 2:\n\n    Input: n = 0\n    Output: 0\n\n    Example 3:\n\n    Input: n = 1\n    Output: 0\n \n\n    Constraints:\n\n    0 <= n <= 5 * 106',
+                solution: 'public class Solution {\n    public int countPrimes(int n) {\n        boolean[] notPrime = new boolean[n];\n        int count = 0;\n        for (int i = 2; i < n; i++) {\n            if (notPrime[i] == false) {\n                count++;\n                for (int j = 2; i*j < n; j++) {\n                    notPrime[i*j] = true;\n                }\n            }\n        }\n        \n        return count;\n    }\n}',
+                testcases: '10\n22\n99',
+                testcasesType: 2,
+                languageType: 1,
+                solutionName: "countPrimes"
+              }
+          });  
+          console.log("posted ! data: "+JSON.stringify(result.data));          
+        } catch(e) {
+          console.log(e.message+": "+(e.response.data.message)+". errors list: "+JSON.stringify(e.response.data.errors));
+        }
+      }    
+  }
+
   function submitAll()
   {
       
@@ -79,7 +138,7 @@ export default function SimpleTabs(props) {
       var questionText = code;
 
       //get solution from database
-      var hiddenSolution = `class HiddenSolution {\n    public List<Integer> transformArray(int[] arr) {\n        while (true) {\n            int[] tmp = new int[arr.length];\n            boolean change = false;\n            tmp[0] = arr[0];\n            tmp[arr.length - 1] = arr[arr.length - 1];\n            for (int i = 1; i < arr.length - 1; i++) {\n                if (arr[i] > arr[i - 1] && arr[i] > arr[i + 1]) {\n                    tmp[i] = arr[i] - 1;\n                    change = true;\n                } else if (arr[i] < arr[i - 1] && arr[i] < arr[i + 1]) {\n                    tmp[i] = arr[i] + 1;\n                    change = true;\n                } else {\n                    tmp[i] = arr[i];\n                }\n            }\n            arr = tmp;\n            if (!change) break;\n        }\n        List<Integer> res = new ArrayList<>();\n        for (int num : arr) res.add(num);\n        return res;\n    }\n}`;
+      var hiddenSolution = code;
             
       //get test cases from file  
       var testCasesText = editorTestcasesValue;
@@ -91,7 +150,7 @@ export default function SimpleTabs(props) {
   
       //insert test cases into question
       //var togetherText = questionText;
-      const togetherText=CodeScaffolding(structure, code, hiddenSolution, questionType,languageType,"transformArray");
+      const togetherText=CodeScaffolding(structure, code, hiddenSolution, questionType,languageType,solutionName);
 
   
       console.log("---TOGETHER TEXT---");
@@ -151,7 +210,7 @@ export default function SimpleTabs(props) {
             />
       </TabPanel>
       <TabPanel className={classes.tabsPanel} value={value} index={1}>
-        <CodeEditor code={code} setCode={setCode} height='29em' />
+        <CodeEditor code={code} setCode={setCode} height='29rem' loadedCode={loadedCode}/>
       </TabPanel>
       <TabPanel className={classes.editorTestCases} value={value} index={2}>
         <EditorTestcases 
