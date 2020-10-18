@@ -43,7 +43,8 @@ router.post('/users/:uid/questions', middleware.checkLogIn,
        solution: req.body.solution,
        testcases: req.body.testcases,
        testcasesType: req.body.testcasesType,
-       languageType: req.body.languageType
+       languageType: req.body.languageType,
+       solutionName: req.body.solutionName
    };
 
    

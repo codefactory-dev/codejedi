@@ -20,6 +20,7 @@ export default function QuestionPage() {
     const [questionTestcases, setQuestionTestcases] = useState('');
     const [questionTestcasesType, setQuestionTestcasesType] = useState();
     const [languageType, setLanguageType] = useState();
+    const [solutionName, setSolutionName] = useState();
 
 
 
@@ -37,6 +38,7 @@ export default function QuestionPage() {
         setQuestionTestcases(allQuestions.data.questions[0].testcases);
         setQuestionTestcasesType(allQuestions.data.questions[0].testcasesType);
         setLanguageType(allQuestions.data.questions[0].languageType);
+        setSolutionName(allQuestions.data.questions[0].solutionName);
         setQuestionDescription(allQuestions.data.questions[0].description);
     }
 
@@ -79,6 +81,7 @@ export default function QuestionPage() {
                     questionTestcases={questionTestcases}
                     questionTestcasesType={questionTestcasesType}
                     languageType={languageType}
+                    solutionName={solutionName}
                     answer={answer}
                     setAnswer={setAnswer}
                     />
