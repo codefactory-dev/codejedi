@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Navbar from '../../components/Navbar/Navbar.js'
-import SimpleTabs from '../../components/Tabpanel/SimpleTabs.js'
+import SimpleTabs from '../../components/Tabpanel/SimpleTabs'
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';

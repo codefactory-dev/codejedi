@@ -3,7 +3,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import styled, { css } from 'styled-components';
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
-import theme from '../Ui/Theme.js';
+import theme from '../ui/Theme.js';
 import React from 'react';
 
 
