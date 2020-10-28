@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Navbar from '../../components/Navbar/Navbar.js'
-import SimpleTabs from '../../components/tabpanel/SimpleTabs'
+import VerticalTabs from '../../components/VerticalTabs/VerticalTabs'
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
@@ -9,7 +9,7 @@ import Swal from 'sweetalert2'
 import questionTypes from '../../utils/questionTypes.js';
 import axios from 'axios'
 
-export default function QuestionPage() { 
+export default function QuestionPageProto() { 
     const classes = useStyles();
     const [shouldSubmit, setShouldSubmit] = useState(false);
     const [shouldSave, setShouldSave] = useState(false);
@@ -80,8 +80,8 @@ export default function QuestionPage() {
     return (
         <div className={classes.questionPage}>
             <Navbar />
-            <Container maxWidth="sm">
-                <SimpleTabs 
+            <div className={classes.root}>
+                <VerticalTabs 
                     shouldSubmit={shouldSubmit} 
                     setShouldSubmit={setShouldSubmit}
                     shouldSave={shouldSave}
@@ -122,7 +122,7 @@ export default function QuestionPage() {
                         Load
                     </Button>
                 </Box>
-            </Container>
+            </div>
             
         </div> 
     );
@@ -130,6 +130,12 @@ export default function QuestionPage() {
 }
 
 const useStyles = makeStyles((theme) => ({
+    root: {
+        padding: 0,
+        margin: 0,
+        width: '100%',
+        height: '100%'
+    },
     questionPage: {
         height:'900px',
         backgroundColor:'#1B1C1D',
