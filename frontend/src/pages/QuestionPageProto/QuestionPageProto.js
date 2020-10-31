@@ -93,7 +93,8 @@ export default function QuestionPageProto() {
             
             <Container className={classes.titleContainer}>
                 <SimpleTextField label="Title" />
-                <SimpleSelect />
+                <SimpleSelect label="Difficulty" />
+                <SimpleSelect label="Type" />
             </Container>
             <div className={classes.root}>
                 <VerticalTabs 
