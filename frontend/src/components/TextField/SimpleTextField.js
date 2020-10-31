@@ -4,6 +4,7 @@ import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    minWidth: 180,
     '& > label': {
       color: theme.palette.common.white,
       fontWeight: 550

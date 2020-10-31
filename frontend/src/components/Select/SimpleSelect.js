@@ -10,7 +10,8 @@ import SimpleSelectCss from './SimpleSelect.scss'
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 220,
+    minWidth: 110,
+    width: 180,
     '& > label': {
       color: theme.palette.common.white,
       fontWeight: 550

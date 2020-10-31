@@ -19,6 +19,7 @@ const white = "#FFFFFF";
 
 const yodaGreen = '#D7E2C6';
 const codejediGreen = '#00B5AD';
+const navbarBlack = '#313233'
 
 export default createMuiTheme({
     // -------------------------------------------
@@ -30,6 +31,7 @@ export default createMuiTheme({
             black: `${black1}`,
             black2: `${black2}`,
             black3: `${black3}`,
+            navbarBlack: `${navbarBlack}`,
             grey: `${grey}`,
             grey2: `${grey2}`,
             grey3: `${grey3}`,

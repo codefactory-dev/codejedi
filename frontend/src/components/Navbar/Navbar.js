@@ -21,7 +21,7 @@ function NavBar() {
     const yodaGreen = '#D7E2C6';
 
     return (
-        <AppBar position="static">
+        <AppBar className={classes.appbar} position="static">
         <Toolbar>
             
             <SvgIcon component={YodaLogo} style={{ fontSize: 30, verticalAlign: 'middle' }} viewBox="0 0 42 42" />
@@ -50,10 +50,14 @@ function NavBar() {
 }
 
 const useStyles = makeStyles((theme) => ({
+    appbar: {
+      backgroundColor: theme.palette.common.navbarBlack,
+      color: theme.palette.common.white
+    },
     menuOptions: {
       flexGrow: 1,
       marginLeft: '78px',
-      fontWeight: theme.typography.fontWeightLight,
+      fontWeight: theme.typography.fontWeightRegular,
       display: 'none',
       [theme.breakpoints.up('md')]: {
         display: 'flex',
@@ -70,10 +74,13 @@ const useStyles = makeStyles((theme) => ({
     },
     logo: {
       flexShrink: 1,
-      fontWeight: theme.typography.fontWeightLight
+      fontWeight: theme.typography.fontWeightRegular
     },
     avatarName: {
-      marginLeft: '10px'
+      marginLeft: '10px',
+      color: theme.palette.common.white,
+      fontSize: 15,
+      fontWeight: 600
     },
     sectionDesktop: {
       display: 'none',
