@@ -6,11 +6,12 @@ import Tab from '@material-ui/core/Tab';
 import PhoneIcon from '@material-ui/icons/Phone';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import PersonPinIcon from '@material-ui/icons/PersonPin';
+import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles( theme => ({
    
   container: {
     display: 'flex',
@@ -22,12 +23,27 @@ const useStyles = makeStyles({
   tabs: {
     flexGrow: 1,
     width: '11%',
+    minWidth: 140,
+    backgroundColor: theme.palette.common.black
   },
+  tab: {
+    color: theme.palette.common.grey,
+    fontSize: 16,
+    '&$selected': {
+      color: theme.palette.common.white,
+      backgroundColor: theme.palette.common.black3
+    },
+    '&$scroller': {
+      position: 'none'
+    },
+  },
+  selected: {},
+  scroller: {},
   textArea: {
     flexShrink: 1,
     marginRight: 'auto',
     marginLeft: 'auto',
-    height: 200,
+    height: 700,
     width: '60%',
   }, 
   separator: {
@@ -36,8 +52,9 @@ const useStyles = makeStyles({
   thirdElement: {
     flexGrow: 1,
     width: '11%',
+    minWidth: 140,
   }
-});
+}));
 
 export default function IconTabs() {
   const classes = useStyles();
@@ -60,9 +77,9 @@ export default function IconTabs() {
           textColor="primary"
           aria-label="icon tabs example"
         >
-          <Tab label="Question" {...a11yProps(0)}  />
-          <Tab label="Solution" {...a11yProps(1)} />
-          <Tab label="Test Cases" {...a11yProps(2)} />
+          <Tab classes={{ root: classes.tab, selected: classes.selected }} label="DESCRIPTION" {...a11yProps(0)}  />
+          <Tab classes={{ root: classes.tab, selected: classes.selected }} label="SOLUTION" {...a11yProps(1)} />
+          <Tab classes={{ root: classes.tab, selected: classes.selected }} label="TEST CASES" {...a11yProps(2)} />
 
         </Tabs>
       </Paper>

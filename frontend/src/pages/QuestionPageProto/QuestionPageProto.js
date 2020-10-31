@@ -3,11 +3,18 @@ import { makeStyles } from '@material-ui/core/styles';
 import Navbar from '../../components/Navbar/Navbar.js'
 import VerticalTabs from '../../components/VerticalTabs/VerticalTabs'
 import Container from '@material-ui/core/Container';
+import TextField from '@material-ui/core/TextField';
+import SimpleTextField from '../../components/TextField/SimpleTextField.js'
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import Swal from 'sweetalert2'
 import questionTypes from '../../utils/questionTypes.js';
 import axios from 'axios'
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import RegularButton from '../../components/Buttons/RegularButton.js'
+import SimpleSelect from '../../components/Select/SimpleSelect.js'
 
 export default function QuestionPageProto() { 
     const classes = useStyles();
@@ -23,6 +30,9 @@ export default function QuestionPageProto() {
     const [solutionName, setSolutionName] = useState();
 
 
+    function handleChange(){
+        console.log("handling change");
+    }
 
     async function loadQuestion(){
         const allUsers = await axios({
@@ -80,6 +90,11 @@ export default function QuestionPageProto() {
     return (
         <div className={classes.questionPage}>
             <Navbar />
+            
+            <Container className={classes.titleContainer}>
+                <SimpleTextField label="Title" />
+                <SimpleSelect />
+            </Container>
             <div className={classes.root}>
                 <VerticalTabs 
                     shouldSubmit={shouldSubmit} 
@@ -95,7 +110,7 @@ export default function QuestionPageProto() {
                     answer={answer}
                     setAnswer={setAnswer}
                     />
-                <Box>
+                <Box className={classes.box}>
                     <div className={classes.grow} />
                     <Button 
                         className={classes.submitBtn} 
@@ -121,6 +136,9 @@ export default function QuestionPageProto() {
                     >
                         Load
                     </Button>
+                    <RegularButton>
+                        Save
+                    </RegularButton>
                 </Box>
             </div>
             
@@ -130,22 +148,53 @@ export default function QuestionPageProto() {
 }
 
 const useStyles = makeStyles((theme) => ({
+    
+    titleContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        marginTop: 20,
+        height: 20,
+        width: '60%'
+    },
     root: {
         padding: 0,
         margin: 0,
         width: '100%',
-        height: '100%'
+        height: '100%',
+        backgroundColor: theme.palette.common.black,
     },
+    btn: {
+        background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+        borderRadius: 3,
+        border: 0,
+        color: 'white',
+        height: 48,
+        padding: '0 30px',
+        boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+        // $disabled is a reference to the local disabled
+        // rule within the same style sheet.
+        // By using &, we increase the specificity.
+        '&$disabled': {
+          background: 'rgba(0, 0, 0, 0.12)',
+          color: 'white',
+          boxShadow: 'none',
+        },
+      },
+    disabled: {},
     questionPage: {
         height:'900px',
-        backgroundColor:'#1B1C1D',
+        backgroundColor: theme.palette.common.black,
         color:'white'
     },    
     answer: {
         color:'green',
     },
+    box: {
+        backgroundColor: theme.palette.common.black,
+    },
     grow: {
       flexGrow: 1,
+      backgroundColor: theme.palette.common.black,
     },
     submitBtn: {
       marginTop: '20px',
