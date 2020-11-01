@@ -96,10 +96,8 @@ export default function IconTabs() {
             Testcases Description
         </TabPanel>
       </Paper>
-      <div className={classes.separator}></div>
-      <div className={classes.thirdElement}>
-
-      </div>
+      <div className={classes.separator} />
+      <div className={classes.thirdElement} />
     </div>
   );
 }

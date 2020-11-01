@@ -26,6 +26,9 @@ const useStyles = makeStyles((theme) => ({
     separator: {
         width: '20%'
     },
+    minorSeparator: {
+        width: '9%'
+    },
     questionPage: {
         height:'900px',
         backgroundColor: theme.palette.common.black,
@@ -49,6 +52,8 @@ const useStyles = makeStyles((theme) => ({
     box: {
         display: 'flex',
         flexDirection: 'row',
+        justifyContent: 'flex-end',
+        width: '60%',
         backgroundColor: theme.palette.common.black,
         marginTop: 60
 
@@ -211,7 +216,6 @@ export default function QuestionPageProto() {
                         />
                 </div>
                 <div className={classes.box}>
-                        <div className={classes.grow} />
                         <RegularButton label="Save" />
                 </div>
             </div>
