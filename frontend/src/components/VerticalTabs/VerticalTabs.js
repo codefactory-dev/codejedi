@@ -52,6 +52,10 @@ const useStyles = makeStyles( theme => ({
     width: '60%',
   }, 
   separator: {
+    position: 'relative',
+    width: '9%'
+  },
+  secondSeparator: {
     width: '9%'
   },
   thirdElement: {
@@ -113,7 +117,7 @@ export default function IconTabs() {
       </div>
       <div style={{marginTop: 20}} className={classes.container}>
           <div className={classes.tabs}/>
-          <div className={classes.separator} />
+          <div className={classes.secondSeparator} />
           <RegularButton className={classes.regularButton} label="Save" />
       </div>
       
