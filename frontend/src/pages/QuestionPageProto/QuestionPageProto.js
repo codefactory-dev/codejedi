@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
         width: '9%'
     },
     questionPage: {
-        height:'900px',
+        height:'1020px',
         backgroundColor: theme.palette.common.black,
         color:'white'
     },  
