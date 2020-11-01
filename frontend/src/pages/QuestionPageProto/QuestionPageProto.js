@@ -16,6 +16,92 @@ import InputLabel from '@material-ui/core/InputLabel';
 import RegularButton from '../../components/Buttons/RegularButton.js'
 import SimpleSelect from '../../components/Select/SimpleSelect.js'
 
+const useStyles = makeStyles((theme) => ({
+    
+    
+    questionPage: {
+        height:'900px',
+        backgroundColor: theme.palette.common.black,
+        color:'white'
+    },  
+    centralElements: {
+        display: 'flex',
+        alignItems: 'center',
+        backgroundColor: theme.palette.common.black,
+        flexDirection: 'column'
+    },
+    titleContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        marginTop: 20,
+        height: 20,
+        minWidth: 435,
+        paddingLeft: 0,
+        paddingRIght: 0
+    },
+    box: {
+        display: 'flex',
+        flexDirection: 'row',
+        backgroundColor: theme.palette.common.black,
+        marginTop: 60
+
+    },
+    centralTextArea: {
+        marginTop: 60,
+        padding: 0,
+        margin: 0,
+        width: '100%',
+        height: '100%',
+        backgroundColor: theme.palette.common.black,
+    },
+    btn: {
+        background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+        borderRadius: 3,
+        border: 0,
+        color: 'white',
+        height: 48,
+        padding: '0 30px',
+        boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+        // $disabled is a reference to the local disabled
+        // rule within the same style sheet.
+        // By using &, we increase the specificity.
+        '&$disabled': {
+          background: 'rgba(0, 0, 0, 0.12)',
+          color: 'white',
+          boxShadow: 'none',
+        },
+      },
+    disabled: {},  
+    answer: {
+        color:'green',
+    },
+    grow: {
+      flexGrow: 1,
+      backgroundColor: theme.palette.common.black,
+    },
+    submitBtn: {
+      marginTop: '20px',
+      float: 'right',
+      textTransform: 'none',
+      fontWeight: theme.typography.fontWeightRegular,
+    },
+    saveBtn: {
+        marginTop: '20px',
+        marginRight: '20px',
+        float: 'right',
+        textTransform: 'none',
+        fontWeight: theme.typography.fontWeightRegular,
+    },
+    loadBtn: {
+        marginTop: '20px',
+        marginRight: '20px',
+        float: 'right',
+        textTransform: 'none',
+        fontWeight: theme.typography.fontWeightRegular,
+    },
+
+}));
+
 export default function QuestionPageProto() { 
     const classes = useStyles();
     const [shouldSubmit, setShouldSubmit] = useState(false);
@@ -91,55 +177,31 @@ export default function QuestionPageProto() {
         <div className={classes.questionPage}>
             <Navbar />
             
-            <Container className={classes.titleContainer}>
-                <SimpleTextField label="Title" />
-                <SimpleSelect label="Difficulty" />
-                <SimpleSelect label="Type" />
-            </Container>
-            <div className={classes.root}>
-                <VerticalTabs 
-                    shouldSubmit={shouldSubmit} 
-                    setShouldSubmit={setShouldSubmit}
-                    shouldSave={shouldSave}
-                    setShouldSave={setShouldSave}
-                    questionDescription={questionDescription}
-                    questionSolution={questionSolution}
-                    questionTestcases={questionTestcases}
-                    questionTestcasesType={questionTestcasesType}
-                    languageType={languageType}
-                    solutionName={solutionName}
-                    answer={answer}
-                    setAnswer={setAnswer}
-                    />
+            <div className={classes.centralElements}>
+                <div className={classes.titleContainer}>
+                    <SimpleTextField label="Title" />
+                    <SimpleSelect label="Difficulty" />
+                    <SimpleSelect label="Type" />
+                </div>
+                <div className={classes.centralTextArea}>
+                    <VerticalTabs 
+                        shouldSubmit={shouldSubmit} 
+                        setShouldSubmit={setShouldSubmit}
+                        shouldSave={shouldSave}
+                        setShouldSave={setShouldSave}
+                        questionDescription={questionDescription}
+                        questionSolution={questionSolution}
+                        questionTestcases={questionTestcases}
+                        questionTestcasesType={questionTestcasesType}
+                        languageType={languageType}
+                        solutionName={solutionName}
+                        answer={answer}
+                        setAnswer={setAnswer}
+                        />
+                </div>
                 <Box className={classes.box}>
-                    <div className={classes.grow} />
-                    <Button 
-                        className={classes.submitBtn} 
-                        variant="contained" 
-                        color="primary"
-                        onClick={triggerSubmitAll}
-                    >
-                        Submit Question
-                    </Button>
-                    <Button 
-                        className={classes.saveBtn} 
-                        variant="contained" 
-                        color="primary"
-                        onClick={triggerSave}
-                    >
-                        Save
-                    </Button>
-                    <Button 
-                        className={classes.loadBtn} 
-                        variant="contained" 
-                        color="primary"
-                        onClick={triggerLoad}
-                    >
-                        Load
-                    </Button>
-                    <RegularButton>
-                        Save
-                    </RegularButton>
+                        <div className={classes.grow} />
+                        <RegularButton label="Save" />
                 </Box>
             </div>
             
@@ -148,74 +210,3 @@ export default function QuestionPageProto() {
 
 }
 
-const useStyles = makeStyles((theme) => ({
-    
-    titleContainer: {
-        display: 'flex',
-        flexDirection: 'row',
-        marginTop: 20,
-        height: 20,
-        width: '60%'
-    },
-    root: {
-        padding: 0,
-        margin: 0,
-        width: '100%',
-        height: '100%',
-        backgroundColor: theme.palette.common.black,
-    },
-    btn: {
-        background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
-        borderRadius: 3,
-        border: 0,
-        color: 'white',
-        height: 48,
-        padding: '0 30px',
-        boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-        // $disabled is a reference to the local disabled
-        // rule within the same style sheet.
-        // By using &, we increase the specificity.
-        '&$disabled': {
-          background: 'rgba(0, 0, 0, 0.12)',
-          color: 'white',
-          boxShadow: 'none',
-        },
-      },
-    disabled: {},
-    questionPage: {
-        height:'900px',
-        backgroundColor: theme.palette.common.black,
-        color:'white'
-    },    
-    answer: {
-        color:'green',
-    },
-    box: {
-        backgroundColor: theme.palette.common.black,
-    },
-    grow: {
-      flexGrow: 1,
-      backgroundColor: theme.palette.common.black,
-    },
-    submitBtn: {
-      marginTop: '20px',
-      float: 'right',
-      textTransform: 'none',
-      fontWeight: theme.typography.fontWeightRegular,
-    },
-    saveBtn: {
-        marginTop: '20px',
-        marginRight: '20px',
-        float: 'right',
-        textTransform: 'none',
-        fontWeight: theme.typography.fontWeightRegular,
-    },
-    loadBtn: {
-        marginTop: '20px',
-        marginRight: '20px',
-        float: 'right',
-        textTransform: 'none',
-        fontWeight: theme.typography.fontWeightRegular,
-    },
-
-}));

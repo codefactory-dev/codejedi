@@ -10,12 +10,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function RegularButton() {
+export default function RegularButton(props) {
   const classes = useStyles();
 
   return (
-    <Button className={classes.root} variant="contained" color="primary">
-    Primary
+    <Button className={classes.root} variant="outlined" color="primary">
+    {props.label || "Default Text"}
     </Button>
   );
 }
