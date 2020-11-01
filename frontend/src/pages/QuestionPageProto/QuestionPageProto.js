@@ -18,7 +18,14 @@ import SimpleSelect from '../../components/Select/SimpleSelect.js'
 
 const useStyles = makeStyles((theme) => ({
     
-    
+    title: {
+        display: 'flex',
+        flexDirection: 'row',
+        width: '100%'
+    },
+    separator: {
+        width: '20%'
+    },
     questionPage: {
         height:'900px',
         backgroundColor: theme.palette.common.black,
@@ -179,9 +186,13 @@ export default function QuestionPageProto() {
             
             <div className={classes.centralElements}>
                 <div className={classes.titleContainer}>
-                    <SimpleTextField label="Title" />
-                    <SimpleSelect label="Difficulty" />
-                    <SimpleSelect label="Type" />
+                    <div className={classes.separator} />
+                    <div className={classes.title}>
+                        <SimpleTextField label="Title" />
+                        <SimpleSelect label="Difficulty" />
+                        <SimpleSelect label="Type" />
+                    </div>
+                    <div className={classes.separator} />
                 </div>
                 <div className={classes.centralTextArea}>
                     <VerticalTabs 
@@ -199,10 +210,10 @@ export default function QuestionPageProto() {
                         setAnswer={setAnswer}
                         />
                 </div>
-                <Box className={classes.box}>
+                <div className={classes.box}>
                         <div className={classes.grow} />
                         <RegularButton label="Save" />
-                </Box>
+                </div>
             </div>
             
         </div> 
