@@ -11,8 +11,14 @@ import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
+import RegularButton from '../../components/Buttons/RegularButton.js'
+
 const useStyles = makeStyles( theme => ({
    
+  verticalContainer: {
+    display: 'flex',
+    flexDirection: 'column'
+  },
   container: {
     display: 'flex',
     flexDirection: 'row',
@@ -53,6 +59,9 @@ const useStyles = makeStyles( theme => ({
     flexGrow: 1,
     width: '11%',
     minWidth: 140,
+  },
+  regularButton: {
+    
   }
 }));
 
@@ -65,39 +74,49 @@ export default function IconTabs() {
   };
 
   return (
-    <div className={classes.container}>
-      <Paper square className={classes.tabs}>
+    <div className={classes.verticalContainer}>
+      <div className={classes.container}>
+        <Paper square className={classes.tabs}>
 
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          orientation="vertical"
-          variant="fullWidth"
-          indicatorColor="primary"
-          textColor="primary"
-          aria-label="icon tabs example"
-        >
-          <Tab classes={{ root: classes.tab, selected: classes.selected }} label="DESCRIPTION" {...a11yProps(0)}  />
-          <Tab classes={{ root: classes.tab, selected: classes.selected }} label="SOLUTION" {...a11yProps(1)} />
-          <Tab classes={{ root: classes.tab, selected: classes.selected }} label="TEST CASES" {...a11yProps(2)} />
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            orientation="vertical"
+            variant="fullWidth"
+            indicatorColor="primary"
+            textColor="primary"
+            aria-label="icon tabs example"
+          >
+            <Tab classes={{ root: classes.tab, selected: classes.selected }} label="DESCRIPTION" {...a11yProps(0)}  />
+            <Tab classes={{ root: classes.tab, selected: classes.selected }} label="SOLUTION" {...a11yProps(1)} />
+            <Tab classes={{ root: classes.tab, selected: classes.selected }} label="TEST CASES" {...a11yProps(2)} />
 
-        </Tabs>
-      </Paper>
-      <div className={classes.separator}></div>
-      <Paper className={classes.textArea}>
+          </Tabs>
+        </Paper>
+        <div className={classes.separator}></div>
+        <Paper className={classes.textArea}>
 
-        <TabPanel value={value} index={0}>
-            Question Description
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-            Solution Description
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-            Testcases Description
-        </TabPanel>
-      </Paper>
-      <div className={classes.separator} />
-      <div className={classes.thirdElement} />
+          <TabPanel value={value} index={0}>
+              Question Description
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+              Solution Description
+          </TabPanel>
+          <TabPanel value={value} index={2}>
+              Testcases Description
+          </TabPanel>
+        </Paper>
+        <div className={classes.separator} />
+        <div className={classes.thirdElement} />
+      </div>
+      <div style={{marginTop: 20}} className={classes.container}>
+          <div className={classes.tabs} />
+          <div className={classes.separator}/>
+          <RegularButton className={classes.regularButton} label="Save" />
+          <div className={classes.separator} />
+          <div className={classes.thirdElement} />
+      </div>
+      
     </div>
   );
 }

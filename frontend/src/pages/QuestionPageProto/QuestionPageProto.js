@@ -56,7 +56,6 @@ const useStyles = makeStyles((theme) => ({
         width: '60%',
         backgroundColor: theme.palette.common.black,
         marginTop: 60
-
     },
     centralTextArea: {
         marginTop: 60,
@@ -214,9 +213,6 @@ export default function QuestionPageProto() {
                         answer={answer}
                         setAnswer={setAnswer}
                         />
-                </div>
-                <div className={classes.box}>
-                        <RegularButton label="Save" />
                 </div>
             </div>
             
