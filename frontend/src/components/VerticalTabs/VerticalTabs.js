@@ -27,7 +27,6 @@ const useStyles = makeStyles( theme => ({
     alignItems: 'center'
   },
   tabs: {
-    flexGrow: 1,
     width: '11%',
     minWidth: 140,
     backgroundColor: theme.palette.common.black
@@ -61,7 +60,10 @@ const useStyles = makeStyles( theme => ({
     minWidth: 140,
   },
   regularButton: {
-    
+    width: '60%'
+  },
+  separatorRegButton: {
+    width: '20%'
   }
 }));
 
@@ -110,11 +112,9 @@ export default function IconTabs() {
         <div className={classes.thirdElement} />
       </div>
       <div style={{marginTop: 20}} className={classes.container}>
-          <div className={classes.tabs} />
-          <div className={classes.separator}/>
-          <RegularButton className={classes.regularButton} label="Save" />
+          <div className={classes.tabs}/>
           <div className={classes.separator} />
-          <div className={classes.thirdElement} />
+          <RegularButton className={classes.regularButton} label="Save" />
       </div>
       
     </div>
