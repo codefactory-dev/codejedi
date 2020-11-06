@@ -14,7 +14,8 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import RegularButton from '../../components/Buttons/RegularButton.js'
-import SimpleSelect from '../../components/Select/SimpleSelect.js'
+import CustomSelect from '../../components/Select/CustomSelect.js'
+import { StylesProvider } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
     
@@ -185,38 +186,40 @@ export default function QuestionPageProto() {
     },[answer])
 
     return (
-        <div className={classes.questionPage}>
-            <Navbar />
-            
-            <div className={classes.centralElements}>
-                <div className={classes.titleContainer}>
-                    <div className={classes.separator} />
-                    <div className={classes.title}>
-                        <SimpleTextField label="Title" />
-                        <SimpleSelect label="Difficulty" />
-                        <SimpleSelect label="Type" />
+        <StylesProvider injectFirst>
+            <div className={classes.questionPage}>
+                <Navbar />
+                
+                <div className={classes.centralElements}>
+                    <div className={classes.titleContainer}>
+                        <div className={classes.separator} />
+                        <div className={classes.title}>
+                            <SimpleTextField label="Title" />
+                            <CustomSelect label="Difficulty" />
+                            {/*<CustomSelect label="Type" />*/}
+                        </div>
+                        <div className={classes.separator} />
                     </div>
-                    <div className={classes.separator} />
+                    <div className={classes.centralTextArea}>
+                        <VerticalTabs 
+                            shouldSubmit={shouldSubmit} 
+                            setShouldSubmit={setShouldSubmit}
+                            shouldSave={shouldSave}
+                            setShouldSave={setShouldSave}
+                            questionDescription={questionDescription}
+                            questionSolution={questionSolution}
+                            questionTestcases={questionTestcases}
+                            questionTestcasesType={questionTestcasesType}
+                            languageType={languageType}
+                            solutionName={solutionName}
+                            answer={answer}
+                            setAnswer={setAnswer}
+                            />
+                    </div>
                 </div>
-                <div className={classes.centralTextArea}>
-                    <VerticalTabs 
-                        shouldSubmit={shouldSubmit} 
-                        setShouldSubmit={setShouldSubmit}
-                        shouldSave={shouldSave}
-                        setShouldSave={setShouldSave}
-                        questionDescription={questionDescription}
-                        questionSolution={questionSolution}
-                        questionTestcases={questionTestcases}
-                        questionTestcasesType={questionTestcasesType}
-                        languageType={languageType}
-                        solutionName={solutionName}
-                        answer={answer}
-                        setAnswer={setAnswer}
-                        />
-                </div>
-            </div>
-            
-        </div> 
+                
+            </div> 
+        </StylesProvider>
     );
 
 }
