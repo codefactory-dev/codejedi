@@ -14,10 +14,11 @@ import masterCss from './masterCss.scss'
 //import SignInSide from './pages/SignInSide/SignInSide.js'
 import SigninPage from './pages/SigninPage/SigninPage.js'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import CustomSelect from './components/Select/CustomSelect.js'
 
 ReactDOM.render(
                 <React.StrictMode>
-                        <CustomSelect />
+                    <ThemeProvider theme={theme}>
+                        <QuestionPageProto />
+                    </ThemeProvider>
                 </React.StrictMode>, 
                 document.getElementById('root'));

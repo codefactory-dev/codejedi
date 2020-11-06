@@ -22,7 +22,8 @@ const useStyles = makeStyles((theme) => ({
     title: {
         display: 'flex',
         flexDirection: 'row',
-        width: '100%'
+        width: '100%',
+        height: '51px'
     },
     separator: {
         width: '20%'
@@ -45,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'row',
         marginTop: 20,
-        height: 20,
+        height: 60,
         minWidth: 435,
         paddingLeft: 0,
         paddingRIght: 0
@@ -196,6 +197,7 @@ export default function QuestionPageProto() {
                         <div className={classes.title}>
                             <SimpleTextField label="Title" />
                             <CustomSelect label="Difficulty" />
+                            <CustomSelect label="Type" />
                             {/*<CustomSelect label="Type" />*/}
                         </div>
                         <div className={classes.separator} />

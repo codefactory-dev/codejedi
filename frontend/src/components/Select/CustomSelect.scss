@@ -7,7 +7,6 @@
   display: block;
   margin: auto;
   width: 330px;
-  height: 100%;
   border-bottom: 0px;
   border-radius: 3px;
   font-size: 12px;
@@ -84,6 +83,7 @@
 .select label.option span.title {
   position: relative;
   z-index: 2;
+  color: #999;
   transition: background .3s ease-out;
 }
 .select label.option span.title i.icon {
@@ -92,7 +92,7 @@
 }
 .select label.option span.title:hover {
   color: #fff;
-  background: rgba(255, 255, 255, 0.3);
+  background: grey;
   box-shadow: inset 0px 1px 0px rgba(0, 0, 0, 0.1);
 }
 .select label.option input {
@@ -107,7 +107,7 @@
   background: #fff;
   border-top: 0px;
   box-shadow: none;
-  color: inherit;
+  color: #999;
   width: 100%;
 }
 .select label.option input:disabled ~ span.title {
