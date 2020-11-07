@@ -3,13 +3,19 @@
   src: url('../../fonts/Lato-Regular.ttf') format('ttf');
 }
 
+.wrapper-label {
+  font-family: Lato,sans-serif,Roboto,"Helvetica Neue",Arial,sans-serif;
+  font-weight: 550;
+  font-size: 1rem;
+}
+
 .select {
   position: relative;
   overflow: hidden;
   display: block;
   margin: auto;
   width: 330px;
-  margin-top: 0px;
+  margin-top: 10px;
   border-bottom: 0px;
   border-radius: 3px;
   font-size: 12px;
