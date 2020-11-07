@@ -197,7 +197,6 @@ export default function QuestionPageProto() {
                         <div className={classes.title}>
                             <SimpleTextField label="Title" />
                             <CustomSelect label="Difficulty" />
-                            <CustomSelect label="Type" />
                             {/*<CustomSelect label="Type" />*/}
                         </div>
                         <div className={classes.separator} />

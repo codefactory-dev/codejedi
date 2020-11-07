@@ -17,22 +17,22 @@ export default function CustomSelect(){
 			<input type="radio" name="option" />
 			<i class="toggle icon icon-arrow-down"></i>
 			<i class="toggle icon icon-arrow-up"></i>
-			<span class="placeholder">Choose...</span>
+			<span class="placeholder">Select an option</span>
 			<label class="option">
 				<input type="radio" name="option" />
-				<span class="title"><i class="icon icon-speedometer"></i>Speedometer</span>
+				<span class="title">Option 1</span>
 			</label>
 			<label class="option">
 				<input type="radio" name="option" />
-				<span class="title"><i class="icon icon-fire"></i>Fire</span>
+				<span class="title">Option 2</span>
 			</label>
 			<label class="option">
-				<input type="radio" name="option" disabled />
-				<span class="title"><i class="icon icon-handbag"></i>Handbag</span>
+				<input type="radio" name="option"/>
+				<span class="title">Option 3</span>
 			</label>
 			<label class="option">
 				<input type="radio" name="option" />
-				<span class="title"><i class="icon icon-badge"></i>Badge</span>
+				<span class="title">Option 4</span>
 			</label>
 		</div>
     )
