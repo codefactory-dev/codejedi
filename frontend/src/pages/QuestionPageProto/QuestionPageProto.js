@@ -46,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'row',
         width: '100%',
+        maxWidth: 924,
         marginTop: 20,
         height: 60,
         minWidth: 503,
