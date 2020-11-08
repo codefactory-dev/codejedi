@@ -4,16 +4,16 @@ import CustomSelectCss from './CustomSelect.scss'
 var $ = require( "jquery" );
 
 const useStyles = makeStyles((theme) => ({
-    select: {
-        width: 100
+    root: {
+		
     },
 }));
 
 export default function CustomSelect(props){
-    //const classes = useStyles();
+    const classes = useStyles();
 
     return (
-		<div class="wrapper">
+		<div className={classes.root}>
 			<span class="wrapper-label">{props.label}</span>
 			<div class="select">
 				<input type="radio" name="option" />

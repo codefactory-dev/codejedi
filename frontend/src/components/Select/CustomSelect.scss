@@ -5,17 +5,19 @@
 
 .wrapper-label {
   font-family: Lato,sans-serif,Roboto,"Helvetica Neue",Arial,sans-serif;
-  font-weight: 550;
+  font-weight: 530;
   font-size: 1rem;
 }
 
 .select {
+  display: flex;
   position: relative;
   overflow: hidden;
   display: block;
   margin: auto;
-  width: 330px;
   margin-top: 10px;
+  margin-right: 10px;
+  width: 200px;
   border-bottom: 0px;
   border-radius: 3px;
   font-size: 12px;
@@ -32,6 +34,7 @@
 .select .placeholder {
   position: relative;
   display: block;
+  overflow: hidden;
   font-family: Lato,sans-serif,Roboto,"Helvetica Neue",Arial,sans-serif;
   width: 100%;
   height: 100%;
