@@ -14,14 +14,16 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import RegularButton from '../../components/Buttons/RegularButton.js'
-import SimpleSelect from '../../components/Select/SimpleSelect.js'
+import CustomSelect from '../../components/Select/CustomSelect.js'
+import { StylesProvider } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
     
     title: {
         display: 'flex',
         flexDirection: 'row',
-        width: '100%'
+        width: '100%',
+        height: '51px'
     },
     separator: {
         width: '20%'
@@ -43,9 +45,11 @@ const useStyles = makeStyles((theme) => ({
     titleContainer: {
         display: 'flex',
         flexDirection: 'row',
+        width: '100%',
+        maxWidth: 924,
         marginTop: 20,
-        height: 20,
-        minWidth: 435,
+        height: 60,
+        minWidth: 503,
         paddingLeft: 0,
         paddingRIght: 0
     },
@@ -88,7 +92,13 @@ const useStyles = makeStyles((theme) => ({
     },
     grow: {
       flexGrow: 1,
+      width: 50,
       backgroundColor: theme.palette.common.black,
+    },
+    grow2: {
+        flexGrow: 1,
+        width: 15,
+        backgroundColor: theme.palette.common.black,
     },
     submitBtn: {
       marginTop: '20px',
@@ -185,38 +195,43 @@ export default function QuestionPageProto() {
     },[answer])
 
     return (
-        <div className={classes.questionPage}>
-            <Navbar />
-            
-            <div className={classes.centralElements}>
-                <div className={classes.titleContainer}>
-                    <div className={classes.separator} />
-                    <div className={classes.title}>
-                        <SimpleTextField label="Title" />
-                        <SimpleSelect label="Difficulty" />
-                        <SimpleSelect label="Type" />
+        <StylesProvider injectFirst>
+            <div className={classes.questionPage}>
+                <Navbar />
+                
+                <div className={classes.centralElements}>
+                    <div className={classes.titleContainer}>
+                        <div className={classes.separator} />
+                        <div className={classes.title}>
+                            <SimpleTextField label="Title" />
+                            <div className={classes.grow}></div>
+                            <CustomSelect label="Difficulty" />
+                            <div className={classes.grow2}></div>
+                            <CustomSelect label="Type" />
+                            {/*<CustomSelect label="Type" />*/}
+                        </div>
+                        <div className={classes.separator} />
                     </div>
-                    <div className={classes.separator} />
+                    <div className={classes.centralTextArea}>
+                        <VerticalTabs 
+                            shouldSubmit={shouldSubmit} 
+                            setShouldSubmit={setShouldSubmit}
+                            shouldSave={shouldSave}
+                            setShouldSave={setShouldSave}
+                            questionDescription={questionDescription}
+                            questionSolution={questionSolution}
+                            questionTestcases={questionTestcases}
+                            questionTestcasesType={questionTestcasesType}
+                            languageType={languageType}
+                            solutionName={solutionName}
+                            answer={answer}
+                            setAnswer={setAnswer}
+                            />
+                    </div>
                 </div>
-                <div className={classes.centralTextArea}>
-                    <VerticalTabs 
-                        shouldSubmit={shouldSubmit} 
-                        setShouldSubmit={setShouldSubmit}
-                        shouldSave={shouldSave}
-                        setShouldSave={setShouldSave}
-                        questionDescription={questionDescription}
-                        questionSolution={questionSolution}
-                        questionTestcases={questionTestcases}
-                        questionTestcasesType={questionTestcasesType}
-                        languageType={languageType}
-                        solutionName={solutionName}
-                        answer={answer}
-                        setAnswer={setAnswer}
-                        />
-                </div>
-            </div>
-            
-        </div> 
+                
+            </div> 
+        </StylesProvider>
     );
 
 }
