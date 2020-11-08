@@ -92,7 +92,13 @@ const useStyles = makeStyles((theme) => ({
     },
     grow: {
       flexGrow: 1,
+      width: 50,
       backgroundColor: theme.palette.common.black,
+    },
+    grow2: {
+        flexGrow: 1,
+        width: 15,
+        backgroundColor: theme.palette.common.black,
     },
     submitBtn: {
       marginTop: '20px',
@@ -198,7 +204,9 @@ export default function QuestionPageProto() {
                         <div className={classes.separator} />
                         <div className={classes.title}>
                             <SimpleTextField label="Title" />
+                            <div className={classes.grow}></div>
                             <CustomSelect label="Difficulty" />
+                            <div className={classes.grow2}></div>
                             <CustomSelect label="Type" />
                             {/*<CustomSelect label="Type" />*/}
                         </div>
