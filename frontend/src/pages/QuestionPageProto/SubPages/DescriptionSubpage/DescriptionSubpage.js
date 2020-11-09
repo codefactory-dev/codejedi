@@ -143,7 +143,7 @@ export default function DescriptionSubpage() {
         <div className={classes.separator} />
         <div className={classes.thirdElement} />
       </div>
-      <div style={{marginTop: 60}} className={classes.container}>
+      <div style={{marginTop: 60, marginBottom: 60}} className={classes.container}>
           <div className={classes.tabs}/>
           <div className={classes.secondSeparator} />
           <RegularButton className={classes.regularButton} label="Save" />
