@@ -15,9 +15,13 @@ const useStyles = makeStyles(theme => ({
         height: '100vh',
         boxSizing: 'border-box',
         padding: '30px 10px',
-        margin: '0',
         backgroundColor: theme.palette.common.black,
         color: theme.palette.common.greyLight,
+        flexShrink: 1,
+        marginRight: 'auto',
+        marginLeft: 'auto',
+        width: '60%',
+        marginTop: 60
         
     },
     titleContainer: {

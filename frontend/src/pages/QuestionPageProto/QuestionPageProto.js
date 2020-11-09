@@ -16,6 +16,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import RegularButton from '../../components/Buttons/RegularButton.js'
 import { StylesProvider } from "@material-ui/core/styles";
 import DescriptionSubpage from './SubPages/DescriptionSubpage/DescriptionSubpage.js'
+import TestcasesSubpage from './SubPages/TestcasesSubpage/TestcasesSubpage.js'
 
 const useStyles = makeStyles((theme) => ({
     
@@ -174,6 +175,31 @@ export default function QuestionPageProto() {
         setAnswer("");
     },[answer])
 
+    function renderSubpage(){
+        if (false){
+            return (
+                <DescriptionSubpage
+                    shouldSubmit={shouldSubmit} 
+                    setShouldSubmit={setShouldSubmit}
+                    shouldSave={shouldSave}
+                    setShouldSave={setShouldSave}
+                    questionDescription={questionDescription}
+                    questionSolution={questionSolution}
+                    questionTestcases={questionTestcases}
+                    questionTestcasesType={questionTestcasesType}
+                    languageType={languageType}
+                    solutionName={solutionName}
+                    answer={answer}
+                    setAnswer={setAnswer}
+                />
+            )
+        } else {
+            return (
+                <TestcasesSubpage />
+            )
+        }
+    }
+
     return (
         <StylesProvider injectFirst>
             <div className={classes.questionPage}>
@@ -181,20 +207,7 @@ export default function QuestionPageProto() {
                 
                 <div className={classes.centralElements}>
                     <div className={classes.centralTextArea}>
-                        <DescriptionSubpage
-                            shouldSubmit={shouldSubmit} 
-                            setShouldSubmit={setShouldSubmit}
-                            shouldSave={shouldSave}
-                            setShouldSave={setShouldSave}
-                            questionDescription={questionDescription}
-                            questionSolution={questionSolution}
-                            questionTestcases={questionTestcases}
-                            questionTestcasesType={questionTestcasesType}
-                            languageType={languageType}
-                            solutionName={solutionName}
-                            answer={answer}
-                            setAnswer={setAnswer}
-                            />
+                        {renderSubpage()}
                     </div>
                 </div>
                 
