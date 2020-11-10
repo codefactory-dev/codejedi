@@ -42,7 +42,13 @@ const useStyles = makeStyles( theme => ({
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
-    height: '51px'
+    justifyContent: 'flex-start'
+  },
+  format: {
+    justifyContent: 'flex-start',
+    color: theme.palette.common.grey,
+    marginTop: 15,
+    fontFamily: 'OpenSans-Regular, sans-serif'
   },
   container: {
     display: 'flex',
@@ -101,14 +107,10 @@ export default function TestcasesSubpage() {
     <div className={classes.verticalContainer}>
       <div className={classes.titleContainer}>
           <div className={classes.questionPageSeparator} />
-          <div className={classes.title}>
-              <SimpleTextField label="Title" />
-              <div className={classes.grow}></div>
-              <CustomSelect label="Difficulty" />
-              <div className={classes.grow2}></div>
-              <CustomSelect label="Type" />
-              {/*<CustomSelect label="Type" />*/}
-          </div>
+          <Typography variant="h6">
+            <div className={classes.title}>Type your inputs below. Each input line is a separate test case in this format:</div>
+            <div className={classes.format}>1</div>
+          </Typography>
           <div className={classes.questionPageSeparator} />
       </div>
       <div className={classes.container}>
