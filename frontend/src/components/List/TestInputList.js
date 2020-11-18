@@ -105,15 +105,23 @@ export default function TestInputList() {
         setInputs([...inputs, "nums4"])
     }
     const onClickRowItem = (event,idx) => {
-        console.log("clicked row item "+event.target.tagName)
+        console.log("clicked row item "+idx);
         setActiveRowItem(idx);
+    }
+    const onFormSubmit = (e) => {
+        e.preventDefault();
+        let newInputs = [...inputs];
+        newInputs[activeRowItem] = document.querySelector(`#input-${activeRowItem}`).value;
+        console.log("new inputs: "+JSON.stringify(newInputs));
+        setInputs(newInputs);
+        setActiveRowItem(-1);
     }
 
     function generateRow(input,idx) {
         if (idx === activeRowItem){
             return (
                 <React.Fragment key={`input-${idx}`}>
-                    <input className={classes.input} placeholder={input} />
+                    <input id={`input-${idx}`} className={classes.input} placeholder={input} />
                     <hr className={classes.divider} />
                 </React.Fragment>
             )
@@ -145,11 +153,12 @@ export default function TestInputList() {
             </div>
             <hr className={classes.divider} />
             <div className={classes.contentContainer}>
-                {inputs.map((input, idx) => {
-                    return (
-                        generateRow(input,idx)                        
-                )})}
-                
+                <form onSubmit={(e) => {onFormSubmit(e)}}>
+                    {inputs.map((input, idx) => {
+                        return (
+                                generateRow(input,idx)
+                    )})}
+                </form>
                 <div className={classes.addContainer}>
                     <AddIcon style={{'height': '12px', width: '12px'}} />
                     <a onClick={onClickHandler} className={classes.newButton}>New</a>
