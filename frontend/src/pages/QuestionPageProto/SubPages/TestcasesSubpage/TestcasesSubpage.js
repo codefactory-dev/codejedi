@@ -25,18 +25,8 @@ const useStyles = makeStyles( theme => ({
     width: '100%',
     alignItems: 'center'
   },
-  titleContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '60%',
-    marginTop: 20,
-    height: 60,
-    minWidth: 503,
-    paddingLeft: 0,
-    paddingRIght: 0
-  },
-  questionPageSeparator: {
-    width: '20%'
+  contentList: {
+    width: '60%'
   },
   title: {
     display: 'flex',
@@ -79,20 +69,11 @@ const useStyles = makeStyles( theme => ({
     position: 'relative',
     width: '9%'
   },
-  secondSeparator: {
-    width: '9%'
-  },
   thirdElement: {
     flexGrow: 1,
     width: '11%',
     minWidth: 140,
   },
-  regularButton: {
-    width: '60%',
-  },
-  separatorRegButton: {
-    width: '20%'
-  }
 }));
 
 export default function TestcasesSubpage() {
@@ -105,13 +86,17 @@ export default function TestcasesSubpage() {
 
   return (
     <div className={classes.verticalContainer}>
-      <div className={classes.titleContainer}>
-          <div className={classes.questionPageSeparator} />
+      <div className={classes.container}>
+        <div className={classes.tabs} />
+        <div className={classes.separator} />
+        <div className={classes.contentList}>
           <Typography variant="h6">
             <div className={classes.title}>Type your inputs below. Each input line is a separate test case in this format:</div>
             <div className={classes.format}>1</div>
           </Typography>
-          <div className={classes.questionPageSeparator} />
+        </div>
+        <div className={classes.separator} />
+        <div className={classes.thirdElement} />
       </div>
       <div className={classes.container}>
         <Paper square className={classes.tabs}>
