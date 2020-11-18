@@ -153,7 +153,10 @@ export default function TestInputList() {
             </div>
             <hr className={classes.divider} />
             <div className={classes.contentContainer}>
-                <form onSubmit={(e) => {onFormSubmit(e)}}>
+                <form 
+                    //onBlur in React is used instead of onFocusOut
+                    onBlur={(e) => {onFormSubmit(e)}}
+                    onSubmit={(e) => {onFormSubmit(e)}}>
                     {inputs.map((input, idx) => {
                         return (
                                 generateRow(input,idx)
