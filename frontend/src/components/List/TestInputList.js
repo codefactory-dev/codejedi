@@ -111,7 +111,11 @@ export default function TestInputList() {
     const onFormSubmit = (e) => {
         e.preventDefault();
         let newInputs = [...inputs];
-        newInputs[activeRowItem] = document.querySelector(`#input-${activeRowItem}`).value;
+        const activeRowValue = document.querySelector(`#input-${activeRowItem}`).value;
+        //if string contains only whitespaces, don't change anything
+        if (activeRowValue.trim()){
+            newInputs[activeRowItem] = document.querySelector(`#input-${activeRowItem}`).value;
+        }
         console.log("new inputs: "+JSON.stringify(newInputs));
         setInputs(newInputs);
         setActiveRowItem(-1);
