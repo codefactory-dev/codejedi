@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -7,6 +7,8 @@ import Button from '@material-ui/core/Button';
 
 import {ReactComponent as HashIcon} from '../../icons/hashtag.svg';
 import {ReactComponent as AddIcon} from '../../icons/add.svg';
+
+const { usePrevious } = require('../../utils/useful.js')
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -59,10 +61,12 @@ const useStyles = makeStyles(theme => ({
     },
     input: {
         color: theme.palette.common.white,
+        backgroundColor: theme.palette.common.black,
         fontSize: '1rem',
         marginLeft: '30px',
         margin: '10px 0',
-        padding: '0'
+        padding: '0',
+        cursor: 'pointer'
     },
     divider: {
         ...theme.divider
@@ -93,10 +97,37 @@ const useStyles = makeStyles(theme => ({
 export default function TestInputList() {
     const classes = useStyles();
     const theme = useTheme();
-    const inputs = ['nums1', 'nums2', 'nums3'];
+    const [inputs, setInputs] = useState(['nums1', 'nums2', 'nums3']);
+    const [activeRowItem, setActiveRowItem] = useState();
+    //const prevInputs = usePrevious(inputs);
 
     const onClickHandler = (e) => {
-        console.log("oeoeoeoeoe");
+        setInputs([...inputs, "nums4"])
+    }
+    const onClickRowItem = (event,idx) => {
+        console.log("clicked row item "+event.target.tagName)
+        setActiveRowItem(idx);
+    }
+
+    function generateRow(input,idx) {
+        if (idx === activeRowItem){
+            return (
+                <React.Fragment key={`input-${idx}`}>
+                    <input className={classes.input} placeholder={input} />
+                    <hr className={classes.divider} />
+                </React.Fragment>
+            )
+        }
+        else {
+            return(
+                <React.Fragment key={`input-${idx}`}>
+                    {/*<input className={classes.input} placeholder={input} />*/}
+                    <p onClick={(event) => {onClickRowItem(event,idx) }} className={classes.input}>{input}</p>
+                    <hr className={classes.divider} />
+                </React.Fragment>
+            )
+        }
+        
     }
 
     
@@ -116,10 +147,7 @@ export default function TestInputList() {
             <div className={classes.contentContainer}>
                 {inputs.map((input, idx) => {
                     return (
-                    <React.Fragment key={`input-${idx}`}>
-                        <p className={classes.input}>{input}</p>
-                        <hr className={classes.divider} />
-                    </React.Fragment>
+                        generateRow(input,idx)                        
                 )})}
                 
                 <div className={classes.addContainer}>
