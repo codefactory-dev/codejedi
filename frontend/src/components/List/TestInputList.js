@@ -4,9 +4,14 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
+import IconButton from '../Buttons/IconButton';
 
 import {ReactComponent as HashIcon} from '../../icons/hashtag.svg';
 import {ReactComponent as AddIcon} from '../../icons/add.svg';
+
+
+import {ReactComponent as EditIcon} from '../../icons/edit.svg';
+import {ReactComponent as DeleteIcon} from '../../icons/delete.svg';
 
 const { usePrevious } = require('../../utils/useful.js')
 
@@ -25,6 +30,13 @@ const useStyles = makeStyles(theme => ({
         width: '60%',
         marginTop: 60
         
+    },
+    editIcon: {
+        width: 25,
+        height: 25
+    },
+    deleteIcon: {
+
     },
     titleContainer: {
         display: 'flex',
@@ -66,7 +78,7 @@ const useStyles = makeStyles(theme => ({
         marginLeft: '30px',
         margin: '10px 0',
         padding: '0',
-        cursor: 'pointer'
+        cursor: 'pointer',
     },
     divider: {
         ...theme.divider
@@ -125,6 +137,8 @@ export default function TestInputList() {
         if (idx === activeRowItem){
             return (
                 <React.Fragment key={`input-${idx}`}>
+                    <IconButton width={32} height={32} padding={6} className={classes.editIcon} onClick={() => console.log("oeoeoeoe")} icon={<EditIcon />} />
+                    <IconButton width={32} height={32} padding={6} className={classes.deleteIcon} onClick={() => console.log("aeaeaeae")} icon={<DeleteIcon />}/>
                     <input id={`input-${idx}`} className={classes.input} placeholder={input} />
                     <hr className={classes.divider} />
                 </React.Fragment>

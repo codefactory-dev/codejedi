@@ -12,10 +12,10 @@ const useStyles = makeStyles(theme => ({
         position: 'relative',
         zIndex: 0,
         minWidth: '0',
-        width: '68px',
-        height: '68px',
-        margin: '0 10px',
-        padding: '10px',
+        width: props => props.width || 68,
+        height: props => props.height ||68,
+        margin: props => props.margin || '0 10px',
+        padding: props => props.padding || '10px',
         border: `1.5px solid ${theme.palette.primary.main}`,
         borderRadius: '5px',
         fill: 'none',
@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function IconButton(props) {
-    const classes = useStyles();
+    const classes = useStyles(props);
 
     return (
         <Button disableRipple 
