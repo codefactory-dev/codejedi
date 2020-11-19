@@ -187,6 +187,12 @@ export default function TestInputList() {
         setActiveRowItem(-1);
     }
 
+    const getDeletionState = (input,idx) => ({
+        false: <p className={classes.selectedInput}>{input}</p>,
+        true: <input id={`input-${idx}`} className={classes.focusedInput}/>
+    })
+    
+
     function generateRow(input,idx) {
         if (idx === activeRowItem){
             return (
@@ -205,11 +211,7 @@ export default function TestInputList() {
                         padding={6} 
                         onClick={(e) => { editRow(e,idx) }} icon={<EditIcon />} 
                     />
-                    {
-                        editing 
-                    ? <input id={`input-${idx}`} className={classes.focusedInput}/>
-                    : <p className={classes.selectedInput}>{input}</p>
-                    }
+                    {getDeletionState(input,idx)[editing]} 
                     {/*<input id={`input-${idx}`} className={classes.input} placeholder={input} />*/}
                     
                     <hr className={classes.divider} />
