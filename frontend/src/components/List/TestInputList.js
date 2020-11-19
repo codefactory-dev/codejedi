@@ -73,6 +73,13 @@ const useStyles = makeStyles(theme => ({
         padding: '0',
         cursor: 'pointer',
     },
+    selectedInput: {
+        display: 'inline',
+        fontSize: '1rem',
+        marginLeft: '25px',
+        padding: '0',
+        cursor: 'pointer',
+    },
     divider: {
         ...theme.divider,
         zIndex: -1,
@@ -102,6 +109,7 @@ const useStyles = makeStyles(theme => ({
     activeRow: {
         position: 'relative',
         left: -100,
+        height: 39,
         backgroundColor: theme.palette.common.black2,
         width: `calc(100% + 100px)`,
         borderStyle: 'solid',
@@ -121,6 +129,18 @@ export default function TestInputList() {
     const [inputs, setInputs] = useState(['nums1', 'nums2', 'nums3']);
     const [activeRowItem, setActiveRowItem] = useState();
     //const prevInputs = usePrevious(inputs);
+
+    const deleteRow = (e, idx) => {
+        e.preventDefault();
+        let newInputs = [...inputs];
+        newInputs.splice(activeRowItem, 1);
+        setInputs(newInputs);
+        setActiveRowItem(-1);
+    }
+
+    const editRow = (e, idx) => {
+
+    }
 
     const onClickHandler = (e) => {
         setInputs([...inputs, "nums4"])
@@ -151,16 +171,17 @@ export default function TestInputList() {
                         width={32} 
                         height={32} 
                         padding={6} 
-                        onClick={() => console.log("oeoeoeoe")} icon={<EditIcon />} 
+                        onClick={(e) => { editRow(e,idx) }} icon={<EditIcon />} 
                     />
                     <IconButton 
                         className={classes.deleteIcon} 
                         width={32} 
                         height={32} 
                         padding={6} 
-                        onClick={() => console.log("aeaeaeae")} icon={<DeleteIcon />}
+                        onClick={(e) => { deleteRow(e,idx) } } icon={<DeleteIcon />}
                     />
-                    <input id={`input-${idx}`} className={classes.input} placeholder={input} />
+                    {/*<input id={`input-${idx}`} className={classes.input} placeholder={input} />*/}
+                    <p className={classes.selectedInput}>{input}</p>
                     <hr className={classes.divider} />
                 </div>
             )
@@ -194,7 +215,7 @@ export default function TestInputList() {
             <div className={classes.contentContainer}>
                 <form 
                     //onBlur in React is used instead of onFocusOut
-                    onBlur={(e) => {onFormSubmit(e)}}
+                    /*onBlur={(e) => {onFormSubmit(e)}}*/
                     onSubmit={(e) => {onFormSubmit(e)}}>
                     {inputs.map((input, idx) => {
                         return (
