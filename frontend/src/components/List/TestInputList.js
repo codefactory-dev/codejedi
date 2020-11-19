@@ -31,13 +31,6 @@ const useStyles = makeStyles(theme => ({
         marginTop: 60
         
     },
-    editIcon: {
-        width: 25,
-        height: 25
-    },
-    deleteIcon: {
-
-    },
     titleContainer: {
         display: 'flex',
         alignItems: 'center',
@@ -69,7 +62,7 @@ const useStyles = makeStyles(theme => ({
         }
     },
     contentContainer: {
-        
+        overflow: 'visible'
     },
     input: {
         color: theme.palette.common.white,
@@ -103,7 +96,17 @@ const useStyles = makeStyles(theme => ({
     saveButton: {
         ... theme.btnPrimaryOutline,
         margin: '40px 0',
-    }
+    },
+    activeRow: {
+        position: 'relative',
+        left: -100,
+        backgroundColor: 'grey',
+        width: `calc(100% + 100px)`
+    },
+    editIcon: {
+    },
+    deleteIcon: {
+    },
   }));
 
 export default function TestInputList() {
@@ -136,12 +139,24 @@ export default function TestInputList() {
     function generateRow(input,idx) {
         if (idx === activeRowItem){
             return (
-                <React.Fragment key={`input-${idx}`}>
-                    <IconButton width={32} height={32} padding={6} className={classes.editIcon} onClick={() => console.log("oeoeoeoe")} icon={<EditIcon />} />
-                    <IconButton width={32} height={32} padding={6} className={classes.deleteIcon} onClick={() => console.log("aeaeaeae")} icon={<DeleteIcon />}/>
+                <div className={classes.activeRow} key={`input-${idx}`}>
+                    <IconButton 
+                        className={classes.editIcon} 
+                        width={32} 
+                        height={32} 
+                        padding={6} 
+                        onClick={() => console.log("oeoeoeoe")} icon={<EditIcon />} 
+                    />
+                    <IconButton 
+                        className={classes.deleteIcon} 
+                        width={32} 
+                        height={32} 
+                        padding={6} 
+                        onClick={() => console.log("aeaeaeae")} icon={<DeleteIcon />}
+                    />
                     <input id={`input-${idx}`} className={classes.input} placeholder={input} />
                     <hr className={classes.divider} />
-                </React.Fragment>
+                </div>
             )
         }
         else {

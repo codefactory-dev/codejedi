@@ -9,7 +9,8 @@ import React from 'react';
 
 const useStyles = makeStyles(theme => ({
     button: {
-        position: 'relative',
+        position: props => props.position || 'relative',
+        left: props => props.left || 0,
         zIndex: 0,
         minWidth: '0',
         width: props => props.width || 68,
