@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -18,7 +18,7 @@ const { usePrevious } = require('../../utils/useful.js')
 const useStyles = makeStyles(theme => ({
     root: {
         fontFamily: 'Lato',
-        fontWeigth: '700',
+        fontWeight: '700',
         height: '100vh',
         boxSizing: 'border-box',
         padding: '30px 10px',
@@ -70,13 +70,25 @@ const useStyles = makeStyles(theme => ({
         fontSize: '1rem',
         marginLeft: '30px',
         margin: '10px 0',
+        borderStyle: 'none',
         padding: '0',
         cursor: 'pointer',
     },
     selectedInput: {
         display: 'inline',
         fontSize: '1rem',
-        marginLeft: '25px',
+        marginLeft: '30px',
+        margin: '10px 0',
+        cursor: 'pointer',
+    },
+    focusedInput: {
+        color: theme.palette.common.white,
+        backgroundColor: theme.palette.common.black,
+        fontSize: '1rem',
+        marginLeft: '30px',
+        margin: '10px 0',
+        borderStyle: 'none',
+        borderBottom: `.1px solid ${theme.palette.common.grey}`,
         padding: '0',
         cursor: 'pointer',
     },
@@ -139,6 +151,13 @@ export default function TestInputList() {
         setEditing(false);
         setActiveRowItem(-1);
     }
+    useEffect(()=>{
+        if (editing === true){
+            let elmt = document.querySelector(`#input-${activeRowItem}`);
+            elmt.value = inputs[activeRowItem];
+            elmt.focus();
+        }
+    },[editing])
 
     const editRow = (e, idx) => {
         setEditing(true);
@@ -185,7 +204,7 @@ export default function TestInputList() {
                     />
                     {
                         editing 
-                    ? <input id={`input-${idx}`} className={classes.input} placeholder={input} />
+                    ? <input id={`input-${idx}`} className={classes.focusedInput} placeholder={input} />
                     : <p className={classes.selectedInput}>{input}</p>
                     }
                     {/*<input id={`input-${idx}`} className={classes.input} placeholder={input} />*/}
