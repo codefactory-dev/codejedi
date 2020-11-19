@@ -137,13 +137,17 @@ const useStyles = makeStyles(theme => ({
     deleteIcon: {
     },
   }));
-
+const deletionStates = {
+    DESELECTED: 0,
+    FOCUSED: 1,
+    OTHER: 2
+}
 export default function TestInputList() {
     const classes = useStyles();
     const theme = useTheme();
     const [inputs, setInputs] = useState(['nums1', 'nums2', 'nums3']);
     const [activeRowItem, setActiveRowItem] = useState();
-    const [editing, setEditing] = useState(false)
+    const [editing, setEditing] = useState(deletionStates.DESELECTED)
     //const prevInputs = usePrevious(inputs);
 
     const deleteRow = (e, idx) => {
@@ -151,11 +155,11 @@ export default function TestInputList() {
         let newInputs = [...inputs];
         newInputs.splice(activeRowItem, 1);
         setInputs(newInputs);
-        setEditing(false);
+        setEditing(deletionStates.DESELECTED);
         setActiveRowItem(-1);
     }
     useEffect(()=>{
-        if (editing === true){
+        if (editing === deletionStates.FOCUSED){
             let elmt = document.querySelector(`#input-${activeRowItem}`);
             elmt.value = inputs[activeRowItem];
             elmt.focus();
@@ -163,7 +167,7 @@ export default function TestInputList() {
     },[editing])
 
     const editRow = (e, idx) => {
-        setEditing(true);
+        setEditing(deletionStates.FOCUSED);
     }
 
     const onClickHandler = (e) => {
@@ -171,7 +175,7 @@ export default function TestInputList() {
     }
     const onClickRowItem = (event,idx) => {
         console.log("clicked row item "+idx);
-        setEditing(false);
+        setEditing(deletionStates.DESELECTED);
         setActiveRowItem(idx);
     }
     const onFormSubmit = (e) => {
@@ -188,8 +192,9 @@ export default function TestInputList() {
     }
 
     const getDeletionState = (input,idx) => ({
-        false: <p className={classes.selectedInput}>{input}</p>,
-        true: <input id={`input-${idx}`} className={classes.focusedInput}/>
+        [deletionStates.DESELECTED]: <p className={classes.selectedInput}>{input}</p>,
+        [deletionStates.FOCUSED]: <input id={`input-${idx}`} className={classes.focusedInput}/>,
+        [deletionStates.OTHER]: <p className={classes.selectedInput}>Do you want to remove the selected item ? <button>Yes</button><button>no</button></p>
     })
     
 
