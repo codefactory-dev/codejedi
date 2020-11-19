@@ -74,7 +74,9 @@ const useStyles = makeStyles(theme => ({
         cursor: 'pointer',
     },
     divider: {
-        ...theme.divider
+        ...theme.divider,
+        zIndex: -1,
+        position: 'relative'
     },
     addContainer: {
         display: 'inline-flex',
@@ -105,7 +107,7 @@ const useStyles = makeStyles(theme => ({
         borderStyle: 'solid',
         borderWidth: '0.05rem',
         overflow: 'visible',
-        borderColor: theme.palette.common.grey
+        borderColor: theme.palette.common.grey,
     },
     editIcon: {
     },
