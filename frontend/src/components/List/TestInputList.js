@@ -128,6 +128,7 @@ export default function TestInputList() {
     const theme = useTheme();
     const [inputs, setInputs] = useState(['nums1', 'nums2', 'nums3']);
     const [activeRowItem, setActiveRowItem] = useState();
+    const [editing, setEditing] = useState(false)
     //const prevInputs = usePrevious(inputs);
 
     const deleteRow = (e, idx) => {
@@ -135,11 +136,12 @@ export default function TestInputList() {
         let newInputs = [...inputs];
         newInputs.splice(activeRowItem, 1);
         setInputs(newInputs);
+        setEditing(false);
         setActiveRowItem(-1);
     }
 
     const editRow = (e, idx) => {
-
+        setEditing(true);
     }
 
     const onClickHandler = (e) => {
@@ -147,6 +149,7 @@ export default function TestInputList() {
     }
     const onClickRowItem = (event,idx) => {
         console.log("clicked row item "+idx);
+        setEditing(false);
         setActiveRowItem(idx);
     }
     const onFormSubmit = (e) => {
@@ -180,8 +183,13 @@ export default function TestInputList() {
                         padding={6} 
                         onClick={(e) => { deleteRow(e,idx) } } icon={<DeleteIcon />}
                     />
+                    {
+                        editing 
+                    ? <input id={`input-${idx}`} className={classes.input} placeholder={input} />
+                    : <p className={classes.selectedInput}>{input}</p>
+                    }
                     {/*<input id={`input-${idx}`} className={classes.input} placeholder={input} />*/}
-                    <p className={classes.selectedInput}>{input}</p>
+                    
                     <hr className={classes.divider} />
                 </div>
             )
