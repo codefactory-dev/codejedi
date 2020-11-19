@@ -13,6 +13,8 @@ import {ReactComponent as AddIcon} from '../../icons/add.svg';
 import {ReactComponent as EditIcon} from '../../icons/edit.svg';
 import {ReactComponent as DeleteIcon} from '../../icons/delete.svg';
 
+import './TestInputList.scss'
+
 const { usePrevious } = require('../../utils/useful.js')
 
 const useStyles = makeStyles(theme => ({
@@ -88,6 +90,7 @@ const useStyles = makeStyles(theme => ({
         marginLeft: '30px',
         margin: '10px 0',
         borderStyle: 'none',
+        width: 85,
         borderBottom: `.1px solid ${theme.palette.common.grey}`,
         padding: '0',
         cursor: 'pointer',
@@ -189,22 +192,22 @@ export default function TestInputList() {
             return (
                 <div className={classes.activeRow} key={`input-${idx}`}>
                     <IconButton 
-                        className={classes.editIcon} 
-                        width={32} 
-                        height={32} 
-                        padding={6} 
-                        onClick={(e) => { editRow(e,idx) }} icon={<EditIcon />} 
-                    />
-                    <IconButton 
                         className={classes.deleteIcon} 
                         width={32} 
                         height={32} 
                         padding={6} 
                         onClick={(e) => { deleteRow(e,idx) } } icon={<DeleteIcon />}
                     />
+                    <IconButton 
+                        className={classes.editIcon} 
+                        width={32} 
+                        height={32} 
+                        padding={6} 
+                        onClick={(e) => { editRow(e,idx) }} icon={<EditIcon />} 
+                    />
                     {
                         editing 
-                    ? <input id={`input-${idx}`} className={classes.focusedInput} placeholder={input} />
+                    ? <input id={`input-${idx}`} className={classes.focusedInput}/>
                     : <p className={classes.selectedInput}>{input}</p>
                     }
                     {/*<input id={`input-${idx}`} className={classes.input} placeholder={input} />*/}
