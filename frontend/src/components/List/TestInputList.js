@@ -100,8 +100,12 @@ const useStyles = makeStyles(theme => ({
     activeRow: {
         position: 'relative',
         left: -100,
-        backgroundColor: 'grey',
-        width: `calc(100% + 100px)`
+        backgroundColor: theme.palette.common.black2,
+        width: `calc(100% + 100px)`,
+        borderStyle: 'solid',
+        borderWidth: '0.05rem',
+        overflow: 'visible',
+        borderColor: theme.palette.common.grey
     },
     editIcon: {
     },
