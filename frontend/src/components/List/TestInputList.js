@@ -152,11 +152,14 @@ export default function TestInputList() {
 
     const deleteRow = (e, idx) => {
         e.preventDefault();
+        /*
         let newInputs = [...inputs];
         newInputs.splice(activeRowItem, 1);
         setInputs(newInputs);
         setEditing(deletionStates.DESELECTED);
         setActiveRowItem(-1);
+        */
+       setEditing(deletionStates.OTHER);
     }
     useEffect(()=>{
         if (editing === deletionStates.FOCUSED){
@@ -194,7 +197,7 @@ export default function TestInputList() {
     const getDeletionState = (input,idx) => ({
         [deletionStates.DESELECTED]: <p className={classes.selectedInput}>{input}</p>,
         [deletionStates.FOCUSED]: <input id={`input-${idx}`} className={classes.focusedInput}/>,
-        [deletionStates.OTHER]: <p className={classes.selectedInput}>Do you want to remove the selected item ? <button>Yes</button><button>no</button></p>
+        [deletionStates.OTHER]: <p className={classes.selectedInput}>Do you want to remove the selected item ? <div>Yes</div><div>no</div></p>
     })
     
 
