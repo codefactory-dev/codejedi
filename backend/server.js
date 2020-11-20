@@ -18,7 +18,7 @@ db.connect()
 // --------------------------------------------------------------------
 
 // NOT NEEDED WITH NETLIFY
-if (local) app.listen(3000, () => console.log('Example app listening on port 3000!'));
+if (local) app.listen(4000, () => console.log('Example app listening on port 4000!'));
 
 // --------------------------------------------------------------------
 // SERVELESS SETUP

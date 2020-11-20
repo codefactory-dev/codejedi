@@ -56,6 +56,8 @@ export default createMuiTheme({
         fontFamily: [
           'Lato', 
           'sans-serif',
+          'Open Sans',
+          'sans-serif',
           'Roboto',
           '"Helvetica Neue"',
           'Arial',
