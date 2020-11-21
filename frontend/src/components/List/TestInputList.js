@@ -30,6 +30,7 @@ const useStyles = makeStyles(theme => ({
         marginRight: 'auto',
         marginLeft: 'auto',
         width: '60%',
+        minWidth: '296.493px',
         marginTop: 60
         
     },
@@ -77,18 +78,29 @@ const useStyles = makeStyles(theme => ({
         cursor: 'pointer',
     },
     selectedInput: {
-        display: 'inline',
+        margin: 0,
         fontSize: '1rem',
-        marginLeft: '30px',
-        margin: '10px 0',
-        cursor: 'pointer',
+        position: 'absolute',
+        top: '50%',
+        left: 127,
+        msTransform: 'translateY(-50%)',
+        transform: 'translateY(-50%)',
+        '& > div': {
+            display: 'inline',
+            marginLeft: 15,
+            cursor: 'pointer',
+        }
     },
     focusedInput: {
         color: theme.palette.common.white,
         backgroundColor: theme.palette.common.black,
         fontSize: '1rem',
-        marginLeft: '30px',
-        margin: '10px 0',
+        position: 'absolute',
+        top: '50%',
+        left: 127,
+        msTransform: 'translateY(-50%)',
+        transform: 'translateY(-50%)',
+
         borderStyle: 'none',
         width: 85,
         borderBottom: `.1px solid ${theme.palette.common.grey}`,
@@ -132,53 +144,50 @@ const useStyles = makeStyles(theme => ({
         overflow: 'visible',
         borderColor: theme.palette.common.grey,
     },
-    editIcon: {
-    },
-    deleteIcon: {
-    },
   }));
-const deletionStates = {
+const rowStates = {
     DESELECTED: 0,
-    FOCUSED: 1,
-    OTHER: 2
+    EDITING_ROW: 1,
+    CONFIRMING_DELETE: 2
 }
 export default function TestInputList() {
     const classes = useStyles();
     const theme = useTheme();
     const [inputs, setInputs] = useState(['nums1', 'nums2', 'nums3']);
     const [activeRowItem, setActiveRowItem] = useState();
-    const [editing, setEditing] = useState(deletionStates.DESELECTED)
+    const [editingState, setEditingState] = useState(rowStates.DESELECTED)
+    const [maxInputTag, setMaxInputTag] = useState('20 max');
     //const prevInputs = usePrevious(inputs);
 
-    const deleteRow = (e, idx) => {
-        e.preventDefault();
-        /*
+    const deleteCurrentRow = () => {
         let newInputs = [...inputs];
         newInputs.splice(activeRowItem, 1);
         setInputs(newInputs);
-        setEditing(deletionStates.DESELECTED);
+        setEditingState(rowStates.DESELECTED);
         setActiveRowItem(-1);
-        */
-       setEditing(deletionStates.OTHER);
+    }
+    const askForDelete = (e, idx) => {
+        e.preventDefault();
+       setEditingState(rowStates.CONFIRMING_DELETE);
     }
     useEffect(()=>{
-        if (editing === deletionStates.FOCUSED){
+        if (editingState === rowStates.EDITING_ROW){
             let elmt = document.querySelector(`#input-${activeRowItem}`);
             elmt.value = inputs[activeRowItem];
             elmt.focus();
         }
-    },[editing])
+    },[editingState])
 
     const editRow = (e, idx) => {
-        setEditing(deletionStates.FOCUSED);
+        setEditingState(rowStates.EDITING_ROW);
     }
 
     const onClickHandler = (e) => {
-        setInputs([...inputs, "nums4"])
+        setInputs([...inputs, "another"])
     }
     const onClickRowItem = (event,idx) => {
         console.log("clicked row item "+idx);
-        setEditing(deletionStates.DESELECTED);
+        setEditingState(rowStates.DESELECTED);
         setActiveRowItem(idx);
     }
     const onFormSubmit = (e) => {
@@ -194,10 +203,17 @@ export default function TestInputList() {
         setActiveRowItem(-1);
     }
 
+    function handleYes(){
+        deleteCurrentRow();
+    }
+    function handleNo(){
+        setEditingState(rowStates.DESELECTED);
+    }
     const getDeletionState = (input,idx) => ({
-        [deletionStates.DESELECTED]: <p className={classes.selectedInput}>{input}</p>,
-        [deletionStates.FOCUSED]: <input id={`input-${idx}`} className={classes.focusedInput}/>,
-        [deletionStates.OTHER]: <p className={classes.selectedInput}>Do you want to remove the selected item ? <div>Yes</div><div>no</div></p>
+        [rowStates.DESELECTED]: <p className={classes.selectedInput}>{input}</p>,
+        [rowStates.EDITING_ROW]: <input id={`input-${idx}`} className={classes.focusedInput}/>,
+        [rowStates.CONFIRMING_DELETE]: <p className={classes.selectedInput}>Do you want to remove the selected item ? 
+        <div onClick={()=>{handleYes()}}>Yes</div><div onClick={()=>{handleNo()}}>no</div></p>
     })
     
 
@@ -210,17 +226,26 @@ export default function TestInputList() {
                         width={32} 
                         height={32} 
                         padding={6} 
-                        onClick={(e) => { deleteRow(e,idx) } } icon={<DeleteIcon />}
+                        position={'absolute'}
+                        top={'50%'}
+                        left={'1rem'}
+                        msTransform={'translateY(-50%)'}
+                        transform={'translateY(-50%)'}
+                        onClick={(e) => { askForDelete(e,idx) } } icon={<DeleteIcon />}
                     />
                     <IconButton 
                         className={classes.editIcon} 
                         width={32} 
                         height={32} 
                         padding={6} 
+                        position={'absolute'}
+                        top={'50%'}
+                        left={'4rem'}
+                        msTransform={'translateY(-50%)'}
+                        transform={'translateY(-50%)'}
                         onClick={(e) => { editRow(e,idx) }} icon={<EditIcon />} 
                     />
-                    {getDeletionState(input,idx)[editing]} 
-                    {/*<input id={`input-${idx}`} className={classes.input} placeholder={input} />*/}
+                    {getDeletionState(input,idx)[editingState]} 
                     
                     <hr className={classes.divider} />
                 </div>
@@ -244,7 +269,7 @@ export default function TestInputList() {
         <div className={classes.root}>
             <div className={classes.titleContainer}>
                 <span className={classes.title}>Input</span>
-                <a className={classes.tag}>20 max</a>
+                <a className={classes.tag}>{maxInputTag}</a>
             </div>
             <hr className={classes.divider} />
             <div className={classes.subtitleContainer}>

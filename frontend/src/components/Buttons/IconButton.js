@@ -10,12 +10,15 @@ import React from 'react';
 const useStyles = makeStyles(theme => ({
     button: {
         position: props => props.position || 'relative',
-        left: props => props.left || 0,
         zIndex: 0,
         minWidth: '0',
         width: props => props.width || 68,
-        height: props => props.height ||68,
-        margin: props => props.margin || '0 10px',
+        height: props => props.height || 68,
+        margin: props => props.margin,
+        top: props => props.top,
+        left: props => props.left,
+        msTransform: props => props.msTransform,
+        transform: props => props.transform,
         padding: props => props.padding || '10px',
         border: `1.5px solid ${theme.palette.primary.main}`,
         borderRadius: '5px',
