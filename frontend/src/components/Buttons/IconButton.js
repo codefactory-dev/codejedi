@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
         width: props => props.width || 68,
         height: props => props.height || 68,
         margin: props => props.margin || '0 10px',
-        padding: '10px',
+        padding: props => props.padding || '10px',
         border: `1.5px solid ${theme.palette.primary.main}`,
         borderRadius: '5px',
         fill: 'none',
