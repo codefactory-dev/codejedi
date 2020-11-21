@@ -30,6 +30,7 @@ const useStyles = makeStyles(theme => ({
         marginRight: 'auto',
         marginLeft: 'auto',
         width: '60%',
+        minWidth: '296.493px',
         marginTop: 60
         
     },

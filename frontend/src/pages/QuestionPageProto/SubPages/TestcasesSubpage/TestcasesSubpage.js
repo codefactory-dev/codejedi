@@ -18,7 +18,8 @@ const useStyles = makeStyles( theme => ({
     alignItems: 'center'
   },
   contentList: {
-    width: '60%'
+    width: '60%',
+    minWidth: '296.493px'
   },
   title: {
     display: 'flex',
@@ -59,7 +60,8 @@ const useStyles = makeStyles( theme => ({
   scroller: {},
   separator: {
     position: 'relative',
-    width: '9%'
+    width: '9%',
+    minWidth: '97.865px'
   },
   thirdElement: {
     flexGrow: 1,
