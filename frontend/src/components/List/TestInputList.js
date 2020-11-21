@@ -145,47 +145,41 @@ const useStyles = makeStyles(theme => ({
         borderColor: theme.palette.common.grey,
     },
   }));
-const deletionStates = {
+const rowStates = {
     DESELECTED: 0,
-    FOCUSED: 1,
-    OTHER: 2
+    EDITING_ROW: 1,
+    CONFIRMING_DELETE: 2
 }
 export default function TestInputList() {
     const classes = useStyles();
     const theme = useTheme();
     const [inputs, setInputs] = useState(['nums1', 'nums2', 'nums3']);
     const [activeRowItem, setActiveRowItem] = useState();
-    const [editing, setEditing] = useState(deletionStates.DESELECTED)
+    const [editingState, setEditingState] = useState(rowStates.DESELECTED)
+    const [maxInputTag, setMaxInputTag] = useState('20 max');
     //const prevInputs = usePrevious(inputs);
 
     const deleteCurrentRow = () => {
         let newInputs = [...inputs];
         newInputs.splice(activeRowItem, 1);
         setInputs(newInputs);
-        setEditing(deletionStates.DESELECTED);
+        setEditingState(rowStates.DESELECTED);
         setActiveRowItem(-1);
     }
     const askForDelete = (e, idx) => {
         e.preventDefault();
-        /*
-        let newInputs = [...inputs];
-        newInputs.splice(activeRowItem, 1);
-        setInputs(newInputs);
-        setEditing(deletionStates.DESELECTED);
-        setActiveRowItem(-1);
-        */
-       setEditing(deletionStates.OTHER);
+       setEditingState(rowStates.CONFIRMING_DELETE);
     }
     useEffect(()=>{
-        if (editing === deletionStates.FOCUSED){
+        if (editingState === rowStates.EDITING_ROW){
             let elmt = document.querySelector(`#input-${activeRowItem}`);
             elmt.value = inputs[activeRowItem];
             elmt.focus();
         }
-    },[editing])
+    },[editingState])
 
     const editRow = (e, idx) => {
-        setEditing(deletionStates.FOCUSED);
+        setEditingState(rowStates.EDITING_ROW);
     }
 
     const onClickHandler = (e) => {
@@ -193,7 +187,7 @@ export default function TestInputList() {
     }
     const onClickRowItem = (event,idx) => {
         console.log("clicked row item "+idx);
-        setEditing(deletionStates.DESELECTED);
+        setEditingState(rowStates.DESELECTED);
         setActiveRowItem(idx);
     }
     const onFormSubmit = (e) => {
@@ -213,12 +207,12 @@ export default function TestInputList() {
         deleteCurrentRow();
     }
     function handleNo(){
-        setEditing(deletionStates.DESELECTED);
+        setEditingState(rowStates.DESELECTED);
     }
     const getDeletionState = (input,idx) => ({
-        [deletionStates.DESELECTED]: <p className={classes.selectedInput}>{input}</p>,
-        [deletionStates.FOCUSED]: <input id={`input-${idx}`} className={classes.focusedInput}/>,
-        [deletionStates.OTHER]: <p className={classes.selectedInput}>Do you want to remove the selected item ? 
+        [rowStates.DESELECTED]: <p className={classes.selectedInput}>{input}</p>,
+        [rowStates.EDITING_ROW]: <input id={`input-${idx}`} className={classes.focusedInput}/>,
+        [rowStates.CONFIRMING_DELETE]: <p className={classes.selectedInput}>Do you want to remove the selected item ? 
         <div onClick={()=>{handleYes()}}>Yes</div><div onClick={()=>{handleNo()}}>no</div></p>
     })
     
@@ -251,7 +245,7 @@ export default function TestInputList() {
                         transform={'translateY(-50%)'}
                         onClick={(e) => { editRow(e,idx) }} icon={<EditIcon />} 
                     />
-                    {getDeletionState(input,idx)[editing]} 
+                    {getDeletionState(input,idx)[editingState]} 
                     
                     <hr className={classes.divider} />
                 </div>
@@ -275,7 +269,7 @@ export default function TestInputList() {
         <div className={classes.root}>
             <div className={classes.titleContainer}>
                 <span className={classes.title}>Input</span>
-                <a className={classes.tag}>20 max</a>
+                <a className={classes.tag}>{maxInputTag}</a>
             </div>
             <hr className={classes.divider} />
             <div className={classes.subtitleContainer}>
