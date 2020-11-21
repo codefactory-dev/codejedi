@@ -158,7 +158,14 @@ export default function TestInputList() {
     const [editing, setEditing] = useState(deletionStates.DESELECTED)
     //const prevInputs = usePrevious(inputs);
 
-    const deleteRow = (e, idx) => {
+    const deleteCurrentRow = () => {
+        let newInputs = [...inputs];
+        newInputs.splice(activeRowItem, 1);
+        setInputs(newInputs);
+        setEditing(deletionStates.DESELECTED);
+        setActiveRowItem(-1);
+    }
+    const askForDelete = (e, idx) => {
         e.preventDefault();
         /*
         let newInputs = [...inputs];
@@ -182,7 +189,7 @@ export default function TestInputList() {
     }
 
     const onClickHandler = (e) => {
-        setInputs([...inputs, "nums4"])
+        setInputs([...inputs, "another"])
     }
     const onClickRowItem = (event,idx) => {
         console.log("clicked row item "+idx);
@@ -202,10 +209,17 @@ export default function TestInputList() {
         setActiveRowItem(-1);
     }
 
+    function handleYes(){
+        deleteCurrentRow();
+    }
+    function handleNo(){
+        setEditing(deletionStates.DESELECTED);
+    }
     const getDeletionState = (input,idx) => ({
         [deletionStates.DESELECTED]: <p className={classes.selectedInput}>{input}</p>,
         [deletionStates.FOCUSED]: <input id={`input-${idx}`} className={classes.focusedInput}/>,
-        [deletionStates.OTHER]: <p className={classes.selectedInput}>Do you want to remove the selected item ? <div>Yes</div><div>no</div></p>
+        [deletionStates.OTHER]: <p className={classes.selectedInput}>Do you want to remove the selected item ? 
+        <div onClick={()=>{handleYes()}}>Yes</div><div onClick={()=>{handleNo()}}>no</div></p>
     })
     
 
@@ -223,7 +237,7 @@ export default function TestInputList() {
                         left={'1rem'}
                         msTransform={'translateY(-50%)'}
                         transform={'translateY(-50%)'}
-                        onClick={(e) => { deleteRow(e,idx) } } icon={<DeleteIcon />}
+                        onClick={(e) => { askForDelete(e,idx) } } icon={<DeleteIcon />}
                     />
                     <IconButton 
                         className={classes.editIcon} 
