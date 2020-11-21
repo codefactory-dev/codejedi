@@ -78,6 +78,7 @@ const useStyles = makeStyles(theme => ({
     },
     selectedInput: {
         margin: 0,
+        fontSize: '1rem',
         position: 'absolute',
         top: '50%',
         left: 127,
@@ -88,8 +89,12 @@ const useStyles = makeStyles(theme => ({
         color: theme.palette.common.white,
         backgroundColor: theme.palette.common.black,
         fontSize: '1rem',
-        marginLeft: '30px',
-        margin: '10px 0',
+        position: 'absolute',
+        top: '50%',
+        left: 127,
+        msTransform: 'translateY(-50%)',
+        transform: 'translateY(-50%)',
+
         borderStyle: 'none',
         width: 85,
         borderBottom: `.1px solid ${theme.palette.common.grey}`,
