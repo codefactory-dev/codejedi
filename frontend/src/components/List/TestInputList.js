@@ -83,7 +83,12 @@ const useStyles = makeStyles(theme => ({
         top: '50%',
         left: 127,
         msTransform: 'translateY(-50%)',
-        transform: 'translateY(-50%)'
+        transform: 'translateY(-50%)',
+        '& > div': {
+            display: 'inline',
+            marginLeft: 15,
+            cursor: 'pointer',
+        }
     },
     focusedInput: {
         color: theme.palette.common.white,
@@ -137,10 +142,6 @@ const useStyles = makeStyles(theme => ({
         borderWidth: '0.05rem',
         overflow: 'visible',
         borderColor: theme.palette.common.grey,
-    },
-    editIcon: {
-    },
-    deleteIcon: {
     },
   }));
 const deletionStates = {
