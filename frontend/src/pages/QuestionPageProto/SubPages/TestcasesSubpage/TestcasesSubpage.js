@@ -3,18 +3,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import PhoneIcon from '@material-ui/icons/Phone';
-import CustomSelect from '../../../../components/Select/CustomSelect.js'
-import SimpleTextField from '../../../../components/TextField/SimpleTextField.js'
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import PersonPinIcon from '@material-ui/icons/PersonPin';
-import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import TestInputList from '../../../../components/List/TestInputList.js'
-
-import RegularButton from '../../../../components/Buttons/RegularButton.js'
 
 const useStyles = makeStyles( theme => ({
    

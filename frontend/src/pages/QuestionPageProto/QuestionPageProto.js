@@ -1,20 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Navbar from '../../components/Navbar/Navbar.js'
-import VerticalTabs from '../../components/VerticalTabs/VerticalTabs'
-import Container from '@material-ui/core/Container';
-import TextField from '@material-ui/core/TextField';
-import SimpleTextField from '../../components/TextField/SimpleTextField.js'
-import Button from '@material-ui/core/Button';
-import Box from '@material-ui/core/Box';
 import Swal from 'sweetalert2'
-import questionTypes from '../../utils/questionTypes.js';
 import axios from 'axios'
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
-import RegularButton from '../../components/Buttons/RegularButton.js'
-import { StylesProvider } from "@material-ui/core/styles";
 import DescriptionSubpage from './SubPages/DescriptionSubpage/DescriptionSubpage.js'
 import TestcasesSubpage from './SubPages/TestcasesSubpage/TestcasesSubpage.js'
 
@@ -201,7 +189,6 @@ export default function QuestionPageProto() {
     }
 
     return (
-        <StylesProvider injectFirst>
             <div className={classes.questionPage}>
                 <Navbar />
                 
@@ -212,7 +199,6 @@ export default function QuestionPageProto() {
                 </div>
                 
             </div> 
-        </StylesProvider>
     );
 
 }

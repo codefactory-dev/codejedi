@@ -19,7 +19,7 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 ReactDOM.render(
                 <React.StrictMode>
                     <ThemeProvider theme={theme}>
-                        <ParameterInputList />
+                        <QuestionPageProto />
                     </ThemeProvider>
                 </React.StrictMode>, 
                 document.getElementById('root'));
