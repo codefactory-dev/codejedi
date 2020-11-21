@@ -57,8 +57,16 @@ export default function SwipeList() {
 
     const swipeButtons = (
                 <React.Fragment>
-                    <IconButton padding={'0 10px'} onClick={() => console.log("oeoeoeoe")} icon={<EditIcon />} />
-                    <IconButton padding={'0 10px'} onClick={() => console.log("aeaeaeae")} icon={<DeleteIcon />}/>
+                    <IconButton
+                            padding={'0 10px'} 
+                            onClick={() => console.log("oeoeoeoe")} 
+                            icon={<EditIcon />} 
+                    />
+                    <IconButton 
+                            padding={'0 10px'} 
+                            onClick={() => console.log("aeaeaeae")} 
+                            icon={<DeleteIcon />}
+                    />
                 </React.Fragment>
     );
     

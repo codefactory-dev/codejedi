@@ -77,11 +77,12 @@ const useStyles = makeStyles(theme => ({
         cursor: 'pointer',
     },
     selectedInput: {
-        display: 'inline',
-        fontSize: '1rem',
-        marginLeft: '30px',
-        margin: '10px 0',
-        cursor: 'pointer',
+        margin: 0,
+        position: 'absolute',
+        top: '50%',
+        left: 127,
+        msTransform: 'translateY(-50%)',
+        transform: 'translateY(-50%)'
     },
     focusedInput: {
         color: theme.palette.common.white,
@@ -210,6 +211,11 @@ export default function TestInputList() {
                         width={32} 
                         height={32} 
                         padding={6} 
+                        position={'absolute'}
+                        top={'50%'}
+                        left={'1rem'}
+                        msTransform={'translateY(-50%)'}
+                        transform={'translateY(-50%)'}
                         onClick={(e) => { deleteRow(e,idx) } } icon={<DeleteIcon />}
                     />
                     <IconButton 
@@ -217,10 +223,14 @@ export default function TestInputList() {
                         width={32} 
                         height={32} 
                         padding={6} 
+                        position={'absolute'}
+                        top={'50%'}
+                        left={'4rem'}
+                        msTransform={'translateY(-50%)'}
+                        transform={'translateY(-50%)'}
                         onClick={(e) => { editRow(e,idx) }} icon={<EditIcon />} 
                     />
                     {getDeletionState(input,idx)[editing]} 
-                    {/*<input id={`input-${idx}`} className={classes.input} placeholder={input} />*/}
                     
                     <hr className={classes.divider} />
                 </div>
