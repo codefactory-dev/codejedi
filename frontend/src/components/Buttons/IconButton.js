@@ -21,9 +21,9 @@ const useStyles = makeStyles(theme => ({
         transform: props => props.transform,
         padding: props => props.padding || '10px',
         border: `1.5px solid ${theme.palette.primary.main}`,
-        borderRadius: '5px',
-        fill: 'none',
-        stroke: theme.palette.primary.main,
+        borderRadius: props => props.borderRadius,
+        fill: props => props.fill,
+        stroke: props => props.stroke,
         transition: 'border 150ms ease-out',
         '&::before': {
             content: '""',
@@ -35,8 +35,8 @@ const useStyles = makeStyles(theme => ({
             height: '100%',  
             opacity: 0,        
             backgroundColor: theme.palette.primary.main,
-            borderRadius: '5px',
-            transition: 'opacity 150ms ease-out'
+            borderRadius: props => props.borderRadius,
+            transition: 'opacity 50ms ease-out'
         },
         '&:active': {
             border: `1.5px solid ${theme.palette.primary.main}`,
@@ -46,7 +46,8 @@ const useStyles = makeStyles(theme => ({
         },
         '&:hover': {
             border: `1.5px solid rgba(0, 0, 0, 0)`,
-            stroke: "#fff",
+            fill: props => props.fillHover,
+            stroke: props => props.strokeHover,
             '&::before': {
                 opacity: 1,
             }
@@ -72,10 +73,24 @@ export default function IconButton(props) {
 
 IconButton.propTypes = {
     onClick : PropTypes.func,
-    icon: PropTypes.element
+    icon: PropTypes.element,
+
+    // css
+    fill: PropTypes.string,
+    stroke: PropTypes.string,
+    fillHover: PropTypes.string,
+    strokeHover: PropTypes.string,
+    borderRadius: PropTypes.string,
 };
 
 IconButton.defaultProps = {
     onClick: undefined,
-    icon: undefined
+    icon: undefined,
+
+    // css
+    fill: 'none',
+    stroke: `${theme.palette.primary.main}`,
+    fillHover: 'none',
+    strokeHover: '#fff',
+    borderRadius: '5px'
 }

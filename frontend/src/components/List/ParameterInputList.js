@@ -5,10 +5,15 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import ParameterInputDropdown from './ParameterInputDropdown';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
-
+import IconButton from '../Buttons/IconButton';
+import useKeyPres from '../../Hooks/useKeyPress';
+import ListTextField from '../../components/TextField/ListTextField';
 import {ReactComponent as TextIcon} from '../../icons/text.svg';
 import {ReactComponent as ListIcon} from '../../icons/list.svg';
 import {ReactComponent as AddIcon} from '../../icons/add.svg';
+import {ReactComponent as DeleteIcon} from '../../icons/delete.svg';
+import {ReactComponent as CrossIcon} from '../../icons/cross.svg';
+
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -26,10 +31,17 @@ const useStyles = makeStyles(theme => ({
     },
     col_flex1: {
         display: 'flex',
+        alignItems: 'center',
         flexBasis: '30em',
+        borderRadius: '5px',
+        paddingLeft: '5px',
         [theme.breakpoints.down('xs')]: {
             flexBasis: '50%'          
-        } 
+        },
+        '&:hover': {
+            cursor: 'pointer',
+            backgroundColor: theme.palette.common.black2,
+        }
     },
     col_flex2: {
         display: 'flex',
@@ -79,9 +91,9 @@ const useStyles = makeStyles(theme => ({
     inputName: {
         color: theme.palette.common.white,
         fontSize: '1rem',
-        marginLeft: '30px',
-        margin: '5px 0',
-        padding: '0'
+        marginLeft: '35px',
+        padding: '0 10px',
+        flexGrow: '100'
     },
     contentTypeContainer: { 
         position: 'relative',
@@ -141,34 +153,88 @@ const useStyles = makeStyles(theme => ({
     }
   }));
 
+ 
+
 export default function ParameterInputList() {
     const classes = useStyles();
     const theme = useTheme();
 
-    const types = ['int', 'string', 'array'];
+    const types = ['int', 'string', 'array', 'undefined'];
     const [inputs, setInputs] = useState([{name: 'nums1', type: 0}, 
                                           {name: 'nums2', type: 0}, 
                                           {name: 'nums3', type: 1}]);
 
     const [inputTypeClicked, setInputTypeClicked] = useState(-1);
+    const [inputNameHovered, setInputNameHovered] = useState(-1);
+    const [inputNameClicked, setInputNameClicked] = useState(-1);
+
+    // ----------------------------------------------------------------
+    // HOOKS
+    // ----------------------------------------------------------------
+ 
+    useKeyPres('Escape', () => {
+        setInputTypeClicked(-1);
+    });
 
 
-    const onClickHandler = (e) => {
-        console.log("oeoeoeoeoe");
+    // ----------------------------------------------------------------
+    // LISTENERS
+    // ----------------------------------------------------------------
+
+    const onButtonNewClick = (e) => {       
+        setInputs([...inputs, {name: 'undefined', type: 3}]);
     }
 
+    const onButtonDeleteClick = (inputIdx) => {
+        setInputs(inputs.filter((input, idx) => inputIdx !== idx));
+    }
+
+    const onInputNameHover = (inputIdx) => {
+        if (inputNameHovered === inputIdx) { return; }
+        setInputNameHovered(inputIdx);
+    }
+    const onInputNameBlur = (inputIdx, inputValue) => {
+        inputs[inputIdx].name = inputValue;
+        setInputs([...inputs]);
+        console.log(inputs);
+    }
+    const onInputNameKeyUp = (inputIdx, evt) => {
+        if (evt.key !== 'Enter') { return; }         
+        evt.target.blur();
+    }
 
     const onInputTypeClick = (inputIdx) => {
         if (inputTypeClicked === inputIdx) { return; }
         setInputTypeClicked(inputIdx);
     }
-
     const onTypeInputSelected = (inputType) => {   
         inputs[inputTypeClicked].type = inputType;
         setInputs(inputs);
         setInputTypeClicked(-1);
     }
     
+
+    // ----------------------------------------------------------------
+    // CSS HELPERS
+    // ----------------------------------------------------------------
+
+    const deleteIcon = idx => (
+                    <div style={{"position": "absolute"}}>
+                        <IconButton 
+                            className={classes.deleteIcon} 
+                            width={20} 
+                            height={20} 
+                            padding={3} 
+                            fill={`${theme.palette.primary.main}`}
+                            stroke={'none'}
+                            fillHover={'white'}
+                            strokeHover={'none'}
+                            borderRadius={'3px'}
+                            icon={<CrossIcon />}
+                            onClick={() => onButtonDeleteClick(idx)}
+                        />
+                    </div>);
+
 
     const inputTypeContainerClassName = (idx) => {
         if (inputTypeClicked === idx) {
@@ -199,16 +265,32 @@ export default function ParameterInputList() {
             </div>
             <hr className={classes.divider} />
 
-            {/* content row(s) */}
+            {/* container content row(s) */}
             <div className={classes.contentContainer}>
                 {inputs.map((input, idx) => {
                     return (
                         <React.Fragment key={`input-${idx}`}>
-                            <div className={classes.contentInput}>
-                                <div className={classes.col_flex1}>
-                                    <p className={classes.inputName}>{input.name}</p>                            
+
+                            {/* content row(s) */}
+                            <div className={classes.contentInput}>                                                            
+                                <div className={classes.col_flex1} 
+                                     onMouseEnter={() => onInputNameHover(idx)} 
+                                     onMouseLeave={() => onInputNameHover(-1)}>
+                                    { inputNameHovered === idx 
+                                        ?  
+                                        deleteIcon(idx)
+                                        : 
+                                        undefined 
+                                    }
+                                    <span className={classes.inputName}>
+                                        <ListTextField defaultValue={input.name}
+                                                       onKeyUp={(e) => onInputNameKeyUp(idx, e)}
+                                                       onBlur={(e) => onInputNameBlur(idx, e.target.value)}
+                                        />
+                                    </span>
                                 </div>
-                                <div className={inputTypeContainerClassName(idx)} onClick={() => onInputTypeClick(idx)}>
+                                <div className={inputTypeContainerClassName(idx)} 
+                                     onClick={() => onInputTypeClick(idx)}>
                                     {
                                         inputTypeClicked === idx
                                         ?
@@ -222,9 +304,10 @@ export default function ParameterInputList() {
                         </React.Fragment>
                 )})}
                 
-                <div className={classes.addContainer}>
+                <div className={classes.addContainer}
+                     onClick={onButtonNewClick} >
                     <AddIcon style={{'height': '12px', width: '12px'}} />
-                    <a onClick={onClickHandler} className={classes.newButton}>New</a>
+                    <a className={classes.newButton}>New</a>
                 </div>
             </div>
             <hr className={classes.divider} />
