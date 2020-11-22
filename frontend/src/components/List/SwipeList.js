@@ -5,13 +5,10 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import React from 'react';
 import SwipeProvider from '../SwipeableList/SwipeProvider';
 import ListRow from  './ListRow';
-import PropTypes from 'prop-types';
 import IconButton from '../Buttons/IconButton';
 
 import {ReactComponent as EditIcon} from '../../icons/edit.svg';
@@ -60,8 +57,16 @@ export default function SwipeList() {
 
     const swipeButtons = (
                 <React.Fragment>
-                    <IconButton onClick={() => console.log("oeoeoeoe")} icon={<EditIcon />} />
-                    <IconButton onClick={() => console.log("aeaeaeae")} icon={<DeleteIcon />}/>
+                    <IconButton
+                            padding={'0 10px'} 
+                            onClick={() => console.log("oeoeoeoe")} 
+                            icon={<EditIcon />} 
+                    />
+                    <IconButton 
+                            padding={'0 10px'} 
+                            onClick={() => console.log("aeaeaeae")} 
+                            icon={<DeleteIcon />}
+                    />
                 </React.Fragment>
     );
     

@@ -2,14 +2,9 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import MenuIcon from '@material-ui/icons/Menu';
-import Box from '@material-ui/core/Box';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import Avatar from '@material-ui/core/Avatar';
-import Icon from '@material-ui/core/Icon';
 //import './Navbar.scss';
 import { ReactComponent as YodaLogo } from '../../imgs/Yoda Logo.svg';
 import { ReactComponent as bars } from '../../imgs/bars.svg'
