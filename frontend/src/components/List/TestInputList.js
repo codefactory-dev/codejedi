@@ -68,7 +68,8 @@ const useStyles = makeStyles(theme => ({
     wrapper: {
     },
     contentContainer: {
-        overflow: 'visible'
+        overflow: 'visible',
+        minWidth: '225.297px'
     },
     input: {
         color: theme.palette.common.white,
@@ -113,7 +114,8 @@ const useStyles = makeStyles(theme => ({
     divider: {
         ...theme.divider,
         zIndex: 0,
-        position: 'relative'
+        position: 'relative',
+        minWidth: '225.297px'
     },
     addContainer: {
         display: 'inline-flex',
