@@ -18,7 +18,8 @@ const useStyles = makeStyles( theme => ({
     alignItems: 'center'
   },
   contentList: {
-    width: '60%'
+    width: '60%',
+    paddingLeft: '100px'
   },
   title: {
     display: 'flex',
