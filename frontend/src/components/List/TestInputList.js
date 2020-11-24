@@ -29,6 +29,7 @@ const useStyles = makeStyles(theme => ({
         flexShrink: 1,
         marginRight: 'auto',
         marginLeft: 'auto',
+        paddingLeft: 100,
         width: '60%',
         minWidth: '296.493px',
         marginTop: 60
@@ -63,6 +64,8 @@ const useStyles = makeStyles(theme => ({
             ... theme.listSubtitle,
             marginLeft: '5px'
         }
+    },
+    wrapper: {
     },
     contentContainer: {
         overflow: 'visible'
@@ -277,19 +280,21 @@ export default function TestInputList() {
                 <p>Value</p>
             </div>
             <hr className={classes.divider} />
-            <div className={classes.contentContainer}>
-                <form 
-                    //onBlur in React is used instead of onFocusOut
-                    /*onBlur={(e) => {onFormSubmit(e)}}*/
-                    onSubmit={(e) => {onFormSubmit(e)}}>
-                    {inputs.map((input, idx) => {
-                        return (
-                                generateRow(input,idx)
-                    )})}
-                </form>
-                <div className={classes.addContainer}>
-                    <AddIcon style={{'height': '12px', width: '12px'}} />
-                    <a onClick={onClickHandler} className={classes.newButton}>New</a>
+            <div className={classes.wrapper}>
+                <div className={classes.contentContainer}>
+                    <form 
+                        //onBlur in React is used instead of onFocusOut
+                        /*onBlur={(e) => {onFormSubmit(e)}}*/
+                        onSubmit={(e) => {onFormSubmit(e)}}>
+                        {inputs.map((input, idx) => {
+                            return (
+                                    generateRow(input,idx)
+                        )})}
+                    </form>
+                    <div className={classes.addContainer}>
+                        <AddIcon style={{'height': '12px', width: '12px'}} />
+                        <a onClick={onClickHandler} className={classes.newButton}>New</a>
+                    </div>
                 </div>
             </div>
             <hr className={classes.divider} />

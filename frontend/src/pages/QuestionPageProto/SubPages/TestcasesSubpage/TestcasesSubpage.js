@@ -18,8 +18,7 @@ const useStyles = makeStyles( theme => ({
     alignItems: 'center'
   },
   contentList: {
-    width: '60%',
-    minWidth: '296.493px'
+    width: '60%'
   },
   title: {
     display: 'flex',
@@ -61,12 +60,10 @@ const useStyles = makeStyles( theme => ({
   separator: {
     position: 'relative',
     width: '9%',
-    minWidth: '97.865px'
   },
   thirdElement: {
     flexGrow: 1,
     width: '11%',
-    minWidth: 140,
   },
 }));
 
