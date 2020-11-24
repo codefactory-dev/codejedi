@@ -109,7 +109,7 @@ const useStyles = makeStyles(theme => ({
     },
     divider: {
         ...theme.divider,
-        zIndex: -1,
+        zIndex: 0,
         position: 'relative'
     },
     addContainer: {
