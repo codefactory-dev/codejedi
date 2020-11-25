@@ -10,8 +10,7 @@ import {ReactComponent as HashIcon} from '../../../icons/hashtag.svg';
 import {ReactComponent as AddIcon} from '../../../icons/add.svg';
 
 
-import {ReactComponent as EditIcon} from '../../../icons/edit.svg';
-import {ReactComponent as DeleteIcon} from '../../../icons/delete.svg';
+import {ReactComponent as CrossIcon} from '../../../icons/cross.svg';
 
 import './TestcasesInputList.scss'
 
@@ -64,11 +63,10 @@ const useStyles = makeStyles(theme => ({
             marginLeft: '5px'
         }
     },
-    wrapper: {
-    },
     contentContainer: {
-        overflow: 'visible',
-        minWidth: '225.297px'
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
     },
     input: {
         color: theme.palette.common.white,
@@ -128,14 +126,14 @@ const useStyles = makeStyles(theme => ({
         margin: '40px 0',
     },
     activeRow: {
-        position: 'relative',
-        height: 39,
         backgroundColor: theme.palette.common.black2,
-        width: '100%',
-        borderStyle: 'solid',
-        borderWidth: '0.05rem',
-        overflow: 'visible',
         borderColor: theme.palette.common.grey,
+        fill: theme.palette.common.grey3,
+        padding: '5px',
+        borderRadius: '5px',
+        margin: '5px 0',
+        cursor: 'pointer',
+        backgroundColor: theme.palette.common.black2,
     },
   }));
 const rowStates = {
@@ -232,22 +230,21 @@ export default function TestInputList() {
             return (
                 <div 
                     className={classes.activeRow} 
-                    onMouseLeave={(event)=> {deselectCurrentItem(event)}}
+                    //onMouseLeave={(event)=> {deselectCurrentItem(event)}}
                     key={`input-${idx}`}
                     >
                     <IconButton 
-                        className={classes.deleteIcon} 
-                        width={32} 
-                        height={32} 
-                        padding={6} 
-                        onClick={(e) => { askForDelete(e,idx) } } icon={<DeleteIcon />}
-                    />
-                    <IconButton 
-                        className={classes.editIcon} 
-                        width={32} 
-                        height={32} 
-                        padding={6} 
-                        onClick={(e) => { editRow(e,idx) }} icon={<EditIcon />} 
+                            className={classes.deleteIcon} 
+                            width={20} 
+                            height={20} 
+                            padding={3} 
+                            fill={`${theme.palette.primary.main}`}
+                            stroke={'none'}
+                            fillHover={'white'}
+                            strokeHover={'none'}
+                            borderRadius={'3px'}
+                            icon={<CrossIcon />}
+                            onClick={(e) => { askForDelete(e,idx) } } 
                     />
                     {getDeletionState(input,idx)[editingState]} 
                     
