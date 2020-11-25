@@ -214,8 +214,25 @@ export default function TestInputList() {
     function handleNo(){
         setEditingState(rowStates.DESELECTED);
     }
+    function deselectCurrentItem(event){
+        console.log("deselecting current item");
+        const activeRowElement = document.querySelectorAll('div[class^="makeStyles-activeRow"]');
+        
+        console.log((activeRowElement));
+        //if (!activeRowElement[0].contains(event.target))
+        {
+            console.log("effective.");
+            setActiveRowItem(-1);
+            setEditingState(rowStates.DESELECTED);
+        }
+    }
     const getDeletionState = (input,idx) => ({
-        [rowStates.DESELECTED]: <p className={classes.selectedInput}>{input}</p>,
+        [rowStates.DESELECTED]: 
+            <p 
+                className={classes.selectedInput}
+                >
+                {input}
+            </p>,
         [rowStates.EDITING_ROW]: <input id={`input-${idx}`} className={classes.focusedInput}/>,
         [rowStates.CONFIRMING_DELETE]: <p className={classes.selectedInput}>Do you want to remove the selected item ? 
         <div onClick={()=>{handleYes()}}>Yes</div><div onClick={()=>{handleNo()}}>no</div></p>
@@ -225,7 +242,11 @@ export default function TestInputList() {
     function generateRow(input,idx) {
         if (idx === activeRowItem){
             return (
-                <div className={classes.activeRow} key={`input-${idx}`}>
+                <div 
+                    className={classes.activeRow} 
+                    onMouseLeave={(event)=> {deselectCurrentItem(event)}}
+                    key={`input-${idx}`}
+                    >
                     <IconButton 
                         className={classes.deleteIcon} 
                         width={32} 
@@ -260,12 +281,14 @@ export default function TestInputList() {
             return(
                 <React.Fragment key={`input-${idx}`}>
                     {/*<input className={classes.input} placeholder={input} />*/}
-                    <p onClick={(event) => {onClickRowItem(event,idx) }} className={classes.input}>{input}</p>
+                    <p 
+                        onMouseEnter={(event)=> {onClickRowItem(event,idx)}} 
+                        onClick={(event) => {onClickRowItem(event,idx) }} className={classes.input}>{input}
+                    </p>
                     <hr className={classes.divider} />
                 </React.Fragment>
             )
         }
-        
     }
 
     
@@ -293,9 +316,12 @@ export default function TestInputList() {
                                     generateRow(input,idx)
                         )})}
                     </form>
-                    <div className={classes.addContainer}>
+                    <div 
+                        className={classes.addContainer}
+                        onClick={onClickHandler} 
+                        >
                         <AddIcon style={{'height': '12px', width: '12px'}} />
-                        <a onClick={onClickHandler} className={classes.newButton}>New</a>
+                        <a className={classes.newButton}>New</a>
                     </div>
                 </div>
             </div>
