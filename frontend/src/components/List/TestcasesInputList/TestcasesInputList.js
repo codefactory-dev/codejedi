@@ -4,18 +4,18 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
-import IconButton from '../Buttons/IconButton';
+import IconButton from '../../Buttons/IconButton';
 
-import {ReactComponent as HashIcon} from '../../icons/hashtag.svg';
-import {ReactComponent as AddIcon} from '../../icons/add.svg';
+import {ReactComponent as HashIcon} from '../../../icons/hashtag.svg';
+import {ReactComponent as AddIcon} from '../../../icons/add.svg';
 
 
-import {ReactComponent as EditIcon} from '../../icons/edit.svg';
-import {ReactComponent as DeleteIcon} from '../../icons/delete.svg';
+import {ReactComponent as EditIcon} from '../../../icons/edit.svg';
+import {ReactComponent as DeleteIcon} from '../../../icons/delete.svg';
 
-import './TestInputList.scss'
+import './TestcasesInputList.scss'
 
-const { usePrevious } = require('../../utils/useful.js')
+const { usePrevious } = require('../../../utils/useful.js')
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -29,7 +29,6 @@ const useStyles = makeStyles(theme => ({
         flexShrink: 1,
         marginRight: 'auto',
         marginLeft: 'auto',
-        paddingLeft: 100,
         width: '60%',
         minWidth: '296.493px',
         marginTop: 60
@@ -82,13 +81,9 @@ const useStyles = makeStyles(theme => ({
         cursor: 'pointer',
     },
     selectedInput: {
+        display: 'inline',
         margin: 0,
         fontSize: '1rem',
-        position: 'absolute',
-        top: '50%',
-        left: 127,
-        msTransform: 'translateY(-50%)',
-        transform: 'translateY(-50%)',
         '& > div': {
             display: 'inline',
             marginLeft: 15,
@@ -99,12 +94,6 @@ const useStyles = makeStyles(theme => ({
         color: theme.palette.common.white,
         backgroundColor: theme.palette.common.black,
         fontSize: '1rem',
-        position: 'absolute',
-        top: '50%',
-        left: 127,
-        msTransform: 'translateY(-50%)',
-        transform: 'translateY(-50%)',
-
         borderStyle: 'none',
         width: 85,
         borderBottom: `.1px solid ${theme.palette.common.grey}`,
@@ -140,10 +129,9 @@ const useStyles = makeStyles(theme => ({
     },
     activeRow: {
         position: 'relative',
-        left: -100,
         height: 39,
         backgroundColor: theme.palette.common.black2,
-        width: `calc(100% + 100px)`,
+        width: '100%',
         borderStyle: 'solid',
         borderWidth: '0.05rem',
         overflow: 'visible',
@@ -252,11 +240,6 @@ export default function TestInputList() {
                         width={32} 
                         height={32} 
                         padding={6} 
-                        position={'absolute'}
-                        top={'50%'}
-                        left={'1rem'}
-                        msTransform={'translateY(-50%)'}
-                        transform={'translateY(-50%)'}
                         onClick={(e) => { askForDelete(e,idx) } } icon={<DeleteIcon />}
                     />
                     <IconButton 
@@ -264,11 +247,6 @@ export default function TestInputList() {
                         width={32} 
                         height={32} 
                         padding={6} 
-                        position={'absolute'}
-                        top={'50%'}
-                        left={'4rem'}
-                        msTransform={'translateY(-50%)'}
-                        transform={'translateY(-50%)'}
                         onClick={(e) => { editRow(e,idx) }} icon={<EditIcon />} 
                     />
                     {getDeletionState(input,idx)[editingState]} 
