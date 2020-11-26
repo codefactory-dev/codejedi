@@ -74,19 +74,21 @@ const useStyles = makeStyles(theme => ({
         fontSize: '1rem',
         marginLeft: '30px',
         margin: '10px 0',
+        height: 20,
         borderStyle: 'none',
         padding: '0',
         cursor: 'pointer',
     },
     selectedInput: {
-        display: 'inline',
-        margin: 0,
+        color: theme.palette.common.white,
+        backgroundColor: theme.palette.common.black,
         fontSize: '1rem',
-        '& > div': {
-            display: 'inline',
-            marginLeft: 15,
-            cursor: 'pointer',
-        }
+        marginLeft: '30px',
+        margin: '10px 0',
+        height: 20,
+        borderStyle: 'none',
+        padding: '0',
+        cursor: 'pointer',
     },
     focusedInput: {
         color: theme.palette.common.white,
@@ -125,15 +127,20 @@ const useStyles = makeStyles(theme => ({
         ... theme.btnPrimaryOutline,
         margin: '40px 0',
     },
+    inactiveRow: {
+
+    },
     activeRow: {
         backgroundColor: theme.palette.common.black2,
         borderColor: theme.palette.common.grey,
         fill: theme.palette.common.grey3,
-        padding: '5px',
-        borderRadius: '5px',
-        margin: '5px 0',
+        padding: '0',
+        height: '30.750px',
         cursor: 'pointer',
         backgroundColor: theme.palette.common.black2,
+        '& > p':{
+            margin: '10px 0'
+        }
     },
   }));
 const rowStates = {
@@ -214,11 +221,9 @@ export default function TestInputList() {
     }
     const getDeletionState = (input,idx) => ({
         [rowStates.DESELECTED]: 
-            <p 
-                className={classes.selectedInput}
-                >
-                {input}
-            </p>,
+            <div className={classes.selectedInput}>
+                <p>{input}</p>
+            </div>,
         [rowStates.EDITING_ROW]: <input id={`input-${idx}`} className={classes.focusedInput}/>,
         [rowStates.CONFIRMING_DELETE]: <p className={classes.selectedInput}>Do you want to remove the selected item ? 
         <div onClick={()=>{handleYes()}}>Yes</div><div onClick={()=>{handleNo()}}>no</div></p>
@@ -233,6 +238,7 @@ export default function TestInputList() {
                     //onMouseLeave={(event)=> {deselectCurrentItem(event)}}
                     key={`input-${idx}`}
                     >
+                        {/*
                     <IconButton 
                             className={classes.deleteIcon} 
                             width={20} 
@@ -246,22 +252,24 @@ export default function TestInputList() {
                             icon={<CrossIcon />}
                             onClick={(e) => { askForDelete(e,idx) } } 
                     />
+                        */}
                     {getDeletionState(input,idx)[editingState]} 
-                    
                     <hr className={classes.divider} />
                 </div>
             )
         }
         else {
             return(
-                <React.Fragment key={`input-${idx}`}>
+                <div className={classes.inactiveRow} >
                     {/*<input className={classes.input} placeholder={input} />*/}
-                    <p 
+                    <div 
+                        className={classes.input}
                         onMouseEnter={(event)=> {onClickRowItem(event,idx)}} 
-                        onClick={(event) => {onClickRowItem(event,idx) }} className={classes.input}>{input}
-                    </p>
+                        onClick={(event) => {onClickRowItem(event,idx) }} >
+                            <p>{input}</p>
+                    </div>
                     <hr className={classes.divider} />
-                </React.Fragment>
+                </div>
             )
         }
     }
