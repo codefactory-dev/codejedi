@@ -15,6 +15,7 @@ const useStyles = makeStyles(theme => ({
         width: props => props.width || 68,
         height: props => props.height || 68,
         margin: props => props.margin,
+        marginLeft: props => props.marginLeft,
         top: props => props.top,
         left: props => props.left,
         msTransform: props => props.msTransform,

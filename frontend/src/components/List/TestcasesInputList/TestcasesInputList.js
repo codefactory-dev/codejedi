@@ -80,6 +80,7 @@ const useStyles = makeStyles(theme => ({
         cursor: 'pointer',
         '& > span': {
             margin: '0',
+            marginLeft: '40px',
             display: 'inline'
         }
     },
@@ -99,7 +100,9 @@ const useStyles = makeStyles(theme => ({
         borderRadius: '5px',
         '& > span': {
             margin: '0',
-            display: 'inline'
+            marginLeft: '15px',
+            display: 'inline',
+            
         }
     },
     focusedInput: {
@@ -153,9 +156,8 @@ const useStyles = makeStyles(theme => ({
         borderColor: theme.palette.common.grey,
         fill: theme.palette.common.grey3,
         padding: '0',
-        height: '37.750px',
+        height: 37,
         cursor: 'pointer',
-        overflow: 'hidden',
         '& > p':{
             margin: '10px 0',
         }
@@ -246,6 +248,7 @@ export default function TestInputList() {
                             width={20} 
                             height={20} 
                             padding={3} 
+                            marginLeft={5}
                             fill={`${theme.palette.primary.main}`}
                             stroke={'none'}
                             fillHover={'white'}
@@ -267,7 +270,7 @@ export default function TestInputList() {
             return (
                 <div 
                     className={classes.activeRow} 
-                    //onMouseLeave={(event)=> {deselectCurrentItem(event)}}
+                    onMouseLeave={(event)=> {deselectCurrentItem(event)}}
                     key={`input-${idx}`}
                     >
                     {getDeletionState(input,idx)[editingState]} 
@@ -276,11 +279,13 @@ export default function TestInputList() {
         }
         else {
             return(
-                <div className={classes.inactiveRow} >
+                <div 
+                    className={classes.inactiveRow} 
+                    onMouseEnter={(event)=> {onClickRowItem(event,idx)}} 
+                    >
                     {/*<input className={classes.input} placeholder={input} />*/}
                     <div 
                         className={classes.input}
-                        onMouseEnter={(event)=> {onClickRowItem(event,idx)}} 
                         onClick={(event) => {onClickRowItem(event,idx) }} >
                             <span>{input}</span>
                     </div>
