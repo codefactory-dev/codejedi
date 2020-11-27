@@ -260,8 +260,26 @@ export default function TestInputList() {
                 <span>{input}</span>
             </div>,
         [rowStates.EDITING_ROW]: <input id={`input-${idx}`} className={classes.focusedInput}/>,
-        [rowStates.CONFIRMING_DELETE]: <p className={classes.selectedInput}>Do you want to remove the selected item ? 
-        <div onClick={()=>{handleYes()}}>Yes</div><div onClick={()=>{handleNo()}}>no</div></p>
+        [rowStates.CONFIRMING_DELETE]: 
+            <div className={classes.selectedInput}>
+                <IconButton 
+                            className={classes.deleteIcon} 
+                            width={20} 
+                            height={20} 
+                            padding={3} 
+                            marginLeft={5}
+                            fill={`${theme.palette.primary.main}`}
+                            stroke={'none'}
+                            fillHover={'white'}
+                            strokeHover={'none'}
+                            borderRadius={'3px'}
+                            icon={<CrossIcon />}
+                            onClick={(e) => { askForDelete(e,idx) } } 
+                />
+                <span>Do you want to remove the selected item ?</span>
+                <div style={{marginLeft: 10}} onClick={()=>{handleYes()}}>Yes</div>
+                <div style={{marginLeft: 10}} onClick={()=>{handleNo()}}>no</div>
+            </div>
     })
     
 
