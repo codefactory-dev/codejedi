@@ -90,7 +90,9 @@ const useStyles = makeStyles(theme => ({
         color: theme.palette.common.white,
         backgroundColor: theme.palette.common.black,
         fontSize: '1rem',
-        height: 37,
+        width: '100%',
+        height: 28,
+        //border
         borderStyle: 'none',
         cursor: 'pointer',
         backgroundColor: theme.palette.common.black2,
@@ -238,6 +240,20 @@ export default function TestInputList() {
     const getDeletionState = (input,idx) => ({
         [rowStates.DESELECTED]: 
             <div className={classes.selectedInput}>
+                
+                <IconButton 
+                            className={classes.deleteIcon} 
+                            width={20} 
+                            height={20} 
+                            padding={3} 
+                            fill={`${theme.palette.primary.main}`}
+                            stroke={'none'}
+                            fillHover={'white'}
+                            strokeHover={'none'}
+                            borderRadius={'3px'}
+                            icon={<CrossIcon />}
+                            onClick={(e) => { askForDelete(e,idx) } } 
+                />
                 <span>{input}</span>
             </div>,
         [rowStates.EDITING_ROW]: <input id={`input-${idx}`} className={classes.focusedInput}/>,
@@ -254,20 +270,6 @@ export default function TestInputList() {
                     //onMouseLeave={(event)=> {deselectCurrentItem(event)}}
                     key={`input-${idx}`}
                     >
-                
-                    <IconButton 
-                            className={classes.deleteIcon} 
-                            width={20} 
-                            height={20} 
-                            padding={3} 
-                            fill={`${theme.palette.primary.main}`}
-                            stroke={'none'}
-                            fillHover={'white'}
-                            strokeHover={'none'}
-                            borderRadius={'3px'}
-                            icon={<CrossIcon />}
-                            onClick={(e) => { askForDelete(e,idx) } } 
-                    />
                     {getDeletionState(input,idx)[editingState]} 
                 </div>
             )
