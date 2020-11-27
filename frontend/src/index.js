@@ -7,7 +7,7 @@ import QuestionPage from './pages/QuestionPage/QuestionPage.js'
 import QuestionPageProto from './pages/QuestionPageProto/QuestionPageProto.js'
 //import InitialPage from './pages/InitialPage/InitialPage.js'
 import SwipeList from './components/List/SwipeList';
-import TestInputList from './components/List/AlternativeInputList/TestInputList';
+import TestcasesInputList from './components/List/TestcasesInputList/TestcasesInputList';
 import { ThemeProvider } from '@material-ui/styles'
 import theme from './components/ui/Theme'
 import masterCss from './masterCss.scss'

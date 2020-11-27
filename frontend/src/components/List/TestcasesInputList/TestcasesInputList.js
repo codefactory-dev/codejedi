@@ -69,26 +69,36 @@ const useStyles = makeStyles(theme => ({
         justifyContent: 'center',
     },
     input: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
         color: theme.palette.common.white,
         backgroundColor: theme.palette.common.black,
         fontSize: '1rem',
-        marginLeft: '30px',
-        margin: '10px 0',
-        height: 20,
+        height: 37,
         borderStyle: 'none',
-        padding: '0',
         cursor: 'pointer',
+        '& > span': {
+            margin: '0',
+            display: 'inline'
+        }
     },
     selectedInput: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
         color: theme.palette.common.white,
         backgroundColor: theme.palette.common.black,
         fontSize: '1rem',
-        marginLeft: '30px',
-        margin: '10px 0',
-        height: 20,
+        height: 37,
         borderStyle: 'none',
-        padding: '0',
         cursor: 'pointer',
+        backgroundColor: theme.palette.common.black2,
+        borderRadius: '5px',
+        '& > span': {
+            margin: '0',
+            display: 'inline'
+        }
     },
     focusedInput: {
         color: theme.palette.common.white,
@@ -128,18 +138,24 @@ const useStyles = makeStyles(theme => ({
         margin: '40px 0',
     },
     inactiveRow: {
-
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderBottom: 'solid #333333 1px'
     },
     activeRow: {
-        backgroundColor: theme.palette.common.black2,
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderBottom: 'solid #333333 1px',
         borderColor: theme.palette.common.grey,
         fill: theme.palette.common.grey3,
         padding: '0',
-        height: '30.750px',
+        height: '37.750px',
         cursor: 'pointer',
-        backgroundColor: theme.palette.common.black2,
+        overflow: 'hidden',
         '& > p':{
-            margin: '10px 0'
+            margin: '10px 0',
         }
     },
   }));
@@ -222,7 +238,7 @@ export default function TestInputList() {
     const getDeletionState = (input,idx) => ({
         [rowStates.DESELECTED]: 
             <div className={classes.selectedInput}>
-                <p>{input}</p>
+                <span>{input}</span>
             </div>,
         [rowStates.EDITING_ROW]: <input id={`input-${idx}`} className={classes.focusedInput}/>,
         [rowStates.CONFIRMING_DELETE]: <p className={classes.selectedInput}>Do you want to remove the selected item ? 
@@ -238,7 +254,7 @@ export default function TestInputList() {
                     //onMouseLeave={(event)=> {deselectCurrentItem(event)}}
                     key={`input-${idx}`}
                     >
-                        {/*
+                
                     <IconButton 
                             className={classes.deleteIcon} 
                             width={20} 
@@ -252,9 +268,7 @@ export default function TestInputList() {
                             icon={<CrossIcon />}
                             onClick={(e) => { askForDelete(e,idx) } } 
                     />
-                        */}
                     {getDeletionState(input,idx)[editingState]} 
-                    <hr className={classes.divider} />
                 </div>
             )
         }
@@ -266,9 +280,8 @@ export default function TestInputList() {
                         className={classes.input}
                         onMouseEnter={(event)=> {onClickRowItem(event,idx)}} 
                         onClick={(event) => {onClickRowItem(event,idx) }} >
-                            <p>{input}</p>
+                            <span>{input}</span>
                     </div>
-                    <hr className={classes.divider} />
                 </div>
             )
         }
