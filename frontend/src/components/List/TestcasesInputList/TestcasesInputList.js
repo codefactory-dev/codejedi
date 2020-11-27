@@ -102,8 +102,7 @@ const useStyles = makeStyles(theme => ({
             margin: '0',
             marginLeft: '15px',
             display: 'inline',
-            
-        }
+        },
     },
     focusedInput: {
         color: theme.palette.common.white,
@@ -114,6 +113,7 @@ const useStyles = makeStyles(theme => ({
         borderBottom: `.1px solid ${theme.palette.common.grey}`,
         padding: '0',
         cursor: 'pointer',
+        marginLeft: 40
     },
     divider: {
         ...theme.divider,
@@ -158,9 +158,6 @@ const useStyles = makeStyles(theme => ({
         padding: '0',
         height: 37,
         cursor: 'pointer',
-        '& > p':{
-            margin: '10px 0',
-        }
     },
   }));
 const rowStates = {
@@ -257,7 +254,7 @@ export default function TestInputList() {
                             icon={<CrossIcon />}
                             onClick={(e) => { askForDelete(e,idx) } } 
                 />
-                <span>{input}</span>
+                <span onClick={()=>{editRow()}}>{input}</span>
             </div>,
         [rowStates.EDITING_ROW]: <input id={`input-${idx}`} className={classes.focusedInput}/>,
         [rowStates.CONFIRMING_DELETE]: 
@@ -288,7 +285,11 @@ export default function TestInputList() {
             return (
                 <div 
                     className={classes.activeRow} 
-                    onMouseLeave={(event)=> {deselectCurrentItem(event)}}
+                    onMouseLeave={(event)=> {
+                        if (editingState !== rowStates.EDITING_ROW){
+                            deselectCurrentItem(event)}
+                        }
+                    }
                     key={`input-${idx}`}
                     >
                     {getDeletionState(input,idx)[editingState]} 
