@@ -107,13 +107,16 @@ const useStyles = makeStyles(theme => ({
     focusedInput: {
         color: theme.palette.common.white,
         backgroundColor: theme.palette.common.black,
+        fontFamily: 'Lato',
         fontSize: '1rem',
-        borderStyle: 'none',
         width: 85,
+        border: 0,
+        borderTop: `.1px solid rgba(0,0,0,0)`,
         borderBottom: `.1px solid ${theme.palette.common.grey}`,
-        padding: '0',
         cursor: 'pointer',
-        marginLeft: 40
+        fontWeight: '700',
+        marginLeft: 40,
+        padding: 0
     },
     divider: {
         ...theme.divider,
