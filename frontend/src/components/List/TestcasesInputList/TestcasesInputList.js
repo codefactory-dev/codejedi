@@ -185,6 +185,7 @@ const rowStates = {
 }
 export default function TestInputList() {
     const classes = useStyles();
+    const matches = useMediaQuery('(min-width:798px)');
     const theme = useTheme();
     const [inputs, setInputs] = useState(['nums1', 'nums2', 'nums3']);
     const [activeRowItem, setActiveRowItem] = useState();
@@ -245,8 +246,8 @@ export default function TestInputList() {
     function deselectCurrentItem(event){
         console.log("deselecting current item");
         const activeRowElement = document.querySelectorAll('div[class^="makeStyles-activeRow"]');
-        //setActiveRowItem(-1);
-        //setEditingState(rowStates.DESELECTED);
+        setActiveRowItem(-1);
+        setEditingState(rowStates.DESELECTED);
     }
     const getDeletionState = (input,idx) => ({
         [rowStates.DESELECTED]: 
@@ -305,7 +306,7 @@ export default function TestInputList() {
                             icon={<CrossIcon />}
                             onClick={(e) => { askForDelete(e,idx) } } 
                 />
-                <span>Do you want to remove the selected item ?</span>
+                <span>{matches ? 'Do you want to remove the selected item ?' : 'Remove selected item ?'}</span>
                 <div style={{marginLeft: 10}} onClick={()=>{handleYes()}}>Yes</div>
                 <div style={{marginLeft: 10}} onClick={()=>{handleNo()}}>no</div>
             </div>
