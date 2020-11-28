@@ -25,6 +25,7 @@ const useStyles = makeStyles(theme => ({
         borderRadius: props => props.borderRadius,
         fill: props => props.fill,
         stroke: props => props.stroke,
+        flexShrink: 0,
         transition: 'border 150ms ease-out',
         '&::before': {
             content: '""',

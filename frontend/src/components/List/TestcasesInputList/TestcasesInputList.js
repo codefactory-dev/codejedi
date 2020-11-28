@@ -105,18 +105,33 @@ const useStyles = makeStyles(theme => ({
         },
     },
     focusedInput: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
         color: theme.palette.common.white,
         backgroundColor: theme.palette.common.black,
-        fontFamily: 'Lato',
         fontSize: '1rem',
-        width: 85,
-        border: 0,
-        borderTop: `.1px solid rgba(0,0,0,0)`,
-        borderBottom: `.1px solid ${theme.palette.common.grey}`,
+        width: '100%',
+        height: 28,
+        //border
+        borderStyle: 'none',
         cursor: 'pointer',
-        fontWeight: '700',
-        marginLeft: 40,
-        padding: 0
+        backgroundColor: theme.palette.common.black2,
+        borderRadius: '5px',
+        '& > input':{
+            color: theme.palette.common.white,
+            backgroundColor: theme.palette.common.black2,
+            fontFamily: 'Lato',
+            fontSize: '1rem',
+            width: '100%',
+            border: 0,
+            borderTop: `.1px solid rgba(0,0,0,0)`,
+            borderBottom: `.1px solid ${theme.palette.common.grey}`,
+            cursor: 'pointer',
+            fontWeight: '700',
+            marginLeft: 15,
+            padding: 0
+        }
     },
     divider: {
         ...theme.divider,
@@ -230,14 +245,8 @@ export default function TestInputList() {
     function deselectCurrentItem(event){
         console.log("deselecting current item");
         const activeRowElement = document.querySelectorAll('div[class^="makeStyles-activeRow"]');
-        
-        console.log((activeRowElement));
-        //if (!activeRowElement[0].contains(event.target))
-        {
-            console.log("effective.");
-            setActiveRowItem(-1);
-            setEditingState(rowStates.DESELECTED);
-        }
+        //setActiveRowItem(-1);
+        //setEditingState(rowStates.DESELECTED);
     }
     const getDeletionState = (input,idx) => ({
         [rowStates.DESELECTED]: 
@@ -245,7 +254,7 @@ export default function TestInputList() {
                 
                 <IconButton 
                             className={classes.deleteIcon} 
-                            width={20} 
+                            width={19.5} 
                             height={20} 
                             padding={3} 
                             marginLeft={5}
@@ -259,12 +268,32 @@ export default function TestInputList() {
                 />
                 <span onClick={()=>{editRow()}}>{input}</span>
             </div>,
-        [rowStates.EDITING_ROW]: <input id={`input-${idx}`} className={classes.focusedInput}/>,
+        [rowStates.EDITING_ROW]: 
+            <div className={classes.focusedInput}>
+                <IconButton 
+                            className={classes.deleteIcon} 
+                            width={19.5} 
+                            height={20} 
+                            padding={3} 
+                            marginLeft={5}
+                            fill={`${theme.palette.primary.main}`}
+                            stroke={'none'}
+                            fillHover={'white'}
+                            strokeHover={'none'}
+                            borderRadius={'3px'}
+                            icon={<CrossIcon />}
+                            onClick={(e) => { askForDelete(e,idx) } } 
+                />
+                <input 
+                    id={`input-${idx}`} 
+                    maxlength="20"
+                />
+            </div>,
         [rowStates.CONFIRMING_DELETE]: 
             <div className={classes.selectedInput}>
                 <IconButton 
                             className={classes.deleteIcon} 
-                            width={20} 
+                            width={19.5} 
                             height={20} 
                             padding={3} 
                             marginLeft={5}
