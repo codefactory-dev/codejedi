@@ -4,18 +4,18 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
-import IconButton from '../Buttons/IconButton';
+import IconButton from '../../Buttons/IconButton';
 
-import {ReactComponent as HashIcon} from '../../icons/hashtag.svg';
-import {ReactComponent as AddIcon} from '../../icons/add.svg';
+import {ReactComponent as HashIcon} from '../../../icons/hashtag.svg';
+import {ReactComponent as AddIcon} from '../../../icons/add.svg';
 
 
-import {ReactComponent as EditIcon} from '../../icons/edit.svg';
-import {ReactComponent as DeleteIcon} from '../../icons/delete.svg';
+import {ReactComponent as EditIcon} from '../../../icons/edit.svg';
+import {ReactComponent as DeleteIcon} from '../../../icons/delete.svg';
 
 import './TestInputList.scss'
 
-const { usePrevious } = require('../../utils/useful.js')
+const { usePrevious } = require('../../../utils/useful.js')
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -29,6 +29,7 @@ const useStyles = makeStyles(theme => ({
         flexShrink: 1,
         marginRight: 'auto',
         marginLeft: 'auto',
+        paddingLeft: 100,
         width: '60%',
         minWidth: '296.493px',
         marginTop: 60
@@ -64,8 +65,11 @@ const useStyles = makeStyles(theme => ({
             marginLeft: '5px'
         }
     },
+    wrapper: {
+    },
     contentContainer: {
-        overflow: 'visible'
+        overflow: 'visible',
+        minWidth: '225.297px'
     },
     input: {
         color: theme.palette.common.white,
@@ -109,8 +113,9 @@ const useStyles = makeStyles(theme => ({
     },
     divider: {
         ...theme.divider,
-        zIndex: -1,
-        position: 'relative'
+        zIndex: 0,
+        position: 'relative',
+        minWidth: '225.297px'
     },
     addContainer: {
         display: 'inline-flex',
@@ -209,8 +214,25 @@ export default function TestInputList() {
     function handleNo(){
         setEditingState(rowStates.DESELECTED);
     }
+    function deselectCurrentItem(event){
+        console.log("deselecting current item");
+        const activeRowElement = document.querySelectorAll('div[class^="makeStyles-activeRow"]');
+        
+        console.log((activeRowElement));
+        //if (!activeRowElement[0].contains(event.target))
+        {
+            console.log("effective.");
+            setActiveRowItem(-1);
+            setEditingState(rowStates.DESELECTED);
+        }
+    }
     const getDeletionState = (input,idx) => ({
-        [rowStates.DESELECTED]: <p className={classes.selectedInput}>{input}</p>,
+        [rowStates.DESELECTED]: 
+            <p 
+                className={classes.selectedInput}
+                >
+                {input}
+            </p>,
         [rowStates.EDITING_ROW]: <input id={`input-${idx}`} className={classes.focusedInput}/>,
         [rowStates.CONFIRMING_DELETE]: <p className={classes.selectedInput}>Do you want to remove the selected item ? 
         <div onClick={()=>{handleYes()}}>Yes</div><div onClick={()=>{handleNo()}}>no</div></p>
@@ -220,7 +242,11 @@ export default function TestInputList() {
     function generateRow(input,idx) {
         if (idx === activeRowItem){
             return (
-                <div className={classes.activeRow} key={`input-${idx}`}>
+                <div 
+                    className={classes.activeRow} 
+                    onMouseLeave={(event)=> {deselectCurrentItem(event)}}
+                    key={`input-${idx}`}
+                    >
                     <IconButton 
                         className={classes.deleteIcon} 
                         width={32} 
@@ -255,12 +281,14 @@ export default function TestInputList() {
             return(
                 <React.Fragment key={`input-${idx}`}>
                     {/*<input className={classes.input} placeholder={input} />*/}
-                    <p onClick={(event) => {onClickRowItem(event,idx) }} className={classes.input}>{input}</p>
+                    <p 
+                        onMouseEnter={(event)=> {onClickRowItem(event,idx)}} 
+                        onClick={(event) => {onClickRowItem(event,idx) }} className={classes.input}>{input}
+                    </p>
                     <hr className={classes.divider} />
                 </React.Fragment>
             )
         }
-        
     }
 
     
@@ -277,19 +305,24 @@ export default function TestInputList() {
                 <p>Value</p>
             </div>
             <hr className={classes.divider} />
-            <div className={classes.contentContainer}>
-                <form 
-                    //onBlur in React is used instead of onFocusOut
-                    /*onBlur={(e) => {onFormSubmit(e)}}*/
-                    onSubmit={(e) => {onFormSubmit(e)}}>
-                    {inputs.map((input, idx) => {
-                        return (
-                                generateRow(input,idx)
-                    )})}
-                </form>
-                <div className={classes.addContainer}>
-                    <AddIcon style={{'height': '12px', width: '12px'}} />
-                    <a onClick={onClickHandler} className={classes.newButton}>New</a>
+            <div className={classes.wrapper}>
+                <div className={classes.contentContainer}>
+                    <form 
+                        //onBlur in React is used instead of onFocusOut
+                        /*onBlur={(e) => {onFormSubmit(e)}}*/
+                        onSubmit={(e) => {onFormSubmit(e)}}>
+                        {inputs.map((input, idx) => {
+                            return (
+                                    generateRow(input,idx)
+                        )})}
+                    </form>
+                    <div 
+                        className={classes.addContainer}
+                        onClick={onClickHandler} 
+                        >
+                        <AddIcon style={{'height': '12px', width: '12px'}} />
+                        <a className={classes.newButton}>New</a>
+                    </div>
                 </div>
             </div>
             <hr className={classes.divider} />

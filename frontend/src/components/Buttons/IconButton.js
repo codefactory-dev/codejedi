@@ -15,6 +15,7 @@ const useStyles = makeStyles(theme => ({
         width: props => props.width || 68,
         height: props => props.height || 68,
         margin: props => props.margin,
+        marginLeft: props => props.marginLeft,
         top: props => props.top,
         left: props => props.left,
         msTransform: props => props.msTransform,
@@ -24,6 +25,7 @@ const useStyles = makeStyles(theme => ({
         borderRadius: props => props.borderRadius,
         fill: props => props.fill,
         stroke: props => props.stroke,
+        flexShrink: 0,
         transition: 'border 150ms ease-out',
         '&::before': {
             content: '""',

@@ -6,7 +6,7 @@ import Tab from '@material-ui/core/Tab';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import TestInputList from '../../../../components/List/TestInputList.js'
+import TestcasesInputList from '../../../../components/List/TestcasesInputList/TestcasesInputList.js'
 
 const useStyles = makeStyles( theme => ({
    
@@ -19,7 +19,7 @@ const useStyles = makeStyles( theme => ({
   },
   contentList: {
     width: '60%',
-    minWidth: '296.493px'
+    paddingLeft: '100px'
   },
   title: {
     display: 'flex',
@@ -61,12 +61,10 @@ const useStyles = makeStyles( theme => ({
   separator: {
     position: 'relative',
     width: '9%',
-    minWidth: '97.865px'
   },
   thirdElement: {
     flexGrow: 1,
     width: '11%',
-    minWidth: 140,
   },
 }));
 
@@ -111,7 +109,7 @@ export default function TestcasesSubpage() {
           </Tabs>
         </Paper>
         <div className={classes.separator}></div>
-        <TestInputList />
+        <TestcasesInputList />
         <div className={classes.separator} />
         <div className={classes.thirdElement} />
       </div>
