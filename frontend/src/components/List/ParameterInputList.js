@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'center',
         flexBasis: '30em',
         borderRadius: '5px',
-        paddingLeft: '5px',
+        padding: '5px 0 5px 5px',
         [theme.breakpoints.down('xs')]: {
             flexBasis: '50%'          
         },
@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
     },
 
-    // title
+    // row title
     titleContainer: {
         display: 'flex',
         alignItems: 'center',
@@ -58,7 +58,7 @@ const useStyles = makeStyles(theme => ({
         fontSize: '1.4rem',
     },
 
-    // subtitle
+    // row subtitle
     subtitleContainer: {
         display: 'flex',
         alignItems: 'center',
@@ -78,7 +78,7 @@ const useStyles = makeStyles(theme => ({
         width: '15px'
     },
 
-    // content
+    // row content
     contentContainer: {
         display: 'flex',
         flexDirection: 'column',
@@ -94,6 +94,25 @@ const useStyles = makeStyles(theme => ({
         marginLeft: '35px',
         padding: '0 10px',
         flexGrow: '100'
+    },
+    inputNameDelete: {
+        color: theme.palette.secondary.main,
+        fontSize: '1rem',
+        marginLeft: '35px',
+        padding: '0 10px',
+        flexGrow: '100'
+    },
+    inputNameField: {      
+        backgroundColor: theme.palette.common.black2,
+        color: theme.palette.common.white,
+        fontFamily: 'Lato',
+        fontSize: '1rem',
+        width: '100%',
+        border: 0,
+        borderBottom: `.1px solid ${theme.palette.common.grey}`,
+        cursor: 'pointer',
+        fontWeight: '700',
+        padding: 0
     },
     contentTypeContainer: { 
         position: 'relative',
@@ -125,7 +144,7 @@ const useStyles = makeStyles(theme => ({
         color: theme.palette.primary.main,
     },
 
-
+    // extra
     divider: {
         ...theme.divider
     },
@@ -142,6 +161,10 @@ const useStyles = makeStyles(theme => ({
             backgroundColor: theme.palette.common.black2,
         },
     },
+    addIcon: {
+        height: '12px',
+        width: '12px'
+    },
     newButton: {
         ...theme.listSubtitle,
         marginLeft: '5px',   
@@ -154,18 +177,37 @@ const useStyles = makeStyles(theme => ({
   }));
 
  
+// -----------------------------------------
+//
+// ----------------------------------------
+const rowStates = {
+    DEFAULT: 0,
+    HOVERING: 1,
+    EDITING: 2,
+    DELETING: 3
+}
+
+const inputTypes = {
+    INT: 0,
+    STRING: 1,
+    ARRAY: 2,
+    UNDEFINED: 3
+}
+
 
 export default function ParameterInputList() {
     const classes = useStyles();
     const theme = useTheme();
 
     const types = ['int', 'string', 'array', 'undefined'];
+    
     const [inputs, setInputs] = useState([{name: 'nums1', type: 0}, 
                                           {name: 'nums2', type: 0}, 
                                           {name: 'nums3', type: 1}]);
 
     const [inputTypeClicked, setInputTypeClicked] = useState(-1);
-    const [inputNameHovered, setInputNameHovered] = useState(-1);
+    const [inputNameHovered, setInputNameHovered] = useState({rowIndex: -1, rowState: rowStates.DEFAULT});
+   
     const [inputNameClicked, setInputNameClicked] = useState(-1);
 
     // ----------------------------------------------------------------
@@ -186,22 +228,46 @@ export default function ParameterInputList() {
     }
 
     const onButtonDeleteClick = (inputIdx) => {
-        setInputs(inputs.filter((input, idx) => inputIdx !== idx));
+        // confirm deletion
+        if (inputNameHovered.rowState === rowStates.DELETING) {
+            setInputs(inputs.filter((input, idx) => inputNameHovered.rowIndex !== idx));
+            setInputNameHovered({rowIndex: -1, rowState: rowStates.DEFAULT});
+            return;
+        }
+        
+        setInputNameHovered({rowIndex: inputIdx, rowState: rowStates.DELETING});
+        
     }
 
     const onInputNameHover = (inputIdx) => {
-        if (inputNameHovered === inputIdx) { return; }
-        setInputNameHovered(inputIdx);
+        if (inputNameHovered.rowIndex === inputIdx) { return; }
+
+        const rowState = inputIdx === -1 ? rowStates.DEFAULT : rowStates.HOVERING;
+        setInputNameHovered({rowIndex: inputIdx, rowState});
     }
+    const onInputNameClick = (idx) => {
+        setInputNameHovered({rowIndex: inputNameHovered.rowIndex, rowState: rowStates.EDITING});
+    }
+
     const onInputNameBlur = (inputIdx, inputValue) => {
+        if (inputValue.length === 0) {
+            // delete row content
+
+            return;
+        }
+
         inputs[inputIdx].name = inputValue;
         setInputs([...inputs]);
-        console.log(inputs);
+
+        setInputNameHovered({rowIndex: inputNameHovered.rowIndex, rowState: rowStates.HOVERING});
     }
     const onInputNameKeyUp = (inputIdx, evt) => {
         if (evt.key !== 'Enter') { return; }         
         evt.target.blur();
     }
+
+
+
 
     const onInputTypeClick = (inputIdx) => {
         if (inputTypeClicked === inputIdx) { return; }
@@ -215,30 +281,86 @@ export default function ParameterInputList() {
     
 
     // ----------------------------------------------------------------
-    // CSS HELPERS
+    // CSS/Component HELPERS
     // ----------------------------------------------------------------
 
     const deleteIcon = idx => (
                     <div style={{"position": "absolute"}}>
                         <IconButton 
-                            className={classes.deleteIcon} 
                             width={20} 
                             height={20} 
                             padding={3} 
-                            fill={`${theme.palette.primary.main}`}
-                            stroke={'none'}
+                            fill={inputNameHovered.rowState === rowStates.DELETING 
+                                   ? `${theme.palette.secondary.main}` 
+                                   : `${theme.palette.primary.main}`}                     
                             fillHover={'white'}
+                            stroke={'none'}
                             strokeHover={'none'}
                             borderRadius={'3px'}
                             icon={<CrossIcon />}
-                            onClick={() => onButtonDeleteClick(idx)}
+                            onClick={e => { e.stopPropagation(); onButtonDeleteClick(idx); }}
                         />
                     </div>);
 
+    const generateInputNameComponent = (input, idx) => {
+        const hovered = inputNameHovered.rowIndex === idx;
+        let inputNameComponent;
 
-    const inputTypeContainerClassName = (idx) => {
+        
+        // if not hovering the row component, or if simply hovering
+        if (!hovered || inputNameHovered.rowState === rowStates.HOVERING) {
+            inputNameComponent =  (
+                    <span className={classes.inputName}>
+                            {input.name}
+                    </span>
+        )}
+        // if hovering the row component and clicked to remove it
+        else if (inputNameHovered.rowState === rowStates.DELETING) {
+            inputNameComponent =  (
+                <span className={[classes.inputNameDelete]}>
+                        Delete?
+                </span>
+        )}
+        // if hovering the row component and clicked to edit it
+        else {
+            inputNameComponent =  (
+                <span className={classes.inputName}>
+                        <input className={classes.inputNameField}
+                               autoFocus 
+                               type="text"
+                               defaultValue={input.name || ''}
+                               onKeyUp={(e) => onInputNameKeyUp(idx, e)}
+                               onBlur={(e) => onInputNameBlur(idx, e.target.value)}
+                        />
+                </span>
+        )}
+        
+
+        return (
+            <React.Fragment>
+                {hovered ? deleteIcon(idx) : undefined}
+                {inputNameComponent}
+            </React.Fragment>
+        );
+    };
+
+    const generateInputTypeComponent = (input, idx) => {
+        return (
+            <React.Fragment>
+            {
+                inputTypeClicked === idx
+                ?
+                <ParameterInputDropdown  onClick={onTypeInputSelected} />
+                :
+                <a className={classes.inputTypeTag}>{types[input.type]}</a>
+            }
+            </React.Fragment>
+        );
+    };
+
+    const getInputTypeContainerClassName = (input, idx) => {
         if (inputTypeClicked === idx) {
-            return classes.contentTypeContainer;
+            return `${classes.contentTypeContainer}`;
         }
 
         return `${classes.contentTypeContainer} ${classes.contentTypeContainerHover}`;
@@ -275,29 +397,14 @@ export default function ParameterInputList() {
                             <div className={classes.contentInput}>                                                            
                                 <div className={classes.col_flex1} 
                                      onMouseEnter={() => onInputNameHover(idx)} 
-                                     onMouseLeave={() => onInputNameHover(-1)}>
-                                    { inputNameHovered === idx 
-                                        ?  
-                                        deleteIcon(idx)
-                                        : 
-                                        undefined 
-                                    }
-                                    <span className={classes.inputName}>
-                                        <ListTextField defaultValue={input.name}
-                                                       onKeyUp={(e) => onInputNameKeyUp(idx, e)}
-                                                       onBlur={(e) => onInputNameBlur(idx, e.target.value)}
-                                        />
-                                    </span>
+                                     onMouseLeave={() => onInputNameHover(-1)}
+                                     onClick={()=> onInputNameClick(idx)}>
+                                     { generateInputNameComponent(input, idx) }
+                                   
                                 </div>
-                                <div className={inputTypeContainerClassName(idx)} 
+                                <div className={getInputTypeContainerClassName(input, idx)} 
                                      onClick={() => onInputTypeClick(idx)}>
-                                    {
-                                        inputTypeClicked === idx
-                                        ?
-                                        <ParameterInputDropdown  onClick={onTypeInputSelected} />
-                                        :
-                                        <a className={classes.inputTypeTag}>{types[input.type]}</a>
-                                    }
+                                     { generateInputTypeComponent(input, idx) }
                                 </div>                       
                             </div>
                             <hr className={classes.divider} />
@@ -306,7 +413,7 @@ export default function ParameterInputList() {
                 
                 <div className={classes.addContainer}
                      onClick={onButtonNewClick} >
-                    <AddIcon style={{'height': '12px', width: '12px'}} />
+                    <AddIcon className={classes.addIcon} />
                     <a className={classes.newButton}>New</a>
                 </div>
             </div>

@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
             width: '100%',
             height: '100%',  
             opacity: 0,        
-            backgroundColor: theme.palette.primary.main,
+            backgroundColor: props => props.fill,
             borderRadius: props => props.borderRadius,
             transition: 'opacity 50ms ease-out'
         },

@@ -19,7 +19,7 @@ import DescriptionPage from './pages/DescriptionPage/DescriptionPage';
 ReactDOM.render(
                 <React.StrictMode>
                     <ThemeProvider theme={theme}>
-                        <QuestionPageProto />
+                        <DescriptionPage />
                     </ThemeProvider>
                 </React.StrictMode>, 
                 document.getElementById('root'));
