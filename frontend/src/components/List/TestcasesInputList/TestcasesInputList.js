@@ -100,7 +100,7 @@ const useStyles = makeStyles(theme => ({
         borderRadius: '5px',
         '& > span': {
             margin: '0',
-            marginLeft: '15px',
+            marginLeft: '15.5px',
             display: 'inline',
         },
     },
@@ -129,7 +129,7 @@ const useStyles = makeStyles(theme => ({
             borderBottom: `.1px solid ${theme.palette.common.grey}`,
             cursor: 'pointer',
             fontWeight: '700',
-            marginLeft: 15,
+            marginLeft: '15.5px',
             padding: 0
         }
     },
