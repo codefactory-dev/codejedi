@@ -5,7 +5,7 @@ var $ = require( "jquery" );
 
 const useStyles = makeStyles((theme) => ({
     root: {
-
+		
     },
 }));
 
@@ -14,27 +14,27 @@ export default function CustomSelect(props){
 
     return (
 		<div className={classes.root}>
-			<span class="wrapper-label">{props.label}</span>
-			<div class="select">
+			<span className="wrapper-label">{props.label}</span>
+			<div className="select" style={{"margin": "0"}}>
 				<input type="radio" name={"option-"+props.label} />
-				<i class="toggle icon icon-arrow-down"></i>
-				<i class="toggle icon icon-arrow-up"></i>
-				<span class="placeholder">Select an option</span>
-				<label class="option">
+				<i className="toggle icon icon-arrow-down"></i>
+				<i className="toggle icon icon-arrow-up"></i>
+				<span className="placeholder">Select an option</span>
+				<label className="option">
 					<input type="radio" name={"option-"+props.label} />
-					<span class="title">Option 1</span>
+					<span className="title">Option 1</span>
 				</label>
-				<label class="option">
+				<label className="option">
 					<input type="radio" name={"option-"+props.label} />
-					<span class="title">Option 2</span>
+					<span className="title">Option 2</span>
 				</label>
-				<label class="option">
+				<label className="option">
 					<input type="radio" name={"option-"+props.label} />
-					<span class="title">Option 3</span>
+					<span className="title">Option 3</span>
 				</label>
-				<label class="option">
+				<label className="option">
 					<input type="radio" name={"option-"+props.label} />
-					<span class="title">Option 4</span>
+					<span className="title">Option 4</span>
 				</label>
 			</div>
 		</div>

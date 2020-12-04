@@ -21,9 +21,7 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'column',
         fontFamily: 'Lato',
         fontWeigth: '700',
-        height: '100vh',
         boxSizing: 'border-box',
-        padding: '30px 10px',
         margin: '0',
         backgroundColor: theme.palette.common.black,
         color: theme.palette.common.greyLight,
@@ -45,17 +43,6 @@ const useStyles = makeStyles(theme => ({
     },
     col_flex2: {
         display: 'flex',
-    },
-
-    // row title
-    titleContainer: {
-        display: 'flex',
-        alignItems: 'center',
-        padding: '15px 0'
-    },
-    title: {
-        marginRight: '15px',
-        fontSize: '1.4rem',
     },
 
     // row subtitle
@@ -380,9 +367,9 @@ export default function ParameterInputList() {
     return (
         <div className={classes.root}>
             {/* title row */}
-            <div className={classes.titleContainer}>
+            {/* <div className={classes.titleContainer}>
                 <span className={classes.title}>Parameters</span>
-            </div>
+            </div> */}
             <hr className={classes.divider} />
 
             {/* subtitle row */}
