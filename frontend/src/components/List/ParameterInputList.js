@@ -13,7 +13,7 @@ import {ReactComponent as ListIcon} from '../../icons/list.svg';
 import {ReactComponent as AddIcon} from '../../icons/add.svg';
 import {ReactComponent as DeleteIcon} from '../../icons/delete.svg';
 import {ReactComponent as CrossIcon} from '../../icons/cross.svg';
-
+import {ReactComponent as YesIcon} from '../../icons/yes.svg';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -227,16 +227,17 @@ export default function ParameterInputList() {
         setInputs([...inputs, {name: 'undefined', type: 3}]);
     }
 
-    const onButtonDeleteClick = (inputIdx) => {
+    const onButtonDeleteClick = (inputIdx) => {       
+        setInputNameHovered({rowIndex: inputIdx, rowState: rowStates.DELETING});
+    }
+
+    const onButtonConfirmDeleteClick = (idx) => {
         // confirm deletion
         if (inputNameHovered.rowState === rowStates.DELETING) {
             setInputs(inputs.filter((input, idx) => inputNameHovered.rowIndex !== idx));
             setInputNameHovered({rowIndex: -1, rowState: rowStates.DEFAULT});
             return;
         }
-        
-        setInputNameHovered({rowIndex: inputIdx, rowState: rowStates.DELETING});
-        
     }
 
     const onInputNameHover = (inputIdx) => {
@@ -284,25 +285,31 @@ export default function ParameterInputList() {
     // CSS/Component HELPERS
     // ----------------------------------------------------------------
 
-    const deleteIcon = idx => (
-                    <div style={{"position": "absolute"}}>
-                        <IconButton 
-                            width={20} 
-                            height={20} 
-                            padding={3} 
-                            fill={inputNameHovered.rowState === rowStates.DELETING 
-                                   ? `${theme.palette.secondary.main}` 
-                                   : `${theme.palette.primary.main}`}                     
-                            fillHover={'white'}
-                            stroke={'none'}
-                            strokeHover={'none'}
-                            borderRadius={'3px'}
-                            icon={<CrossIcon />}
-                            onClick={e => { e.stopPropagation(); onButtonDeleteClick(idx); }}
-                        />
-                    </div>);
+    const icon = (idx, icon, fillColor, callback) => (
+            <div style={{"position": "absolute"}}>
+                <IconButton 
+                    width={20} 
+                    height={20} 
+                    padding={3} 
+                    fill={`${fillColor}`}                     
+                    fillHover={'white'}
+                    stroke={'none'}
+                    strokeHover={'none'}
+                    borderRadius={'3px'}
+                    icon={icon}
+                    onClick={e => { e.stopPropagation(); callback(idx); }}
+                />
+            </div>
+    );
+        
+    
+    const deleteIcon = idx => icon(idx, <CrossIcon />, theme.palette.primary.main, onButtonDeleteClick); 
+
+    const confirmDeleteIcon = idx => icon(idx, <YesIcon />, theme.palette.secondary.main, onButtonConfirmDeleteClick);
+                            
 
     const generateInputNameComponent = (input, idx) => {
+        const checkingDelete = inputNameHovered.rowState === rowStates.DELETING;
         const hovered = inputNameHovered.rowIndex === idx;
         let inputNameComponent;
 
@@ -318,7 +325,7 @@ export default function ParameterInputList() {
         else if (inputNameHovered.rowState === rowStates.DELETING) {
             inputNameComponent =  (
                 <span className={[classes.inputNameDelete]}>
-                        Delete?
+                        Are you sure to delete this row?
                 </span>
         )}
         // if hovering the row component and clicked to edit it
@@ -338,7 +345,11 @@ export default function ParameterInputList() {
 
         return (
             <React.Fragment>
-                {hovered ? deleteIcon(idx) : undefined}
+                {hovered 
+                 ?
+                 checkingDelete ? confirmDeleteIcon(idx)  : deleteIcon(idx)
+                 : 
+                 undefined}
                 {inputNameComponent}
             </React.Fragment>
         );
@@ -418,7 +429,12 @@ export default function ParameterInputList() {
                 </div>
             </div>
             <hr className={classes.divider} />
-            <Button variant="outlined" disableFocusRipple disableRipple className={classes.saveButton}>Save</Button>
+            <Button variant="outlined" 
+                    disableFocusRipple 
+                    disableRipple 
+                    className={classes.saveButton}>
+                    Save
+            </Button>
         </div>
     );
 }

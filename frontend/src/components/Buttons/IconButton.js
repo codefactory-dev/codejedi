@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
         msTransform: props => props.msTransform,
         transform: props => props.transform,
         padding: props => props.padding || '10px',
-        border: `1.5px solid ${theme.palette.primary.main}`,
+        border: props =>`1.5px solid ${props.fill}`,
         borderRadius: props => props.borderRadius,
         fill: props => props.fill,
         stroke: props => props.stroke,
