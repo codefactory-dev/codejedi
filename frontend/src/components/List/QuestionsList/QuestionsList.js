@@ -214,8 +214,8 @@ export default function QuestionsList() {
         }
     },[editingState])
 
-    const editRow = (e, idx) => {
-        setEditingState(rowStates.EDITING_ROW);
+    const navigateToQuestion = (e, idx) => {
+        //here should be the code to navigate to the selected question
     }
 
     const onClickHandler = (e) => {
@@ -254,7 +254,7 @@ export default function QuestionsList() {
     const getDeletionState = (input,idx) => ({
         [rowStates.DESELECTED]: 
             <div className={classes.selectedInput}>
-                <span onClick={()=>{editRow()}}>{input}</span>
+                <span onClick={()=>{navigateToQuestion()}}>{input}</span>
             </div>,
         [rowStates.EDITING_ROW]: 
             <div className={classes.focusedInput}>
