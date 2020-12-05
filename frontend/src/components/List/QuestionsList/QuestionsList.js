@@ -80,7 +80,7 @@ const useStyles = makeStyles(theme => ({
         cursor: 'pointer',
         '& > span': {
             margin: '0',
-            marginLeft: '40px',
+            marginLeft: '10px',
             display: 'inline'
         }
     },
@@ -92,15 +92,14 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: theme.palette.common.black,
         fontSize: '1rem',
         width: '100%',
-        height: 28,
+        height: '100%',
         //border
         borderStyle: 'none',
         cursor: 'pointer',
         backgroundColor: theme.palette.common.black2,
-        borderRadius: '5px',
         '& > span': {
             margin: '0',
-            marginLeft: '15.5px',
+            marginLeft: '10px',
             display: 'inline',
         },
     },
@@ -164,7 +163,8 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        borderBottom: 'solid #333333 1px'
+        borderBottom: 'solid #333333 1px',
+        width: '100%',
     },
     activeRow: {
         display: 'flex',
@@ -246,45 +246,16 @@ export default function QuestionsList() {
     function deselectCurrentItem(event){
         console.log("deselecting current item");
         const activeRowElement = document.querySelectorAll('div[class^="makeStyles-activeRow"]');
-        setActiveRowItem(-1);
-        setEditingState(rowStates.DESELECTED);
+        //setActiveRowItem(-1);
+        //setEditingState(rowStates.DESELECTED);
     }
     const getDeletionState = (input,idx) => ({
         [rowStates.DESELECTED]: 
             <div className={classes.selectedInput}>
-                
-                <IconButton 
-                            className={classes.deleteIcon} 
-                            width={19.5} 
-                            height={20} 
-                            padding={3} 
-                            marginLeft={5}
-                            fill={`${theme.palette.primary.main}`}
-                            stroke={'none'}
-                            fillHover={'white'}
-                            strokeHover={'none'}
-                            borderRadius={'3px'}
-                            icon={<CrossIcon />}
-                            onClick={(e) => { askForDelete(e,idx) } } 
-                />
                 <span onClick={()=>{editRow()}}>{input}</span>
             </div>,
         [rowStates.EDITING_ROW]: 
             <div className={classes.focusedInput}>
-                <IconButton 
-                            className={classes.deleteIcon} 
-                            width={19.5} 
-                            height={20} 
-                            padding={3} 
-                            marginLeft={5}
-                            fill={`${theme.palette.primary.main}`}
-                            stroke={'none'}
-                            fillHover={'white'}
-                            strokeHover={'none'}
-                            borderRadius={'3px'}
-                            icon={<CrossIcon />}
-                            onClick={(e) => { askForDelete(e,idx) } } 
-                />
                 <input 
                     id={`input-${idx}`} 
                     maxlength="20"
@@ -292,20 +263,6 @@ export default function QuestionsList() {
             </div>,
         [rowStates.CONFIRMING_DELETE]: 
             <div className={classes.selectedInput}>
-                <IconButton 
-                            className={classes.deleteIcon} 
-                            width={19.5} 
-                            height={20} 
-                            padding={3} 
-                            marginLeft={5}
-                            fill={`${theme.palette.primary.main}`}
-                            stroke={'none'}
-                            fillHover={'white'}
-                            strokeHover={'none'}
-                            borderRadius={'3px'}
-                            icon={<CrossIcon />}
-                            onClick={(e) => { askForDelete(e,idx) } } 
-                />
                 <span>{matches ? 'Do you want to remove the selected item ?' : 'Remove selected item ?'}</span>
                 <div style={{marginLeft: 10}} onClick={()=>{handleYes()}}>Yes</div>
                 <div style={{marginLeft: 10}} onClick={()=>{handleNo()}}>no</div>
@@ -371,17 +328,9 @@ export default function QuestionsList() {
                                     generateRow(input,idx)
                         )})}
                     </form>
-                    <div 
-                        className={classes.addContainer}
-                        onClick={onClickHandler} 
-                        >
-                        <AddIcon style={{'height': '12px', width: '12px'}} />
-                        <a className={classes.newButton}>New</a>
-                    </div>
                 </div>
             </div>
-            <hr className={classes.divider} />
-            <Button variant="outlined" disableFocusRipple disableRipple className={classes.saveButton}>Save</Button>
+            <Button variant="outlined" disableFocusRipple disableRipple className={classes.saveButton}>Submit a Question</Button>
         </div>
     );
 }
