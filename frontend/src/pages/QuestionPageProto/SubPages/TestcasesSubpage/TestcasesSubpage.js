@@ -19,7 +19,7 @@ const useStyles = makeStyles( theme => ({
   },
   contentList: {
     width: '60%',
-    paddingLeft: '100px'
+    paddingLeft: '20px'
   },
   title: {
     display: 'flex',
