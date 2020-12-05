@@ -53,14 +53,15 @@ const useStyles = makeStyles(theme => ({
     subtitleContainer: {
         display: 'flex',
         alignItems: 'center',
-        marginLeft: '5px',
-        padding: '10px',
+        padding: '10px 10px 10px 0',
         fill: theme.palette.common.grey3,
         
 
         '& p': {
             ... theme.listSubtitle,
-            marginLeft: '5px'
+            marginLeft: '10px',
+            color: theme.palette.common.white,
+            fontSize: '1rem'
         }
     },
     contentContainer: {
@@ -136,7 +137,8 @@ const useStyles = makeStyles(theme => ({
         ...theme.divider,
         zIndex: 0,
         position: 'relative',
-        minWidth: '225.297px'
+        minWidth: '225.297px',
+        backgroundColor: theme.palette.common.grey2
     },
     addContainer: {
         display: 'inline-flex',
@@ -246,8 +248,8 @@ export default function QuestionsList() {
     function deselectCurrentItem(event){
         console.log("deselecting current item");
         const activeRowElement = document.querySelectorAll('div[class^="makeStyles-activeRow"]');
-        //setActiveRowItem(-1);
-        //setEditingState(rowStates.DESELECTED);
+        setActiveRowItem(-1);
+        setEditingState(rowStates.DESELECTED);
     }
     const getDeletionState = (input,idx) => ({
         [rowStates.DESELECTED]: 
@@ -307,14 +309,8 @@ export default function QuestionsList() {
 
     return (
         <div className={classes.root}>
-            <div className={classes.titleContainer}>
-                <span className={classes.title}>Input</span>
-                <a className={classes.tag}>{maxInputTag}</a>
-            </div>
-            <hr className={classes.divider} />
             <div className={classes.subtitleContainer}>
-                <HashIcon style={{'height': '12px', width: '12px'}} />
-                <p>Value</p>
+                <p>Title</p>
             </div>
             <hr className={classes.divider} />
             <div className={classes.wrapper}>
