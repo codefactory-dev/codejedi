@@ -15,11 +15,12 @@ import masterCss from './masterCss.scss'
 import SigninPage from './pages/SigninPage/SigninPage.js'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import DescriptionPage from './pages/DescriptionPage/DescriptionPage';
+import InitialPage from './pages/InitialPage/InitialPage';
 
 ReactDOM.render(
                 <React.StrictMode>
                     <ThemeProvider theme={theme}>
-                        <DescriptionPage />
+                        <InitialPage />
                     </ThemeProvider>
                 </React.StrictMode>, 
                 document.getElementById('root'));
