@@ -176,6 +176,7 @@ export default function QuestionPageProto() {
         const subPages = {
             [pageTabs.DESCRIPTION_PAGE]: 
                 <DescriptionSubpage
+                    setActiveTab={setActiveTab}
                     shouldSubmit={shouldSubmit} 
                     setShouldSubmit={setShouldSubmit}
                     shouldSave={shouldSave}
