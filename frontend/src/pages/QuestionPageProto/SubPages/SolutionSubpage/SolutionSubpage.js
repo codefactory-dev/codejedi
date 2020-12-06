@@ -1,9 +1,9 @@
 import React, {useState, useEffect } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import ParameterInputList from '../../components/List/ParameterInputList';
-import CustomSelect from '../../components/Select/CustomSelect.js'
-import SimpleTextField from '../../components/TextField/SimpleTextField.js'
-import CodeEditor from '../../components/CodeEditor/CodeEditor';
+import ParameterInputList from '../../../../components/List/ParameterInputList';
+import CustomSelect from '../../../../components/Select/CustomSelect.js'
+import SimpleTextField from '../../../../components/TextField/SimpleTextField.js'
+import CodeEditor from '../../../../components/CodeEditor/CodeEditor';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -45,7 +45,7 @@ const useStyles = makeStyles(theme => ({
 
 
 
-export default function DescriptionPage() {
+export default function SolutionSubpage() {
     const classes = useStyles();
     const theme = useTheme();
 

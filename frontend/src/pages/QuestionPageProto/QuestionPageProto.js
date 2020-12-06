@@ -4,6 +4,7 @@ import Navbar from '../../components/Navbar/Navbar.js'
 import Swal from 'sweetalert2'
 import axios from 'axios'
 import DescriptionSubpage from './SubPages/DescriptionSubpage/DescriptionSubpage.js'
+import SolutionSubpage from './SubPages/SolutionSubpage/SolutionSubpage.js'
 import TestcasesSubpage from './SubPages/TestcasesSubpage/TestcasesSubpage.js'
 
 const useStyles = makeStyles((theme) => ({
@@ -92,6 +93,12 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
+const pageTabs = {
+    DESCRIPTION_PAGE: 0,
+    SOLUTION_PAGE: 1,
+    TESTCASES_PAGE: 2
+}
+
 export default function QuestionPageProto() { 
     const classes = useStyles();
     const [shouldSubmit, setShouldSubmit] = useState(false);
@@ -104,6 +111,7 @@ export default function QuestionPageProto() {
     const [questionTestcasesType, setQuestionTestcasesType] = useState();
     const [languageType, setLanguageType] = useState();
     const [solutionName, setSolutionName] = useState();
+    const [activeTab, setActiveTab] = useState(pageTabs.DESCRIPTION_PAGE);
 
 
     function handleChange(){
@@ -164,8 +172,9 @@ export default function QuestionPageProto() {
     },[answer])
 
     function renderSubpage(){
-        if (false){
-            return (
+
+        const subPages = {
+            [pageTabs.DESCRIPTION_PAGE]: 
                 <DescriptionSubpage
                     shouldSubmit={shouldSubmit} 
                     setShouldSubmit={setShouldSubmit}
@@ -179,13 +188,12 @@ export default function QuestionPageProto() {
                     solutionName={solutionName}
                     answer={answer}
                     setAnswer={setAnswer}
-                />
-            )
-        } else {
-            return (
-                <TestcasesSubpage />
-            )
+                />,
+            [pageTabs.SOLUTION_PAGE]: <SolutionSubpage />,
+            [pageTabs.TESTCASES_PAGE]: <TestcasesSubpage />
+
         }
+        return subPages[activeTab];
     }
 
     return (
