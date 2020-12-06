@@ -12,6 +12,7 @@ import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import RichTextEditor from '../../../../components/Editor/RichTextEditor.js'
 
 import RegularButton from '../../../../components/Buttons/RegularButton.js'
 
@@ -157,7 +158,7 @@ export default function DescriptionSubpage(props) {
         </Paper>
         <div className={classes.separator}></div>
         <Paper className={classes.textArea}>
-            There should be something here
+            <RichTextEditor />
         </Paper>
         <div className={classes.separator} />
         <div className={classes.thirdElement} />
