@@ -1,10 +1,32 @@
 import React, { useState } from "react";
 import { Editor, EditorState, RichUtils } from "draft-js";
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import './RichTextEditor.scss'
+import { camelCase } from "jquery";
 
+
+//source: https://codesandbox.io/s/qzj7k4w2mw?file=/src/App.js:212-225
 //more examples: https://codesandbox.io/examples/package/draft-js
 
+const useStyles = makeStyles(theme => ({
+  editorContainer: {
+      height: 'calc(100% - 20px)'
+  },
+  editors: {
+    border: '1px blue solid',
+    fontFamily: 'Open Sans',
+    fontSize: '90%',
+    height: '100%' 
+  },
+  button: {
+    height: '20px',
+    width: '20px',
+    padding: '2px',
+    margin: 0
+  }
+}));
 function RichTextEditor() {
-
+  const classes = useStyles();
   const [editorState,setEditorState] = useState(EditorState.createEmpty());
 
 	const onChange = editorState => {
@@ -40,15 +62,15 @@ function RichTextEditor() {
 	};
 
   return (
-    <div className="editorContainer">
-      <button onClick={onUnderlineClick}>U</button>
-      <button onClick={onBoldClick}>
+    <div className={classes.editorContainer}>
+      <button className={classes.button} onClick={onUnderlineClick}>U</button>
+      <button className={classes.button} onClick={onBoldClick}>
         <b>B</b>
       </button>
-      <button onClick={onItalicClick}>
+      <button className={classes.button} onClick={onItalicClick}>
         <em>I</em>
       </button>
-      <div className="editors">
+      <div className={classes.editors}>
         <Editor
           editorState={editorState}
           handleKeyCommand={handleKeyCommand}
