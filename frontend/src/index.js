@@ -14,7 +14,6 @@ import masterCss from './masterCss.scss'
 //import SignInSide from './pages/SignInSide/SignInSide.js'
 import SigninPage from './pages/SigninPage/SigninPage.js'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import DescriptionPage from './pages/DescriptionPage/DescriptionPage';
 import InitialPage from './pages/InitialPage/InitialPage';
 
 ReactDOM.render(

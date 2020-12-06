@@ -12,6 +12,7 @@ import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import RichTextEditor from '../../../../components/Editor/RichTextEditor.js'
 
 import RegularButton from '../../../../components/Buttons/RegularButton.js'
 
@@ -96,13 +97,17 @@ const useStyles = makeStyles( theme => ({
   }
 }));
 
-export default function DescriptionSubpage() {
+export default function DescriptionSubpage(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  const changeSubpage = (event,idx) => {
+    console.log("changing subpage");
+    props.setActiveTab(idx);
+  }
 
   return (
     <div className={classes.verticalContainer}>
@@ -130,15 +135,30 @@ export default function DescriptionSubpage() {
             textColor="primary"
             aria-label="icon tabs example"
           >
-            <Tab classes={{ root: classes.tab, selected: classes.selected }} label="DESCRIPTION" {...a11yProps(0)}  />
-            <Tab classes={{ root: classes.tab, selected: classes.selected }} label="SOLUTION" {...a11yProps(1)} />
-            <Tab classes={{ root: classes.tab, selected: classes.selected }} label="TEST CASES" {...a11yProps(2)} />
+            <Tab 
+              classes={{ root: classes.tab, selected: classes.selected }}
+              label="DESCRIPTION" 
+              {...a11yProps(0)} 
+              onClick={(e)=> changeSubpage(e,0)}  
+            />
+            <Tab 
+              classes={{ root: classes.tab, selected: classes.selected }} 
+              label="SOLUTION" 
+              {...a11yProps(1)} 
+              onClick={(e)=> changeSubpage(e,1)} 
+              />
+            <Tab 
+              classes={{ root: classes.tab, selected: classes.selected }}
+               label="TEST CASES"
+               {...a11yProps(2)} 
+               onClick={(e)=> changeSubpage(e,2)} 
+            />
 
           </Tabs>
         </Paper>
         <div className={classes.separator}></div>
         <Paper className={classes.textArea}>
-            There should be something here
+            <RichTextEditor />
         </Paper>
         <div className={classes.separator} />
         <div className={classes.thirdElement} />
@@ -182,6 +202,7 @@ TabPanel.propTypes = {
 };
 
 function a11yProps(index) {
+  
   return {
     id: `scrollable-auto-tab-${index}`,
     'aria-controls': `scrollable-auto-tabpanel-${index}`,
