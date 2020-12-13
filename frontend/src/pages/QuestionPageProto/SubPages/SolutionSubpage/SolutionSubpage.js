@@ -43,21 +43,54 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-
-
 export default function SolutionSubpage() {
     const classes = useStyles();
     const theme = useTheme();
 
-    let defaultCode = `class Solution { }`;
+    let [funcName, setFuncName] = useState('');
+    let functionLanguage = 'Java';
+    let functionReturnType = 'int';
+    let [funcParameters, setFuncParams] = useState([]);
+    let [toggleCodeReload, setToggleCodeReload] = useState(false);
+    let userCode = ``;
+
+    // ------------------------------------------------------------------
+    // HOOKS
+    // ------------------------------------------------------------------
+
+    useEffect(() => {
+        setToggleCodeReload(!toggleCodeReload);
+    }, [funcParameters, funcName]);
+
+    // ------------------------------------------------------------------
+
+    const generateFunctionSignature = () => {       
+        let params = funcParameters.reduce((acc, input, idx) => {
+            return `${acc}${input.type} ${input.name}${idx === funcParameters.length-1 ? `` : `, `}`
+        }, ``);
+
+        return `class Solution { 
+    public ${functionReturnType} ${funcName} (${params}) {
+            ${userCode}
+    }
+}`;
+    }
+
 
     // ------------------------------------------------------------------
     // HANDLERS, CALLBACKS
     // ------------------------------------------------------------------
 
+    const onParameterInputListChange = inputs => {
+        setFuncParams([...inputs]);
+    }
+
     const handleCodeChange = code => {
-        defaultCode = code;
-        console.log(defaultCode);
+        // functionSignatureCode = code;
+    }
+
+    const onFunctionNameChange = evt => {
+        setFuncName(evt.target.value);
     }
 
     return (
@@ -66,7 +99,7 @@ export default function SolutionSubpage() {
             <div style={{display: "flex", width: "100%"}}>
                 <div className={classes.colFlex3} style={{}}>
                     <span className={classes.title}>Function name</span>
-                    <SimpleTextField />
+                    <SimpleTextField onChange={onFunctionNameChange}/>
                 </div>
                 <div className={classes.colFlex1}>
                     <span className={classes.title}>Language</span>
@@ -83,15 +116,16 @@ export default function SolutionSubpage() {
                     <span className={classes.title}>Parameters</span>
             </div>
             <div className={classes.listContainer}>
-                <ParameterInputList />
+                <ParameterInputList onParameterInputChange={onParameterInputListChange} />
             </div>
 
             {/* title row */}
             <div className={classes.titleContainer}>
                     <span className={classes.title}>Write your solution below</span>
             </div>
-            <CodeEditor code={defaultCode} setCode={handleCodeChange}/>
+            <CodeEditor loadedCode={toggleCodeReload} code={generateFunctionSignature()} setCode={handleCodeChange}/>
         </div>
     );
 
 }
+

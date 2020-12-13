@@ -16,12 +16,12 @@ export default function CustomSelect(props){
 		<div className={classes.root}>
 			<span className="wrapper-label">{props.label}</span>
 			<div className="select" style={{"margin": "0"}}>
-				<input type="radio" name={"option-"+props.label} />
+				<input type="radio" name={"option-"+props.label}/>
 				<i className="toggle icon icon-arrow-down"></i>
 				<i className="toggle icon icon-arrow-up"></i>
 				<span className="placeholder">Select an option</span>
 				<label className="option">
-					<input type="radio" name={"option-"+props.label} />
+					<input type="radio" name={"option-"+props.label} onChange={() => console.log("oeoeoeoe")}/>
 					<span className="title">Option 1</span>
 				</label>
 				<label className="option">

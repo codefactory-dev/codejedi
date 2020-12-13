@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -182,7 +182,7 @@ const inputTypes = {
 }
 
 
-export default function ParameterInputList() {
+export default function ParameterInputList(props) {
     const classes = useStyles();
     const theme = useTheme();
 
@@ -205,6 +205,11 @@ export default function ParameterInputList() {
         setInputTypeClicked(-1);
     });
 
+
+    useEffect(() => {
+        console.log(inputs);
+        props.onParameterInputChange(inputs);
+    }, [inputs])
 
     // ----------------------------------------------------------------
     // LISTENERS
@@ -254,16 +259,13 @@ export default function ParameterInputList() {
         evt.target.blur();
     }
 
-
-
-
     const onInputTypeClick = (inputIdx) => {
         if (inputTypeClicked === inputIdx) { return; }
         setInputTypeClicked(inputIdx);
     }
     const onTypeInputSelected = (inputType) => {   
         inputs[inputTypeClicked].type = inputType;
-        setInputs(inputs);
+        setInputs([...inputs]);
         setInputTypeClicked(-1);
     }
     
@@ -419,9 +421,14 @@ export default function ParameterInputList() {
             <Button variant="outlined" 
                     disableFocusRipple 
                     disableRipple 
-                    className={classes.saveButton}>
+                    className={classes.saveButton}
+                    >
                     Save
             </Button>
         </div>
     );
+}
+
+ParameterInputList.propTypes = {
+    onParameterInputChange: PropTypes.func.isRequired
 }

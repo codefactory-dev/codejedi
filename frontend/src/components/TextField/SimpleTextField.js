@@ -1,6 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import PropTypes from 'prop-types';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,6 +35,12 @@ export default function SimpleTextField(props) {
           InputLabelProps={{
             shrink: true,
           }}
+
+          onChange={evt => props.onChange(evt)}
         />
   );
+}
+
+SimpleTextField.propTypes = {
+  onChange: PropTypes.func
 }
