@@ -29,7 +29,10 @@ const useStyles = makeStyles(theme => ({
     listContainer: {
         // padding: '20px'
     },
-
+    colFlex: {
+        display: "flex", 
+        width: "100%"
+    },
     colFlex3: {
         display: "flex", 
         flexDirection: "column", 
@@ -47,9 +50,12 @@ export default function SolutionSubpage() {
     const classes = useStyles();
     const theme = useTheme();
 
+    const languages = ['java', 'javascript'];
+    const returnTypes = ['int', 'string'];
+
     let [funcName, setFuncName] = useState('');
-    let functionLanguage = 'Java';
-    let functionReturnType = 'int';
+    let [funcLanguage, setFuncLanguage] = useState(languages[0]);
+    let [functReturnType, setFuncReturnType] = useState(returnTypes[0]);
     let [funcParameters, setFuncParams] = useState([]);
     let [toggleCodeReload, setToggleCodeReload] = useState(false);
     let userCode = ``;
@@ -60,20 +66,36 @@ export default function SolutionSubpage() {
 
     useEffect(() => {
         setToggleCodeReload(!toggleCodeReload);
-    }, [funcParameters, funcName]);
+    }, [funcName, funcParameters, functReturnType, funcLanguage]);
 
+    // ------------------------------------------------------------------
+    //
     // ------------------------------------------------------------------
 
     const generateFunctionSignature = () => {       
-        let params = funcParameters.reduce((acc, input, idx) => {
-            return `${acc}${input.type} ${input.name}${idx === funcParameters.length-1 ? `` : `, `}`
-        }, ``);
+        let params;
 
-        return `class Solution { 
-    public ${functionReturnType} ${funcName} (${params}) {
-            ${userCode}
-    }
-}`;
+        switch(funcLanguage) {
+            case 'javascript':
+                params =   funcParameters.reduce((acc, input, idx) => {
+                    return `${acc}${input.name}${idx === funcParameters.length-1 ? `` : `, `}`
+                }, ``);
+     
+                return `var ${funcName} = function(${params}) {\n \n \n}`;
+                break;
+
+
+            case 'java':
+                params = funcParameters.reduce((acc, input, idx) => {
+                    return `${acc}${input.type} ${input.name}${idx === funcParameters.length-1 ? `` : `, `}`
+                }, ``);
+        
+                return `class Solution {\n   public ${functReturnType} ${funcName} (${params}) {\n \n\n  }\n}`;
+                break;
+        }
+
+
+       
     }
 
 
@@ -81,33 +103,34 @@ export default function SolutionSubpage() {
     // HANDLERS, CALLBACKS
     // ------------------------------------------------------------------
 
-    const onParameterInputListChange = inputs => {
-        setFuncParams([...inputs]);
-    }
+    const onParameterInputListChange = inputs => setFuncParams([...inputs]);
 
     const handleCodeChange = code => {
         // functionSignatureCode = code;
     }
 
-    const onFunctionNameChange = evt => {
-        setFuncName(evt.target.value);
-    }
+    const onFunctionNameChange = evt => setFuncName(evt.target.value);
+
+    const onFunctionLanguageChange = value => setFuncLanguage(value);
+
+    const onFunctionReturnTypeChange = value => setFuncReturnType(value);
+    
 
     return (
         <div className={classes.root}>
             {/* title row */}
-            <div style={{display: "flex", width: "100%"}}>
+            <div className={classes.colFlex}>
                 <div className={classes.colFlex3} style={{}}>
                     <span className={classes.title}>Function name</span>
                     <SimpleTextField onChange={onFunctionNameChange}/>
                 </div>
                 <div className={classes.colFlex1}>
                     <span className={classes.title}>Language</span>
-                    <CustomSelect />
+                    <CustomSelect options={languages} checkedOptionIndex={0} onChange={onFunctionLanguageChange} />
                 </div>
                 <div className={classes.colFlex1}>
                     <span className={classes.title}>Return type</span>
-                    <CustomSelect />
+                    <CustomSelect options={returnTypes} checkedOptionIndex={0} onChange={onFunctionReturnTypeChange}/>
                 </div>
             </div>
 
