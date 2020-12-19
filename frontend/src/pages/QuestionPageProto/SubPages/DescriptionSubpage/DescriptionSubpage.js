@@ -86,7 +86,7 @@ const useStyles = makeStyles( theme => ({
   }, 
   separator: {
     position: 'relative',
-    minWidth: 82,
+    minWidth: 20,
     width: '9%'
   },
   secondSeparator: {
