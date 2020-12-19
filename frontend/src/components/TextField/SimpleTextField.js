@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 const useStyles = makeStyles((theme) => ({
   root: {
     width: 400,
-    flexGrow: 1,
     '& > label': {
       color: theme.palette.common.white,
       fontWeight: 550

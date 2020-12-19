@@ -46,10 +46,11 @@ function CodeEditor(props) {
     useEffect(() => {    
             console.log("codemirror updated");
     
-            console.log(props.loadedCode);
-            console.log(props.code);
+            console.log("loadedCode: "+props.loadedCode);
+            console.log("code: "+props.code);
             
-            codemirror.current.setValue(props.code);
+            if (props.code)
+                codemirror.current.setValue(props.code);
             // textareaNode.current.innerHTML = code;
         
         
