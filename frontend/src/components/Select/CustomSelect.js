@@ -43,7 +43,9 @@ export default function CustomSelect(props){
 	const onChangeHandler = (evt) => {
 		const val = evt.target.value;
 		if(val) {
-			props.onChange(val); 
+			if (props.onChange){
+				props.onChange(val); 
+			}
 		}	
 	}
 	
@@ -68,6 +70,6 @@ export default function CustomSelect(props){
 
 CustomSelect.propTypes = {
 	options: PropTypes.array.isRequired,
-	onChange: PropTypes.func.isRequired,
-	checkedOptionIndex: PropTypes.number
+	onChange: PropTypes.func,
+	checkedOptionIndex: PropTypes.number.isRequired
 }

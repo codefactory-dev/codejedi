@@ -97,7 +97,7 @@ const useStyles = makeStyles( theme => ({
   },
   separatorRegButton: {
     width: '20%'
-  }
+  },
 }));
 
 export default function DescriptionSubpage(props) {
@@ -124,9 +124,9 @@ export default function DescriptionSubpage(props) {
           <div className={classes.title}>
               <SimpleTextField label="Title" />
               <div className={classes.grow}></div>
-              <CustomSelect label="Difficulty" />
+              <CustomSelect options={['Easy', 'Medium', 'Hard']} label="Difficulty" />
               <div className={classes.grow2}></div>
-              <CustomSelect label="Type" />
+              <CustomSelect options={['Binary Tree', 'Greedy', 'Linked List']} label="Type" />
               {/*<CustomSelect label="Type" />*/}
           </div>
           <div className={classes.questionPageSeparator} />
