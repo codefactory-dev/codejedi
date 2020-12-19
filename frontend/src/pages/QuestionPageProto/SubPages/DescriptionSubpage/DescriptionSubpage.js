@@ -124,7 +124,7 @@ export default function DescriptionSubpage(props) {
           <div className={classes.title}>
               <SimpleTextField label="Title" />
               <div className={classes.grow}></div>
-              <CustomSelect options={['Easy', 'Medium', 'Hard']} label="Difficulty" />
+              <CustomSelect options={['Easy', 'Medium', 'Hard']} checkedOptionIndex = {2} label="Difficulty" />
               <div className={classes.grow2}></div>
               <CustomSelect options={['Binary Tree', 'Greedy', 'Linked List']} label="Type" />
               {/*<CustomSelect label="Type" />*/}

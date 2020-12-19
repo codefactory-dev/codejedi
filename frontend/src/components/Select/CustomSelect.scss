@@ -18,7 +18,7 @@
   font-size: 12px;
   box-shadow: 0px 1em 2em -1.5em rgba(0, 0, 0, 0.5);
 }
-.select > i.toggle {
+.select > form > i.toggle {
   position: absolute;
   z-index: 4;
   right: 1.5em;
@@ -38,7 +38,7 @@
   border-top: 1px solid #4F4F4F;
   cursor: pointer;
 }
-.select > input {
+.select > form > input {
   position: absolute;
   left: 0px;
   top: 0px;
@@ -49,31 +49,31 @@
   opacity: 0;
   cursor: pointer;
 }
-.select > input:checked ~ i.toggle.icon-arrow-down {
+.select > form > input:checked ~ i.toggle.icon-arrow-down {
   display: none;
 }
-.select > input:checked ~ i.toggle.icon-arrow-up {
+.select > form > input:checked ~ i.toggle.icon-arrow-up {
   display: block;
 }
-.select > input:checked div.options label.option .title {
+.select > form > input:checked div.options label.option .title {
   display: none !important;
 }
-.select > input:not(:checked) {
+.select > form > input:not(:checked) {
   z-index: 4;
 }
-.select > input:not(:checked) ~ label.option > span.title {
+.select > form > input:not(:checked) ~ label.option > span.title {
   display: none;
 }
-.select > input:not(:checked) ~ i.toggle.icon-arrow-up {
+.select > form > input:not(:checked) ~ i.toggle.icon-arrow-up {
   display: none;
 }
-.select > input:not(:checked) ~ i.toggle.icon-arrow-down {
+.select > form > input:not(:checked) ~ i.toggle.icon-arrow-down {
   display: block;
 }
-.select > input:disabled {
+.select > form > input:disabled {
   cursor: no-drop;
 }
-.select > span.placeholder {
+.select > form > span.placeholder {
   position: relative;
   z-index: 0;
   display: inline-block;
@@ -82,32 +82,32 @@
   border-top: 0px;
   border-bottom: 2px solid grey;
 }
-.select label.option {
+.select form label.option {
   display: block;
   overflow: hidden;
   z-index: 1;
   width: 100%;
   transition: all 1s ease-out;
 }
-.select label.option span.title {
+.select form label.option span.title {
   position: relative;
   z-index: 2;
   color: white;
   transition: background .3s ease-out;
 }
-.select label.option span.title i.icon {
+.select form label.option span.title i.icon {
   padding-right: 8px;
   color: #92a8d1;
 }
-.select label.option span.title:hover {
+.select form label.option span.title:hover {
   color: #fff;
   background: #00B5AD;
   box-shadow: inset 0px 1px 0px rgba(0, 0, 0, 0.1);
 }
-.select label.option input {
+.select form label.option input {
   display: none;
 }
-.select label.option input:checked ~ span.title {
+.select form label.option input:checked ~ span.title {
   position: absolute;
   display: block;
   z-index: 3;
@@ -119,11 +119,11 @@
   color: white;
   width: 100%;
 }
-.select label.option input:disabled ~ span.title {
+.select form label.option input:disabled ~ span.title {
   background: #f9f9f9 !important;
   color: #aaa;
 }
-.select label.option input:disabled ~ span.title:hover {
+.select form label.option input:disabled ~ span.title:hover {
   color: #aaa;
   background: none;
   cursor: no-drop;

@@ -13,7 +13,10 @@ export default function CustomSelect(props){
 	// --------------------------------------------------------------------
 	// HOOKS
 	// --------------------------------------------------------------------
-
+	useEffect(()=>{
+		//document.getElementById("_1234").checked = true;
+		//checkedOptionIndex
+	},[])
 
 
 	// --------------------------------------------------------------------
@@ -55,14 +58,16 @@ export default function CustomSelect(props){
 			<span className="wrapper-label">{props.label}</span>
 			<div className="select" style={{"margin": "0"}}
 				onChange={ evt => onChangeHandler(evt)}>
-				<input type="radio" 
-					   name={"option-test"} 
-					   value={'default'}
-					   />
-				<i className="toggle icon icon-arrow-down"></i>
-				<i className="toggle icon icon-arrow-up"></i>
-				<span className="placeholder">Select an option</span>
-				{generateOptions()}
+				<form>
+					<input type="radio" 
+						name={"option-test"} 
+						value={'default'}
+						/>
+					<i className="toggle icon icon-arrow-down"></i>
+					<i className="toggle icon icon-arrow-up"></i>
+					<span className="placeholder">Select an option</span>
+					{generateOptions()}
+				</form>
 			</div>
 		</div>
     )
