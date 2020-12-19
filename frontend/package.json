@@ -17,6 +17,7 @@
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-draft-wysiwyg": "^1.14.5",
     "react-scripts": "^3.4.3",
     "react-swipe-to-delete-ios": "^1.0.8",
     "sweetalert2": "^9.17.1"

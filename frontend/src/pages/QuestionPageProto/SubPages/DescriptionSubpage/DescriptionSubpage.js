@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
@@ -12,6 +12,9 @@ import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import { Editor } from 'react-draft-wysiwyg';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import { EditorState } from 'draft-js';
 import RichTextEditor from '../../../../components/Editor/RichTextEditor.js'
 
 import RegularButton from '../../../../components/Buttons/RegularButton.js'
@@ -100,6 +103,11 @@ const useStyles = makeStyles( theme => ({
 export default function DescriptionSubpage(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+
+  function onEditorStateChange(editorState){
+    setEditorState(editorState);
+  }
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -158,7 +166,13 @@ export default function DescriptionSubpage(props) {
         </Paper>
         <div className={classes.separator}></div>
         <Paper className={classes.textArea}>
-            <RichTextEditor />
+          <Editor
+            editorState={editorState}
+            toolbarClassName="toolbarClassName"
+            wrapperClassName="wrapperClassName"
+            editorClassName="editorClassName"
+            onEditorStateChange={onEditorStateChange}
+          />
         </Paper>
         <div className={classes.separator} />
         <div className={classes.thirdElement} />
