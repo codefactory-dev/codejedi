@@ -26,11 +26,12 @@ const useStyles = makeStyles( theme => ({
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
+    minWidth: 893.750,
     alignItems: 'center'
   },
   titleContainer: {
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'row',
     width: '60%',
     marginTop: 20,
     height: 60,
@@ -39,7 +40,9 @@ const useStyles = makeStyles( theme => ({
     paddingRIght: 0
   },
   questionPageSeparator: {
-    width: '20%'
+    width: '20%',
+    minWidth: 30,
+    height: 20
   },
   title: {
     display: 'flex',
@@ -78,10 +81,12 @@ const useStyles = makeStyles( theme => ({
     marginLeft: 'auto',
     height: 700,
     width: '60%',
-    marginTop: 60
+    marginTop: 60,
+    minWidth: 545
   }, 
   separator: {
     position: 'relative',
+    minWidth: 82,
     width: '9%'
   },
   secondSeparator: {
@@ -98,6 +103,22 @@ const useStyles = makeStyles( theme => ({
   separatorRegButton: {
     width: '20%'
   },
+  grow: {
+    minWidth: 20,
+    flexGrow: 2
+  },
+  grow2: {
+    minWidth: 20,
+    flexGrow: 1
+  },
+  titleTextfield: {
+    flexShrink: 1
+  },
+  colFlex1: {
+    display: "flex", 
+    flexDirection: "column", 
+    flexGrow: 1
+  }
 }));
 
 export default function DescriptionSubpage(props) {
@@ -122,11 +143,15 @@ export default function DescriptionSubpage(props) {
       <div className={classes.titleContainer}>
           <div className={classes.questionPageSeparator} />
           <div className={classes.title}>
-              <SimpleTextField label="Title" />
+              <SimpleTextField className={classes.titleTextfield} label="Title" />
               <div className={classes.grow}></div>
-              <CustomSelect options={['Easy', 'Medium', 'Hard']} checkedOptionIndex = {2} label="Difficulty" />
+              <div className={classes.colFlex1}>
+                <CustomSelect options={['Easy', 'Medium', 'Hard']} checkedOptionIndex = {2} label="Difficulty" />
+              </div>
               <div className={classes.grow2}></div>
-              <CustomSelect options={['Binary Tree', 'Greedy', 'Linked List']} label="Type" />
+              <div className={classes.colFlex1}>
+                <CustomSelect options={['Binary Tree', 'Greedy', 'Linked List']} label="Type" />
+              </div>
               {/*<CustomSelect label="Type" />*/}
           </div>
           <div className={classes.questionPageSeparator} />

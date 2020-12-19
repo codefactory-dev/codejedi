@@ -4,6 +4,12 @@ import CustomSelectCss from './CustomSelect.scss'
 import PropTypes from 'prop-types';
 
 const useStyles = makeStyles((theme) => ({
+	root: {
+		width: 200
+	},
+	box: {
+		position: 'absolute',
+	}
 
 }));
 
@@ -55,19 +61,21 @@ export default function CustomSelect(props){
 
     return (
 		<div className={classes.root}>
-			<span className="wrapper-label">{props.label}</span>
-			<div className="select" style={{"margin": "0"}}
-				onChange={ evt => onChangeHandler(evt)}>
-				<form>
-					<input type="radio" 
-						name={"option-test"} 
-						value={'default'}
-						/>
-					<i className="toggle icon icon-arrow-down"></i>
-					<i className="toggle icon icon-arrow-up"></i>
-					<span className="placeholder">Select an option</span>
-					{generateOptions()}
-				</form>
+			<div className={classes.box}>
+				<span className="wrapper-label">{props.label}</span>
+				<div className="select" style={{"margin": "0"}}
+					onChange={ evt => onChangeHandler(evt)}>
+					<form>
+						<input type="radio" 
+							name={"option-test"} 
+							value={'default'}
+							/>
+						<i className="toggle icon icon-arrow-down"></i>
+						<i className="toggle icon icon-arrow-up"></i>
+						<span className="placeholder">Select an option</span>
+						{generateOptions()}
+					</form>
+				</div>
 			</div>
 		</div>
     )
