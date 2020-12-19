@@ -1,27 +1,35 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import CustomSelectCss from './CustomSelect.scss'
 import PropTypes from 'prop-types';
-var $ = require( "jquery" );
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-		
-    },
+
 }));
 
 export default function CustomSelect(props){
     const classes = useStyles();
 
+	// --------------------------------------------------------------------
+	// HOOKS
+	// --------------------------------------------------------------------
+
+
+
+	// --------------------------------------------------------------------
+	// 
+	// --------------------------------------------------------------------
+
 	const generateOptions = () => {
 		if (!props.options) { return undefined; }
-
-		const checkedIndex = props.checkedOptionIndex || -1;
 
 		return (
 			props.options.map((val, idx) => (
 				<label key={`option-${idx}-${val}`} className="option">
-					<input type="radio" name={`option-test`} onChange={() => onChangeHandler(idx, val)} checked={idx === checkedIndex}/>
+					<input type="radio" 
+						   name={`option-test`} 
+						   value={val}
+						   />
 					<span className="title">{val}</span>
 				</label>
 			))
@@ -32,14 +40,23 @@ export default function CustomSelect(props){
 	// HANDLERS
 	// --------------------------------------------------------------------
 
-	const onChangeHandler = (idx, value) => props.onChange(value);
+	const onChangeHandler = (evt) => {
+		const val = evt.target.value;
+		if(val) {
+			props.onChange(val); 
+		}	
+	}
 	
 
     return (
 		<div className={classes.root}>
 			<span className="wrapper-label">{props.label}</span>
-			<div className="select" style={{"margin": "0"}}>
-				<input type="radio" name={"option-test"} checked={false}/>
+			<div className="select" style={{"margin": "0"}}
+				onChange={ evt => onChangeHandler(evt)}>
+				<input type="radio" 
+					   name={"option-test"} 
+					   value={'default'}
+					   />
 				<i className="toggle icon icon-arrow-down"></i>
 				<i className="toggle icon icon-arrow-up"></i>
 				<span className="placeholder">Select an option</span>

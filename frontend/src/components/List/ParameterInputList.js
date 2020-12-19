@@ -207,7 +207,6 @@ export default function ParameterInputList(props) {
 
 
     useEffect(() => {
-        console.log(inputs);
         props.onParameterInputChange(inputs);
     }, [inputs])
 
@@ -244,7 +243,7 @@ export default function ParameterInputList(props) {
 
     const onInputNameBlur = (inputIdx, inputValue) => {
         if (inputValue.length === 0) {
-            // delete row content
+            // delete row content?
 
             return;
         }
