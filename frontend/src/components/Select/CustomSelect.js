@@ -21,9 +21,10 @@ export default function CustomSelect(props){
 	// --------------------------------------------------------------------
 	useEffect(()=>{
 		if (props.checkedOptionIndex){
-			const searchId = `${props.label}-${props.checkedOptionIndex}`;
+			const searchId = `${props.label}-${Number(props.checkedOptionIndex)-1}`;
 			const x = document.getElementById(searchId);
 			x.querySelector('input').checked = true;
+			console.log("selecting "+searchId)
 		}
 		//checkedOptionIndex
 	},[])
