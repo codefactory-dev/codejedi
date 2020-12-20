@@ -27,7 +27,7 @@ export default function SimpleTextField(props) {
         <TextField
           id="standard-full-width"
           className={classes.root}
-          label={props.label || "Default Title"}
+          label={props.label}
           style={{ margin: 8 }}
           fullWidth
           margin="normal"
@@ -41,5 +41,10 @@ export default function SimpleTextField(props) {
 }
 
 SimpleTextField.propTypes = {
+  label: PropTypes.string,
   onChange: PropTypes.func
+}
+
+SimpleTextField.defaultProps = {
+  label: "Default Title"
 }

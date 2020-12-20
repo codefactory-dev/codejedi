@@ -25,7 +25,7 @@ function CodeEditor(props) {
     useEffect(() => {
         codemirror.current = CodeMirror.fromTextArea(textareaNode.current, {
             lineNumbers: true,
-            mode: `${languageModes.get(selectedLanguage)}`,
+            mode: languageModes.get(props.mode),
             matchBrackets: true
         });
         
@@ -44,10 +44,10 @@ function CodeEditor(props) {
 
 
     useEffect(() => {    
-            console.log("codemirror updated");
-    
-            console.log("loadedCode: "+props.loadedCode);
-            console.log("code: "+props.code);
+        
+            // console.log("codemirror updated");
+            // console.log("loadedCode: "+props.loadedCode);
+            // console.log("code: "+props.code);
             
             if (props.code)
                 codemirror.current.setValue(props.code);
@@ -55,6 +55,11 @@ function CodeEditor(props) {
         
         
     }, [props.loadedCode]);
+
+
+    useEffect(() => {
+        codemirror.current.setOption('mode', languageModes.get(props.mode));
+    }, [props.mode])
 
     // --------------------------------------------------------------------
     // HANDLERS
@@ -101,10 +106,14 @@ function CodeEditor(props) {
 
 CodeEditor.propTypes = {
     code: PropTypes.string,
-    setCode:  PropTypes.func,
-    height: PropTypes.number,
     loadedCode: PropTypes.bool,
+    mode:  PropTypes.string,
+    height: PropTypes.number,    
     onChange: PropTypes.func
+}
+
+CodeEditor.defaultProps = {
+    mode: 'java'
 }
 
 export default CodeEditor;

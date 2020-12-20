@@ -4,6 +4,7 @@ import ParameterInputList from '../../../../components/List/ParameterInputList';
 import CustomSelect from '../../../../components/Select/CustomSelect.js'
 import SimpleTextField from '../../../../components/TextField/SimpleTextField.js'
 import CodeEditor from '../../../../components/CodeEditor/CodeEditor';
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -12,6 +13,10 @@ const useStyles = makeStyles(theme => ({
         margin: '0',
         backgroundColor: theme.palette.common.black,
         height: '100vh',
+    },
+    section: {
+        display: 'block',
+        marginTop: '50px'
     },
     titleContainer: {
         display: 'flex',
@@ -42,20 +47,34 @@ const useStyles = makeStyles(theme => ({
         display: "flex", 
         flexDirection: "column", 
         flexGrow: "1"
+    },
+    saveButton: {
+        alignSelf: 'flex-start',
+        ... theme.btnPrimaryOutline,
+        margin: '40px 0',
     }
 }));
 
+// -------------------------------------------------------------------------
+// GLOBAL VARIABLES
+// -------------------------------------------------------------------------
+
+const PROGRAMMING_LANGUAGES = {
+    JAVA: 'java', 
+    JAVASCRIPT: 'javascript'
+};
+const FUNCTION_RETURN_TYPES = {
+    INT: 'int', 
+    STRING: 'String'
+};
 
 export default function SolutionSubpage() {
     const classes = useStyles();
     const theme = useTheme();
 
-    const languages = ['java', 'javascript'];
-    const returnTypes = ['int', 'string'];
-
     let [funcName, setFuncName] = useState('');
-    let [funcLanguage, setFuncLanguage] = useState(languages[0]);
-    let [functReturnType, setFuncReturnType] = useState(returnTypes[0]);
+    let [funcLanguage, setFuncLanguage] = useState(PROGRAMMING_LANGUAGES.JAVA);
+    let [functReturnType, setFuncReturnType] = useState(FUNCTION_RETURN_TYPES.INT);
     let [funcParameters, setFuncParams] = useState([]);
     let [toggleCodeReload, setToggleCodeReload] = useState(false);
     let userCode = ``;
@@ -74,9 +93,9 @@ export default function SolutionSubpage() {
 
     const generateFunctionSignature = () => {       
         let params;
-
+        
         switch(funcLanguage) {
-            case 'javascript':
+            case PROGRAMMING_LANGUAGES.JAVASCRIPT:
                 params =   funcParameters.reduce((acc, input, idx) => {
                     return `${acc}${input.name}${idx === funcParameters.length-1 ? `` : `, `}`
                 }, ``);
@@ -85,7 +104,7 @@ export default function SolutionSubpage() {
                 break;
 
 
-            case 'java':
+            case PROGRAMMING_LANGUAGES.JAVA:
                 params = funcParameters.reduce((acc, input, idx) => {
                     return `${acc}${input.type} ${input.name}${idx === funcParameters.length-1 ? `` : `, `}`
                 }, ``);
@@ -111,40 +130,69 @@ export default function SolutionSubpage() {
 
     const onFunctionNameChange = evt => setFuncName(evt.target.value);
 
-    const onFunctionLanguageChange = value => setFuncLanguage(value);
+    const onFunctionLanguageChange = value => {
+        // check if 'value' is valid language
+        const validate = Object.keys(PROGRAMMING_LANGUAGES).filter((lang) => lang === value);
+        
+        if(validate.length === 1) {       
+            setFuncLanguage(PROGRAMMING_LANGUAGES[value]);
+        }
+    };
 
-    const onFunctionReturnTypeChange = value => setFuncReturnType(value);
+    const onFunctionReturnTypeChange = value => {
+        // check if 'value' is valid language
+        const validate = Object.keys(FUNCTION_RETURN_TYPES).filter((lang) => lang === value);
+        
+        if(validate.length === 1) {
+            setFuncReturnType(FUNCTION_RETURN_TYPES[value]);
+        }
+    };
     
-
     return (
         <div className={classes.root}>
             {/* title row */}
             <div className={classes.colFlex}>
                 <div className={classes.colFlex3} style={{}}>
-                    <span className={classes.title}>Function name</span>
-                    <SimpleTextField onChange={onFunctionNameChange}/>
+                    <SimpleTextField label={"Function name"} onChange={onFunctionNameChange}/>
                 </div>
                 <div className={classes.colFlex1}>
-                    <CustomSelect label={'Language'} options={languages} checkedOptionIndex={0} onChange={onFunctionLanguageChange} />
+                    <CustomSelect label={'Language'} options={(() => Object.keys(PROGRAMMING_LANGUAGES))()} checkedOptionIndex={0} onChange={onFunctionLanguageChange} />
                 </div>
                 <div className={classes.colFlex1}>
-                    <CustomSelect label={'Return type'} options={returnTypes} checkedOptionIndex={0} onChange={onFunctionReturnTypeChange}/>
+                    <CustomSelect label={'Return type'} options={(() => Object.keys(FUNCTION_RETURN_TYPES))()} checkedOptionIndex={1} onChange={onFunctionReturnTypeChange}/>
                 </div>
             </div>
 
             {/* title row */}
-            <div className={classes.titleContainer}>
-                    <span className={classes.title}>Parameters</span>
-            </div>
-            <div className={classes.listContainer}>
-                <ParameterInputList onParameterInputChange={onParameterInputListChange} />
+            <div className={classes.section}>
+                <div className={classes.titleContainer}>
+                        <span className={classes.title}>Parameters</span>
+                </div>
+                <div className={classes.listContainer}>
+                    <ParameterInputList onParameterInputChange={onParameterInputListChange} />
+                </div>
             </div>
 
             {/* title row */}
-            <div className={classes.titleContainer}>
-                    <span className={classes.title}>Write your solution below</span>
+            <div className={classes.section}>
+                <div className={classes.titleContainer}>
+                        <span className={classes.title}>Solution</span>
+                </div>
+                <CodeEditor code={generateFunctionSignature()} 
+                            setCode={handleCodeChange}
+                            loadedCode={toggleCodeReload}
+                            mode={(() => funcLanguage)()}
+                            />
             </div>
-            <CodeEditor loadedCode={toggleCodeReload} code={generateFunctionSignature()} setCode={handleCodeChange}/>
+
+            <Button variant="outlined" 
+                    disableFocusRipple 
+                    disableRipple 
+                    className={classes.saveButton}
+                    >
+                    Save
+            </Button>
+        
         </div>
     );
 

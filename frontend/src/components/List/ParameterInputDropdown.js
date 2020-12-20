@@ -59,7 +59,7 @@ const useStyles = makeStyles(theme => ({
     }
   }));
 
-export default function ParameterInputList(props) {
+export default function ParameterInputDropdown(props) {
     const classes = useStyles();
     const theme = useTheme();
 
@@ -67,18 +67,18 @@ export default function ParameterInputList(props) {
         <div className={classes.root}>
             <p className={classes.header}>Select an option</p>
             <hr className={classes.divider} />
-            <div className={classes.input} onClick={() => props.onClick(0)}>
-                <DotsIcon className={classes.icon} />
-                <a className={classes.inputTypeTag}>int</a>
-            </div>
-            <div className={classes.input} onClick={() => props.onClick(1)}>
-                <DotsIcon className={classes.icon} />
-                <a className={classes.inputTypeTag}>string</a>
-            </div>
-            <div className={classes.input} onClick={() => props.onClick(2)}>
-                <DotsIcon className={classes.icon} />
-                <a className={classes.inputTypeTag}>array</a>
-            </div>
+            {props.options.map((option, idx) => {
+                return (
+                    <div className={classes.input} onClick={() => props.onClick(idx)}>
+                        <DotsIcon className={classes.icon} />
+                        <a className={classes.inputTypeTag}>{option}</a>
+                    </div>
+                )
+            })}
         </div>       
     );
+}
+
+ParameterInputDropdown.propTypes = {
+	options: PropTypes.array.isRequired,
 }

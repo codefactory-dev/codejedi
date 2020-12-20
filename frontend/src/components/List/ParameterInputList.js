@@ -4,10 +4,11 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import ParameterInputDropdown from './ParameterInputDropdown';
 import Divider from '@material-ui/core/Divider';
-import Button from '@material-ui/core/Button';
 import IconButton from '../Buttons/IconButton';
 import useKeyPres from '../../Hooks/useKeyPress';
 import ListTextField from '../../components/TextField/ListTextField';
+
+
 import {ReactComponent as TextIcon} from '../../icons/text.svg';
 import {ReactComponent as ListIcon} from '../../icons/list.svg';
 import {ReactComponent as AddIcon} from '../../icons/add.svg';
@@ -156,45 +157,31 @@ const useStyles = makeStyles(theme => ({
         ...theme.listSubtitle,
         marginLeft: '5px',   
     },
-    saveButton: {
-        alignSelf: 'flex-start',
-        ... theme.btnPrimaryOutline,
-        margin: '40px 0',
-    }
   }));
 
  
 // -----------------------------------------
-//
+//  GLOBAL VARIABLES
 // ----------------------------------------
-const rowStates = {
+const ROW_STATES = {
     DEFAULT: 0,
     HOVERING: 1,
     EDITING: 2,
     DELETING: 3
 }
 
-const inputTypes = {
-    INT: 0,
-    STRING: 1,
-    ARRAY: 2,
-    UNDEFINED: 3
-}
-
+const INPUT_TYPES = ['int', 'String'];
 
 export default function ParameterInputList(props) {
     const classes = useStyles();
     const theme = useTheme();
-
-    const types = ['int', 'string', 'array', 'undefined'];
-    
-    const [inputs, setInputs] = useState([{name: 'nums1', type: 0}, 
-                                          {name: 'nums2', type: 0}, 
-                                          {name: 'nums3', type: 1}]);
+  
+    const [inputs, setInputs] = useState([{name: 'nums1', type: INPUT_TYPES[0]}, 
+                                          {name: 'nums2', type: INPUT_TYPES[0]}, 
+                                          {name: 'nums3', type: INPUT_TYPES[1]}]);
 
     const [inputTypeClicked, setInputTypeClicked] = useState(-1);
-    const [inputNameHovered, setInputNameHovered] = useState({rowIndex: -1, rowState: rowStates.DEFAULT});
-   
+    const [inputNameHovered, setInputNameHovered] = useState({rowIndex: -1, rowState: ROW_STATES.DEFAULT});
     const [inputNameClicked, setInputNameClicked] = useState(-1);
 
     // ----------------------------------------------------------------
@@ -215,18 +202,18 @@ export default function ParameterInputList(props) {
     // ----------------------------------------------------------------
 
     const onButtonNewClick = (e) => {       
-        setInputs([...inputs, {name: 'undefined', type: 3}]);
+        setInputs([...inputs, {name: '', type: INPUT_TYPES[0]}]);
     }
 
     const onButtonDeleteClick = (inputIdx) => {       
-        setInputNameHovered({rowIndex: inputIdx, rowState: rowStates.DELETING});
+        setInputNameHovered({rowIndex: inputIdx, rowState: ROW_STATES.DELETING});
     }
 
     const onButtonConfirmDeleteClick = (idx) => {
         // confirm deletion
-        if (inputNameHovered.rowState === rowStates.DELETING) {
+        if (inputNameHovered.rowState === ROW_STATES.DELETING) {
             setInputs(inputs.filter((input, idx) => inputNameHovered.rowIndex !== idx));
-            setInputNameHovered({rowIndex: -1, rowState: rowStates.DEFAULT});
+            setInputNameHovered({rowIndex: -1, rowState: ROW_STATES.DEFAULT});
             return;
         }
     }
@@ -234,24 +221,18 @@ export default function ParameterInputList(props) {
     const onInputNameHover = (inputIdx) => {
         if (inputNameHovered.rowIndex === inputIdx) { return; }
 
-        const rowState = inputIdx === -1 ? rowStates.DEFAULT : rowStates.HOVERING;
+        const rowState = inputIdx === -1 ? ROW_STATES.DEFAULT : ROW_STATES.HOVERING;
         setInputNameHovered({rowIndex: inputIdx, rowState});
     }
     const onInputNameClick = (idx) => {
-        setInputNameHovered({rowIndex: inputNameHovered.rowIndex, rowState: rowStates.EDITING});
+        setInputNameHovered({rowIndex: inputNameHovered.rowIndex, rowState: ROW_STATES.EDITING});
     }
 
     const onInputNameBlur = (inputIdx, inputValue) => {
-        if (inputValue.length === 0) {
-            // delete row content?
-
-            return;
-        }
-
         inputs[inputIdx].name = inputValue;
         setInputs([...inputs]);
 
-        setInputNameHovered({rowIndex: inputNameHovered.rowIndex, rowState: rowStates.HOVERING});
+        setInputNameHovered({rowIndex: inputNameHovered.rowIndex, rowState: ROW_STATES.HOVERING});
     }
     const onInputNameKeyUp = (inputIdx, evt) => {
         if (evt.key !== 'Enter') { return; }         
@@ -262,8 +243,9 @@ export default function ParameterInputList(props) {
         if (inputTypeClicked === inputIdx) { return; }
         setInputTypeClicked(inputIdx);
     }
-    const onTypeInputSelected = (inputType) => {   
-        inputs[inputTypeClicked].type = inputType;
+    const onTypeInputSelected = (inputType) => { 
+        console.log(inputType);  
+        inputs[inputTypeClicked].type = INPUT_TYPES[inputType];
         setInputs([...inputs]);
         setInputTypeClicked(-1);
     }
@@ -297,20 +279,20 @@ export default function ParameterInputList(props) {
                             
 
     const generateInputNameComponent = (input, idx) => {
-        const checkingDelete = inputNameHovered.rowState === rowStates.DELETING;
+        const checkingDelete = inputNameHovered.rowState === ROW_STATES.DELETING;
         const hovered = inputNameHovered.rowIndex === idx;
         let inputNameComponent;
 
         
         // if not hovering the row component, or if simply hovering
-        if (!hovered || inputNameHovered.rowState === rowStates.HOVERING) {
+        if (!hovered || inputNameHovered.rowState === ROW_STATES.HOVERING) {
             inputNameComponent =  (
                     <span className={classes.inputName}>
                             {input.name}
                     </span>
         )}
         // if hovering the row component and clicked to remove it
-        else if (inputNameHovered.rowState === rowStates.DELETING) {
+        else if (inputNameHovered.rowState === ROW_STATES.DELETING) {
             inputNameComponent =  (
                 <span className={[classes.inputNameDelete]}>
                         Are you sure to delete this row?
@@ -349,9 +331,9 @@ export default function ParameterInputList(props) {
             {
                 inputTypeClicked === idx
                 ?
-                <ParameterInputDropdown  onClick={onTypeInputSelected} />
+                <ParameterInputDropdown options={INPUT_TYPES} onClick={onTypeInputSelected} />
                 :
-                <a className={classes.inputTypeTag}>{types[input.type]}</a>
+                <a className={classes.inputTypeTag}>{input.type}</a>
             }
             </React.Fragment>
         );
@@ -416,14 +398,7 @@ export default function ParameterInputList(props) {
                     <a className={classes.newButton}>New</a>
                 </div>
             </div>
-            <hr className={classes.divider} />
-            <Button variant="outlined" 
-                    disableFocusRipple 
-                    disableRipple 
-                    className={classes.saveButton}
-                    >
-                    Save
-            </Button>
+            <hr className={classes.divider} />        
         </div>
     );
 }
