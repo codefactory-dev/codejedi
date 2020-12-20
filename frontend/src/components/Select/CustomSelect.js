@@ -20,7 +20,11 @@ export default function CustomSelect(props){
 	// HOOKS
 	// --------------------------------------------------------------------
 	useEffect(()=>{
-		//document.getElementById("_1234").checked = true;
+		if (props.checkedOptionIndex){
+			const searchId = `${props.label}-${props.checkedOptionIndex}`;
+			const x = document.getElementById(searchId);
+			x.querySelector('input').checked = true;
+		}
 		//checkedOptionIndex
 	},[])
 
@@ -34,7 +38,7 @@ export default function CustomSelect(props){
 
 		return (
 			props.options.map((val, idx) => (
-				<label key={`option-${idx}-${val}`} className="option">
+				<label id={`${props.label}-${idx}`} key={`option-${idx}-${val}`} className="option">
 					<input type="radio" 
 						   name={`option-test`} 
 						   value={val}
@@ -84,5 +88,6 @@ export default function CustomSelect(props){
 CustomSelect.propTypes = {
 	options: PropTypes.array.isRequired,
 	onChange: PropTypes.func,
-	checkedOptionIndex: PropTypes.number.isRequired
+	checkedOptionIndex: PropTypes.number,
+	label: PropTypes.string.isRequired
 }

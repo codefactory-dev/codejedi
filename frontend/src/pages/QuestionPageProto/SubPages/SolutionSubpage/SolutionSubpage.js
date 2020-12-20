@@ -125,12 +125,10 @@ export default function SolutionSubpage() {
                     <SimpleTextField onChange={onFunctionNameChange}/>
                 </div>
                 <div className={classes.colFlex1}>
-                    <span className={classes.title}>Language</span>
-                    <CustomSelect options={languages} checkedOptionIndex={0} onChange={onFunctionLanguageChange} />
+                    <CustomSelect label={'Language'} options={languages} checkedOptionIndex={0} onChange={onFunctionLanguageChange} />
                 </div>
                 <div className={classes.colFlex1}>
-                    <span className={classes.title}>Return type</span>
-                    <CustomSelect options={returnTypes} checkedOptionIndex={0} onChange={onFunctionReturnTypeChange}/>
+                    <CustomSelect label={'Return type'} options={returnTypes} checkedOptionIndex={0} onChange={onFunctionReturnTypeChange}/>
                 </div>
             </div>
 
