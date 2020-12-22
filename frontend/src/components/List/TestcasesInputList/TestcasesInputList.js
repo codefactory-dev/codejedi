@@ -11,6 +11,7 @@ import {ReactComponent as AddIcon} from '../../../icons/add.svg';
 
 
 import {ReactComponent as CrossIcon} from '../../../icons/cross.svg';
+import {ReactComponent as YesIcon} from '../../../icons/yes.svg';
 
 import './TestcasesInputList.scss'
 
@@ -177,6 +178,13 @@ const useStyles = makeStyles(theme => ({
         height: 37,
         cursor: 'pointer',
     },
+    confirmingDeleteText: {
+        color: theme.palette.secondary.main,
+        fontWeight: 100
+    },
+    confirmingDeleteIcon: {
+        backgroundColor: theme.palette.secondary.main,
+    }
   }));
 const rowStates = {
     DESELECTED: 0,
@@ -293,22 +301,21 @@ export default function TestInputList() {
         [rowStates.CONFIRMING_DELETE]: 
             <div className={classes.selectedInput}>
                 <IconButton 
-                            className={classes.deleteIcon} 
+                            className={classes.confirmingDeleteIcon} 
                             width={19.5} 
                             height={20} 
                             padding={3} 
                             marginLeft={5}
-                            fill={`${theme.palette.primary.main}`}
+                            fill={`${theme.palette.secondary.main}`}
                             stroke={'none'}
                             fillHover={'white'}
                             strokeHover={'none'}
                             borderRadius={'3px'}
-                            icon={<CrossIcon />}
-                            onClick={(e) => { askForDelete(e,idx) } } 
+                            icon={<YesIcon />}
+                            onClick={(e) => { handleYes() } } 
                 />
-                <span>{matches ? 'Do you want to remove the selected item ?' : 'Remove selected item ?'}</span>
-                <div style={{marginLeft: 10}} onClick={()=>{handleYes()}}>Yes</div>
-                <div style={{marginLeft: 10}} onClick={()=>{handleNo()}}>no</div>
+                <span className={classes.confirmingDeleteText}>{matches ? 'Are you sure to delete this row ?' : 'Remove selected item ?'}</span>
+                {/*onClick={()=>{handleYes()}}*/}
             </div>
     })
     
