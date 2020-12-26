@@ -10,7 +10,19 @@ import TestcasesInputList from '../../../../components/List/TestcasesInputList/T
 
 const useStyles = makeStyles( theme => ({
    
-
+  titleContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    margin: '10px 0px'
+  },
+  bodyContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   verticalContainer: {
     display: 'flex',
     flexDirection: 'column',
@@ -78,60 +90,16 @@ export default function TestcasesSubpage() {
 
   return (
     <div className={classes.verticalContainer}>
-      <div className={classes.container}>
-        <div className={classes.tabs} />
-        <div className={classes.separator} />
-        <div className={classes.contentList}>
+      <div className={classes.titleContainer}>
           <Typography variant="h6">
-            <div className={classes.title}>Type your inputs below. Each input line is a separate test case in this format:</div>
-            <div className={classes.format}>1</div>
+              <div className={classes.title}>Type your inputs below. Each input line is a separate test case in this format:</div>
+              <div className={classes.format}>1</div>
           </Typography>
-        </div>
-        <div className={classes.separator} />
-        <div className={classes.thirdElement} />
       </div>
-      <div className={classes.container}>
-        <div className={classes.separator}></div>
-        <TestcasesInputList />
-        <div className={classes.separator} />
-        <div className={classes.thirdElement} />
+      <div className={classes.bodyContainer}>
+          <TestcasesInputList />
       </div>
       
     </div>
   );
-}
-
-
-
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`scrollable-auto-tabpanel-${index}`}
-      aria-labelledby={`scrollable-auto-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
-
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired,
-};
-
-function a11yProps(index) {
-  return {
-    id: `scrollable-auto-tab-${index}`,
-    'aria-controls': `scrollable-auto-tabpanel-${index}`,
-  };
 }

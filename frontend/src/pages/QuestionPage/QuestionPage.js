@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
     footer: {
         display: 'flex',
         flexDirection: 'row',
+        alignItems: 'center',
         width: '100%',
         height: 200,
         margin: 0,
@@ -32,6 +33,8 @@ const useStyles = makeStyles((theme) => ({
         position: 'absolute',
         width: '11%',
         minWidth: 140,
+        top: 350,
+        left: 0,
         backgroundColor: theme.palette.common.black
     },
     tab: {
@@ -131,7 +134,8 @@ const useStyles = makeStyles((theme) => ({
     },
     horizontalContainer: {
         display: 'flex',
-        alignItems: 'center'
+        alignItems: 'center',
+        position: 'relative'
     }
 
 }));
