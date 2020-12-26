@@ -1,8 +1,6 @@
 import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 import PhoneIcon from '@material-ui/icons/Phone';
 import CustomSelect from '../../../../components/Select/CustomSelect.js'
 import SimpleTextField from '../../../../components/TextField/SimpleTextField.js'
@@ -50,7 +48,7 @@ const useStyles = makeStyles( theme => ({
     width: '100%',
     height: '51px'
   },
-  container: {
+  bodyContainer: {
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
@@ -62,18 +60,6 @@ const useStyles = makeStyles( theme => ({
     minWidth: 140,
     backgroundColor: theme.palette.common.black
   },
-  tab: {
-    color: theme.palette.common.grey,
-    fontSize: 16,
-    '&$selected': {
-      color: theme.palette.common.white,
-      backgroundColor: theme.palette.common.black3
-    },
-    '&$scroller': {
-      position: 'none'
-    },
-  },
-  selected: {},
   scroller: {},
   textArea: {
     flexShrink: 1,
@@ -133,15 +119,10 @@ export default function DescriptionSubpage(props) {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  const changeSubpage = (event,idx) => {
-    console.log("changing subpage");
-    props.setActiveTab(idx);
-  }
 
   return (
     <div className={classes.verticalContainer}>
       <div className={classes.titleContainer}>
-          <div className={classes.questionPageSeparator} />
           <div className={classes.title}>
               <SimpleTextField className={classes.titleTextfield} label="Title" />
               <div className={classes.grow}></div>
@@ -154,42 +135,8 @@ export default function DescriptionSubpage(props) {
               </div>
               {/*<CustomSelect label="Type" />*/}
           </div>
-          <div className={classes.questionPageSeparator} />
       </div>
-      <div className={classes.container}>
-        <Paper square className={classes.tabs}>
-
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            orientation="vertical"
-            variant="fullWidth"
-            indicatorColor="primary"
-            textColor="primary"
-            aria-label="icon tabs example"
-          >
-            <Tab 
-              classes={{ root: classes.tab, selected: classes.selected }}
-              label="DESCRIPTION" 
-              {...a11yProps(0)} 
-              onClick={(e)=> changeSubpage(e,0)}  
-            />
-            <Tab 
-              classes={{ root: classes.tab, selected: classes.selected }} 
-              label="SOLUTION" 
-              {...a11yProps(1)} 
-              onClick={(e)=> changeSubpage(e,1)} 
-              />
-            <Tab 
-              classes={{ root: classes.tab, selected: classes.selected }}
-               label="TEST CASES"
-               {...a11yProps(2)} 
-               onClick={(e)=> changeSubpage(e,2)} 
-            />
-
-          </Tabs>
-        </Paper>
-        <div className={classes.separator}></div>
+      <div className={classes.bodyContainer}>
         <Paper className={classes.textArea}>
           <Editor
             editorState={editorState}
@@ -199,13 +146,6 @@ export default function DescriptionSubpage(props) {
             onEditorStateChange={onEditorStateChange}
           />
         </Paper>
-        <div className={classes.separator} />
-        <div className={classes.thirdElement} />
-      </div>
-      <div style={{marginTop: 60, marginBottom: 60}} className={classes.container}>
-          <div className={classes.tabs}/>
-          <div className={classes.secondSeparator} />
-          <RegularButton className={classes.regularButton} label="Save" />
       </div>
       
     </div>
@@ -240,10 +180,4 @@ TabPanel.propTypes = {
   value: PropTypes.any.isRequired,
 };
 
-function a11yProps(index) {
-  
-  return {
-    id: `scrollable-auto-tab-${index}`,
-    'aria-controls': `scrollable-auto-tabpanel-${index}`,
-  };
-}
+
