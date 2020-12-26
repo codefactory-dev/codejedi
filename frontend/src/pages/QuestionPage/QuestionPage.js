@@ -21,13 +21,19 @@ const useStyles = makeStyles((theme) => ({
     },
     footer: {
         display: 'flex',
-        flexDirection: 'row',
+        flexDirection: 'column',
         alignItems: 'center',
         width: '100%',
         height: 200,
         margin: 0,
-        alignItems: 'center',
         backgroundColor: theme.palette.common.black
+    },
+    footerWrapper: {
+        marginTop: 60,
+        width: '60%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'start',
     },
     tabs: {
         position: 'absolute',
@@ -301,7 +307,9 @@ export default function QuestionPage(props) {
                 </div>
                 
                 <div className={classes.footer}>
-                    <RegularButton className={classes.regularButton} label="Save" />
+                    <div className={classes.footerWrapper}>
+                        <RegularButton className={classes.regularButton} label="Save" />
+                    </div>
                 </div>
             </div> 
     );
