@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
     root: {
         fontFamily: 'Lato',
         fontWeight: '700',
-        height: '100vh',
+        height: 280,
         boxSizing: 'border-box',
         padding: '30px 10px',
         backgroundColor: theme.palette.common.black,

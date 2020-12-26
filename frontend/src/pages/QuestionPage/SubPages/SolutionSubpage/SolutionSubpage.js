@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'column',
         width: '100%',
         minWidth: 893.750,
-        alignItems: 'center'
+        alignItems: 'start'
     },
     titleContainer: {
         display: 'flex',
@@ -43,6 +43,12 @@ const useStyles = makeStyles(theme => ({
         height: '100%',
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    bodyWrapper: {
+        display: 'flex',
+        flexDirection: 'column',
+        width: '60%',
+        alignItems: 'start'
     },
     section: {
         display: 'block',
@@ -183,42 +189,44 @@ export default function SolutionSubpage() {
             <div className={classes.titleContainer}>
             </div>
             <div className={classes.bodyContainer}>
-                <div className={classes.root}>
-                    {/* header */}
-                    <div className={classes.colFlex}>
-                        <div className={classes.colFlex3} style={{}}>
-                            <SimpleTextField label={"Function name"} onChange={onFunctionNameChange}/>
+                <div className={classes.bodyWrapper}>
+                    <div className={classes.root}>
+                        {/* header */}
+                        <div className={classes.colFlex}>
+                            <div className={classes.colFlex3} style={{}}>
+                                <SimpleTextField label={"Function name"} onChange={onFunctionNameChange}/>
+                            </div>
+                            <div className={classes.colFlex1}>
+                                <CustomSelect label={'Language'} options={(() => Object.keys(PROGRAMMING_LANGUAGES))()} checkedOptionIndex={0} onChange={onFunctionLanguageChange} />
+                            </div>
+                            <div className={classes.colFlex1}>
+                                <CustomSelect label={'Return type'} options={(() => Object.keys(FUNCTION_RETURN_TYPES))()} checkedOptionIndex={1} onChange={onFunctionReturnTypeChange}/>
+                            </div>
                         </div>
-                        <div className={classes.colFlex1}>
-                            <CustomSelect label={'Language'} options={(() => Object.keys(PROGRAMMING_LANGUAGES))()} checkedOptionIndex={0} onChange={onFunctionLanguageChange} />
-                        </div>
-                        <div className={classes.colFlex1}>
-                            <CustomSelect label={'Return type'} options={(() => Object.keys(FUNCTION_RETURN_TYPES))()} checkedOptionIndex={1} onChange={onFunctionReturnTypeChange}/>
-                        </div>
-                    </div>
 
-                    {/* parameters */}
-                    <div className={classes.section}>
-                        <div className={classes.titleContainer}>
-                                <span className={classes.title}>Parameters</span>
+                        {/* parameters */}
+                        <div className={classes.section}>
+                            <div className={classes.titleContainer}>
+                                    <span className={classes.title}>Parameters</span>
+                            </div>
+                            <div className={classes.listContainer}>
+                                <ParameterInputList onParameterInputChange={onParameterInputListChange} />
+                            </div>
                         </div>
-                        <div className={classes.listContainer}>
-                            <ParameterInputList onParameterInputChange={onParameterInputListChange} />
-                        </div>
-                    </div>
 
-                    {/* solution preview */}
-                    <div className={classes.section}>
-                        <div className={classes.titleContainer}>
-                                <span className={classes.title}>Solution</span>
+                        {/* solution preview */}
+                        <div className={classes.section}>
+                            <div className={classes.titleContainer}>
+                                    <span className={classes.title}>Solution</span>
+                            </div>
+                            <CodeEditor code={generateFunctionSignature()} 
+                                        setCode={handleCodeChange}
+                                        loadedCode={toggleCodeReload}
+                                        mode={(() => funcLanguage)()}
+                                        />
                         </div>
-                        <CodeEditor code={generateFunctionSignature()} 
-                                    setCode={handleCodeChange}
-                                    loadedCode={toggleCodeReload}
-                                    mode={(() => funcLanguage)()}
-                                    />
+                    
                     </div>
-                
                 </div>
             </div>
         </div>

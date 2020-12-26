@@ -12,8 +12,16 @@ const useStyles = makeStyles( theme => ({
    
   titleContainer: {
     display: 'flex',
+    flexDirection: 'column',
     alignItems: 'center',
-    margin: '10px 0px'
+    margin: '10px 0px',
+    width: '100%'
+  },
+  titleWrapper: {
+    width: '60%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'start'
   },
   bodyContainer: {
     display: 'flex',
@@ -91,10 +99,12 @@ export default function TestcasesSubpage() {
   return (
     <div className={classes.verticalContainer}>
       <div className={classes.titleContainer}>
-          <Typography variant="h6">
-              <div className={classes.title}>Type your inputs below. Each input line is a separate test case in this format:</div>
-              <div className={classes.format}>1</div>
-          </Typography>
+          <div className={classes.titleWrapper} >
+            <Typography variant="h6">
+                <div className={classes.title}>Type your inputs below. Each input line is a separate test case in this format:</div>
+                <div className={classes.format}>1</div>
+            </Typography>
+          </div>
       </div>
       <div className={classes.bodyContainer}>
           <TestcasesInputList />
