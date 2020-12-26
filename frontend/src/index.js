@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import App from './App';
 
 import Img from './Img';
+import TestingQuestionPage from './pages/TestingQuestionPage/QuestionPage.js'
 import QuestionPage from './pages/QuestionPage/QuestionPage.js'
-import QuestionPageProto from './pages/QuestionPageProto/QuestionPageProto.js'
 //import InitialPage from './pages/InitialPage/InitialPage.js'
 import SwipeList from './components/List/SwipeList';
 import TestcasesInputList from './components/List/TestcasesInputList/TestcasesInputList';
@@ -19,7 +19,7 @@ import InitialPage from './pages/InitialPage/InitialPage';
 ReactDOM.render(
                 <React.StrictMode>
                     <ThemeProvider theme={theme}>
-                        <QuestionPageProto />
+                        <QuestionPage />
                     </ThemeProvider>
                 </React.StrictMode>, 
                 document.getElementById('root'));
