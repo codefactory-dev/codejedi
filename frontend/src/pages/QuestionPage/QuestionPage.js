@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Navbar from '../../components/Navbar/Navbar.js'
 import Swal from 'sweetalert2'
 import axios from 'axios'
+import { StylesProvider } from '@material-ui/core/styles';
 import DescriptionSubpage from './SubPages/DescriptionSubpage/DescriptionSubpage.js'
 import SolutionSubpage from './SubPages/SolutionSubpage/SolutionSubpage.js'
 import TestcasesSubpage from './SubPages/TestcasesSubpage/TestcasesSubpage.js'
@@ -13,6 +14,7 @@ import RegularButton from '../../components/Buttons/RegularButton.js'
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import './QuestionPage.scss'
 
 const useStyles = makeStyles((theme) => ({
     
@@ -174,9 +176,9 @@ export default function QuestionPage(props) {
         console.log("changing subpage");
         setActiveTab(idx);
     }
-    function handleChange(){
-        console.log("handling change");
-    }
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
     function a11yProps(index) {
   
         return {
@@ -264,54 +266,56 @@ export default function QuestionPage(props) {
     }
 
     return (
-            <div className={classes.questionPage}>
-                <Navbar />
-                
-                <div className={classes.horizontalContainer}>
-                    <Paper square className={classes.tabs}>
-                        <Tabs
-                            value={value}
-                            onChange={handleChange}
-                            orientation="vertical"
-                            variant="fullWidth"
-                            indicatorColor="primary"
-                            textColor="primary"
-                            aria-label="icon tabs example"
-                        >
-                        <Tab 
-                            classes={{ root: classes.tab, selected: classes.selected }}
-                            label="DESCRIPTION" 
-                            {...a11yProps(0)} 
-                            onClick={(e)=> changeSubpage(e,0)}  
-                        />
-                        <Tab 
-                            classes={{ root: classes.tab, selected: classes.selected }} 
-                            label="SOLUTION" 
-                            {...a11yProps(1)} 
-                            onClick={(e)=> changeSubpage(e,1)} 
+            <StylesProvider injectFirst>
+                <div className={classes.questionPage}>
+                    <Navbar />
+                    
+                    <div className={classes.horizontalContainer}>
+                        <Paper square className={classes.tabs}>
+                            <Tabs
+                                value={value}
+                                onChange={handleChange}
+                                orientation="vertical"
+                                variant="fullWidth"
+                                indicatorColor="primary"
+                                textColor="primary"
+                                aria-label="icon tabs example"
+                            >
+                            <Tab 
+                                classes={{ root: classes.tab, selected: classes.selected }}
+                                label="DESCRIPTION" 
+                                {...a11yProps(0)} 
+                                onClick={(e)=> changeSubpage(e,0)}  
                             />
-                        <Tab 
-                            classes={{ root: classes.tab, selected: classes.selected }}
-                            label="TEST CASES"
-                            {...a11yProps(2)} 
-                            onClick={(e)=> changeSubpage(e,2)} 
-                        />
+                            <Tab 
+                                classes={{ root: classes.tab, selected: classes.selected }} 
+                                label="SOLUTION" 
+                                {...a11yProps(1)} 
+                                onClick={(e)=> changeSubpage(e,1)} 
+                                />
+                            <Tab 
+                                classes={{ root: classes.tab, selected: classes.selected }}
+                                label="TEST CASES"
+                                {...a11yProps(2)} 
+                                onClick={(e)=> changeSubpage(e,2)} 
+                            />
 
-                        </Tabs>
-                    </Paper>
-                    <div className={classes.centralElements}>
-                        <div className={classes.centralTextArea}>
-                            {renderSubpage()}
+                            </Tabs>
+                        </Paper>
+                        <div className={classes.centralElements}>
+                            <div className={classes.centralTextArea}>
+                                {renderSubpage()}
+                            </div>
                         </div>
                     </div>
-                </div>
-                
-                <div className={classes.footer}>
-                    <div className={classes.footerWrapper}>
-                        <RegularButton className={classes.regularButton} label="Save" />
+                    
+                    <div className={classes.footer}>
+                        <div className={classes.footerWrapper}>
+                            <RegularButton className={classes.regularButton} label="Save" />
+                        </div>
                     </div>
-                </div>
-            </div> 
+                </div> 
+            </StylesProvider>
     );
 
 }
