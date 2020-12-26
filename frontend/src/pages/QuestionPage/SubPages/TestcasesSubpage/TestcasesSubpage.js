@@ -91,23 +91,6 @@ export default function TestcasesSubpage() {
         <div className={classes.thirdElement} />
       </div>
       <div className={classes.container}>
-        <Paper square className={classes.tabs}>
-
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            orientation="vertical"
-            variant="fullWidth"
-            indicatorColor="primary"
-            textColor="primary"
-            aria-label="icon tabs example"
-          >
-            <Tab classes={{ root: classes.tab, selected: classes.selected }} label="DESCRIPTION" {...a11yProps(0)}  />
-            <Tab classes={{ root: classes.tab, selected: classes.selected }} label="SOLUTION" {...a11yProps(1)} />
-            <Tab classes={{ root: classes.tab, selected: classes.selected }} label="TEST CASES" {...a11yProps(2)} />
-
-          </Tabs>
-        </Paper>
         <div className={classes.separator}></div>
         <TestcasesInputList />
         <div className={classes.separator} />

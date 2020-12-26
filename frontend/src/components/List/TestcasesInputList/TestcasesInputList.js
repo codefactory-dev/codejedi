@@ -387,8 +387,6 @@ export default function TestInputList() {
                     </div>
                 </div>
             </div>
-            <hr className={classes.divider} />
-            <Button variant="outlined" disableFocusRipple disableRipple className={classes.saveButton}>Save</Button>
         </div>
     );
 }
