@@ -82,7 +82,8 @@ const useStyles = makeStyles(theme => ({
     colFlex1: {
         display: "flex", 
         flexDirection: "column", 
-        flexGrow: "1"
+        flexGrow: "1",
+        marginLeft: 10
     },
     saveButton: {
         alignSelf: 'flex-start',
