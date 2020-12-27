@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
     },
     questionPage: {
         height:'1020px',
-        minWidth: '893.750px',
+        minWidth: props => props.minWidth,
         backgroundColor: theme.palette.common.black,
         color:'white'
     },  
@@ -154,8 +154,9 @@ const pageTabs = {
     TESTCASES_PAGE: 2
 }
 
-export default function QuestionPage(props) { 
-    const classes = useStyles();
+export default function QuestionPage() { 
+    const [minWidth, setMinWidth] = useState('893.750px')
+    const classes = useStyles({minWidth});
     
     const [value, setValue] = React.useState(0);
     const [shouldSubmit, setShouldSubmit] = useState(false);
@@ -173,6 +174,13 @@ export default function QuestionPage(props) {
 
     
     const changeSubpage = (event,idx) => {
+        if (idx === 0){
+            setMinWidth('893.750px');
+        } else if (idx === 1) {
+            setMinWidth('1093.750px');
+        } else if (idx === 2) {
+            setMinWidth('842.500px');
+        }
         console.log("changing subpage");
         setActiveTab(idx);
     }
@@ -238,7 +246,6 @@ export default function QuestionPage(props) {
         }
         setAnswer("");
     },[answer])
-
     function renderSubpage(){
 
         const subPages = {
