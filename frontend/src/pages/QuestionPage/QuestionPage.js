@@ -62,6 +62,7 @@ const useStyles = makeStyles((theme) => ({
     },
     questionPage: {
         height:'1020px',
+        minWidth: '893.750px',
         backgroundColor: theme.palette.common.black,
         color:'white'
     },  
