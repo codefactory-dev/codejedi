@@ -6,13 +6,49 @@ import SimpleTextField from '../../../../components/TextField/SimpleTextField.js
 import CodeEditor from '../../../../components/CodeEditor/CodeEditor';
 import Button from '@material-ui/core/Button';
 
-const useStyles = makeStyles(theme => ({
-    root: {
+/*root: {
         boxSizing: 'border-box',
         padding: '30px 30px',
         margin: '0',
         backgroundColor: theme.palette.common.black,
         height: '100vh',
+*/
+const useStyles = makeStyles(theme => ({
+    
+    root: {
+        display: 'flex',
+        flexDirection: 'column',
+    },
+    verticalContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100%',
+        minWidth: 893.750,
+        alignItems: 'start'
+    },
+    titleContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        width: '60%',
+        marginTop: 20,
+        height: 60,
+        minWidth: 503,
+        paddingLeft: 0,
+        paddingRIght: 0
+    },
+    bodyContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        width: '100%',
+        height: '100%',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    bodyWrapper: {
+        display: 'flex',
+        flexDirection: 'column',
+        width: '60%',
+        alignItems: 'start'
     },
     section: {
         display: 'block',
@@ -46,7 +82,8 @@ const useStyles = makeStyles(theme => ({
     colFlex1: {
         display: "flex", 
         flexDirection: "column", 
-        flexGrow: "1"
+        flexGrow: "1",
+        marginLeft: 10
     },
     saveButton: {
         alignSelf: 'flex-start',
@@ -149,52 +186,53 @@ export default function SolutionSubpage() {
     };
     
     return (
-        <div className={classes.root}>
-            {/* title row */}
-            <div className={classes.colFlex}>
-                <div className={classes.colFlex3} style={{}}>
-                    <SimpleTextField label={"Function name"} onChange={onFunctionNameChange}/>
-                </div>
-                <div className={classes.colFlex1}>
-                    <CustomSelect label={'Language'} options={(() => Object.keys(PROGRAMMING_LANGUAGES))()} checkedOptionIndex={0} onChange={onFunctionLanguageChange} />
-                </div>
-                <div className={classes.colFlex1}>
-                    <CustomSelect label={'Return type'} options={(() => Object.keys(FUNCTION_RETURN_TYPES))()} checkedOptionIndex={1} onChange={onFunctionReturnTypeChange}/>
+        <div className={classes.verticalContainer}>
+            <div className={classes.titleContainer}>
+            </div>
+            <div className={classes.bodyContainer}>
+                <div className={classes.bodyWrapper}>
+                    <div className={classes.root}>
+                        {/* header */}
+                        <div className={classes.colFlex}>
+                            <div className={classes.colFlex3} style={{}}>
+                                <SimpleTextField label={"Function name"} onChange={onFunctionNameChange}/>
+                            </div>
+                            <div className={classes.colFlex1}>
+                                <CustomSelect label={'Language'} options={(() => Object.keys(PROGRAMMING_LANGUAGES))()} checkedOptionIndex={0} onChange={onFunctionLanguageChange} />
+                            </div>
+                            <div className={classes.colFlex1}>
+                                <CustomSelect label={'Return type'} options={(() => Object.keys(FUNCTION_RETURN_TYPES))()} checkedOptionIndex={1} onChange={onFunctionReturnTypeChange}/>
+                            </div>
+                        </div>
+
+                        {/* parameters */}
+                        <div className={classes.section}>
+                            <div className={classes.titleContainer}>
+                                    <span className={classes.title}>Parameters</span>
+                            </div>
+                            <div className={classes.listContainer}>
+                                <ParameterInputList onParameterInputChange={onParameterInputListChange} />
+                            </div>
+                        </div>
+
+                        {/* solution preview */}
+                        <div className={classes.section}>
+                            <div className={classes.titleContainer}>
+                                    <span className={classes.title}>Solution</span>
+                            </div>
+                            <CodeEditor code={generateFunctionSignature()} 
+                                        setCode={handleCodeChange}
+                                        loadedCode={toggleCodeReload}
+                                        mode={(() => funcLanguage)()}
+                                        />
+                        </div>
+                    
+                    </div>
                 </div>
             </div>
-
-            {/* title row */}
-            <div className={classes.section}>
-                <div className={classes.titleContainer}>
-                        <span className={classes.title}>Parameters</span>
-                </div>
-                <div className={classes.listContainer}>
-                    <ParameterInputList onParameterInputChange={onParameterInputListChange} />
-                </div>
-            </div>
-
-            {/* title row */}
-            <div className={classes.section}>
-                <div className={classes.titleContainer}>
-                        <span className={classes.title}>Solution</span>
-                </div>
-                <CodeEditor code={generateFunctionSignature()} 
-                            setCode={handleCodeChange}
-                            loadedCode={toggleCodeReload}
-                            mode={(() => funcLanguage)()}
-                            />
-            </div>
-
-            <Button variant="outlined" 
-                    disableFocusRipple 
-                    disableRipple 
-                    className={classes.saveButton}
-                    >
-                    Save
-            </Button>
-        
         </div>
-    );
+        
+);
 
 }
 

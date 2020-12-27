@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
     root: {
         fontFamily: 'Lato',
         fontWeight: '700',
-        height: '100vh',
+        height: 280,
         boxSizing: 'border-box',
         padding: '30px 10px',
         backgroundColor: theme.palette.common.black,
@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
         marginRight: 'auto',
         marginLeft: 'auto',
         width: '60%',
-        minWidth: '296.493px',
+        minWidth: 96,
         marginTop: 60
         
     },
@@ -387,8 +387,6 @@ export default function TestInputList() {
                     </div>
                 </div>
             </div>
-            <hr className={classes.divider} />
-            <Button variant="outlined" disableFocusRipple disableRipple className={classes.saveButton}>Save</Button>
         </div>
     );
 }
