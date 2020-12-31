@@ -107,6 +107,27 @@ function SigninPage() {
         fetchQuestions();
 
     },[])
+    function handleLogin(){
+        async function login() {
+            console.log("handling login")
+            try{
+                const login = document.querySelector('#mylogin').value;
+                const password = document.querySelector('#mypassword').value;
+                const result = await axios({
+                    method: 'post',
+                    url: '/auth/signin',
+                    data: {
+                        email: login,
+                        password: password
+                    }
+                });  
+                console.log("logged in: "+JSON.stringify(result.data));
+            } catch (error) {
+                console.log("Error login in. "+error)
+            }
+        }
+        login();        
+    }
     return (
         <Grid container className={classes.container}>
             <CssBaseline />
@@ -123,14 +144,18 @@ function SigninPage() {
 
                         <form className={classes.form} noValidate autoComplete="off">
                             <TextField 
+                                id="mylogin"
                                 classes={{ root: classes.textField }}
                                 label="Username"
                                 fullWidth
                             />
                             <TextField 
+                                id="mypassword"
                                 classes={{ root: classes.textField }}
                                 label="Password" 
                                 fullWidth
+                                type="password"
+                                autoComplete="current-password"
                             />
                             <FormControlLabel
                                 classes={{label:classes.formControlLabel}} 
@@ -144,10 +169,15 @@ function SigninPage() {
                             <Container className={classes.centered}>
                                 <Button 
                                     variant="outlined" 
+                                    onClick={(e)=>handleLogin(e)}
                                     color="primary"
                                     className={classes.submit}
                                 >
-                                    <Typography variant="button">Login</Typography>
+                                    <Typography 
+                                        variant="button"
+                                    >
+                                        Login
+                                    </Typography>
                                 </Button>
                             </Container>
                             

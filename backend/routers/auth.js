@@ -11,10 +11,12 @@ router.post('/auth/signin', async function (req, res) {
   try{
     console.log("credentials: email-"+req.body.email+", password-"+req.body.password);
     const user = await User.findByCredentials(req.body.email, req.body.password);
+    const token = await user.generateAuthToken();
     console.log("tokens: "+JSON.stringify(user.tokens));
-    res.status(200).send(user);
-  } catch(e){
-    res.status(400).send(e.toString());
+    res.status(200).send({user, token});
+  } catch(error){
+    console.log("Error signing in. "+error.message)
+    res.status(400).send(error.toString());
   }   
 });
 
