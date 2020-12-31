@@ -195,7 +195,9 @@ export default function SolutionSubpage(props) {
 
     const onFunctionNameChange = evt => setFuncName(evt.target.value);
 
-    const onFunctionLanguageChange = value => {
+    const onFunctionLanguageChange = evt => {
+        const value = evt.target.value;
+
         // check if 'value' is valid language
         const validate = Object.keys(PROGRAMMING_LANGUAGES).filter((lang) => lang === value);
         
@@ -204,7 +206,9 @@ export default function SolutionSubpage(props) {
         }
     };
 
-    const onFunctionReturnTypeChange = value => {
+    const onFunctionReturnTypeChange = evt => {
+        const value = evt.target.value;
+        
         // check if 'value' is valid language
         const validate = Object.keys(FUNCTION_RETURN_TYPES).filter((lang) => lang === value);
         

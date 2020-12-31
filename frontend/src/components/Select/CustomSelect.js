@@ -56,10 +56,9 @@ export default function CustomSelect(props){
 
 	const onChangeHandler = (evt) => {
 		const val = evt.target.value;
-		if(val) {
-			if (props.onChange){
-				props.onChange(val); 
-			}
+
+		if(val && props.onChange) {
+				props.onChange(evt); 		
 		}	
 	}
 	

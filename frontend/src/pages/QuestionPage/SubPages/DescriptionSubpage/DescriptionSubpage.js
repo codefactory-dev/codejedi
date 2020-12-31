@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import PhoneIcon from '@material-ui/icons/Phone';
@@ -10,9 +10,35 @@ import Button from '@material-ui/core/Button';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { EditorState } from 'draft-js';
+import PropTypes from 'prop-types';
+
 import RichTextEditor from '../../../../components/Editor/RichTextEditor.js'
 
 import RegularButton from '../../../../components/Buttons/RegularButton.js'
+
+// -------------------------------------------------------------------------
+// GLOBAL VARIABLES and HELPERS
+// -------------------------------------------------------------------------
+
+const DIFFICULTY_TYPES = {
+  EASY: 'Easy', 
+  MEDIUM: 'Medium',
+  HARD: 'Hard'
+};
+const QUESTION_TYPES = {
+  ARRAY: 'Array', 
+  TREE: 'Tree',
+  STRING: 'String'
+};
+
+const getKeyByValue = (object, value) => {
+  return Object.keys(object).find(key => object[key] === value);
+}
+
+const getKeyIndexByValue = (object, value) => {
+  const keys = Object.keys(object);
+  return keys.indexOf(getKeyByValue(object, value));
+}
 
 const useStyles = makeStyles( theme => ({
    
@@ -106,31 +132,62 @@ const useStyles = makeStyles( theme => ({
 
 export default function DescriptionSubpage(props) {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const [questionName, setQuestionName] = useState(props.questionName);
+  const [questionDifficulty, setQuestionDifficulty] = useState(props.questionDifficulty);
+  const [questionType, setQuestionType] = useState(props.questionType);
+  const [editorState, setEditorState] = useState(props.editorState);
 
-  function onEditorStateChange(editorState){
-    setEditorState(editorState);
-  }
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  // --------------------------------------------
+  // HOOKS
+  // --------------------------------------------
+  useEffect(() => {
+    // load props
+    setQuestionName(props.questionName);
+    setQuestionDifficulty(props.questionDifficulty);
+    setQuestionType(props.questionType);
+    setEditorState(props.editorState);
+  },[]);
+
+  useEffect(() => {
+      props.onPageChange({questionName, questionDifficulty, questionType, editorState});
+  },[questionName, 
+     questionDifficulty,
+     questionType,
+     editorState]);
+
+  // --------------------------------------------
+  // CALLBACKS
+  // --------------------------------------------
+  const onQuestionNameChange = evt => setQuestionName(evt.target.value);
+  const onQuestionTypeChange = evt => setQuestionType(QUESTION_TYPES[evt.target.value]);
+  const onQuestionDifficultyChange = evt => setQuestionDifficulty(DIFFICULTY_TYPES[evt.target.value]);
+  const onEditorStateChange = editorState => setEditorState(editorState);
 
   return (
     <div className={classes.verticalContainer}>
       <div className={classes.titleContainer}>
           <div className={classes.title}>
-              <SimpleTextField className={classes.titleTextfield} label="Title" />
+              <SimpleTextField className={classes.titleTextfield} 
+                               label="Title"
+                               value={questionName}
+                               onChange={onQuestionNameChange}/>
               <div className={classes.grow}></div>
               <div className={classes.colFlex1}>
-                <CustomSelect options={['Easy', 'Medium', 'Hard']} checkedOptionIndex = {2} label="Difficulty" />
+                <CustomSelect label="Difficulty" 
+                              options={(() => Object.keys(DIFFICULTY_TYPES))()} 
+                              checkedOptionIndex={(() => 1+getKeyIndexByValue(DIFFICULTY_TYPES, questionDifficulty))()}
+                              onChange={onQuestionDifficultyChange}
+                              />
               </div>
               <div className={classes.grow2}></div>
               <div className={classes.colFlex1}>
-                <CustomSelect options={['Binary Tree', 'Greedy', 'Linked List']} label="Type" />
+                <CustomSelect label="Type"
+                              options={(() => Object.keys(QUESTION_TYPES))()}
+                              checkedOptionIndex={(() => 1+getKeyIndexByValue(QUESTION_TYPES, questionType))()}
+                              onChange={onQuestionTypeChange}
+                              />
               </div>
-              {/*<CustomSelect label="Type" />*/}
           </div>
       </div>
       <div className={classes.bodyContainer}>
@@ -149,3 +206,18 @@ export default function DescriptionSubpage(props) {
   );
 }
 
+DescriptionSubpage.propTypes = {
+    questionName: PropTypes.string,
+    questionDifficulty: PropTypes.oneOf(Object.values(DIFFICULTY_TYPES)),
+    questionType: PropTypes.oneOf(Object.values(QUESTION_TYPES)),
+    editorState: PropTypes.object,
+    // callbacks
+    onPageChange: PropTypes.func.isRequired,
+}
+
+DescriptionSubpage.defaultProps = {
+  questionName: '',
+  questionDifficulty: DIFFICULTY_TYPES.EASY,
+  questionType: QUESTION_TYPES.ARRAY,
+  editorState: EditorState.createEmpty()
+}

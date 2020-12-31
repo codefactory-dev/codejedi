@@ -171,18 +171,26 @@ export default function QuestionPage() {
     const [solutionName, setSolutionName] = useState();
     const [activeTab, setActiveTab] = useState(pageTabs.DESCRIPTION_PAGE);
 
-    // state variables: DescriptionSubpage
-
-    // state variables: SolutionSubpage
+    // state variables: DescriptionSubpage, SolutionSubpage, TestSubpage
+    let [descriptionSubpage, setDescriptionSubpage] = useState({});
     let [solutionSubpage, setSolutionSubpage] = useState({});
-    
-    // state variables: TestSubpage
 
+    // --------------------------------------
+    // HOOKS
+    // --------------------------------------
+
+    useEffect(()=>{
+        if(answer.length > 0)
+        {
+            Swal.fire(answer);
+        }
+        setAnswer("");
+    },[answer])
 
     // --------------------------------------
     // CALLBACKS
     // --------------------------------------
-
+    const onDescriptionSubPageChange = variables => setDescriptionSubpage(Object.assign({}, variables));
     const onSolutionSubPageChange = variables => setSolutionSubpage(Object.assign({}, variables));
 
     // --------------------------------------
@@ -191,7 +199,6 @@ export default function QuestionPage() {
 
     
     const changeSubpage = (event,idx) => {
-        console.log(solutionSubpage);
         if (idx === 0){
             setMinWidth('893.750px');
         } else if (idx === 1) {
@@ -257,16 +264,6 @@ export default function QuestionPage() {
         console.log("triggered save");
         setShouldSave(true);
     }
-    useEffect(()=>{
-        if(answer.length > 0)
-        {
-            Swal.fire(answer);
-        }
-        setAnswer("");
-    },[answer])
-
-
-
 
 
     function renderSubpage(){     
@@ -286,6 +283,9 @@ export default function QuestionPage() {
                     solutionName={solutionName}
                     answer={answer}
                     setAnswer={setAnswer}
+
+                    {... descriptionSubpage}
+                    onPageChange={onDescriptionSubPageChange}
                 />,
             [pageTabs.SOLUTION_PAGE]: <SolutionSubpage {... solutionSubpage} onPageChange={onSolutionSubPageChange}
                 
