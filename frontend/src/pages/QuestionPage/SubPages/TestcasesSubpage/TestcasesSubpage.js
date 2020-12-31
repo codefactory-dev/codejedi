@@ -88,13 +88,14 @@ const useStyles = makeStyles( theme => ({
   },
 }));
 
-export default function TestcasesSubpage() {
+export default function TestcasesSubpage(props) {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+  
+  // ---------------------------------------
+  // CALLBACKS
+  // ---------------------------------------
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  const onTestInputChange = inputs => props.onPageChange({inputs});
 
   return (
     <div className={classes.verticalContainer}>
@@ -107,9 +108,19 @@ export default function TestcasesSubpage() {
           </div>
       </div>
       <div className={classes.bodyContainer}>
-          <TestcasesInputList />
+          <TestcasesInputList inputs={props.inputs} onChange={onTestInputChange} />
       </div>
       
     </div>
   );
+}
+
+TestcasesSubpage.propTypes = {
+  inputs: PropTypes.array,
+  // callbacks
+  onPageChange: PropTypes.func.isRequired
+}
+
+TestcasesSubpage.defaultProps = {
+  inputs: []
 }

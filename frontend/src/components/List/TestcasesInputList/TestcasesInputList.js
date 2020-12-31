@@ -191,15 +191,36 @@ const rowStates = {
     EDITING_ROW: 1,
     CONFIRMING_DELETE: 2
 }
-export default function TestInputList() {
+export default function TestcasesInputList(props) {
     const classes = useStyles();
     const matches = useMediaQuery('(min-width:798px)');
     const theme = useTheme();
-    const [inputs, setInputs] = useState(['nums1', 'nums2', 'nums3']);
+    const [inputs, setInputs] = useState(props.inputs);
     const [activeRowItem, setActiveRowItem] = useState();
     const [editingState, setEditingState] = useState(rowStates.DESELECTED)
     const [maxInputTag, setMaxInputTag] = useState('20 max');
     //const prevInputs = usePrevious(inputs);
+
+    // -----------------------------------------
+    // HOOKS
+    // -----------------------------------------
+
+    useEffect(() => {
+        props.onChange(inputs);
+    }, [inputs]);
+
+
+    useEffect(()=>{
+        if (editingState === rowStates.EDITING_ROW){
+            let elmt = document.querySelector(`#input-${activeRowItem}`);
+            elmt.value = inputs[activeRowItem];
+            elmt.focus();
+        }
+    },[editingState])
+
+    // ------------------------------------------
+    //
+    // ------------------------------------------
 
     const deleteCurrentRow = () => {
         let newInputs = [...inputs];
@@ -212,13 +233,7 @@ export default function TestInputList() {
         e.preventDefault();
        setEditingState(rowStates.CONFIRMING_DELETE);
     }
-    useEffect(()=>{
-        if (editingState === rowStates.EDITING_ROW){
-            let elmt = document.querySelector(`#input-${activeRowItem}`);
-            elmt.value = inputs[activeRowItem];
-            elmt.focus();
-        }
-    },[editingState])
+    
 
     const editRow = (e, idx) => {
         setEditingState(rowStates.EDITING_ROW);
@@ -389,4 +404,14 @@ export default function TestInputList() {
             </div>
         </div>
     );
+}
+
+TestcasesInputList.propTypes = {
+    inputs: PropTypes.array,
+    // callbacks
+    onChange: PropTypes.func.isRequired
+}
+
+TestcasesInputList.defaultProps = {
+    inputs: []
 }

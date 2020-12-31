@@ -174,6 +174,7 @@ export default function QuestionPage() {
     // state variables: DescriptionSubpage, SolutionSubpage, TestSubpage
     let [descriptionSubpage, setDescriptionSubpage] = useState({});
     let [solutionSubpage, setSolutionSubpage] = useState({});
+    let [testcasesSubpage, setTestcasesSubpage] = useState({});
 
     // --------------------------------------
     // HOOKS
@@ -192,7 +193,8 @@ export default function QuestionPage() {
     // --------------------------------------
     const onDescriptionSubPageChange = variables => setDescriptionSubpage(Object.assign({}, variables));
     const onSolutionSubPageChange = variables => setSolutionSubpage(Object.assign({}, variables));
-
+    const onTestcasesSubPageChange = variables => setTestcasesSubpage(Object.assign({}, variables));
+    
     // --------------------------------------
     // 
     // --------------------------------------
@@ -287,10 +289,10 @@ export default function QuestionPage() {
                     {... descriptionSubpage}
                     onPageChange={onDescriptionSubPageChange}
                 />,
-            [pageTabs.SOLUTION_PAGE]: <SolutionSubpage {... solutionSubpage} onPageChange={onSolutionSubPageChange}
-                
-            />,
-            [pageTabs.TESTCASES_PAGE]: <TestcasesSubpage />
+            [pageTabs.SOLUTION_PAGE]: 
+                <SolutionSubpage {... solutionSubpage} onPageChange={onSolutionSubPageChange}/>,
+            [pageTabs.TESTCASES_PAGE]: 
+                <TestcasesSubpage {... testcasesSubpage} onPageChange={onTestcasesSubPageChange}/>
 
         }
         return subPages[activeTab];
