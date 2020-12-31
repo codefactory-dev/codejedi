@@ -176,10 +176,11 @@ export default function ParameterInputList(props) {
     const classes = useStyles();
     const theme = useTheme();
   
-    const [inputs, setInputs] = useState([{name: 'nums1', type: INPUT_TYPES[0]}, 
-                                          {name: 'nums2', type: INPUT_TYPES[0]}, 
-                                          {name: 'nums3', type: INPUT_TYPES[1]}]);
+    // const [inputs, setInputs] = useState([{name: 'nums1', type: INPUT_TYPES[0]}, 
+    //                                       {name: 'nums2', type: INPUT_TYPES[0]}, 
+    //                                       {name: 'nums3', type: INPUT_TYPES[1]}]);
 
+    const [inputs, setInputs] = useState(props.inputs);
     const [inputTypeClicked, setInputTypeClicked] = useState(-1);
     const [inputNameHovered, setInputNameHovered] = useState({rowIndex: -1, rowState: ROW_STATES.DEFAULT});
     const [inputNameClicked, setInputNameClicked] = useState(-1);
@@ -404,5 +405,10 @@ export default function ParameterInputList(props) {
 }
 
 ParameterInputList.propTypes = {
+    inputs: PropTypes.array,
     onParameterInputChange: PropTypes.func.isRequired
+}
+
+ParameterInputList.defaultProps = {
+    inputs: []
 }

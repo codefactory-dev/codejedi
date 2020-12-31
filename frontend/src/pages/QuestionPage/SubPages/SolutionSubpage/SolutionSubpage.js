@@ -5,6 +5,7 @@ import CustomSelect from '../../../../components/Select/CustomSelect.js'
 import SimpleTextField from '../../../../components/TextField/SimpleTextField.js'
 import CodeEditor from '../../../../components/CodeEditor/CodeEditor';
 import Button from '@material-ui/core/Button';
+import PropTypes from 'prop-types';
 
 /*root: {
         boxSizing: 'border-box',
@@ -93,7 +94,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 // -------------------------------------------------------------------------
-// GLOBAL VARIABLES
+// GLOBAL VARIABLES and HELPERS
 // -------------------------------------------------------------------------
 
 const PROGRAMMING_LANGUAGES = {
@@ -105,14 +106,24 @@ const FUNCTION_RETURN_TYPES = {
     STRING: 'String'
 };
 
-export default function SolutionSubpage() {
+const getKeyByValue = (object, value) => {
+    return Object.keys(object).find(key => object[key] === value);
+}
+
+const getKeyIndexByValue = (object, value) => {
+    const keys = Object.keys(object);
+    return keys.indexOf(getKeyByValue(object, value));
+}
+
+
+export default function SolutionSubpage(props) {
     const classes = useStyles();
     const theme = useTheme();
 
-    let [funcName, setFuncName] = useState('');
-    let [funcLanguage, setFuncLanguage] = useState(PROGRAMMING_LANGUAGES.JAVA);
-    let [functReturnType, setFuncReturnType] = useState(FUNCTION_RETURN_TYPES.INT);
-    let [funcParameters, setFuncParams] = useState([]);
+    let [funcName, setFuncName] = useState(props.funcName);
+    let [funcLanguage, setFuncLanguage] = useState(props.funcLanguage);
+    let [functReturnType, setFuncReturnType] = useState(props.functReturnType);
+    let [funcParameters, setFuncParams] = useState(props.funcParameters);
     let [toggleCodeReload, setToggleCodeReload] = useState(false);
     let userCode = ``;
 
@@ -121,8 +132,25 @@ export default function SolutionSubpage() {
     // ------------------------------------------------------------------
 
     useEffect(() => {
+        if(props.funcName === undefined) { return; }
+
+        // load props
+        setFuncName(props.funcName);
+        setFuncLanguage(props.funcLanguage);
+        setFuncReturnType(props.functReturnType);
+        setFuncParams(props.funcParameters);
+
+    }, []);
+
+    useEffect(() => {
         setToggleCodeReload(!toggleCodeReload);
-    }, [funcName, funcParameters, functReturnType, funcLanguage]);
+
+        props.onPageChange({funcName, funcParameters, functReturnType, funcLanguage});
+
+    }, [funcName, 
+        funcParameters, 
+        functReturnType, 
+        funcLanguage]);
 
     // ------------------------------------------------------------------
     //
@@ -195,13 +223,21 @@ export default function SolutionSubpage() {
                         {/* header */}
                         <div className={classes.colFlex}>
                             <div className={classes.colFlex3} style={{}}>
-                                <SimpleTextField label={"Function name"} onChange={onFunctionNameChange}/>
+                                <SimpleTextField label={"Function name"} 
+                                                 value={funcName}
+                                                 onChange={onFunctionNameChange}/>
                             </div>
                             <div className={classes.colFlex1}>
-                                <CustomSelect label={'Language'} options={(() => Object.keys(PROGRAMMING_LANGUAGES))()} checkedOptionIndex={0} onChange={onFunctionLanguageChange} />
+                                <CustomSelect label={'Language'}
+                                              checkedOptionIndex={(() => 1 + getKeyIndexByValue(PROGRAMMING_LANGUAGES, funcLanguage))()}
+                                              options={(() => Object.keys(PROGRAMMING_LANGUAGES))()}  
+                                              onChange={onFunctionLanguageChange}/>
                             </div>
                             <div className={classes.colFlex1}>
-                                <CustomSelect label={'Return type'} options={(() => Object.keys(FUNCTION_RETURN_TYPES))()} checkedOptionIndex={1} onChange={onFunctionReturnTypeChange}/>
+                                <CustomSelect label={'Return type'} 
+                                              checkedOptionIndex={(() => 1 + getKeyIndexByValue(FUNCTION_RETURN_TYPES, functReturnType))()}
+                                              options={(() => Object.keys(FUNCTION_RETURN_TYPES))()}  
+                                              onChange={onFunctionReturnTypeChange}/>
                             </div>
                         </div>
 
@@ -211,7 +247,8 @@ export default function SolutionSubpage() {
                                     <span className={classes.title}>Parameters</span>
                             </div>
                             <div className={classes.listContainer}>
-                                <ParameterInputList onParameterInputChange={onParameterInputListChange} />
+                                <ParameterInputList inputs={funcParameters}
+                                                    onParameterInputChange={onParameterInputListChange} />
                             </div>
                         </div>
 
@@ -236,3 +273,18 @@ export default function SolutionSubpage() {
 
 }
 
+SolutionSubpage.propTypes = {
+    funcName: PropTypes.string,
+    funcLanguage: PropTypes.string,
+    functReturnType: PropTypes.string,
+    funcParameters: PropTypes.array,
+    // callbacks
+    onPageChange: PropTypes.func.isRequired,
+}
+
+SolutionSubpage.defaultProps = {
+    funcName: '',
+    funcLanguage: PROGRAMMING_LANGUAGES.JAVA,
+    functReturnType: FUNCTION_RETURN_TYPES.INT,
+    funcParameters: [],
+}

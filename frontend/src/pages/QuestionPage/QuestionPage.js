@@ -171,9 +171,27 @@ export default function QuestionPage() {
     const [solutionName, setSolutionName] = useState();
     const [activeTab, setActiveTab] = useState(pageTabs.DESCRIPTION_PAGE);
 
+    // state variables: DescriptionSubpage
+
+    // state variables: SolutionSubpage
+    let [solutionSubpage, setSolutionSubpage] = useState({});
+    
+    // state variables: TestSubpage
+
+
+    // --------------------------------------
+    // CALLBACKS
+    // --------------------------------------
+
+    const onSolutionSubPageChange = variables => setSolutionSubpage(Object.assign({}, variables));
+
+    // --------------------------------------
+    // 
+    // --------------------------------------
 
     
     const changeSubpage = (event,idx) => {
+        console.log(solutionSubpage);
         if (idx === 0){
             setMinWidth('893.750px');
         } else if (idx === 1) {
@@ -246,8 +264,12 @@ export default function QuestionPage() {
         }
         setAnswer("");
     },[answer])
-    function renderSubpage(){
 
+
+
+
+
+    function renderSubpage(){     
         const subPages = {
             [pageTabs.DESCRIPTION_PAGE]: 
                 <DescriptionSubpage
@@ -265,7 +287,9 @@ export default function QuestionPage() {
                     answer={answer}
                     setAnswer={setAnswer}
                 />,
-            [pageTabs.SOLUTION_PAGE]: <SolutionSubpage />,
+            [pageTabs.SOLUTION_PAGE]: <SolutionSubpage {... solutionSubpage} onPageChange={onSolutionSubPageChange}
+                
+            />,
             [pageTabs.TESTCASES_PAGE]: <TestcasesSubpage />
 
         }
