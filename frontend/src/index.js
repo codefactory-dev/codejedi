@@ -11,15 +11,13 @@ import TestcasesInputList from './components/List/TestcasesInputList/TestcasesIn
 import { ThemeProvider } from '@material-ui/styles'
 import theme from './components/ui/Theme'
 import masterCss from './masterCss.scss'
-//import SignInSide from './pages/SignInSide/SignInSide.js'
-import SigninPage from './pages/SigninPage/SigninPage.js'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import InitialPage from './pages/InitialPage/InitialPage';
 
 ReactDOM.render(
                 <React.StrictMode>
                     <ThemeProvider theme={theme}>
-                        <QuestionPage />
+                        <App />
                     </ThemeProvider>
                 </React.StrictMode>, 
                 document.getElementById('root'));

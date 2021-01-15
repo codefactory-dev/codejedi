@@ -12,6 +12,8 @@ import Illustration from '../../imgs/CompleteLogo.svg'
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Container from '@material-ui/core/Container';
+import { Link, Redirect } from "react-router-dom";
+import { useAuth } from "../../Context/auth";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -89,9 +91,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-function SigninPage() {
+function SigninPage(props) {
     const classes = useStyles();
     const [fetchedQuestions,setFetchedQuestions] = useState(false);
+    const [isLoggedIn, setLoggedIn] = useState(false);
+    const [isError, setIsError] = useState(false);
+    const { setAuthTokens } = useAuth();
+    const referer = (props.location.state && props.location.state.referer) || '/';
     useEffect(()=>{
         async function fetchQuestions() {
             if (!fetchedQuestions)
@@ -108,6 +114,7 @@ function SigninPage() {
 
     },[])
     function handleLogin(){
+        setIsError(false);
         async function login() {
             console.log("handling login")
             try{
@@ -121,13 +128,28 @@ function SigninPage() {
                         password: password
                     }
                 });  
-                console.log("logged in: "+JSON.stringify(result.data));
+                console.log("this is the result status: "+JSON.stringify(result.status));
+                if (result.status === 200){
+                    setAuthTokens(result.data);
+                    setLoggedIn(true);
+                    console.log("logged in: "+JSON.stringify(result.data));
+                }
+                else {
+                    setIsError(true);
+                    console.log("Error logging in.");
+                }
             } catch (error) {
-                console.log("Error login in. "+error)
+                console.log("Error logging in. "+error)
+                setIsError(true);
             }
         }
         login();        
     }
+
+    if (isLoggedIn) {
+        return <Redirect to={referer} />;
+    }
+
     return (
         <Grid container className={classes.container}>
             <CssBaseline />
@@ -187,6 +209,7 @@ function SigninPage() {
                                     <div className={classes.white} style={{marginTop: '10px'}}>Don't have an account? <span className={classes.green}>Sign Up</span></div>
                                 </Grid>
                             </Typography>
+                            { isError && <div>The username or password provided were incorrect!</div> }
                             
                         </form>
                     </div>

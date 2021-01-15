@@ -10,10 +10,13 @@ import { ReactComponent as YodaLogo } from '../../imgs/Yoda Logo.svg';
 import { ReactComponent as bars } from '../../imgs/bars.svg'
 import placeholderAvatar from '../../imgs/profile pic.png'
 
-
-function NavBar() { 
+function NavBar({setAuthTokens}) { 
     const classes = useStyles();
     const yodaGreen = '#D7E2C6';
+
+    function handleLogout(){
+      setAuthTokens();
+    }
 
     return (
         <AppBar className={classes.appbar} position="static">
@@ -29,12 +32,15 @@ function NavBar() {
               <span style={{marginLeft: '54px'}}>PROFILE</span>
             </Typography>
             <div className={classes.grow} />
+            
+            <button onClick={handleLogout}>TEMPORARY LOGOUT BUTTON</button>
             <Toolbar className={classes.sectionDesktop}>
               <Avatar alt="Remy Sharp" src={placeholderAvatar} />
               <Typography variant="body1" className={classes.avatarName}>
                 roberta.cmota
               </Typography>
             </Toolbar>
+            
             <Toolbar className={classes.sectionMobile}>
               <SvgIcon component={bars} style={{ fontSize: 22, verticalAlign: 'middle' }} viewBox="0 0 29 29" />
             </Toolbar>

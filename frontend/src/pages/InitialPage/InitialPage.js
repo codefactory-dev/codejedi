@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import Navbar from '../../components/Navbar/Navbar.js'
 import QuestionsList from '../../components/List/QuestionsList/QuestionsList.js'
+import { useAuth } from "../../Context/auth";
+import { Link, Redirect } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     
@@ -27,12 +30,19 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-export default function InitialPage() { 
+export default function InitialPage(props) { 
     const classes = useStyles();
-
+    const { authTokens, setAuthTokens } = useAuth();
+    console.log("authtokens = "+authTokens);
+    console.log("type of authtokens: "+typeof(authTokens));
+    if (authTokens === "undefined") {
+        return <Redirect to={"/login"} />;
+    } else {
+        console.log("auth tokens somehow are defined")
+    }
     return (
             <div className={classes.questionPage}>
-                <Navbar />
+                <Navbar setAuthTokens={setAuthTokens} />
                 <div className={classes.centralElements}>
                     <div className={classes.centralTextArea}>
                     <QuestionsList />
