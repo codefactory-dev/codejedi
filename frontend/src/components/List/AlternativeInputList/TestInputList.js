@@ -191,7 +191,7 @@ export default function TestInputList() {
         setInputs([...inputs, "another"])
     }
     const onClickRowItem = (event,idx) => {
-        console.log("clicked row item "+idx);
+        //console.log("clicked row item "+idx);
         setEditingState(rowStates.DESELECTED);
         setActiveRowItem(idx);
     }

@@ -35,7 +35,7 @@ export default function InitialPage(props) {
     const { authTokens, setAuthTokens } = useAuth();
     console.log("authtokens = "+authTokens);
     console.log("type of authtokens: "+typeof(authTokens));
-    if (authTokens === "undefined") {
+    if (!authTokens || authTokens === "undefined") {
         return <Redirect to={"/login"} />;
     } else {
         console.log("auth tokens somehow are defined")
