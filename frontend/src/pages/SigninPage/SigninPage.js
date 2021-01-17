@@ -12,6 +12,8 @@ import Illustration from '../../imgs/CompleteLogo.svg'
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Container from '@material-ui/core/Container';
+import { Link, Redirect } from "react-router-dom";
+import { useAuth } from "../../Context/auth";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -89,9 +91,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-function SigninPage() {
+function SigninPage(props) {
     const classes = useStyles();
     const [fetchedQuestions,setFetchedQuestions] = useState(false);
+    const [isLoggedIn, setLoggedIn] = useState(false);
+    const [isError, setIsError] = useState(false);
+    const { setAuthTokens } = useAuth();
+    const referer = (props.location.state && props.location.state.referer) || '/';
     useEffect(()=>{
         async function fetchQuestions() {
             if (!fetchedQuestions)
@@ -107,6 +113,43 @@ function SigninPage() {
         fetchQuestions();
 
     },[])
+    function handleLogin(){
+        setIsError(false);
+        async function login() {
+            console.log("handling login")
+            try{
+                const login = document.querySelector('#mylogin').value;
+                const password = document.querySelector('#mypassword').value;
+                const result = await axios({
+                    method: 'post',
+                    url: '/auth/signin',
+                    data: {
+                        email: login,
+                        password: password
+                    }
+                });  
+                console.log("this is the result status: "+JSON.stringify(result.status));
+                if (result.status === 200){
+                    setAuthTokens(result.data);
+                    setLoggedIn(true);
+                    console.log("logged in: "+JSON.stringify(result.data));
+                }
+                else {
+                    setIsError(true);
+                    console.log("Error logging in.");
+                }
+            } catch (error) {
+                console.log("Error logging in. "+error)
+                setIsError(true);
+            }
+        }
+        login();        
+    }
+
+    if (isLoggedIn) {
+        return <Redirect to={referer} />;
+    }
+
     return (
         <Grid container className={classes.container}>
             <CssBaseline />
@@ -123,14 +166,18 @@ function SigninPage() {
 
                         <form className={classes.form} noValidate autoComplete="off">
                             <TextField 
+                                id="mylogin"
                                 classes={{ root: classes.textField }}
                                 label="Username"
                                 fullWidth
                             />
                             <TextField 
+                                id="mypassword"
                                 classes={{ root: classes.textField }}
                                 label="Password" 
                                 fullWidth
+                                type="password"
+                                autoComplete="current-password"
                             />
                             <FormControlLabel
                                 classes={{label:classes.formControlLabel}} 
@@ -144,10 +191,15 @@ function SigninPage() {
                             <Container className={classes.centered}>
                                 <Button 
                                     variant="outlined" 
+                                    onClick={(e)=>handleLogin(e)}
                                     color="primary"
                                     className={classes.submit}
                                 >
-                                    <Typography variant="button">Login</Typography>
+                                    <Typography 
+                                        variant="button"
+                                    >
+                                        Login
+                                    </Typography>
                                 </Button>
                             </Container>
                             
@@ -157,6 +209,7 @@ function SigninPage() {
                                     <div className={classes.white} style={{marginTop: '10px'}}>Don't have an account? <span className={classes.green}>Sign Up</span></div>
                                 </Grid>
                             </Typography>
+                            { isError && <div>The username or password provided were incorrect!</div> }
                             
                         </form>
                     </div>
