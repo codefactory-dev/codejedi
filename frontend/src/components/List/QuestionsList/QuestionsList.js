@@ -12,6 +12,7 @@ import {ReactComponent as AddIcon} from '../../../icons/add.svg';
 
 
 import {ReactComponent as CrossIcon} from '../../../icons/cross.svg';
+import { useAuth } from "../../../Context/auth";
 
 import './QuestionsList.scss'
 
@@ -195,6 +196,7 @@ export default function QuestionsList() {
     const [editingState, setEditingState] = useState(rowStates.DESELECTED)
     const [maxInputTag, setMaxInputTag] = useState('20 max');
     const [questionsList, setQuestionsList] = useState([]);
+    const { authTokens, setAuthTokens } = useAuth();
     //const prevInputs = usePrevious(inputs);
 
     const deleteCurrentRow = () => {
@@ -216,16 +218,20 @@ export default function QuestionsList() {
         }
     },[editingState])
 
-    
-    useEffect(()=>{
-        async function getQuestionsList()
-        {
-            const fetchedQuestions = await axios.get('/users/600c2d4a53461b0614e88294/questions')
-            setInputs(fetchedQuestions);    
-        }
-        getQuestionsList();
-    },[])
 
+    useEffect(()=>{
+        if (authTokens){
+            console.log("this is the user id: "+JSON.parse(authTokens).user._id);
+            async function getQuestionsList()
+            {
+                console.log("fetching questions list from backend")
+                const fetchedQuestions = await axios.get(`/users/${JSON.parse(authTokens).user._id}/questions`)
+                setInputs(fetchedQuestions);    
+            }
+            getQuestionsList();
+        }
+    },[])
+    
     const navigateToQuestion = (e, idx) => {
         //here should be the code to navigate to the selected question
     }

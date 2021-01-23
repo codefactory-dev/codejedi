@@ -19,6 +19,7 @@ router.get('/questions', middleware.checkLogIn, async (req,res) => {
 router.get('/users/:uid/questions', middleware.checkLogIn,
                                     middleware.checkQuestionParamsNull,
                                     async (req,res) => {
+    console.log("getting user questions")
     const user = await User.findById(req.params.uid).populate('questionIds');
 
     res.status(201).send({questions: user.questionIds});

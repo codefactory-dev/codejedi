@@ -1,4 +1,4 @@
-const {questions, qtracks, users, tokens, qDifficulties, qTypes} = require('./seed'),
+const {generateQuestions, questions, qtracks, users, tokens, qDifficulties, qTypes} = require('./seed'),
       QDifficulty = require('../../models/qdifficulty'),
       Rating = require('../../models/rating'),
       Question = require('../../models/question'),
@@ -81,19 +81,29 @@ db.reset = (logoff = true) => new Promise(async (resolve, reject) => {
 db.seed = async (logoff = true) => new Promise(async (resolve, reject) => {
             logoff || console.log("Seeding db *********************");
 
-            await User.insertMany(users)
-                    .then(() => logoff || console.log("created seed users."))
-                    .catch(err => reject("Error: could not create seed users."));
+            try {
+                const insertedUsers = await User.insertMany(users)
+                if (!logoff){
+                    console.log("created seed users.")
+                }
+                let questions = generateQuestions(10, insertedUsers);
+                await Question.insertMany(questions);
+                if (!logoff){
+                    console.log("created seed questions.")
+                }
+                // await Question.insertMany(questions)
+                //             .then(() => logoff || console.log("created seed questions."))
+                //             .catch(err => reject("Error: could not create seed questions. "+err));
 
-            // await Question.insertMany(questions)
-            //             .then(() => logoff || console.log("created seed questions."))
-            //             .catch(err => reject("Error: could not create seed questions. "+err));
-
-            // await Rating.insertMany(ratings)
-            //         .then(() => logoff || console.log("created seed ratings."))
-            //         .catch(err => reject("Error: could not create seed ratings. "+err));
-            
-            resolve('Finished seeding db');
+                // await Rating.insertMany(ratings)
+                //         .then(() => logoff || console.log("created seed ratings."))
+                //         .catch(err => reject("Error: could not create seed ratings. "+err));
+                
+                resolve('Finished seeding db');
+            } catch (error){
+                console.log("Error seeding DB. "+error)
+                reject(error)
+            }
 });
 
 db.runAsTransaction = async (func) => new Promise(async (resolve, reject) => {

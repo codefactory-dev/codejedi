@@ -142,28 +142,32 @@ const generateUsers = n => {
 const generateQuestions = (n, users) => {
     const questions = [];
 
-    for(let i = 0; i < n; i++) {
-        const id = new mongoose.Types.ObjectId;
-        const user = casual.random_element(users);
+    try {
+        for(let i = 0; i < n; i++) {
+            const id = new mongoose.Types.ObjectId;
+            const user = casual.random_element(users);
 
-        const question = {
-                _id: id,
-                creator: { 
-                    id: user._id,
-                    username: user.username,
-                    createdAt: user.createdAt
-                },
-                title: casual.title,
-                difficulty: casual.random_element(qDifficulties),
-                description: casual.description,
-                type: casual.random_element(qTypes),
-                createdAt: casual.date(),          
-        };
+            const question = {
+                    _id: id,
+                    creator: { 
+                        id: user._id,
+                        username: user.username,
+                        createdAt: user.createdAt
+                    },
+                    title: casual.title,
+                    difficulty: casual.random_element(qDifficulties),
+                    description: casual.description,
+                    type: casual.random_element(qTypes),
+                    createdAt: casual.date(),          
+            };
 
-        questions.push(question);
+            questions.push(question);
+        }
+        
+        return questions;
+    } catch(error) {
+        console.log("Error generating questions. "+JSON.stringify(error))
     }
-    
-    return questions;
 }
 
 const generateQTracks = (n, users, questions) => {
