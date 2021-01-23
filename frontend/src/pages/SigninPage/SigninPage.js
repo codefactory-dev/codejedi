@@ -93,26 +93,11 @@ const useStyles = makeStyles((theme) => ({
 
 function SigninPage(props) {
     const classes = useStyles();
-    const [fetchedQuestions,setFetchedQuestions] = useState(false);
     const [isLoggedIn, setLoggedIn] = useState(false);
     const [isError, setIsError] = useState(false);
     const { setAuthTokens } = useAuth();
     const referer = (props.location.state && props.location.state.referer) || '/';
-    useEffect(()=>{
-        async function fetchQuestions() {
-            if (!fetchedQuestions)
-            {
-                const result = await axios({
-                    method: 'get',
-                    url: '/questions'
-                });  
-                console.log("fetched questions: "+JSON.stringify(result.data));
-            }
-            setFetchedQuestions(false);
-        }
-        fetchQuestions();
-
-    },[])
+ 
     function handleLogin(){
         setIsError(false);
         async function login() {
@@ -132,7 +117,6 @@ function SigninPage(props) {
                 if (result.status === 200){
                     setAuthTokens(result.data);
                     setLoggedIn(true);
-                    console.log("logged in: "+JSON.stringify(result.data));
                 }
                 else {
                     setIsError(true);

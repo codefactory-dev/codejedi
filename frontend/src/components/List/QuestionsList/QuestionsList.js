@@ -224,9 +224,10 @@ export default function QuestionsList() {
             console.log("this is the user id: "+JSON.parse(authTokens).user._id);
             async function getQuestionsList()
             {
-                console.log("fetching questions list from backend")
                 const fetchedQuestions = await axios.get(`/users/${JSON.parse(authTokens).user._id}/questions`)
-                setInputs(fetchedQuestions);    
+                console.log("fetched questions from backend: "+JSON.stringify(fetchedQuestions))
+                
+                setInputs(fetchedQuestions.data);    
             }
             getQuestionsList();
         }
@@ -339,7 +340,7 @@ export default function QuestionsList() {
                         onSubmit={(e) => {onFormSubmit(e)}}>
                         {inputs && inputs.length > 0 && inputs.map((input, idx) => {
                             return (
-                                    generateRow(input,idx)
+                                    generateRow(input.title,idx)
                         )})}
                     </form>
                 </div>
