@@ -5,6 +5,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import IconButton from '../../Buttons/IconButton';
+import axios from 'axios'
 
 import {ReactComponent as HashIcon} from '../../../icons/hashtag.svg';
 import {ReactComponent as AddIcon} from '../../../icons/add.svg';
@@ -193,6 +194,7 @@ export default function QuestionsList() {
     const [activeRowItem, setActiveRowItem] = useState();
     const [editingState, setEditingState] = useState(rowStates.DESELECTED)
     const [maxInputTag, setMaxInputTag] = useState('20 max');
+    const [questionsList, setQuestionsList] = useState([]);
     //const prevInputs = usePrevious(inputs);
 
     const deleteCurrentRow = () => {
@@ -213,6 +215,16 @@ export default function QuestionsList() {
             elmt.focus();
         }
     },[editingState])
+
+    
+    useEffect(()=>{
+        async function getQuestionsList()
+        {
+            const fetchedQuestions = await axios.get('/users/600c2d4a53461b0614e88294/questions')
+            setInputs(fetchedQuestions);    
+        }
+        getQuestionsList();
+    },[])
 
     const navigateToQuestion = (e, idx) => {
         //here should be the code to navigate to the selected question
@@ -319,7 +331,7 @@ export default function QuestionsList() {
                         //onBlur in React is used instead of onFocusOut
                         /*onBlur={(e) => {onFormSubmit(e)}}*/
                         onSubmit={(e) => {onFormSubmit(e)}}>
-                        {inputs.map((input, idx) => {
+                        {inputs && inputs.length > 0 && inputs.map((input, idx) => {
                             return (
                                     generateRow(input,idx)
                         )})}
