@@ -5,12 +5,14 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import IconButton from '../../Buttons/IconButton';
+import axios from 'axios'
 
 import {ReactComponent as HashIcon} from '../../../icons/hashtag.svg';
 import {ReactComponent as AddIcon} from '../../../icons/add.svg';
 
 
 import {ReactComponent as CrossIcon} from '../../../icons/cross.svg';
+import { useAuth } from "../../../Context/auth";
 
 import './QuestionsList.scss'
 
@@ -193,6 +195,8 @@ export default function QuestionsList() {
     const [activeRowItem, setActiveRowItem] = useState();
     const [editingState, setEditingState] = useState(rowStates.DESELECTED)
     const [maxInputTag, setMaxInputTag] = useState('20 max');
+    const [questionsList, setQuestionsList] = useState([]);
+    const { authTokens, setAuthTokens } = useAuth();
     //const prevInputs = usePrevious(inputs);
 
     const deleteCurrentRow = () => {
@@ -214,6 +218,20 @@ export default function QuestionsList() {
         }
     },[editingState])
 
+
+    useEffect(()=>{
+        if (authTokens){
+            console.log("this is the user id: "+JSON.parse(authTokens).user._id);
+            async function getQuestionsList()
+            {
+                const fetchedQuestions = await axios.get(`/users/${JSON.parse(authTokens).user._id}/questions`)
+                //console.log("fetched questions from backend: "+JSON.stringify(fetchedQuestions))                
+                setInputs(fetchedQuestions.data);    
+            }
+            getQuestionsList();
+        }
+    },[])
+    
     const navigateToQuestion = (e, idx) => {
         //here should be the code to navigate to the selected question
     }
@@ -319,9 +337,9 @@ export default function QuestionsList() {
                         //onBlur in React is used instead of onFocusOut
                         /*onBlur={(e) => {onFormSubmit(e)}}*/
                         onSubmit={(e) => {onFormSubmit(e)}}>
-                        {inputs.map((input, idx) => {
+                        {inputs && inputs.length > 0 && inputs.map((input, idx) => {
                             return (
-                                    generateRow(input,idx)
+                                    generateRow(input.title,idx)
                         )})}
                     </form>
                 </div>

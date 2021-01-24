@@ -33,12 +33,8 @@ const useStyles = makeStyles((theme) => ({
 export default function InitialPage(props) { 
     const classes = useStyles();
     const { authTokens, setAuthTokens } = useAuth();
-    console.log("authtokens = "+authTokens);
-    console.log("type of authtokens: "+typeof(authTokens));
     if (!authTokens || authTokens === "undefined") {
         return <Redirect to={"/login"} />;
-    } else {
-        console.log("auth tokens somehow are defined")
     }
     return (
             <div className={classes.questionPage}>
