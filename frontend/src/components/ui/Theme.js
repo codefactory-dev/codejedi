@@ -109,9 +109,9 @@ export default createMuiTheme({
         },
         button: {
           fontFamily: 'Lato',
-          fontSize: "0.8rem",
+          fontSize: ".9rem",
           textTransform: 'none',
-          fontWeight: 700,
+          fontWeight: 400,
           padding: '0px 20px 0px 20px',
           color: codejediGreen
         },
@@ -135,12 +135,11 @@ export default createMuiTheme({
 
     btnPrimaryOutline: {
         color: `${teal}`,
-        borderColor: `${teal}`,
+        border: `1px solid ${teal}`,
+        borderRadius: `5px`,
         textTransform: 'none',
-        fontSize: '.9rem',
-        fontFamily: 'Lato',
-        fontWeight: '400',
         transition: 'background 50ms linear',
+        backgroundColor: `rgba(0, 0, 0, 0)`,
         '&:hover': {
           cursor: 'pointer',
           backgroundColor: `${teal}`,
@@ -148,6 +147,7 @@ export default createMuiTheme({
       },
       '&:active': {
          backgroundColor: tealDark,
+         border: 'none',
       }
     },
     btnPrimaryText: {

@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 const useStyles = makeStyles((theme) => ({
   root: {
     width: 400,
+    margin: 8,
     '& > label': {
       color: theme.palette.common.white,
       fontWeight: 550
@@ -33,13 +34,11 @@ export default function SimpleTextField(props) {
         <TextField
           id="standard-full-width"
           className={classes.root}
-          label={props.label}
-          style={{ margin: 8 }}
           fullWidth
-          margin="normal"
-          InputLabelProps={{
-            shrink: true,
-          }}
+          InputLabelProps={ {shrink: true, disableAnimation: false} }
+          inputProps={{ autoComplete: "off" }}
+
+          label={props.label}
           value={value}
           onChange={onChange}
         />

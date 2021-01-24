@@ -7,7 +7,6 @@ import axios from 'axios';
 
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/monokai.css';
-import './CodeEditor.scss';
 
 
 // @code - default HTML-based code to be loaded in codeEditor as soon as it first renders

@@ -16,6 +16,9 @@ import { Link, Redirect } from "react-router-dom";
 import { useAuth } from "../../Context/auth";
 
 
+import RegularButton from '../../components/Buttons/RegularButton';
+
+
 const useStyles = makeStyles((theme) => ({
     centered: {
         display: 'flex',
@@ -189,18 +192,11 @@ function SigninPage(props) {
                             />
                             
                             <Container className={classes.centered}>
-                                <Button 
-                                    variant="outlined" 
-                                    onClick={(e)=>handleLogin(e)}
-                                    color="primary"
-                                    className={classes.submit}
-                                >
-                                    <Typography 
-                                        variant="button"
-                                    >
-                                        Login
-                                    </Typography>
-                                </Button>
+                                <RegularButton className={classes.submit}
+                                               label={"Login"}
+                                               onClick={(e)=>handleLogin(e)}
+
+                                />
                             </Container>
                             
                             <Typography variant="h4">

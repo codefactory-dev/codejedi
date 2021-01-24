@@ -5,10 +5,61 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import Avatar from '@material-ui/core/Avatar';
-//import './Navbar.scss';
+
 import { ReactComponent as YodaLogo } from '../../imgs/Yoda Logo.svg';
 import { ReactComponent as bars } from '../../imgs/bars.svg'
-import placeholderAvatar from '../../imgs/profile pic.png'
+import placeholderAvatar from  '../../icons/user_avatar.svg'
+
+
+const useStyles = makeStyles((theme) => ({
+  appbar: {
+    backgroundColor: theme.palette.common.navbarBlack,
+    color: theme.palette.common.white
+  },
+  menuOptions: {
+    flexGrow: 1,
+    marginLeft: '78px',
+    fontWeight: theme.typography.fontWeightRegular,
+    display: 'none',
+    [theme.breakpoints.up('md')]: {
+      display: 'flex',
+    },
+  },
+  grow: {
+    flexGrow: 1,
+  },
+  root: {
+    flexGrow: 1
+  },
+  menuButton: {
+    marginRight: theme.spacing(0),
+  },
+  logo: {
+    flexShrink: 1,
+    fontWeight: theme.typography.fontWeightRegular
+  },
+  avatarName: {
+    marginLeft: '10px',
+    color: theme.palette.common.white,
+    fontSize: 15,
+    fontWeight: 600
+  },
+  sectionDesktop: {
+    display: 'none',
+    [theme.breakpoints.up('md')]: {
+      display: 'flex',
+    },
+  },
+  sectionMobile: {
+    display: 'flex',
+    [theme.breakpoints.up('md')]: {
+      display: 'none',
+    },
+  },
+  avatar: {
+    border: `1px solid white`
+  },
+}));
 
 function NavBar({setAuthTokens}) { 
     const classes = useStyles();
@@ -28,14 +79,12 @@ function NavBar({setAuthTokens}) {
               <span style={{color:`${yodaGreen}`}}> JEDI</span>
             </Typography>
             <Typography variant="h6" className={classes.menuOptions}>
-              <span>BROWSE</span>
-              <span style={{marginLeft: '54px'}}>PROFILE</span>
             </Typography>
             <div className={classes.grow} />
             
             <button onClick={handleLogout}>TEMPORARY LOGOUT BUTTON</button>
             <Toolbar className={classes.sectionDesktop}>
-              <Avatar alt="Remy Sharp" src={placeholderAvatar} />
+              <Avatar className={classes.avatar} alt="Remy Sharp" src={placeholderAvatar}/>
               <Typography variant="body1" className={classes.avatarName}>
                 roberta.cmota
               </Typography>
@@ -49,53 +98,5 @@ function NavBar({setAuthTokens}) {
     );
 
 }
-
-const useStyles = makeStyles((theme) => ({
-    appbar: {
-      backgroundColor: theme.palette.common.navbarBlack,
-      color: theme.palette.common.white
-    },
-    menuOptions: {
-      flexGrow: 1,
-      marginLeft: '78px',
-      fontWeight: theme.typography.fontWeightRegular,
-      display: 'none',
-      [theme.breakpoints.up('md')]: {
-        display: 'flex',
-      },
-    },
-    grow: {
-      flexGrow: 1,
-    },
-    root: {
-      flexGrow: 1
-    },
-    menuButton: {
-      marginRight: theme.spacing(0),
-    },
-    logo: {
-      flexShrink: 1,
-      fontWeight: theme.typography.fontWeightRegular
-    },
-    avatarName: {
-      marginLeft: '10px',
-      color: theme.palette.common.white,
-      fontSize: 15,
-      fontWeight: 600
-    },
-    sectionDesktop: {
-      display: 'none',
-      [theme.breakpoints.up('md')]: {
-        display: 'flex',
-      },
-    },
-    sectionMobile: {
-      display: 'flex',
-      [theme.breakpoints.up('md')]: {
-        display: 'none',
-      },
-    },
-
-}));
 
 export default NavBar;

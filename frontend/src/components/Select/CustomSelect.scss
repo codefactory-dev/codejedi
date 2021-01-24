@@ -34,7 +34,7 @@
   width: 100%;
   height: 16px;
   padding: 0.8em 1em;
-  background: #3C3C3C;
+  background: #1B1C1D;
   border-top: 1px solid #4F4F4F;
   cursor: pointer;
 }
@@ -80,30 +80,29 @@
   width: 100%;
   color: white;
   border-top: 0px;
-  border-bottom: 2px solid grey;
+  border-bottom: 1px solid grey; 
 }
 .select form label.option {
   display: block;
   overflow: hidden;
   z-index: 1;
   width: 100%;
-  transition: all 1s ease-out;
 }
 .select form label.option span.title {
   position: relative;
   z-index: 2;
   color: white;
-  transition: background .3s ease-out;
-}
-.select form label.option span.title i.icon {
-  padding-right: 8px;
-  color: #92a8d1;
 }
 .select form label.option span.title:hover {
   color: #fff;
   background: #00B5AD;
   box-shadow: inset 0px 1px 0px rgba(0, 0, 0, 0.1);
 }
+.select form label.option span.title i.icon {
+  padding-right: 8px;
+  color: #92a8d1;
+}
+
 .select form label.option input {
   display: none;
 }
@@ -113,7 +112,7 @@
   z-index: 3;
   top: 0px;
   font-size: 12px;
-  background: #313233;
+  // background: #313233;
   border-top: 0px;
   box-shadow: none;
   color: white;
@@ -125,6 +124,7 @@
 }
 .select form label.option input:disabled ~ span.title:hover {
   color: #aaa;
-  background: none;
+  // background: none;
   cursor: no-drop;
+  
 }

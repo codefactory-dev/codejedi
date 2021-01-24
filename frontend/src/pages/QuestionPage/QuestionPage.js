@@ -47,13 +47,21 @@ const useStyles = makeStyles((theme) => ({
     tab: {
         color: theme.palette.common.grey,
         fontSize: 16,
+        borderRadius: '5px',
+        margin: '2px',
+        padding: '20px',
+        minHeight: '24px',
         '&$selected': {
             color: theme.palette.common.white,
-            backgroundColor: theme.palette.common.black3
+            backgroundColor: theme.palette.common.black2,
         },
         '&$scroller': {
             position: 'none'
         },
+        '&:hover': {
+            color: theme.palette.common.white,
+            backgroundColor: theme.palette.common.black2
+        }
     },
     selected: {},
     scroller: {},
@@ -313,20 +321,21 @@ export default function QuestionPage() {
                                 indicatorColor="primary"
                                 textColor="primary"
                                 aria-label="icon tabs example"
+                                
                             >
-                            <Tab 
+                            <Tab disableRipple
                                 classes={{ root: classes.tab, selected: classes.selected }}
                                 label="DESCRIPTION" 
                                 {...a11yProps(0)} 
                                 onClick={(e)=> changeSubpage(e,0)}  
                             />
-                            <Tab 
+                            <Tab disableRipple
                                 classes={{ root: classes.tab, selected: classes.selected }} 
                                 label="SOLUTION" 
                                 {...a11yProps(1)} 
                                 onClick={(e)=> changeSubpage(e,1)} 
                                 />
-                            <Tab 
+                            <Tab disableRipple
                                 classes={{ root: classes.tab, selected: classes.selected }}
                                 label="TEST CASES"
                                 {...a11yProps(2)} 

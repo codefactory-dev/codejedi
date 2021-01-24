@@ -198,6 +198,14 @@ export default function DescriptionSubpage(props) {
             wrapperClassName="wrapperClassName"
             editorClassName="editorClassName"
             onEditorStateChange={onEditorStateChange}
+            toolbar={{
+              options: ['inline', 'blockType', 'fontSize', 'fontFamily', 'list'],
+              // inline: { inDropdown: true },
+              // list: { inDropdown: true },
+              // textAlign: { inDropdown: true },
+              // link: { inDropdown: true },
+              // history: { inDropdown: true },
+            }}
           />
         </Paper>
       </div>
