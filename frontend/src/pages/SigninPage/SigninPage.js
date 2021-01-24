@@ -101,7 +101,8 @@ function SigninPage(props) {
     const { setAuthTokens } = useAuth();
     const referer = (props.location.state && props.location.state.referer) || '/';
  
-    function handleLogin(){
+    function handleLogin(e){
+        e.preventDefault();
         setIsError(false);
         async function login() {
             console.log("handling login")

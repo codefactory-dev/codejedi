@@ -17,7 +17,7 @@ import InitialPage from './pages/InitialPage/InitialPage';
 ReactDOM.render(
                 <React.StrictMode>
                     <ThemeProvider theme={theme}>
-                        <QuestionPage />
+                        <App />
                     </ThemeProvider>
                 </React.StrictMode>, 
                 document.getElementById('root'));
