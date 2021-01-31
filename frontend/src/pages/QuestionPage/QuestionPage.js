@@ -180,6 +180,7 @@ export default function QuestionPage() {
     const [languageType, setLanguageType] = useState();
     const [solutionName, setSolutionName] = useState();
     const [activeTab, setActiveTab] = useState(pageTabs.DESCRIPTION_PAGE);
+    const [currentUser, setCurrentUser] = useState()
 
     // state variables: DescriptionSubpage, SolutionSubpage, TestSubpage
     let [descriptionSubpage, setDescriptionSubpage] = useState({});
@@ -308,9 +309,41 @@ export default function QuestionPage() {
         return subPages[activeTab];
     }
     const { authTokens, setAuthTokens } = useAuth();
+    useEffect(()=>{
+        if (authTokens && authTokens !== "undefined") {
+            setCurrentUser(JSON.parse(authTokens).user)
+        }
+    },[authTokens])
+    
     if (!authTokens || authTokens === "undefined") {
         return <Redirect to={"/login"} />;
+    } 
+    
+    function submitQuestion(){
+        if (currentUser){
+            async function performSubmit(){
+                console.log("submitting question")
+                const userId = currentUser._id;
+                const result = await axios({
+                    method: 'post',
+                    url: `/users/${userId}/questions`,
+                    data: { 
+                    title: 'TestTest',
+                    difficulty: 'Easy',
+                    type: 'Array',
+                    description: 'Count the number of prime numbers less than a non-negative number, n.\n\n \n\n    Example 1:\n\n    Input: n = 10\n    Output: 4\n    Explanation: There are 4 prime numbers less than 10, they are 2, 3, 5, \n    7.\n\n    Example 2:\n\n    Input: n = 0\n    Output: 0\n\n    Example 3:\n\n    Input: n = 1\n    Output: 0\n \n\n    Constraints:\n\n    0 <= n <= 5 * 106',
+                    solution: 'public class Solution {\n    public int countPrimes(int n) {\n        boolean[] notPrime = new boolean[n];\n        int count = 0;\n        for (int i = 2; i < n; i++) {\n            if (notPrime[i] == false) {\n                count++;\n                for (int j = 2; i*j < n; j++) {\n                    notPrime[i*j] = true;\n                }\n            }\n        }\n        \n        return count;\n    }\n}',
+                    testcases: '10\n22\n99',
+                    testcasesType: 2,
+                    languageType: 1,
+                    solutionName: "countPrimes"
+                    }
+                });  
+            }
+            performSubmit();
+        }
     }
+
     return (
             <StylesProvider injectFirst>
                 <div className={classes.questionPage}>
@@ -358,7 +391,11 @@ export default function QuestionPage() {
                     
                     <div className={classes.footer}>
                         <div className={classes.footerWrapper}>
-                            <RegularButton className={classes.regularButton} label="Save" />
+                            <RegularButton 
+                                className={classes.regularButton} 
+                                onClick={submitQuestion}
+                                label="Save" 
+                            />
                         </div>
                     </div>
                 </div> 
