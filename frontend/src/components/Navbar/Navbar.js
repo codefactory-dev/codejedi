@@ -5,6 +5,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import Avatar from '@material-ui/core/Avatar';
+import { useAuth } from "../../Context/auth";
 
 import { ReactComponent as YodaLogo } from '../../imgs/Yoda Logo.svg';
 import { ReactComponent as bars } from '../../imgs/bars.svg'
@@ -61,9 +62,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function NavBar({setAuthTokens}) { 
+function NavBar() { 
     const classes = useStyles();
     const yodaGreen = '#D7E2C6';
+    const { authTokens, setAuthTokens } = useAuth();
 
     function handleLogout(){
       setAuthTokens();

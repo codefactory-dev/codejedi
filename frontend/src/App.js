@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Link, Route } from "react-router-dom";
 import SigninPage from './pages/SigninPage/SigninPage.js'
 import InitialPage from './pages/InitialPage/InitialPage.js'
+import QuestionPage from './pages/QuestionPage/QuestionPage.js'
 import { AuthContext } from "./Context/auth";
 import PrivateRoute from './_RouteWrappers/private'
 
@@ -21,7 +22,7 @@ function App() {
       <Router>
           <Route exact path="/" component={InitialPage} />
           <Route path="/login" component={SigninPage} />
-          {/*<PrivateRoute path="/admin" component={Admin} />*/}
+          <PrivateRoute path="/question" component={QuestionPage} />
       </Router>
     </AuthContext.Provider>
   );

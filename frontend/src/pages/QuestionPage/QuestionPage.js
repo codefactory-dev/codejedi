@@ -14,6 +14,8 @@ import RegularButton from '../../components/Buttons/RegularButton.js'
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import { useAuth } from "../../Context/auth";
+import { Link, Redirect } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     
@@ -305,7 +307,10 @@ export default function QuestionPage() {
         }
         return subPages[activeTab];
     }
-
+    const { authTokens, setAuthTokens } = useAuth();
+    if (!authTokens || authTokens === "undefined") {
+        return <Redirect to={"/login"} />;
+    }
     return (
             <StylesProvider injectFirst>
                 <div className={classes.questionPage}>
