@@ -189,6 +189,7 @@ const rowStates = {
     CONFIRMING_DELETE: 2
 }
 export default function QuestionsList() {
+    let history = useHistory();
     const classes = useStyles();
     const matches = useMediaQuery('(min-width:798px)');
     const theme = useTheme();
@@ -198,7 +199,6 @@ export default function QuestionsList() {
     const [maxInputTag, setMaxInputTag] = useState('20 max');
     const [questionsList, setQuestionsList] = useState([]);
     const { authTokens, setAuthTokens } = useAuth();
-    let history = useHistory();
     //const prevInputs = usePrevious(inputs);
 
     const deleteCurrentRow = () => {
@@ -236,6 +236,7 @@ export default function QuestionsList() {
     
     const navigateToQuestion = (e, idx) => {
         //here should be the code to navigate to the selected question
+        history.push('/question')
     }
 
     const onClickHandler = (e) => {
