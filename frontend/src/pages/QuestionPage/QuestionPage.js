@@ -341,11 +341,11 @@ const QuestionPage = ({dispatch,solution,...props}) => {
                     type: descriptionSubpage.questionType,
                     description: editorStateRaw,
                     solution: solution,
-                    solutionName: solutionSubpage.funcSolutionCode,
+                    solutionName: solutionSubpage.funcName,
                     languageType: languageNameToIndex(solutionSubpage.funcLanguage),
                     returnType: solutionSubpage.functReturnType,
-                    testcases: testcasesSubpage.testcases,
-                    testcasesType: descriptionSubpage.type,
+                    testcases: testcasesSubpage.inputs,
+                    testcasesType: solutionSubpage.funcParameters,
                     }
                 });  
                 
