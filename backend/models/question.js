@@ -33,11 +33,11 @@ const questionSchema = new Schema({
         default: undefined
     },
     testcases: {
-        type: String,
+        type: Array,
         default: undefined
     },
     testcasesType: {
-        type: Number,
+        type: Array,
         default: undefined
     },
     languageType: {

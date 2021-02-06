@@ -14,6 +14,12 @@ import RegularButton from '../../components/Buttons/RegularButton.js'
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import { useAuth } from "../../Context/auth";
+import { Link, Redirect } from "react-router-dom";
+import ConnectTo from "../../store/connect";
+import {
+    convertToRaw,
+} from 'draft-js';
 
 const useStyles = makeStyles((theme) => ({
     
@@ -162,7 +168,7 @@ const pageTabs = {
     TESTCASES_PAGE: 2
 }
 
-export default function QuestionPage() { 
+const QuestionPage = ({dispatch,solution,...props}) => {
     const [minWidth, setMinWidth] = useState('893.750px')
     const classes = useStyles({minWidth});
     
@@ -178,6 +184,7 @@ export default function QuestionPage() {
     const [languageType, setLanguageType] = useState();
     const [solutionName, setSolutionName] = useState();
     const [activeTab, setActiveTab] = useState(pageTabs.DESCRIPTION_PAGE);
+    const [currentUser, setCurrentUser] = useState()
 
     // state variables: DescriptionSubpage, SolutionSubpage, TestSubpage
     let [descriptionSubpage, setDescriptionSubpage] = useState({});
@@ -305,6 +312,55 @@ export default function QuestionPage() {
         }
         return subPages[activeTab];
     }
+    const { authTokens, setAuthTokens } = useAuth();
+    useEffect(()=>{
+        if (authTokens && authTokens !== "undefined") {
+            setCurrentUser(JSON.parse(authTokens).user)
+        }
+    },[authTokens])
+
+    if (!authTokens || authTokens === "undefined") {
+        return <Redirect to={"/login"} />;
+    } 
+    
+    function submitQuestion(){
+        if (currentUser){
+            async function performSubmit(){
+                console.log("submitting question")
+                const userId = currentUser._id;
+                console.log("this is the solution subpage: "+JSON.stringify(solutionSubpage))
+                const blocks = convertToRaw(descriptionSubpage.editorState.getCurrentContent()).blocks;
+                const editorStateRaw = blocks.map(block => (!block.text.trim() && '\n') || block.text).join('\n');
+                
+                const result = await axios({
+                    method: 'post',
+                    url: `/users/${userId}/questions`,
+                    data: { 
+                    title: descriptionSubpage.questionName,
+                    difficulty: descriptionSubpage.questionDifficulty,
+                    type: descriptionSubpage.questionType,
+                    description: editorStateRaw,
+                    solution: solution,
+                    solutionName: solutionSubpage.funcName,
+                    languageType: languageNameToIndex(solutionSubpage.funcLanguage),
+                    returnType: solutionSubpage.functReturnType,
+                    testcases: testcasesSubpage.inputs,
+                    testcasesType: solutionSubpage.funcParameters,
+                    }
+                });  
+                
+            }
+            performSubmit();
+        }
+    }
+    function languageNameToIndex(languageName){
+        switch(languageName){
+            case "java":
+                return 1;
+            case "javascript":
+                return 0;             
+        }
+    }
 
     return (
             <StylesProvider injectFirst>
@@ -353,7 +409,11 @@ export default function QuestionPage() {
                     
                     <div className={classes.footer}>
                         <div className={classes.footerWrapper}>
-                            <RegularButton className={classes.regularButton} label="Save" />
+                            <RegularButton 
+                                className={classes.regularButton} 
+                                onClick={submitQuestion}
+                                label="Save" 
+                            />
                         </div>
                     </div>
                 </div> 
@@ -389,6 +449,13 @@ function TabPanel(props) {
     index: PropTypes.any.isRequired,
     value: PropTypes.any.isRequired,
   };
+
+const mapStateToProps = ({ solution }, props) => {
+    return {
+        solution,
+        ...props
+    };
+};
   
-  
+export default ConnectTo(mapStateToProps)(QuestionPage);
   

@@ -4,6 +4,8 @@ import clike from 'codemirror/mode/clike/clike';
 import CodeMirror from 'codemirror';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import ConnectTo from "../../store/connect";
+import { saveSolutionAction } from "../../store/reducers/solution";
 
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/monokai.css';
@@ -13,9 +15,15 @@ import 'codemirror/theme/monokai.css';
 // @setCode - ?
 // @height - code editor's height  
 // @loadedCode - boolean - state variable used to reload the code in code mirror
-function CodeEditor(props) { 
+
+//const TroughReading = ({dispatch, troughReadings}) => {
+const CodeEditor = ({dispatch,solution,...props}) => {
     const codemirror = useRef(null);
     const textareaNode = useRef();
+
+    const saveSolutionHandler = (code) => {
+        dispatch(saveSolutionAction(code))
+    }
     
     const languageModes = new Map([['javascript', 'javascript'], ['java', 'text/x-java'], ['c++', 'text/x-c++src']]);
     let selectedLanguage = 'java';
@@ -32,6 +40,7 @@ function CodeEditor(props) {
             // console.log("property names: "+ Object.getOwnPropertyNames(changeObj));
             // console.log("QUESTION CODE: "+changeObj.doc.getValue());
             handleChange(changeObj)
+            saveSolutionHandler(changeObj.doc.getValue())
         });
         
         if (props.code) {
@@ -83,7 +92,7 @@ function CodeEditor(props) {
     */
 
     function handleChange(changeObj) {    
-        // props.setCode(changeObj.doc.getValue());
+        //props.setCode(changeObj.doc.getValue());
     }
 
     // --------------------------------------------------------------------
@@ -108,11 +117,21 @@ CodeEditor.propTypes = {
     loadedCode: PropTypes.bool,
     mode:  PropTypes.string,
     height: PropTypes.number,    
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    dispatch: PropTypes.func.isRequired,
+    troughReadings: PropTypes.string.isRequired
 }
 
 CodeEditor.defaultProps = {
     mode: 'java'
 }
 
-export default CodeEditor;
+
+const mapStateToProps = ({ solution }, props) => {
+    return {
+        solution,
+        ...props
+    };
+};
+  
+export default ConnectTo(mapStateToProps)(CodeEditor);

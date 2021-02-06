@@ -13,6 +13,7 @@ import {ReactComponent as AddIcon} from '../../../icons/add.svg';
 
 import {ReactComponent as CrossIcon} from '../../../icons/cross.svg';
 import { useAuth } from "../../../Context/auth";
+import { useHistory } from "react-router-dom";
 
 import './QuestionsList.scss'
 
@@ -197,6 +198,7 @@ export default function QuestionsList() {
     const [maxInputTag, setMaxInputTag] = useState('20 max');
     const [questionsList, setQuestionsList] = useState([]);
     const { authTokens, setAuthTokens } = useAuth();
+    let history = useHistory();
     //const prevInputs = usePrevious(inputs);
 
     const deleteCurrentRow = () => {
@@ -323,7 +325,10 @@ export default function QuestionsList() {
         }
     }
 
-    
+
+    function createQuestion(){
+        history.push('/question')
+    }
 
     return (
         <div className={classes.root}>
@@ -344,7 +349,7 @@ export default function QuestionsList() {
                     </form>
                 </div>
             </div>
-            <Button variant="outlined" disableFocusRipple disableRipple className={classes.saveButton}>Submit a Question</Button>
+            <Button onClick={createQuestion} variant="outlined" disableFocusRipple disableRipple className={classes.saveButton}>Create a Question</Button>
         </div>
     );
 }
