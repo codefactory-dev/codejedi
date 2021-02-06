@@ -16,6 +16,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import { useAuth } from "../../Context/auth";
 import { Link, Redirect } from "react-router-dom";
+import ConnectTo from "../../store/connect";
 import {
     convertToRaw,
 } from 'draft-js';
@@ -167,7 +168,7 @@ const pageTabs = {
     TESTCASES_PAGE: 2
 }
 
-export default function QuestionPage() { 
+const QuestionPage = ({dispatch,solution,...props}) => {
     const [minWidth, setMinWidth] = useState('893.750px')
     const classes = useStyles({minWidth});
     
@@ -327,8 +328,10 @@ export default function QuestionPage() {
             async function performSubmit(){
                 console.log("submitting question")
                 const userId = currentUser._id;
+                console.log("this is the solution subpage: "+JSON.stringify(solutionSubpage))
                 const blocks = convertToRaw(descriptionSubpage.editorState.getCurrentContent()).blocks;
                 const editorStateRaw = blocks.map(block => (!block.text.trim() && '\n') || block.text).join('\n');
+                
                 const result = await axios({
                     method: 'post',
                     url: `/users/${userId}/questions`,
@@ -337,16 +340,25 @@ export default function QuestionPage() {
                     difficulty: descriptionSubpage.questionDifficulty,
                     type: descriptionSubpage.questionType,
                     description: editorStateRaw,
-                    solution: solutionSubpage.solution,
-                    solutionName: solutionSubpage.functionName,
-                    languageType: solutionSubpage.language,
-                    returnType: solutionSubpage.returnType,
+                    solution: solution,
+                    solutionName: solutionSubpage.funcSolutionCode,
+                    languageType: languageNameToIndex(solutionSubpage.funcLanguage),
+                    returnType: solutionSubpage.functReturnType,
                     testcases: testcasesSubpage.testcases,
                     testcasesType: descriptionSubpage.type,
                     }
                 });  
+                
             }
             performSubmit();
+        }
+    }
+    function languageNameToIndex(languageName){
+        switch(languageName){
+            case "java":
+                return 1;
+            case "javascript":
+                return 0;             
         }
     }
 
@@ -437,6 +449,13 @@ function TabPanel(props) {
     index: PropTypes.any.isRequired,
     value: PropTypes.any.isRequired,
   };
+
+const mapStateToProps = ({ solution }, props) => {
+    return {
+        solution,
+        ...props
+    };
+};
   
-  
+export default ConnectTo(mapStateToProps)(QuestionPage);
   

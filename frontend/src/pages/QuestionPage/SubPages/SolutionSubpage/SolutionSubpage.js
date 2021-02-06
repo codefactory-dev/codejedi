@@ -125,6 +125,7 @@ export default function SolutionSubpage(props) {
     let [funcLanguage, setFuncLanguage] = useState(props.funcLanguage);
     let [functReturnType, setFuncReturnType] = useState(props.functReturnType);
     let [funcParameters, setFuncParams] = useState(props.funcParameters);
+    let [funcSolutionCode, setFuncSolutionCode] = useState()
     let [toggleCodeReload, setToggleCodeReload] = useState(false);
     let userCode = ``;
 
@@ -139,6 +140,7 @@ export default function SolutionSubpage(props) {
         setFuncName(props.funcName);
         setFuncLanguage(props.funcLanguage);
         setFuncReturnType(props.functReturnType);
+        setFuncSolutionCode(props.funcSolutionCode)
         setFuncParams(props.funcParameters);
 
     }, []);
@@ -146,11 +148,12 @@ export default function SolutionSubpage(props) {
     useEffect(() => {
         setToggleCodeReload(!toggleCodeReload);
 
-        props.onPageChange({funcName, funcParameters, functReturnType, funcLanguage});
+        props.onPageChange({funcName, funcParameters, functReturnType, funcSolutionCode, funcLanguage});
 
     }, [funcName, 
         funcParameters, 
         functReturnType, 
+        funcSolutionCode,
         funcLanguage]);
 
     // ------------------------------------------------------------------
@@ -192,6 +195,7 @@ export default function SolutionSubpage(props) {
 
     const handleCodeChange = code => {
         // functionSignatureCode = code;
+        setFuncSolutionCode(code);
     }
 
     const onFunctionNameChange = evt => setFuncName(evt.target.value);
