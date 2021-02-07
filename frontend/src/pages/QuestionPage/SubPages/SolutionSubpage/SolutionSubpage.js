@@ -165,7 +165,7 @@ export default function SolutionSubpage(props) {
         
         switch(funcLanguage) {
             case PROGRAMMING_LANGUAGES.JAVASCRIPT:
-                params =   funcParameters.reduce((acc, input, idx) => {
+                params =   funcParameters && funcParameters.reduce((acc, input, idx) => {
                     return `${acc}${input.name}${idx === funcParameters.length-1 ? `` : `, `}`
                 }, ``);
      

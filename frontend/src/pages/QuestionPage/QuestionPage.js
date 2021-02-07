@@ -320,15 +320,33 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
     },[authTokens])
     useEffect(()=>{
         if (currentQuestion){
+            /*
             setQuestionSolution(currentQuestion.solution);
             setQuestionTestcases(currentQuestion.testcases);
             setQuestionTestcasesType(currentQuestion.testcasesType);
             setLanguageType(currentQuestion.languageType);
             setSolutionName(currentQuestion.solutionName);
             setQuestionDescription(currentQuestion.description);
+            */
+            //--------------------------
+            onDescriptionSubPageChange({
+                title: currentQuestion.title,
+                questionDifficulty: currentQuestion.difficulty,
+                questionType: currentQuestion.type,
+                editorState: descriptionSubpage.editorState
+            })   
+            onSolutionSubPageChange({
+                funcName: "alalalalalala",
+                funcParameters: ["alalalalalla"],
+                functReturnType: "alalalalalla",
+                funcSolutionCode: "alalalalalla",
+            }) 
+            onTestcasesSubPageChange({
+                inputs: ["alalalalala"]
+            })  
         }
     },[currentQuestion])
-
+    
     if (!authTokens || authTokens === "undefined") {
         return <Redirect to={"/login"} />;
     } 

@@ -143,11 +143,25 @@ export default function DescriptionSubpage(props) {
   // --------------------------------------------
   useEffect(() => {
     // load props
-    setQuestionName(props.questionName);
-    setQuestionDifficulty(props.questionDifficulty);
-    setQuestionType(props.questionType);
-    setEditorState(props.editorState);
-  },[]);
+    if (props.title && props.title !== questionName){
+      setQuestionName(props.title);
+    }
+    if (props.questionDifficulty && props.questionDifficulty !== questionDifficulty){
+      setQuestionDifficulty(props.questionDifficulty);
+    }
+    if (props.questionType && props.questionType !== questionType){
+      setQuestionType(props.questionType);
+    }
+    if (props.editorState && props.editorState !== editorState){
+      setEditorState(props.editorState);
+    }
+    
+  },[
+    props.title,
+    props.questionDifficulty,
+    props.questionType,
+    props.editorState
+  ]);
 
   useEffect(() => {
       props.onPageChange({questionName, questionDifficulty, questionType, editorState});
