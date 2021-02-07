@@ -14,6 +14,9 @@ import {ReactComponent as AddIcon} from '../../../icons/add.svg';
 import {ReactComponent as CrossIcon} from '../../../icons/cross.svg';
 import { useAuth } from "../../../Context/auth";
 import { useHistory } from "react-router-dom";
+import ConnectTo from "../../../store/connect";
+
+import { selectCurrentQuestionAction } from "../../../store/reducers/currentQuestion";
 
 import './QuestionsList.scss'
 
@@ -188,7 +191,7 @@ const rowStates = {
     EDITING_ROW: 1,
     CONFIRMING_DELETE: 2
 }
-export default function QuestionsList() {
+const QuestionsList = ({dispatch,currentQuestion,...props}) => {
     let history = useHistory();
     const classes = useStyles();
     const matches = useMediaQuery('(min-width:798px)');
@@ -200,6 +203,10 @@ export default function QuestionsList() {
     const [questionsList, setQuestionsList] = useState([]);
     const { authTokens, setAuthTokens } = useAuth();
     //const prevInputs = usePrevious(inputs);
+
+    const selectCurrentQuestionHandler = (question) => {
+        dispatch(selectCurrentQuestionAction(question))
+    }
 
     const deleteCurrentRow = () => {
         let newInputs = [...inputs];
@@ -234,8 +241,9 @@ export default function QuestionsList() {
         }
     },[])
     
-    const navigateToQuestion = (e, idx) => {
+    const navigateToQuestion = (input) => {
         //here should be the code to navigate to the selected question
+        selectCurrentQuestionHandler(input)
         history.push('/question')
     }
 
@@ -275,7 +283,7 @@ export default function QuestionsList() {
     const getDeletionState = (input,idx) => ({
         [rowStates.DESELECTED]: 
             <div className={classes.selectedInput}>
-                <span onClick={()=>{navigateToQuestion()}}>{input}</span>
+                <span onClick={()=>{navigateToQuestion(input)}}>{input.title}</span>
             </div>,
         [rowStates.EDITING_ROW]: 
             <div className={classes.focusedInput}>
@@ -319,7 +327,7 @@ export default function QuestionsList() {
                     <div 
                         className={classes.input}
                         onClick={(event) => {onClickRowItem(event,idx) }} >
-                            <span>{input}</span>
+                            <span>{input.title}</span>
                     </div>
                 </div>
             )
@@ -345,7 +353,7 @@ export default function QuestionsList() {
                         onSubmit={(e) => {onFormSubmit(e)}}>
                         {inputs && inputs.length > 0 && inputs.map((input, idx) => {
                             return (
-                                    generateRow(input.title,idx)
+                                    generateRow(input,idx)
                         )})}
                     </form>
                 </div>
@@ -354,3 +362,12 @@ export default function QuestionsList() {
         </div>
     );
 }
+
+const mapStateToProps = ({ currentQuestion }, props) => {
+    return {
+        currentQuestion,
+        ...props
+    };
+};
+  
+export default ConnectTo(mapStateToProps)(QuestionsList);
