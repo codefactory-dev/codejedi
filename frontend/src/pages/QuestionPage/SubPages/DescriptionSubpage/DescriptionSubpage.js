@@ -9,8 +9,12 @@ import PersonPinIcon from '@material-ui/icons/PersonPin';
 import Button from '@material-ui/core/Button';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import { EditorState } from 'draft-js';
+import { EditorState, ContentState } from 'draft-js';
 import PropTypes from 'prop-types';
+import {
+  convertToRaw,
+} from 'draft-js';
+
 
 import RichTextEditor from '../../../../components/Editor/RichTextEditor.js'
 
@@ -152,9 +156,16 @@ export default function DescriptionSubpage(props) {
     if (props.questionType && props.questionType !== questionType){
       setQuestionType(props.questionType);
     }
-    if (props.editorState && props.editorState !== editorState){
-      setEditorState(props.editorState);
-    }
+    const blocks = convertToRaw(props.editorState.getCurrentContent()).blocks;
+    const editorStateRaw = blocks.map(block => (!block.text.trim() && '\n') || block.text).join('\n');
+
+    const localBlocks = convertToRaw(editorState.getCurrentContent()).blocks;
+    const localEditorStateRaw = localBlocks.map(block => (!block.text.trim() && '\n') || block.text).join('\n');
+    if (props.editorState && editorStateRaw.replace(/\s/g, '').length >0 && editorStateRaw !== localEditorStateRaw){
+      setEditorState(EditorState.createWithContent(ContentState.createFromText(editorStateRaw)));  
+      
+    }  
+
     
   },[
     props.title,

@@ -21,6 +21,8 @@ import {
     convertToRaw,
 } from 'draft-js';
 
+import { EditorState, ContentState } from 'draft-js';
+
 const useStyles = makeStyles((theme) => ({
     
     regularButton: {
@@ -333,7 +335,7 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
                 title: currentQuestion.title,
                 questionDifficulty: currentQuestion.difficulty,
                 questionType: currentQuestion.type,
-                editorState: descriptionSubpage.editorState
+                editorState: EditorState.createWithContent(ContentState.createFromText(currentQuestion.description))
             })   
             onSolutionSubPageChange({
                 funcName: "alalalalalala",
