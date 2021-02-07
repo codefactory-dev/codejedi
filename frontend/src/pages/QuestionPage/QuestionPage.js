@@ -21,6 +21,8 @@ import {
     convertToRaw,
 } from 'draft-js';
 
+import { EditorState, ContentState } from 'draft-js';
+
 const useStyles = makeStyles((theme) => ({
     
     regularButton: {
@@ -168,7 +170,7 @@ const pageTabs = {
     TESTCASES_PAGE: 2
 }
 
-const QuestionPage = ({dispatch,solution,...props}) => {
+const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
     const [minWidth, setMinWidth] = useState('893.750px')
     const classes = useStyles({minWidth});
     
@@ -318,7 +320,35 @@ const QuestionPage = ({dispatch,solution,...props}) => {
             setCurrentUser(JSON.parse(authTokens).user)
         }
     },[authTokens])
-
+    useEffect(()=>{
+        if (currentQuestion){
+            /*
+            setQuestionSolution(currentQuestion.solution);
+            setQuestionTestcases(currentQuestion.testcases);
+            setQuestionTestcasesType(currentQuestion.testcasesType);
+            setLanguageType(currentQuestion.languageType);
+            setSolutionName(currentQuestion.solutionName);
+            setQuestionDescription(currentQuestion.description);
+            */
+            //--------------------------
+            onDescriptionSubPageChange({
+                title: currentQuestion.title,
+                questionDifficulty: currentQuestion.difficulty,
+                questionType: currentQuestion.type,
+                editorState: EditorState.createWithContent(ContentState.createFromText(currentQuestion.description))
+            })   
+            onSolutionSubPageChange({
+                funcName: "alalalalalala",
+                funcParameters: ["alalalalalla"],
+                functReturnType: "alalalalalla",
+                funcSolutionCode: "alalalalalla",
+            }) 
+            onTestcasesSubPageChange({
+                inputs: ["alalalalala"]
+            })  
+        }
+    },[currentQuestion])
+    
     if (!authTokens || authTokens === "undefined") {
         return <Redirect to={"/login"} />;
     } 
@@ -353,6 +383,7 @@ const QuestionPage = ({dispatch,solution,...props}) => {
             performSubmit();
         }
     }
+    
     function languageNameToIndex(languageName){
         switch(languageName){
             case "java":
@@ -450,9 +481,10 @@ function TabPanel(props) {
     value: PropTypes.any.isRequired,
   };
 
-const mapStateToProps = ({ solution }, props) => {
+const mapStateToProps = ({ solution, currentQuestion }, props) => {
     return {
         solution,
+        currentQuestion,
         ...props
     };
 };

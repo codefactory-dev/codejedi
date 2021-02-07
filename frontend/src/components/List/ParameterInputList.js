@@ -371,7 +371,7 @@ export default function ParameterInputList(props) {
 
             {/* container content row(s) */}
             <div className={classes.contentContainer}>
-                {inputs.map((input, idx) => {
+                {inputs && inputs.map((input, idx) => {
                     return (
                         <React.Fragment key={`input-${idx}`}>
 
