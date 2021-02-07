@@ -10,7 +10,7 @@ const qTypes = ["Array", "String", "Linked List", "Stack/Queue", "Tree", "Heap",
 //users[1]: grrbm123
 
 const users = [{
-      _id: new mongoose.Types.ObjectId,
+      _id: new mongoose.Types.ObjectId('601fd20089cd1027a4e7a871'),
       firstname: 'Roberta',
       lastname: 'Mota',
       email: 'roberta.cmota@gmail.com',
@@ -38,7 +38,7 @@ const users = [{
       tokens: [{ token:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjMzMWY5OTY3ZDgyZDQ0MmMyMmU4MTIiLCJpYXQiOjE1OTcxODU5NDUsImV4cCI6MTU5NzI3MjM0NX0._lQEBaTkDAfomECRFun_u6t_e6JTY46zXv9M_enRd3c"} ]
     },
     {
-      _id: new mongoose.Types.ObjectId,
+      _id: new mongoose.Types.ObjectId('601e85cea8d3e41c9cf747a5'),
       firstname: 'Guilherme',
       lastname: 'Reis',
       email: 'grrbm2@gmail.com',
@@ -65,7 +65,7 @@ const users = [{
       }
     },
     {
-        _id: new mongoose.Types.ObjectId,
+        _id: new mongoose.Types.ObjectId('601fd20089cd1027a4e7a873'),
         firstname: 'Fulano',
         lastname: 'Detal',
         email: 'fulanodetal@gmail.com',
