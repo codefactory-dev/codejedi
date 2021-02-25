@@ -1,15 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import SvgIcon from '@material-ui/core/SvgIcon';
-import Avatar from '@material-ui/core/Avatar';
 import { useAuth } from "../../Context/auth";
 
 import { ReactComponent as YodaLogo } from '../../imgs/Yoda Logo.svg';
 import { ReactComponent as bars } from '../../imgs/bars.svg'
 import placeholderAvatar from  '../../icons/user_avatar.svg'
+
+import NotificationsIcon from '@material-ui/icons/Notifications';
+
+import {
+  Typography,
+  IconButton,
+  Menu,
+  MenuList,
+  MenuItem,
+  Fade,
+  Badge,
+  Avatar,
+  ListItemIcon,
+  ListItemText,
+  Divider
+} from '@material-ui/core';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -57,6 +71,11 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
+  menuItem: {
+    display: 'flex',
+    justifyContent: 'center',
+    width: 200
+  },
   avatar: {
     border: `1px solid white`
   },
@@ -66,9 +85,18 @@ function NavBar() {
     const classes = useStyles();
     const yodaGreen = '#D7E2C6';
     const { authTokens, setAuthTokens } = useAuth();
+    
+    const [anchorElNotifications, setAnchorElNotifications] = useState(null);
 
     function handleLogout(){
       setAuthTokens();
+    }
+
+    function handleClickMenuNotifications(event){
+      setAnchorElNotifications(event.currentTarget);
+    }
+    function handleCloseMenuNotifications(notificationId, notificationViewed){
+      setAnchorElNotifications(null);
     }
 
     return (
@@ -84,13 +112,56 @@ function NavBar() {
             </Typography>
             <div className={classes.grow} />
             
-            <button onClick={handleLogout}>TEMPORARY LOGOUT BUTTON</button>
             <Toolbar className={classes.sectionDesktop}>
+              
+            </Toolbar>
+            <IconButton 
+              color="secondary"
+              onClick={handleClickMenuNotifications}
+              >
+                
               <Avatar className={classes.avatar} alt="Remy Sharp" src={placeholderAvatar}/>
               <Typography variant="body1" className={classes.avatarName}>
                 roberta.cmota
               </Typography>
-            </Toolbar>
+            </IconButton>
+            {(
+              <Menu
+                id="fade-menu"
+                anchorEl={anchorElNotifications}
+                keepMounted
+                disableScrollLock
+                open={Boolean(anchorElNotifications)}
+                onClose={() => handleCloseMenuNotifications(null)}
+                TransitionComponent={Fade}
+                elevation={2}
+                getContentAnchorEl={null}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+              >
+                {
+                  <div>
+                    <MenuItem
+                      className={classes.menuItem}
+                      key={'someKey'}
+                      color="secondary"
+                    >
+                      <Typography variant="body" display="block" gutterBottom>
+                          <button onClick={handleLogout}>Log out</button>
+                      </Typography>
+                      
+                    </MenuItem>
+                    <Divider/>                    
+                  </div>
+                }
+              </Menu>
+            )}
             
             <Toolbar className={classes.sectionMobile}>
               <SvgIcon component={bars} style={{ fontSize: 22, verticalAlign: 'middle' }} viewBox="0 0 29 29" />
