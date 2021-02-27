@@ -14,8 +14,7 @@ import { ConvertCodeToOneLiner } from '../../utils/TextReadingUtils'
 import axios from 'axios'
 import questionTypes from '../../utils/questionTypes.js'
 import languageTypes from '../../utils/languageTypes.js'
-
-const { Parse, ParseString } = require('../../utils/Parser')
+import { Parse, ParseString } from '../../utils/Parser'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;

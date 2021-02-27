@@ -1,6 +1,6 @@
 const questionTypes = require('./questionTypes.js');
 
-function Parse(text, parseType)
+export function Parse(text, parseType)
 {
     switch(parseType){
         case questionTypes.Array: 
@@ -12,7 +12,7 @@ function Parse(text, parseType)
     }
 }
 
-function ParseString(text)
+export function ParseString(text)
 {
     var array = text.split("\n");
     array.forEach(str => {
@@ -25,7 +25,7 @@ function ParseString(text)
     });
     return array;
 }
-function ParseInteger(text)
+export function ParseInteger(text)
 {
     var array = text.split("\n");
     var res = [];
@@ -40,7 +40,7 @@ function ParseInteger(text)
     return res;
 }
 
-function ParseArray(text){
+export function ParseArray(text){
     var array = text.split("\n");
     console.log("THIS IS THE ARRAY: "+array);
     var res = [];
@@ -65,7 +65,7 @@ function ParseArray(text){
     return res;
 }
 
-function ParseSingleArray(text)
+export function ParseSingleArray(text)
 {
     var ans = [];
     var i = 0;
@@ -92,7 +92,7 @@ function ParseSingleArray(text)
     }
     return ans;
 }
-function nextOp(str,index){
+export function nextOp(str,index){
     index++;
     while(str.charAt(index) !== ',' && str.charAt(index) !== ']')
     {
@@ -108,11 +108,4 @@ function nextOp(str,index){
         op = "close";
     }
     return {op:op, k:index};
-}
-
-module.exports = {
-    ParseArray,
-    ParseInteger,
-    ParseString,
-    Parse
 }
