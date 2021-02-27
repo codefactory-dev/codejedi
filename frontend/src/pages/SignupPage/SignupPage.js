@@ -131,7 +131,7 @@ function SignupPage(props) {
                     }
                 });  
                 console.log("this is the result status: "+JSON.stringify(result.status));
-                if (result.status === 200){
+                if (result.status === 201){
                     setAuthTokens(result.data);
                     setLoggedIn(true);
                 }
@@ -148,7 +148,7 @@ function SignupPage(props) {
     }
 
     if (isLoggedIn) {
-        return <Redirect to={referer} />;
+        return <Redirect to="/login" />;
     }
 
     return (
