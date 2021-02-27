@@ -106,20 +106,28 @@ function SignupPage(props) {
     const { setAuthTokens } = useAuth();
     const referer = (props.location.state && props.location.state.referer) || '/';
  
-    function handleLogin(e){
+    function handleSignup(e){
         e.preventDefault();
         setIsError(false);
         async function login() {
-            console.log("handling login")
+            console.log("handling signup")
             try{
-                const login = document.querySelector('#mylogin').value;
+                const username = document.querySelector('#mylogin').value;
                 const password = document.querySelector('#mypassword').value;
+                const firstname = document.querySelector('#firstname').value;
+                const lastname = document.querySelector('#lastname').value;
+                const email = document.querySelector('#myemail').value;
+                const validated = false;
                 const result = await axios({
                     method: 'post',
-                    url: '/auth/signin',
+                    url: '/users',
                     data: {
-                        email: login,
-                        password: password
+                        username,
+                        password,
+                        firstname,
+                        lastname,
+                        email,
+                        validated
                     }
                 });  
                 console.log("this is the result status: "+JSON.stringify(result.status));
@@ -207,8 +215,8 @@ function SignupPage(props) {
                             
                             <Container className={classes.centered}>
                                 <RegularButton className={classes.submit}
-                                               label={"Login"}
-                                               onClick={(e)=>handleLogin(e)}
+                                               label={"Sign up"}
+                                               onClick={(e)=>handleSignup(e)}
 
                                 />
                             </Container>
