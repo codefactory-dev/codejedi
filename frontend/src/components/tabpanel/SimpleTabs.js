@@ -9,12 +9,13 @@ import Box from '@material-ui/core/Box';
 import CodeEditor from '../CodeEditor/CodeEditor.js';
 import EditorTestcases from '../EditorTestCases/EditorTestcases.js';
 import Editor from '../Editor/Editor.js'
-import { Parse, ParseString } from '../../utils/Parser'
 import CodeScaffolding from '../../utils/CodeScaffolding'
 import { ConvertCodeToOneLiner } from '../../utils/TextReadingUtils'
 import axios from 'axios'
 import questionTypes from '../../utils/questionTypes.js'
 import languageTypes from '../../utils/languageTypes.js'
+
+const { Parse, ParseString } = require('../../utils/Parser')
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
