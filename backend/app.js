@@ -49,4 +49,4 @@ app.use(proxy, EditorRouter);
 // --------------------------------------------------------------------
 
 module.exports = app;
-// if (!local) module.exports.handler = serverless(app);
+if (!local) module.exports.handler = serverless(app);
