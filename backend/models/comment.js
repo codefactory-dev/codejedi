@@ -1,12 +1,14 @@
-const QBasic = require('../models/qbasic');
+const Question = require('./question');
 const User = require('../models/user');
 const mongoose = require('mongoose');
+
+//COMMENT    PREFIX: /users/:uid/questions/:qid 
 
 
 const commentSchema = new mongoose.Schema({
     questionId: { 
         type: mongoose.Schema.Types.ObjectId, 
-        ref: "QBasic",
+        ref: "Question",
         required: true 
     },
     creatorId: { 
@@ -17,14 +19,6 @@ const commentSchema = new mongoose.Schema({
     description: { 
         type: String, 
         required: true 
-    },
-    creationDate: {
-        type: Date,
-        default: Date.now
-    },
-    lastUpdate: {
-        type: Date,
-        default: Date.now
     },
     reply: {
         creatorId: { 
@@ -45,6 +39,8 @@ const commentSchema = new mongoose.Schema({
             default: undefined
         },
     }
+},{
+    timestamps: true
 });
 
 module.exports = mongoose.model("Comment", commentSchema);

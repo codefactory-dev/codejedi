@@ -4,14 +4,22 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "run-p start:**",
+    "install": "run-s install:**",
+    "install:lambda": "cd backend && npm install",
+    "install:app": "cd frontend && npm install",
+    "start": "run-s start:**",
     "start:lambda": "netlify-lambda serve backend",
-    "start:app": "cd frontend && yarn start",
+    "start:app": "cd frontend && npm run start",
     "build": "run-s build:**",
     "build:lambda": "netlify-lambda build backend",
-    "build:app": "cd frontend && yarn build",
+    "build:app": "cd frontend && npm run build",
     "deploy:draft": "netlify deploy --dir=frontend/build --functions=functions",
-    "deploy:prod": "netlify deploy --dir=frontend/build --functions=functions --prod"
+    "deploy:prod": "netlify deploy --dir=frontend/build --functions=functions --prod",
+    "server": "cd backend && npm run dev",
+    "client": "cd frontend && npm start",
+    "test:user": "cd backend && npm run test:user",
+    "test:auth": "cd backend && npm run test:auth",
+    "test:comment": "cd backend && npm run test:comment"
   },
   "repository": {
     "type": "git",
@@ -25,6 +33,8 @@
   },
   "homepage": "https://github.com/codefactory-dev/codejedi#readme",
   "dependencies": {
-    "netlify-lambda": "^1.6.3"
+    "jsonwebtoken": "^8.5.1",
+    "netlify-lambda": "^1.6.3",
+    "npm-run-all": "^4.1.5"
   }
 }

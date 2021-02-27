@@ -1,0 +1,13 @@
+function solution(A){
+    let answer = -9;
+    A.forEach(x => {
+        if (x/10 < 1){
+            answer = answer > x ? answer : x;
+        }
+    })
+    return answer;
+}
+
+
+
+"function solution(A){ \n    let answer = -9; \n    A.forEach(x => { \n        if(x/10 < 1){ \n            answer = answer > x ? answer : x; \n        } \n    }) \n    return answer; \n}"
