@@ -1,6 +1,6 @@
-const QBasic = require('../models/qbasic');
-const User = require('../models/user');
-const mongoose = require('mongoose');
+const {qDifficulties} = require('../src/utils/seed'),
+      validator = require('validator'),
+      mongoose = require('mongoose');
 
 
 const qtrackSchema = new mongoose.Schema({
@@ -16,7 +16,12 @@ const qtrackSchema = new mongoose.Schema({
     },
     perceivedDifficulty: { 
         type: String, 
-        required: true 
+        required: true,
+        validate(value) {
+            if(!validator.isIn(value, qDifficulties)) {
+                throw new Error('Invalid question difficulty level');
+            }
+        }
     },
     solved: { 
         type: Boolean, 
@@ -24,16 +29,11 @@ const qtrackSchema = new mongoose.Schema({
     },
     duration: {
         type: Number,
-        required: true
+        required: true,
+        min: 0
     },
-    creationDate: {
-        type: Date,
-        default: Date.now
-    },
-    lastUpdate: { 
-        type: Date,
-        default: Date.now 
-    }
+}, {
+    timestamps: true
 });
 
 module.exports = mongoose.model("QTrack", qtrackSchema);

@@ -1,0 +1,27 @@
+`public class Solution {\n    public List<Integer> transformArray(int[] arr) {\n        while (true) {\n            int[] tmp = new int[arr.length];\n            boolean change = false;\n            tmp[0] = arr[0];\n            tmp[arr.length - 1] = arr[arr.length - 1];\n            for (int i = 1; i < arr.length - 1; i++) {\n                if (arr[i] > arr[i - 1] && arr[i] > arr[i + 1]) {\n                    tmp[i] = arr[i] - 1;\n                    change = true;\n                } else if (arr[i] < arr[i - 1] && arr[i] < arr[i + 1]) {\n                    tmp[i] = arr[i] + 1;\n                    change = true;\n                } else {\n                    tmp[i] = arr[i];\n                }\n            }\n            arr = tmp;\n            if (!change) break;\n        }\n        List<Integer> res = new ArrayList<>();\n        for (int num : arr) res.add(num);\n        return res;\n    }\n}` 
+public class Solution {
+    public List<Integer> transformArray(int[] arr) {
+        while (true) {
+            int[] tmp = new int[arr.length];
+            boolean change = false;
+            tmp[0] = arr[0];
+            tmp[arr.length - 1] = arr[arr.length - 1];
+            for (int i = 1; i < arr.length - 1; i++) {
+                if (arr[i] > arr[i - 1] && arr[i] > arr[i + 1]) {
+                    tmp[i] = arr[i] - 1;
+                    change = true;
+                } else if (arr[i] < arr[i - 1] && arr[i] < arr[i + 1]) {
+                    tmp[i] = arr[i] + 1;
+                    change = true;
+                } else {
+                    tmp[i] = arr[i];
+                }
+            }
+            arr = tmp;
+            if (!change) break;
+        }
+        List<Integer> res = new ArrayList<>();
+        for (int num : arr) res.add(num);
+        return res;
+    }
+}

@@ -1,67 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'
-import GenerateName from './GenerateName.js'
-import TextFileReader from './utils/TextfileReader.js'
+import { BrowserRouter as Router, Link, Route } from "react-router-dom";
+import SigninPage from './pages/SigninPage/SigninPage.js'
+import InitialPage from './pages/InitialPage/InitialPage.js'
+import QuestionPage from './pages/QuestionPage/QuestionPage.js'
+import { AuthContext } from "./Context/auth";
+import PrivateRoute from './_RouteWrappers/private'
+import Store from "./store";
 
-
-var myTxt = require("./version.txt");
 
 function App() {
-
-  const [users,setUsers] = useState(null)
-  const [loading,setLoading] = useState(false)
   
-  useEffect(()=>{
-    async function getUsers()
-    {
-      const fetchedUsers = await axios.get('/.netlify/functions/server/api/users')
-      setUsers(fetchedUsers.data.map((fetchedUserData)=>{
-        return `${fetchedUserData.firstname} ${fetchedUserData.lastname}`;
-      }));
-    }
-    getUsers();
-  },[])
-  function generateRandomUser()
-  {
-    async function generateAsync() {
-      const newName = GenerateName();
-      setLoading(true);
-      const result = await axios.post('/.netlify/functions/server/api/users', {name: newName});
-      console.log("posted user: "+result.data.name);
-      setUsers([...users,`${result.data.firstname} ${result.data.lastname}`]);
-      setLoading(false);
-    }
-    generateAsync();
+  const tokens = localStorage.getItem("tokens");
+  const [authTokens, setAuthTokens] = useState(tokens);
+
+  const setTokens = (data) => {
+    localStorage.setItem("tokens", JSON.stringify(data));
+    setAuthTokens(JSON.stringify(data));
   }
+
   return (
-    <div>
-      Welcome. These are all the users: 
-      <ul>
-        {
-          users 
-          ?
-          users.map((user, index) =>{ 
-            console.log(user) 
-            return(
-              <li key={index}>{user}</li>
-            )
-          })
-          :
-          <span>no users found</span>
-        }
-      </ul>
-      <div>
-        <label>
-          Click the button to generate a new user with a random name:
-        <button onClick={generateRandomUser}>
-          { loading ? '...' : 'Generate' }
-        </button>
-        </label>
-      </div>
-      <footer>
-        version: <TextFileReader txt={myTxt} />
-      </footer>
-    </div>
+    <Store>
+      <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
+        <Router>
+            <Route exact path="/" component={InitialPage} />
+            <Route path="/login" component={SigninPage} />
+            <PrivateRoute path="/question" component={QuestionPage} />
+        </Router>
+      </AuthContext.Provider>
+    </Store>
   );
 }
 

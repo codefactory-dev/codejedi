@@ -1,0 +1,34 @@
+`class Solution {\n  public String makeGood(String s) {\n    \n    /*\n    Runtime: 1 ms, faster than 100.00% of Java online submissions for Make The String Great.\n    Memory Usage: 37.9 MB, less than 100.00% of Java online submissions for Make The String Great.\n	Runtime complexity: O(n)\n	Space complexity: O(n), since we duplicate the input String in a StringBuilder\n    */\n\n    // edge case\n    if (s.isEmpty()) {\n      return s; // an empty String is a good String per problem requirements\n    }\n\n    StringBuilder sb = new StringBuilder(s); // our working space and what we'll return\n    \n    int index = 0; // to keep track of where in the StringBuilder we are\n    \n    while (index < sb.length() - 1) {\n      if (Math.abs(sb.charAt(index) - sb.charAt(index + 1)) == 32) { // if lower-upper pair is found\n        sb.deleteCharAt(index);\n        sb.deleteCharAt(index);\n        index = Math.max(index - 1, 0); // thanks to @prdp89 for the tip!\n      } else {\n        ++index; // move on to next char\n      }\n    }\n    \n    return sb.toString();\n  }\n}`
+
+class Solution {
+  public String makeGood(String s) {
+    
+    /*
+    Runtime: 1 ms, faster than 100.00% of Java online submissions for Make The String Great.
+    Memory Usage: 37.9 MB, less than 100.00% of Java online submissions for Make The String Great.
+	Runtime complexity: O(n)
+	Space complexity: O(n), since we duplicate the input String in a StringBuilder
+    */
+
+    // edge case
+    if (s.isEmpty()) {
+      return s; // an empty String is a good String per problem requirements
+    }
+
+    StringBuilder sb = new StringBuilder(s); // our working space and what we'll return
+    
+    int index = 0; // to keep track of where in the StringBuilder we are
+    
+    while (index < sb.length() - 1) {
+      if (Math.abs(sb.charAt(index) - sb.charAt(index + 1)) == 32) { // if lower-upper pair is found
+        sb.deleteCharAt(index);
+        sb.deleteCharAt(index);
+        index = Math.max(index - 1, 0); // thanks to @prdp89 for the tip!
+      } else {
+        ++index; // move on to next char
+      }
+    }
+    
+    return sb.toString();
+  }
+}

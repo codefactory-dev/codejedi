@@ -1,0 +1,4 @@
+"acb"
+"hot"
+"codility"
+"aaaa"

@@ -1,5 +1,6 @@
-const User = require('../models/user');
-const mongoose = require('mongoose');
+const User = require('../models/user'),
+Question = require('./question'),
+      mongoose = require('mongoose');
 
 
 const ratingSchema = new mongoose.Schema({
@@ -8,14 +9,22 @@ const ratingSchema = new mongoose.Schema({
         ref: "User", 
         required: true 
     },
-    value : { 
-        type: Number, 
+    questionId: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: "Question", 
         required: true 
     },
-    lastUpdate : { 
-        type: Date,
-        default: Date.now 
-    },
+    value : { 
+        type: Number, 
+        required: true,
+        validate(value) {
+            if (value < 0 || value > 5) {
+                throw new Error('Value should be in range 0 to 5.');
+            }
+        }
+    }
+}, {
+    timestamps: true
 });
 
 module.exports = mongoose.model("Rating", ratingSchema);
