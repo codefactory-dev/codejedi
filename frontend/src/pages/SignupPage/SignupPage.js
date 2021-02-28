@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import { api } from '../../api'
 import Illustration from '../../imgs/CompleteLogo.svg'
 import { Link, Redirect } from "react-router-dom";
 import { useAuth } from "../../Context/auth";
@@ -118,7 +118,7 @@ function SignupPage(props) {
                 const lastname = document.querySelector('#lastname').value;
                 const email = document.querySelector('#myemail').value;
                 const validated = false;
-                const result = await axios({
+                const result = await api({
                     method: 'post',
                     url: '/users',
                     data: {
