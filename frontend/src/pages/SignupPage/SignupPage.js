@@ -18,6 +18,8 @@ import {
 } from '@material-ui/core';
 
 import RegularButton from '../../components/Buttons/RegularButton';
+import TextFileReader from '../../utils/TextfileReader.js'
+var myTxt = require("../../version.txt");
 
 
 const useStyles = makeStyles((theme) => ({
@@ -95,6 +97,12 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignSelf: 'center',
         color: theme.palette.common.greyLight
+    },
+    bottomBox: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignContent: 'center',
+        alignItems: 'center'
     }
 }));
 
@@ -232,8 +240,11 @@ function SignupPage(props) {
                     </div>
                 </Grid> 
                 <Grid item>
-                    <Box>
+                    <Box className={classes.bottomBox}>
                         <Typography variant="h5" className={classes.privacyPolicy}>Term of use. Privacy policy</Typography>
+                        <Typography variant="h5">
+                            version: <TextFileReader txt={myTxt} />
+                        </Typography>
                     </Box>  
                 </Grid>
             </Grid>
