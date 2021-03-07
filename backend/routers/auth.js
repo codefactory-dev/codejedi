@@ -11,6 +11,7 @@ router.post('/auth/signin', async function (req, res) {
   try{
     const user = await User.findByCredentials(req.body.email, req.body.password);
     const token = await user.generateAuthToken();
+    console.log("returning user and token. user: "+JSON.stringify(user)+". token: "+JSON.stringify(token));
     res.status(200).send({user, token});
   } catch(error){
     console.log("Error signing in. "+error.message)
