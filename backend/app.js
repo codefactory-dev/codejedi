@@ -3,7 +3,7 @@ const bodyParser = require('body-parser'),
       router = express.Router(),
       cors = require('cors'),
       app = express();
-
+      
 // --------------------------------------------------------------------
 // APP CONFIG
 // --------------------------------------------------------------------
@@ -43,10 +43,4 @@ app.use(proxy, ImgRouter);
 app.use(proxy, CodeRouter);
 app.use(proxy, EditorRouter);
 
-
-// --------------------------------------------------------------------
-// SERVELESS SETUP
-// --------------------------------------------------------------------
-
 module.exports = app;
-// if (!local) module.exports.handler = serverless(app);
