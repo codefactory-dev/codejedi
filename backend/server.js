@@ -20,7 +20,7 @@ db.connect()
 // --------------------------------------------------------------------
 
 // NOT NEEDED WITH NETLIFY
-if (local) app.listen(4000, () => console.log('CodeJedi backend listening on port 4000!'));
+if (local) app.listen(process.env.PORT || 4000, () => console.log('CodeJedi backend listening on port 4000!'));
 
 // --------------------------------------------------------------------
 // SERVELESS SETUP
