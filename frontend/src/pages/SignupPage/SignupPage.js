@@ -188,23 +188,27 @@ function SignupPage(props) {
                                 id="firstname"
                                 classes={{ root: classes.textField }}
                                 label="First name"
+                                autoComplete={false}
                             />
                             <TextField 
                                 id="lastname"
                                 classes={{ root: classes.textField }}
                                 label="Last name"
+                                autoComplete={false}
                             />
                             <TextField 
                                 id="mylogin"
                                 classes={{ root: classes.textField }}
                                 label="Username"
                                 fullWidth
+                                autoComplete={false}
                             />
                             <TextField 
                                 id="myemail"
                                 classes={{ root: classes.textField }}
                                 label="Email"
                                 fullWidth
+                                autoComplete={false}
                             />
                             <TextField 
                                 id="mypassword"
@@ -212,7 +216,7 @@ function SignupPage(props) {
                                 label="Password" 
                                 fullWidth
                                 type="password"
-                                autoComplete="current-password"
+                                autoComplete="new-password"
                             />
                             <TextField 
                                 id="confirmpassword"
@@ -220,7 +224,7 @@ function SignupPage(props) {
                                 label="Confirm Password" 
                                 fullWidth
                                 type="password"
-                                autoComplete="confirm-password"
+                                autoComplete="new-password"
                             />
                             <FormControlLabel
                                 classes={{label:classes.formControlLabel}} 
@@ -229,6 +233,7 @@ function SignupPage(props) {
                                             value="remember" 
                                             color="primary"/>}
                                 label="I agree with terms and conditions"
+                                autoComplete="false"
                             />
                             
                             <Container className={classes.centered}>
