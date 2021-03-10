@@ -4,6 +4,8 @@ const bodyParser = require('body-parser'),
       cors = require('cors'),
       app = express();
       
+
+var path = require('path');      
 // --------------------------------------------------------------------
 // APP CONFIG
 // --------------------------------------------------------------------
