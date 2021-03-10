@@ -19,6 +19,8 @@ import {
 
 import RegularButton from '../../components/Buttons/RegularButton';
 import TextFileReader from '../../utils/TextfileReader.js'
+import { useHistory } from "react-router-dom";
+
 var myTxt = require("../../version.txt");
 
 
@@ -103,6 +105,10 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'column',
         alignContent: 'center',
         alignItems: 'center'
+    },
+    green: {
+        cursor: 'pointer',
+        color: '#00B5AD'
     }
 }));
 
@@ -113,6 +119,7 @@ function SignupPage(props) {
     const [isError, setIsError] = useState(false);
     const { setAuthTokens } = useAuth();
     const referer = (props.location.state && props.location.state.referer) || '/';
+    let history = useHistory();
  
     function handleSignup(e){
         e.preventDefault();
@@ -153,6 +160,9 @@ function SignupPage(props) {
             }
         }
         login();        
+    }
+    const navigateToSignin = () => {
+        history.push('/login')
     }
 
     if (isLoggedIn) {
@@ -231,7 +241,7 @@ function SignupPage(props) {
                             
                             <Typography variant="h4">
                                 <Grid container className={classes.extraInfo}>
-                                    <div className={classes.white} style={{marginTop: '10px'}}>Already have an account? <span className={classes.green}>Sign In</span></div>
+                                    <div className={classes.white} style={{marginTop: '10px'}}>Already have an account? <span className={classes.green} onClick={navigateToSignin}>Sign In</span></div>
                                 </Grid>
                             </Typography>
                             { isError && <div>The username or password provided were incorrect!</div> }
