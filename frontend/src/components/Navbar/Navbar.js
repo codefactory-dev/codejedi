@@ -25,20 +25,26 @@ import {
   Divider
 } from '@material-ui/core';
 
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   appbar: {
     backgroundColor: theme.palette.common.navbarBlack,
     color: theme.palette.common.white
   },
+  optionsGroup: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginLeft: '78px'
+  },
   menuOptions: {
-    flexGrow: 1,
-    marginLeft: '78px',
     fontWeight: theme.typography.fontWeightRegular,
     display: 'none',
+    margin: theme.spacing(1),
     [theme.breakpoints.up('md')]: {
       display: 'flex',
     },
+    cursor: 'pointer'
   },
   grow: {
     flexGrow: 1,
@@ -85,6 +91,7 @@ function NavBar() {
     const classes = useStyles();
     const yodaGreen = '#D7E2C6';
     const { authTokens, setAuthTokens } = useAuth();
+    let history = useHistory();
     
     const [anchorElNotifications, setAnchorElNotifications] = useState(null);
 
@@ -98,6 +105,15 @@ function NavBar() {
     function handleCloseMenuNotifications(notificationId, notificationViewed){
       setAnchorElNotifications(null);
     }
+    function navigateToBrowse(){
+      history.push('/');
+    }
+    function navigateToProfile(){
+      history.push('/profile');
+    }
+    function navigateToSubmissions(){
+      history.push('/submissions');
+    }
 
     return (
         <AppBar className={classes.appbar} position="static">
@@ -108,8 +124,17 @@ function NavBar() {
               <span style={{marginLeft: '8px'}}>CODE</span>
               <span style={{color:`${yodaGreen}`}}> JEDI</span>
             </Typography>
-            <Typography variant="h6" className={classes.menuOptions}>
-            </Typography>
+            <span className={classes.optionsGroup}>
+              <Typography variant="h6" className={classes.menuOptions} onClick={navigateToBrowse}>
+                BROWSE
+              </Typography>
+              <Typography variant="h6" className={classes.menuOptions} onClick={navigateToProfile}>
+                PROFILE
+              </Typography>
+              <Typography variant="h6" className={classes.menuOptions} onClick={navigateToSubmissions}>
+                SUBMISSIONS
+              </Typography>
+            </span>
             <div className={classes.grow} />
             
             <Toolbar className={classes.sectionDesktop}>
