@@ -43,8 +43,14 @@ app.use(proxy, ImgRouter);
 app.use(proxy, CodeRouter);
 app.use(proxy, EditorRouter);
 
-if (process.env.NODE_ENV === 'production'){
-   app.use(express.static('frontend/build'))
+if (process.env.NODE_ENV === 'production') 
+{
+  // Set static folder
+  app.use(express.static(path.join(__dirname, '/../frontend/build')));
+}
+else
+{
+  app.use(express.static(path.join(__dirname,'/../frontend/src')));
 }
 
 module.exports = app;
