@@ -15,8 +15,6 @@ import Container from '@material-ui/core/Container';
 import { Link, Redirect } from "react-router-dom";
 import { useAuth } from "../../Context/auth";
 import { useHistory } from "react-router-dom";
-
-
 import RegularButton from '../../components/Buttons/RegularButton';
 
 
@@ -174,7 +172,8 @@ function SigninPage(props) {
                                 label="Password" 
                                 fullWidth
                                 type="password"
-                                autoComplete="current-password"
+                                autoComplete="new-password"
+                                //autoComplete="current-password"
                             />
                             <FormControlLabel
                                 classes={{label:classes.formControlLabel}} 
