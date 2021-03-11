@@ -3,6 +3,9 @@ import { BrowserRouter as Router, Link, Route } from "react-router-dom";
 import SigninPage from './pages/SigninPage/SigninPage.js'
 import SignupPage from './pages/SignupPage/SignupPage.js'
 import InitialPage from './pages/InitialPage/InitialPage.js'
+import SubmissionsPage from './pages/SubmissionsPage/SubmissionsPage.js'
+import ProfilePage from './pages/ProfilePage/ProfilePage.js'
+import BrowsePage from './pages/BrowsePage/BrowsePage.js'
 import QuestionPage from './pages/QuestionPage/QuestionPage.js'
 import { AuthContext } from "./Context/auth";
 import PrivateRoute from './_RouteWrappers/private'
@@ -27,6 +30,9 @@ function App() {
             <Route path="/login" component={SigninPage} />
             <Route path="/signup" component={SignupPage} />
             <PrivateRoute path="/question" component={QuestionPage} />
+            <PrivateRoute path="/submissions" component={SubmissionsPage} />
+            <PrivateRoute path="/browse" component={BrowsePage} />
+            <PrivateRoute path="/profile" component={ProfilePage} />
         </Router>
       </AuthContext.Provider>
     </Store>

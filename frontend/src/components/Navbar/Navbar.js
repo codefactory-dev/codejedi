@@ -106,7 +106,7 @@ function NavBar() {
       setAnchorElNotifications(null);
     }
     function navigateToBrowse(){
-      history.push('/');
+      history.push('/browse');
     }
     function navigateToProfile(){
       history.push('/profile');
@@ -117,81 +117,81 @@ function NavBar() {
 
     return (
         <AppBar className={classes.appbar} position="static">
-        <Toolbar>
-            
-            <SvgIcon component={YodaLogo} style={{ fontSize: 30, verticalAlign: 'middle' }} viewBox="0 0 42 42" />
-            <Typography variant="h6" className={classes.logo}>
-              <span style={{marginLeft: '8px'}}>CODE</span>
-              <span style={{color:`${yodaGreen}`}}> JEDI</span>
-            </Typography>
-            <span className={classes.optionsGroup}>
-              <Typography variant="h6" className={classes.menuOptions} onClick={navigateToBrowse}>
-                BROWSE
-              </Typography>
-              <Typography variant="h6" className={classes.menuOptions} onClick={navigateToProfile}>
-                PROFILE
-              </Typography>
-              <Typography variant="h6" className={classes.menuOptions} onClick={navigateToSubmissions}>
-                SUBMISSIONS
-              </Typography>
-            </span>
-            <div className={classes.grow} />
-            
-            <Toolbar className={classes.sectionDesktop}>
+          <Toolbar>
               
-            </Toolbar>
-            <IconButton 
-              color="secondary"
-              onClick={handleClickMenuNotifications}
-              >
-                
-              <Avatar className={classes.avatar} alt="Remy Sharp" src={placeholderAvatar}/>
-              <Typography variant="body1" className={classes.avatarName}>
-                roberta.cmota
+              <SvgIcon component={YodaLogo} style={{ fontSize: 30, verticalAlign: 'middle' }} viewBox="0 0 42 42" />
+              <Typography variant="h6" className={classes.logo}>
+                <span style={{marginLeft: '8px'}}>CODE</span>
+                <span style={{color:`${yodaGreen}`}}> JEDI</span>
               </Typography>
-            </IconButton>
-            {(
-              <Menu
-                id="fade-menu"
-                anchorEl={anchorElNotifications}
-                keepMounted
-                disableScrollLock
-                open={Boolean(anchorElNotifications)}
-                onClose={() => handleCloseMenuNotifications(null)}
-                TransitionComponent={Fade}
-                elevation={2}
-                getContentAnchorEl={null}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'right',
-                }}
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left',
-                }}
-              >
-                {
-                  <div>
-                    <MenuItem
-                      className={classes.menuItem}
-                      key={'someKey'}
-                      color="secondary"
-                    >
-                      <Typography variant="body" display="block" gutterBottom>
-                          <button onClick={handleLogout}>Log out</button>
-                      </Typography>
-                      
-                    </MenuItem>
-                    <Divider/>                    
-                  </div>
-                }
-              </Menu>
-            )}
-            
-            <Toolbar className={classes.sectionMobile}>
-              <SvgIcon component={bars} style={{ fontSize: 22, verticalAlign: 'middle' }} viewBox="0 0 29 29" />
-            </Toolbar>
-        </Toolbar>
+              <span className={classes.optionsGroup}>
+                <Typography variant="h6" className={classes.menuOptions} onClick={navigateToBrowse}>
+                  BROWSE
+                </Typography>
+                <Typography variant="h6" className={classes.menuOptions} onClick={navigateToProfile}>
+                  PROFILE
+                </Typography>
+                <Typography variant="h6" className={classes.menuOptions} onClick={navigateToSubmissions}>
+                  SUBMISSIONS
+                </Typography>
+              </span>
+              <div className={classes.grow} />
+              
+              <Toolbar className={classes.sectionDesktop}>
+                
+              </Toolbar>
+              <IconButton 
+                color="secondary"
+                onClick={handleClickMenuNotifications}
+                >
+                  
+                <Avatar className={classes.avatar} alt="Remy Sharp" src={placeholderAvatar}/>
+                <Typography variant="body1" className={classes.avatarName}>
+                  roberta.cmota
+                </Typography>
+              </IconButton>
+              {(
+                <Menu
+                  id="fade-menu"
+                  anchorEl={anchorElNotifications}
+                  keepMounted
+                  disableScrollLock
+                  open={Boolean(anchorElNotifications)}
+                  onClose={() => handleCloseMenuNotifications(null)}
+                  TransitionComponent={Fade}
+                  elevation={2}
+                  getContentAnchorEl={null}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                  }}
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                  }}
+                >
+                  {
+                    <div>
+                      <MenuItem
+                        className={classes.menuItem}
+                        key={'someKey'}
+                        color="secondary"
+                      >
+                        <Typography variant="body" display="block" gutterBottom>
+                            <button onClick={handleLogout}>Log out</button>
+                        </Typography>
+                        
+                      </MenuItem>
+                      <Divider/>                    
+                    </div>
+                  }
+                </Menu>
+              )}
+              
+              <Toolbar className={classes.sectionMobile}>
+                <SvgIcon component={bars} style={{ fontSize: 22, verticalAlign: 'middle' }} viewBox="0 0 29 29" />
+              </Toolbar>
+          </Toolbar>
         </AppBar>
     );
 
