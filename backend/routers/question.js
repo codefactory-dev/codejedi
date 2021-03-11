@@ -10,7 +10,7 @@ const express = require('express'),
 router.get('/questions', middleware.checkLogIn, async (req,res) => { 
     const questions = await Question.find({}, {}, {sort: {lastUpdate: -1}, limit: 10});
 
-    res.status(200).send({questions});
+    res.status(200).send(questions);
 });
 
 // PREFIX: /users/:uid/
