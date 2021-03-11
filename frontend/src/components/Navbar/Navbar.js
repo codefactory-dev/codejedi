@@ -57,7 +57,8 @@ const useStyles = makeStyles((theme) => ({
   },
   logo: {
     flexShrink: 1,
-    fontWeight: theme.typography.fontWeightRegular
+    fontWeight: theme.typography.fontWeightRegular,
+    cursor: 'pointer'
   },
   avatarName: {
     marginLeft: '10px',
@@ -85,6 +86,9 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     border: `1px solid white`
   },
+  svgIcon: {
+    cursor: 'pointer'
+  }
 }));
 
 function NavBar() { 
@@ -105,6 +109,9 @@ function NavBar() {
     function handleCloseMenuNotifications(notificationId, notificationViewed){
       setAnchorElNotifications(null);
     }
+    function navigateToInitial(){
+      history.push('/');
+    }
     function navigateToBrowse(){
       history.push('/browse');
     }
@@ -119,8 +126,8 @@ function NavBar() {
         <AppBar className={classes.appbar} position="static">
           <Toolbar>
               
-              <SvgIcon component={YodaLogo} style={{ fontSize: 30, verticalAlign: 'middle' }} viewBox="0 0 42 42" />
-              <Typography variant="h6" className={classes.logo}>
+              <SvgIcon className={classes.svgIcon} onClick={navigateToInitial} component={YodaLogo} style={{ fontSize: 30, verticalAlign: 'middle' }} viewBox="0 0 42 42" />
+              <Typography variant="h6" className={classes.logo} onClick={navigateToInitial}>
                 <span style={{marginLeft: '8px'}}>CODE</span>
                 <span style={{color:`${yodaGreen}`}}> JEDI</span>
               </Typography>
