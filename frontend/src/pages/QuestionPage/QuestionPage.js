@@ -17,10 +17,13 @@ import Box from '@material-ui/core/Box';
 import { useAuth } from "../../Context/auth";
 import { Link, Redirect } from "react-router-dom";
 import ConnectTo from "../../store/connect";
+import { ConvertCodeToOneLiner } from '../../utils/TextReadingUtils'
 import {
     convertToRaw,
 } from 'draft-js';
 
+import CodeScaffolding from '../../utils/CodeScaffolding'
+import { Parse, ParseString } from '../../utils/Parser'
 import { EditorState, ContentState } from 'draft-js';
 
 const useStyles = makeStyles((theme) => ({
@@ -327,10 +330,10 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
         return <Redirect to={"/login"} />;
     } 
     
-    function submitQuestion(){
+    function saveQuestion() {
         if (currentUser){
-            async function performSubmit(){
-                console.log("submitting question")
+            async function performSave(){
+                console.log("saving question")
                 const userId = currentUser._id;
                 console.log("this is the solution subpage: "+JSON.stringify(solutionSubpage))
                 const blocks = convertToRaw(descriptionSubpage.editorState.getCurrentContent()).blocks;
@@ -354,8 +357,63 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
                 });  
                 
             }
-            performSubmit();
+            performSave();
         }
+    }
+    
+    function submitAll()
+    {
+      
+      //get question from somewhere
+      var questionText = solutionSubpage.funcSolutionCode;
+
+      //get solution from database
+      var hiddenSolution = solutionSubpage.funcSolutionCode;
+            
+      //get test cases from file  
+      var testCasesText = testcasesSubpage.inputs;
+  
+      //parse test cases into javascript
+      var structure = Parse(testCasesText, descriptionSubpage.questionType);
+      console.log("---PARSED STRUCTURE---");
+      console.log(structure);
+  
+      //insert test cases into question
+      //var togetherText = questionText;
+      const togetherText = CodeScaffolding(structure, solutionSubpage.funcSolutionCode, hiddenSolution, descriptionSubpage.questionType,languageType,solutionName);
+
+  
+      console.log("---TOGETHER TEXT---");
+      console.log(togetherText);
+  
+      //transform question into a "sendable" one-line string for json
+      var oneLiner = ConvertCodeToOneLiner(togetherText);
+      console.log("---ONE LINER---");
+      console.log(oneLiner);
+  
+  
+      createEditor();
+  
+      // POST both the question and the test cases
+      async function createEditor() {
+          
+          const result = await axios({
+              method: 'post',
+              url: '/compile',
+              data: { 
+                  code:oneLiner,
+                  language:languageType
+              }
+          });            
+          console.log(Object.getOwnPropertyNames(result))
+          const {stdout, stderr, error} = result.data;
+          console.log("stdout: "+stdout+", stderr: "+stderr+", error: "+error);
+          if (stderr || error)
+          {
+              return props.setAnswer(stderr +' '+ error)
+          }
+          return props.setAnswer(stdout);
+      }
     }
     
     function languageNameToIndex(languageName){
@@ -416,8 +474,13 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
                         <div className={classes.footerWrapper}>
                             <RegularButton 
                                 className={classes.regularButton} 
-                                onClick={submitQuestion}
+                                onClick={saveQuestion}
                                 label="Save" 
+                            />
+                            <RegularButton 
+                                className={classes.regularButton} 
+                                onClick={submitAll}
+                                label="Submit" 
                             />
                         </div>
                     </div>
