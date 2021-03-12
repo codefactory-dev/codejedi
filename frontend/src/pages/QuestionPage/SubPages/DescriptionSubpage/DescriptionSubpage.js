@@ -196,6 +196,7 @@ export default function DescriptionSubpage(props) {
               <SimpleTextField className={classes.titleTextfield} 
                                label="Title"
                                value={questionName}
+                               setQuestionName={setQuestionName}
                                onChange={onQuestionNameChange}/>
               <div className={classes.grow}></div>
               <div className={classes.colFlex1}>

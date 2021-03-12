@@ -288,24 +288,7 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
     function renderSubpage(){     
         const subPages = {
             [pageTabs.DESCRIPTION_PAGE]: 
-                <DescriptionSubpage
-                    setActiveTab={setActiveTab}
-                    shouldSubmit={shouldSubmit} 
-                    setShouldSubmit={setShouldSubmit}
-                    shouldSave={shouldSave}
-                    setShouldSave={setShouldSave}
-                    questionDescription={questionDescription}
-                    questionSolution={questionSolution}
-                    questionTestcases={questionTestcases}
-                    questionTestcasesType={questionTestcasesType}
-                    languageType={languageType}
-                    solutionName={solutionName}
-                    answer={answer}
-                    setAnswer={setAnswer}
-
-                    {... descriptionSubpage}
-                    onPageChange={onDescriptionSubPageChange}
-                />,
+                <DescriptionSubpage {... descriptionSubpage} onPageChange={onDescriptionSubPageChange}/>,
             [pageTabs.SOLUTION_PAGE]: 
                 <SolutionSubpage {... solutionSubpage} onPageChange={onSolutionSubPageChange}/>,
             [pageTabs.TESTCASES_PAGE]: 
@@ -322,15 +305,6 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
     },[authTokens])
     useEffect(()=>{
         if (currentQuestion){
-            /*
-            setQuestionSolution(currentQuestion.solution);
-            setQuestionTestcases(currentQuestion.testcases);
-            setQuestionTestcasesType(currentQuestion.testcasesType);
-            setLanguageType(currentQuestion.languageType);
-            setSolutionName(currentQuestion.solutionName);
-            setQuestionDescription(currentQuestion.description);
-            */
-            //--------------------------
             onDescriptionSubPageChange({
                 title: currentQuestion.title,
                 questionDifficulty: currentQuestion.difficulty,

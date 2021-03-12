@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types';
@@ -29,6 +29,13 @@ export default function SimpleTextField(props) {
     SetValue(evt.target.value);
     props.onChange(evt);
   }
+
+  useEffect(()=>{
+    if (props.setQuestionName){
+      SetValue(props.value);
+      props.setQuestionName(props.value)
+    }
+  },[props.value])
 
   return (
         <TextField
