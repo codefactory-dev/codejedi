@@ -44,8 +44,9 @@ const useStyles = makeStyles((theme) => ({
         marginTop: 60,
         width: '60%',
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: 'row',
         alignItems: 'start',
+        justifyContent: 'space-between'
     },
     tabs: {
         position: 'absolute',
@@ -78,6 +79,9 @@ const useStyles = makeStyles((theme) => ({
     scroller: {},
     minorSeparator: {
         width: '9%'
+    },
+    separator: {
+        flexGrow: 1
     },
     questionPage: {
         height:'1020px',
