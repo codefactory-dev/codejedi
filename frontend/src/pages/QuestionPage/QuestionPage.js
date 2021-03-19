@@ -215,9 +215,9 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
     // --------------------------------------
     // CALLBACKS
     // --------------------------------------
-    const onDescriptionSubPageChange = variables => setDescriptionSubpage(Object.assign({}, variables));
-    const onSolutionSubPageChange = variables => setSolutionSubpage(Object.assign({}, variables));
-    const onTestcasesSubPageChange = variables => setTestcasesSubpage(Object.assign({}, variables));
+    const onDescriptionSubPageChange = variables => setDescriptionSubpage(Object.assign(descriptionSubpage, variables));
+    const onSolutionSubPageChange = variables => setSolutionSubpage(Object.assign(solutionSubpage, variables));
+    const onTestcasesSubPageChange = variables => setTestcasesSubpage(Object.assign(testcasesSubpage, variables));
     
     // --------------------------------------
     // 
@@ -313,6 +313,7 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
     useEffect(()=>{
         if (currentQuestion){
             onDescriptionSubPageChange({
+                questionId: currentQuestion._id,
                 title: currentQuestion.title,
                 questionDifficulty: currentQuestion.difficulty,
                 questionType: currentQuestion.type,
@@ -343,20 +344,39 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
                 const blocks = convertToRaw(descriptionSubpage.editorState.getCurrentContent()).blocks;
                 const editorStateRaw = blocks.map(block => (!block.text.trim() && '\n') || block.text).join('\n');
                 
-                const result = await axios({
+                if (descriptionSubpage.questionId){
+                    await axios({
+                        method: 'put',
+                        url: `/users/${userId}/questions/${descriptionSubpage.questionId}`,
+                        data: { 
+                            title: descriptionSubpage.questionName,
+                            difficulty: descriptionSubpage.questionDifficulty,
+                            type: descriptionSubpage.questionType,
+                            description: editorStateRaw,
+                            solution: solution,
+                            solutionName: solutionSubpage.funcName,
+                            languageType: languageNameToIndex(solutionSubpage.funcLanguage),
+                            returnType: solutionSubpage.functReturnType,
+                            testcases: testcasesSubpage.inputs,
+                            testcasesType: solutionSubpage.funcParameters,
+                        }
+                    }); 
+                    return; 
+                }
+                await axios({
                     method: 'post',
                     url: `/users/${userId}/questions`,
                     data: { 
-                    title: descriptionSubpage.questionName,
-                    difficulty: descriptionSubpage.questionDifficulty,
-                    type: descriptionSubpage.questionType,
-                    description: editorStateRaw,
-                    solution: solution,
-                    solutionName: solutionSubpage.funcName,
-                    languageType: languageNameToIndex(solutionSubpage.funcLanguage),
-                    returnType: solutionSubpage.functReturnType,
-                    testcases: testcasesSubpage.inputs,
-                    testcasesType: solutionSubpage.funcParameters,
+                        title: descriptionSubpage.questionName,
+                        difficulty: descriptionSubpage.questionDifficulty,
+                        type: descriptionSubpage.questionType,
+                        description: editorStateRaw,
+                        solution: solution,
+                        solutionName: solutionSubpage.funcName,
+                        languageType: languageNameToIndex(solutionSubpage.funcLanguage),
+                        returnType: solutionSubpage.functReturnType,
+                        testcases: testcasesSubpage.inputs,
+                        testcasesType: solutionSubpage.funcParameters,
                     }
                 });  
                 
