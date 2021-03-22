@@ -44,6 +44,10 @@ const questionSchema = new Schema({
         type: Number,
         default: undefined
     },
+    returnType: {
+        type: String,
+        default: undefined
+    },
     solutionName: {
         type: String,
         default: undefined

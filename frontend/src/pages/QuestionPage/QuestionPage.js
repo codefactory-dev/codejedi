@@ -345,9 +345,37 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
                 const editorStateRaw = blocks.map(block => (!block.text.trim() && '\n') || block.text).join('\n');
                 
                 if (descriptionSubpage.questionId){
-                    await axios({
-                        method: 'put',
-                        url: `/users/${userId}/questions/${descriptionSubpage.questionId}`,
+                   try {
+                        const result = await axios({
+                            method: 'put',
+                            url: `/users/${userId}/questions/${descriptionSubpage.questionId}`,
+                            data: { 
+                                title: descriptionSubpage.questionName,
+                                difficulty: descriptionSubpage.questionDifficulty,
+                                type: descriptionSubpage.questionType,
+                                description: editorStateRaw,
+                                solution: solution,
+                                solutionName: solutionSubpage.funcName,
+                                languageType: languageNameToIndex(solutionSubpage.funcLanguage),
+                                returnType: solutionSubpage.functReturnType,
+                                testcases: testcasesSubpage.inputs,
+                                testcasesType: solutionSubpage.funcParameters,
+                            }
+                        }); 
+                        if (result.status === 200){
+                            Swal.fire('updated !');
+                        }
+                   } catch (error){
+                     Swal.fire(`update failed !`);
+                     console.log("error updating question: "+error)
+                   }
+                   
+                    return; 
+                }
+                try {
+                    const result = await axios({
+                        method: 'post',
+                        url: `/users/${userId}/questions`,
                         data: { 
                             title: descriptionSubpage.questionName,
                             difficulty: descriptionSubpage.questionDifficulty,
@@ -360,26 +388,13 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
                             testcases: testcasesSubpage.inputs,
                             testcasesType: solutionSubpage.funcParameters,
                         }
-                    }); 
-                    return; 
-                }
-                await axios({
-                    method: 'post',
-                    url: `/users/${userId}/questions`,
-                    data: { 
-                        title: descriptionSubpage.questionName,
-                        difficulty: descriptionSubpage.questionDifficulty,
-                        type: descriptionSubpage.questionType,
-                        description: editorStateRaw,
-                        solution: solution,
-                        solutionName: solutionSubpage.funcName,
-                        languageType: languageNameToIndex(solutionSubpage.funcLanguage),
-                        returnType: solutionSubpage.functReturnType,
-                        testcases: testcasesSubpage.inputs,
-                        testcasesType: solutionSubpage.funcParameters,
+                    });  
+                    if (result.status === 201){
+                        Swal.fire('created !');
                     }
-                });  
-                
+                } catch (error){
+                    Swal.fire(`create failed !`);
+                }                
             }
             performSave();
         }

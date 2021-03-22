@@ -31,6 +31,7 @@ router.get('/users/:uid/questions', middleware.checkLogIn,
 router.post('/users/:uid/questions', middleware.checkLogIn, 
                                      middleware.checkQuestionParamsNull,
                                      async (req,res) => {
+   console.log("calling CREATE question");
    const user = req.user;
 
    let question = {
@@ -47,7 +48,8 @@ router.post('/users/:uid/questions', middleware.checkLogIn,
        testcases: req.body.testcases,
        testcasesType: req.body.testcasesType,
        languageType: req.body.languageType,
-       solutionName: req.body.solutionName
+       solutionName: req.body.solutionName,
+       returnType: req.body.returnType
    };
 
    
@@ -88,29 +90,35 @@ router.put('/users/:uid/questions/:id', middleware.checkLogIn,
                                           middleware.checkQuestionParamsNull,
                                           middleware.checkQuestionOwnership,
                                           async (req,res) => {
+    console.log("calling UPDATE question");                   
+    try {
+            const q    = req.question,
+            user = req.user;
 
-    const q    = req.question,
-          user = req.user;
+            // editable fields: title, difficulty, type, description, solution  
+            let question = {
+                title: req.body.title,
+                difficulty: req.body.difficulty,
+                type: req.body.type,
+                description: req.body.description,
+                solution: req.body.solution,
+                returnType: req.body.returnType
+            };
 
-    // editable fields: title, difficulty, type, description, solution  
-    let question = {
-        title: req.body.title,
-        difficulty: req.body.difficulty,
-        type: req.body.type,
-        description: req.body.description,
-        solution: req.body.solution
-    };
+            const operation = async () => {
+                // update question
+                await Question.updateOne({_id: q._id}, question);
+                const result = await Question.findById(q._id)
+                return result;
+            };
 
-    const operation = async () => {
-        // update question
-        await Question.updateOne({_id: q._id}, question).then(res => question = res);
+            const result = await db.runAsTransaction(operation)
+            return res.status(200).send({question: result})
+    } catch (error){
+        res.status(500).send("Error updating question. "+error);
+    }                          
 
-        return question;
-    };
-
-    db.runAsTransaction(operation)
-        .then(resolve => res.status(200).send({question: resolve}))
-        .catch(e => res.status(e.status).json(e.message));
+    
 });
 
 //DESTROY - delete question
