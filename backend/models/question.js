@@ -32,10 +32,6 @@ const questionSchema = new Schema({
         type: String,
         default: undefined
     },
-    testcases: {
-        type: Array,
-        default: undefined
-    },
     languageType: {
         type: Number,
         default: undefined
@@ -48,11 +44,11 @@ const questionSchema = new Schema({
         type: String,
         default: undefined
     },
-    parameters: {
+    testcases: {
         type: Array,
         default: []
     },
-    inputs: {
+    parameters: {
         type: Array,
         default: []
     },

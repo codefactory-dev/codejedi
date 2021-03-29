@@ -320,13 +320,13 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
                 editorState: EditorState.createWithContent(ContentState.createFromText(currentQuestion.description))
             })   
             onSolutionSubPageChange({
-                funcName: currentQuestion.funcName,
+                funcName: currentQuestion.solutionName,
                 funcParameters: currentQuestion.parameters,
                 functReturnType: currentQuestion.returnType,
                 funcSolutionCode: currentQuestion.solution,
             }) 
             onTestcasesSubPageChange({
-                inputs: currentQuestion.inputs
+                inputs: currentQuestion.testcases
             })  
         }
     },[currentQuestion])

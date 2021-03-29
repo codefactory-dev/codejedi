@@ -103,6 +103,7 @@ router.put('/users/:uid/questions/:id', middleware.checkLogIn,
                 type: req.body.type,
                 description: req.body.description,
                 solution: req.body.solution,
+                solutionName: req.body.solutionName,
                 returnType: req.body.returnType,
                 parameters: req.body.parameters,
                 testcases: req.body.testcases
