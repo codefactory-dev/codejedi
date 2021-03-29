@@ -320,13 +320,13 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
                 editorState: EditorState.createWithContent(ContentState.createFromText(currentQuestion.description))
             })   
             onSolutionSubPageChange({
-                funcName: "alalalalalala",
-                funcParameters: ["alalalalalla"],
-                functReturnType: "alalalalalla",
-                funcSolutionCode: "alalalalalla",
+                funcName: currentQuestion.funcName,
+                funcParameters: currentQuestion.parameters,
+                functReturnType: currentQuestion.returnType,
+                funcSolutionCode: currentQuestion.solution,
             }) 
             onTestcasesSubPageChange({
-                inputs: ["alalalalala"]
+                inputs: currentQuestion.inputs
             })  
         }
     },[currentQuestion])
@@ -358,8 +358,8 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
                                 solutionName: solutionSubpage.funcName,
                                 languageType: languageNameToIndex(solutionSubpage.funcLanguage),
                                 returnType: solutionSubpage.functReturnType,
+                                parameters: solutionSubpage.funcParameters,
                                 testcases: testcasesSubpage.inputs,
-                                testcasesType: solutionSubpage.funcParameters,
                             }
                         }); 
                         if (result.status === 200){
@@ -385,8 +385,8 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
                             solutionName: solutionSubpage.funcName,
                             languageType: languageNameToIndex(solutionSubpage.funcLanguage),
                             returnType: solutionSubpage.functReturnType,
-                            testcases: testcasesSubpage.inputs,
-                            testcasesType: solutionSubpage.funcParameters,
+                            parameters: solutionSubpage.funcParameters,
+                            testcases: testcasesSubpage.inputs
                         }
                     });  
                     if (result.status === 201){

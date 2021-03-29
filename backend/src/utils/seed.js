@@ -157,6 +157,7 @@ const generateQuestions = (n, users) => {
                     title: casual.title,
                     difficulty: casual.random_element(qDifficulties),
                     description: casual.description,
+                    parameters: [],
                     type: casual.random_element(qTypes),
                     createdAt: casual.date(),          
             };

@@ -49,7 +49,8 @@ router.post('/users/:uid/questions', middleware.checkLogIn,
        testcasesType: req.body.testcasesType,
        languageType: req.body.languageType,
        solutionName: req.body.solutionName,
-       returnType: req.body.returnType
+       returnType: req.body.returnType,
+       parameters: req.body.parameters
    };
 
    
@@ -102,7 +103,9 @@ router.put('/users/:uid/questions/:id', middleware.checkLogIn,
                 type: req.body.type,
                 description: req.body.description,
                 solution: req.body.solution,
-                returnType: req.body.returnType
+                returnType: req.body.returnType,
+                parameters: req.body.parameters,
+                testcases: req.body.testcases
             };
 
             const operation = async () => {
