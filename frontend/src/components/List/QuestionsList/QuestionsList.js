@@ -191,12 +191,11 @@ const rowStates = {
     EDITING_ROW: 1,
     CONFIRMING_DELETE: 2
 }
-const QuestionsList = ({dispatch,currentQuestion,...props}) => {
+const QuestionsList = ({dispatch,currentQuestion, inputs, setInputs,...props}) => {
     let history = useHistory();
     const classes = useStyles();
     const matches = useMediaQuery('(min-width:798px)');
     const theme = useTheme();
-    const [inputs, setInputs] = useState(['nums1', 'nums2', 'nums3']);
     const [activeRowItem, setActiveRowItem] = useState();
     const [editingState, setEditingState] = useState(rowStates.DESELECTED)
     const [maxInputTag, setMaxInputTag] = useState('20 max');
@@ -342,7 +341,7 @@ const QuestionsList = ({dispatch,currentQuestion,...props}) => {
     return (
         <div className={classes.root}>
             <div className={classes.subtitleContainer}>
-                <p>Title</p>
+                <p>{props.title}</p>
             </div>
             <hr className={classes.divider} />
             <div className={classes.wrapper}>

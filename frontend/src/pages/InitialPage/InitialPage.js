@@ -32,6 +32,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function InitialPage(props) { 
     const classes = useStyles();
+
+    const [inputs, setInputs] = useState(['nums1', 'nums2', 'nums3']);
+
     const { authTokens, setAuthTokens } = useAuth();
     if (!authTokens || authTokens === "undefined") {
         return <Redirect to={"/login"} />;
@@ -41,7 +44,11 @@ export default function InitialPage(props) {
                 <Navbar setAuthTokens={setAuthTokens} />
                 <div className={classes.centralElements}>
                     <div className={classes.centralTextArea}>
-                    <QuestionsList />
+                    <QuestionsList 
+                        title={"Initial Page"}
+                        inputs={inputs}
+                        setInputs={setInputs}                        
+                    />
                     </div>
                 </div>
                 
