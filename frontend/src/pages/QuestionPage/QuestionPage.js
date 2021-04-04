@@ -403,56 +403,62 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
     function submitAll()
     {
       
-      //get question from somewhere
-      var questionText = solutionSubpage.funcSolutionCode;
+      try {
+        //get question from somewhere
+        var questionText = solutionSubpage.funcSolutionCode;
 
-      //get solution from database
-      var hiddenSolution = solutionSubpage.funcSolutionCode;
+        //get solution from database
+        var hiddenSolution = solutionSubpage.funcSolutionCode;
             
-      //get test cases from file  
-      var testCasesText = testcasesSubpage.inputs;
-  
-      //parse test cases into javascript
-      var structure = Parse(testCasesText, descriptionSubpage.questionType);
-      console.log("---PARSED STRUCTURE---");
-      console.log(structure);
-  
-      //insert test cases into question
-      //var togetherText = questionText;
-      const togetherText = CodeScaffolding(structure, solutionSubpage.funcSolutionCode, hiddenSolution, descriptionSubpage.questionType,languageType,solutionName);
+        //get test cases from file  
+        var testCasesText = testcasesSubpage.inputs;
 
-  
-      console.log("---TOGETHER TEXT---");
-      console.log(togetherText);
-  
-      //transform question into a "sendable" one-line string for json
-      var oneLiner = ConvertCodeToOneLiner(togetherText);
-      console.log("---ONE LINER---");
-      console.log(oneLiner);
-  
-  
-      createEditor();
-  
-      // POST both the question and the test cases
-      async function createEditor() {
-          
-          const result = await axios({
-              method: 'post',
-              url: '/compile',
-              data: { 
-                  code:oneLiner,
-                  language:languageType
-              }
-          });            
-          console.log(Object.getOwnPropertyNames(result))
-          const {stdout, stderr, error} = result.data;
-          console.log("stdout: "+stdout+", stderr: "+stderr+", error: "+error);
-          if (stderr || error)
-          {
-              return props.setAnswer(stderr +' '+ error)
-          }
-          return props.setAnswer(stdout);
+        //parse test cases into javascript
+        var structure = Parse(testCasesText, descriptionSubpage.questionType);
+        console.log("---PARSED STRUCTURE---");
+        console.log(structure);
+
+        //insert test cases into question
+        //var togetherText = questionText;
+        const togetherText = CodeScaffolding(structure, solutionSubpage.funcSolutionCode, hiddenSolution, descriptionSubpage.questionType,languageType,solutionName);
+
+
+        console.log("---TOGETHER TEXT---");
+        console.log(togetherText);
+
+        //transform question into a "sendable" one-line string for json
+        var oneLiner = ConvertCodeToOneLiner(togetherText);
+        console.log("---ONE LINER---");
+        console.log(oneLiner);
+
+
+        createEditor();
+
+        // POST both the question and the test cases
+        async function createEditor() {
+            
+            const result = await axios({
+                method: 'post',
+                url: '/compile',
+                data: { 
+                    code:oneLiner,
+                    language:languageType
+                }
+            });            
+            console.log(Object.getOwnPropertyNames(result))
+            const {stdout, stderr, error} = result.data;
+            console.log("stdout: "+stdout+", stderr: "+stderr+", error: "+error);
+            if (stderr || error)
+            {
+                return props.setAnswer(stderr +' '+ error)
+            }
+            return props.setAnswer(stdout);
+        }
+      } catch (error){
+        console.log("Error submitting question: "+error)
+        Swal.fire('Error submitting question !');
       }
+      
     }
     
     function languageNameToIndex(languageName){
