@@ -160,6 +160,8 @@ const generateQuestions = (n, users) => {
                     difficulty: casual.random_element(qDifficulties),
                     description: casual.description,
                     solutionName: casual.word,
+                    solution: `class Solution {\n   public int Solution (int param) {\n \n\n  }\n}`,
+                    languageType: 'Java',
                     parameters: [{name: casual.word, type: 'int'}],
                     testcases: [12,26,2,324],
                     type: casual.random_element(basicQtypes),

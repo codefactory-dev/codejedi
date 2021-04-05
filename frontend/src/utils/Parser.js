@@ -14,6 +14,8 @@ export function Parse(text, parseType)
 
 export function ParseString(text)
 {
+    return text;
+    /*
     var array = text.split("\n");
     array.forEach(str => {
         var cond1 = str.substring(0,1) !== "\"";
@@ -24,6 +26,7 @@ export function ParseString(text)
         }
     });
     return array;
+    */
 }
 export function ParseInteger(text)
 {

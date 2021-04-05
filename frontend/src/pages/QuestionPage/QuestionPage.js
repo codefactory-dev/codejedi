@@ -411,7 +411,7 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
         var hiddenSolution = solutionSubpage.funcSolutionCode;
             
         //get test cases from file  
-        var testCasesText = testcasesSubpage.inputs;
+        var testCasesText = JSON.stringify(testcasesSubpage.inputs);
 
         //parse test cases into javascript
         var structure = Parse(testCasesText, descriptionSubpage.questionType);
@@ -420,7 +420,7 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
 
         //insert test cases into question
         //var togetherText = questionText;
-        const togetherText = CodeScaffolding(structure, solutionSubpage.funcSolutionCode, hiddenSolution, descriptionSubpage.questionType,languageType,solutionName);
+        const togetherText = CodeScaffolding(structure, solutionSubpage.funcSolutionCode, hiddenSolution, descriptionSubpage.questionType,solutionSubpage.funcLanguage,solutionSubpage.funcName);
 
 
         console.log("---TOGETHER TEXT---");
@@ -450,9 +450,9 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
             console.log("stdout: "+stdout+", stderr: "+stderr+", error: "+error);
             if (stderr || error)
             {
-                return props.setAnswer(stderr +' '+ error)
+                return setAnswer(stderr +' '+ error)
             }
-            return props.setAnswer(stdout);
+            return setAnswer(stdout);
         }
       } catch (error){
         console.log("Error submitting question: "+error)

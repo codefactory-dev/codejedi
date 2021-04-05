@@ -33,7 +33,7 @@ const questionSchema = new Schema({
         default: undefined
     },
     languageType: {
-        type: Number,
+        type: String,
         default: undefined
     },
     returnType: {
