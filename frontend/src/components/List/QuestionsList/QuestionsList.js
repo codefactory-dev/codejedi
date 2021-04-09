@@ -243,7 +243,7 @@ const QuestionsList = ({dispatch,currentQuestion, inputs, setInputs,...props}) =
     const navigateToQuestion = (input) => {
         //here should be the code to navigate to the selected question
         selectCurrentQuestionHandler(input)
-        history.push('/question')
+        history.push('/questionCreation')
     }
 
     const onClickHandler = (e) => {
