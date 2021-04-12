@@ -5,20 +5,15 @@ const {qDifficulties, qTypes} = require('../src/utils/seed'),
 
 
 const submissionSchema = new Schema({
-    creator: { 
-        id: {
-            type: Schema.Types.ObjectId, 
-            ref: "User", 
-            required: true 
-        },
-        username: {
-            type: String,
-            required: true
-        },
-        createdAt: {
-            type: Date,
-            required: true
-        }
+    creatorId: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: "User", 
+        required: true 
+    },
+    questionId: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: "Question",
+        required: true 
     },
     title: { 
         type: String, 

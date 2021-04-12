@@ -88,7 +88,11 @@ const questionSchema = new Schema({
     commentIds: [{ 
         type: mongoose.Schema.Types.ObjectId, 
         ref: "Comment"
-    }]
+    }],
+    submissionIds: [{
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: "Submission"
+    }],
 }, {
     timestamps: true
 });

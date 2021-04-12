@@ -77,6 +77,10 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId, 
         ref: "QTrack"
     }],
+    submissionIds: [{
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: "Submission"
+    }],
     qTrackSummary: {
         nbTracks: {
             type: Number,
