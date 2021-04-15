@@ -66,7 +66,8 @@ const CodeEditor = ({dispatch,solution,...props}) => {
 
 
     useEffect(() => {
-        codemirror.current.setOption('mode', languageModes.get(props.mode));
+        let chosenMode = props.mode ? props.mode.toLowerCase() : '';
+        codemirror.current.setOption('mode', languageModes.get(chosenMode));
     }, [props.mode])
 
     // --------------------------------------------------------------------
