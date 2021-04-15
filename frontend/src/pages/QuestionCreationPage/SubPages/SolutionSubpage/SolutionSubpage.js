@@ -138,7 +138,7 @@ export default function SolutionSubpage(props) {
 
         // load props
         setFuncName(props.funcName);
-        setFuncLanguage(props.funcLanguage);
+        setFuncLanguage(props.funcLanguageType);
         setFuncReturnType(props.functReturnType);
         setFuncSolutionCode(props.funcSolutionCode)
         setFuncParams(props.funcParameters);
@@ -161,29 +161,31 @@ export default function SolutionSubpage(props) {
     // ------------------------------------------------------------------
 
     const generateFunctionSignature = () => {       
-        let params;
+        if (!funcSolutionCode || funcSolutionCode.length === 0){
+            let params;
         
-        switch(funcLanguage) {
-            case PROGRAMMING_LANGUAGES.JAVASCRIPT:
-                params =   funcParameters && funcParameters.reduce((acc, input, idx) => {
-                    return `${acc}${input.name}${idx === funcParameters.length-1 ? `` : `, `}`
-                }, ``);
-     
-                return `var ${funcName} = function(${params}) {\n \n \n}`;
-                break;
-
-
-            case PROGRAMMING_LANGUAGES.JAVA:
-                params = funcParameters.reduce((acc, input, idx) => {
-                    return `${acc}${input.type} ${input.name}${idx === funcParameters.length-1 ? `` : `, `}`
-                }, ``);
-        
-                return `class Solution {\n   public ${functReturnType} ${funcName} (${params}) {\n \n\n  }\n}`;
-                break;
+            switch(funcLanguage) {
+                case PROGRAMMING_LANGUAGES.JAVASCRIPT:
+                    params =   funcParameters && funcParameters.reduce((acc, input, idx) => {
+                        return `${acc}${input.name}${idx === funcParameters.length-1 ? `` : `, `}`
+                    }, ``);
+         
+                    return `var ${funcName} = function(${params}) {\n \n \n}`;
+                    break;
+    
+    
+                case PROGRAMMING_LANGUAGES.JAVA:
+                    params = funcParameters.reduce((acc, input, idx) => {
+                        return `${acc}${input.type} ${input.name}${idx === funcParameters.length-1 ? `` : `, `}`
+                    }, ``);
+            
+                    return `class Solution {\n   public ${functReturnType} ${funcName} (${params}) {\n \n\n  }\n}`;
+                    break;
+            }
+    
+        } else {
+            return funcSolutionCode;
         }
-
-
-       
     }
 
 
@@ -206,8 +208,8 @@ export default function SolutionSubpage(props) {
         // check if 'value' is valid language
         const validate = Object.keys(PROGRAMMING_LANGUAGES).filter((lang) => lang === value);
         
-        if(validate.length === 1) {       
-            setFuncLanguage(PROGRAMMING_LANGUAGES[value]);
+        if(validate.length === 1) {     
+            setFuncLanguage(value);
         }
     };
 

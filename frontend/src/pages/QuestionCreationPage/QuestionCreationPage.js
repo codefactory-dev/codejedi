@@ -324,6 +324,7 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
                 funcParameters: currentQuestion.parameters,
                 functReturnType: currentQuestion.returnType,
                 funcSolutionCode: currentQuestion.solution,
+                funcLanguageType: currentQuestion.languageType
             }) 
             onTestcasesSubPageChange({
                 inputs: currentQuestion.testcases
@@ -356,7 +357,7 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
                                 description: editorStateRaw,
                                 solution: solution,
                                 solutionName: solutionSubpage.funcName,
-                                languageType: languageNameToIndex(solutionSubpage.funcLanguage),
+                                languageType: solutionSubpage.funcLanguageType,
                                 returnType: solutionSubpage.functReturnType,
                                 parameters: solutionSubpage.funcParameters,
                                 testcases: testcasesSubpage.inputs,
@@ -383,7 +384,7 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
                             description: editorStateRaw,
                             solution: solution,
                             solutionName: solutionSubpage.funcName,
-                            languageType: languageNameToIndex(solutionSubpage.funcLanguage),
+                            languageType: solutionSubpage.funcLanguageType,
                             returnType: solutionSubpage.functReturnType,
                             parameters: solutionSubpage.funcParameters,
                             testcases: testcasesSubpage.inputs
