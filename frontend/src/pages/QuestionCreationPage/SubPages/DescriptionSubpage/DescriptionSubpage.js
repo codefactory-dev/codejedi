@@ -13,6 +13,7 @@ import { EditorState, ContentState } from 'draft-js';
 import PropTypes from 'prop-types';
 import {
   convertToRaw,
+  convertFromRaw
 } from 'draft-js';
 
 
@@ -156,13 +157,10 @@ export default function DescriptionSubpage(props) {
     if (props.questionType && props.questionType !== questionType){
       setQuestionType(props.questionType);
     }
-    const blocks = convertToRaw(props.editorState.getCurrentContent()).blocks;
-    const editorStateRaw = blocks.map(block => (!block.text.trim() && '\n') || block.text).join('\n');
-
-    const localBlocks = convertToRaw(editorState.getCurrentContent()).blocks;
-    const localEditorStateRaw = localBlocks.map(block => (!block.text.trim() && '\n') || block.text).join('\n');
-    if (props.editorState && editorStateRaw.replace(/\s/g, '').length >0 && editorStateRaw !== localEditorStateRaw){
-      setEditorState(EditorState.createWithContent(ContentState.createFromText(editorStateRaw)));  
+    
+    if (props.editorState){
+      //setEditorState(EditorState.createWithContent(ContentState.createFromText(editorStateRaw)));  
+      setEditorState(EditorState.createWithContent(convertFromRaw(JSON.parse(props.editorState))))
       
     }  
 
@@ -244,7 +242,7 @@ DescriptionSubpage.propTypes = {
     questionName: PropTypes.string,
     questionDifficulty: PropTypes.oneOf(Object.values(DIFFICULTY_TYPES)),
     questionType: PropTypes.oneOf(Object.values(QUESTION_TYPES)),
-    editorState: PropTypes.object,
+    editorState: PropTypes.string,
     // callbacks
     onPageChange: PropTypes.func.isRequired,
 }
@@ -253,5 +251,5 @@ DescriptionSubpage.defaultProps = {
   questionName: '',
   questionDifficulty: DIFFICULTY_TYPES.EASY,
   questionType: QUESTION_TYPES.ARRAY,
-  editorState: EditorState.createEmpty()
+  editorState: ''
 }

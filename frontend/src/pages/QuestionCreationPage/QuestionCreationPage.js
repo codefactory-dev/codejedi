@@ -317,7 +317,7 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
                 title: currentQuestion.title,
                 questionDifficulty: currentQuestion.difficulty,
                 questionType: currentQuestion.type,
-                editorState: EditorState.createWithContent(ContentState.createFromText(currentQuestion.description))
+                editorState: currentQuestion.description
             })   
             onSolutionSubPageChange({
                 funcName: currentQuestion.solutionName,
@@ -342,8 +342,9 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
                 console.log("saving question")
                 const userId = currentUser._id;
                 console.log("this is the solution subpage: "+JSON.stringify(solutionSubpage))
-                const blocks = convertToRaw(descriptionSubpage.editorState.getCurrentContent()).blocks;
-                const editorStateRaw = blocks.map(block => (!block.text.trim() && '\n') || block.text).join('\n');
+                //const blocks = convertToRaw(descriptionSubpage.editorState.getCurrentContent()).blocks;
+                //const editorStateRaw = blocks.map(block => (!block.text.trim() && '\n') || block.text).join('\n');
+                const rawContext = JSON.stringify(convertToRaw(descriptionSubpage.editorState.getCurrentContent()));
                 
                 if (descriptionSubpage.questionId){
                    try {
@@ -354,7 +355,7 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
                                 title: descriptionSubpage.questionName,
                                 difficulty: descriptionSubpage.questionDifficulty,
                                 type: descriptionSubpage.questionType,
-                                description: editorStateRaw,
+                                description: rawContext,
                                 solution: solution,
                                 solutionName: solutionSubpage.funcName,
                                 languageType: solutionSubpage.funcLanguageType,
@@ -381,7 +382,7 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
                             title: descriptionSubpage.questionName,
                             difficulty: descriptionSubpage.questionDifficulty,
                             type: descriptionSubpage.questionType,
-                            description: editorStateRaw,
+                            description: rawContext,
                             solution: solution,
                             solutionName: solutionSubpage.funcName,
                             languageType: solutionSubpage.funcLanguageType,
