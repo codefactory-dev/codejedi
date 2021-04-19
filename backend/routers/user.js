@@ -1,6 +1,8 @@
 const express = require('express'),
       router = express.Router({mergeParams: true}),
+      middleware = require('../middleware/index'),
       User = require('../models/user'),
+      Question = require('../models/question'),
       { qDifficulties, qTypes } = require('../src/utils/seed.js');
 
 //(OK)TODO: user doesn't send back ALL data, such as passwords, tokens etc. to the frontend

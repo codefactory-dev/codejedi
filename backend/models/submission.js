@@ -23,11 +23,15 @@ const submissionSchema = new Schema({
         type: String, 
         required: true 
     },
-    timeElapsed: { 
-        type: Number, 
+    stdout: { 
+        type: String, 
         default: undefined
     },
-    testcasesPassed: { 
+    stderr: { 
+        type: String, 
+        required: true 
+    },
+    error: { 
         type: String, 
         required: true 
     },

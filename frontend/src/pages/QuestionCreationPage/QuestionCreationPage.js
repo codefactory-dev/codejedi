@@ -450,6 +450,23 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
             console.log(Object.getOwnPropertyNames(result))
             const {stdout, stderr, error} = result.data;
             console.log("stdout: "+stdout+", stderr: "+stderr+", error: "+error);
+            console.log('this is current user: '+currentUser);
+            console.log('this is the current question: '+currentQuestion)
+            await axios({
+                method: 'post',
+                url: '/submissions',
+                data: { 
+                    creatorId: currentUser._id,
+                    questionId: currentQuestion._id,
+                    dateTime: new Date(),
+                    submissionCode: oneLiner,
+                    timeElapsed: null,
+                    stdout: stdout,
+                    stderr: stderr,
+                    error: error
+
+                }
+            })
             if (stderr || error)
             {
                 return setAnswer(stderr +' '+ error)

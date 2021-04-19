@@ -46,7 +46,7 @@ export default function SubmissionsPage({location}, ...props) {
             async function getSubmissionsList()
             {
                 try {
-                    const question = await axios.get(`/submissions/${location.state.questionId}`)
+                    const question = await axios.get(`/questions/${location.state.questionId}`)
                     setInputs(question.data.submissions);    
                 } catch (error) {
                     Swal.fire("Error: could not get the submissions list for the question.")

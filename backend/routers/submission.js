@@ -32,9 +32,11 @@ router.post('/submissions', middleware.auth, async (req,res) => {
     const newSubmission = {
       creatorId: req.body.creatorId,
       questionId: req.body.questionId,
+      dateTime: req.body.dateTime,
       submissionCode: req.body.submissionCode,
-      timeElapsed: req.body.timeElapsed,
-      testCasesPassed: req.body.testCasesPassed
+      stdout: req.body.stdout,
+      stderr: req.body.stderr,
+      error: req.body.error
     };
     
     try{
