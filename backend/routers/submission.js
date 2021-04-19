@@ -18,11 +18,7 @@ router.get('/submissions', middleware.checkLogIn,
 });
 
 // SHOW - get (all info) specific submission
-router.get('/submissions/:id', middleware.checkLogIn, 
-                                        middleware.checkQuestionNull,
-                                        middleware.checkQuestionParamsNull,
-                                        middleware.checkQuestionOwnership, 
-                                        async (req,res) => {
+router.get('/submissions/:id', middleware.auth,async (req,res) => {
 
     const submission = await Submission.findById(q._id)
 
@@ -30,7 +26,7 @@ router.get('/submissions/:id', middleware.checkLogIn,
 });
 
 // CREATE - post a new submission
-router.post('/users/:uid/submissions', async (req,res) => {
+router.post('/submissions', middleware.auth, async (req,res) => {
     console.log(`REQUEST :: create submission  ${req.body.creatorId}`);
   
     const newSubmission = {
@@ -46,7 +42,7 @@ router.post('/users/:uid/submissions', async (req,res) => {
         //create submission
         const submission = await Submission.create(newSubmission);
         //put submission id into the user
-        const query = { _id: req.params.uid };
+        const query = { _id: req.user._id };
         await User.updateOne(query, { $push: { submissions: submission._id } });
         //put submission id into the question
         await Question.updateOne(query, { $push: { submissions: submission._id } });
