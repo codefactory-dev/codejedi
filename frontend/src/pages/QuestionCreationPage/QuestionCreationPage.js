@@ -439,39 +439,44 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
         // POST both the question and the test cases
         async function createEditor() {
             
-            const result = await axios({
-                method: 'post',
-                url: '/compile',
-                data: { 
-                    code:oneLiner,
-                    language:languageType
-                }
-            });            
-            console.log(Object.getOwnPropertyNames(result))
-            const {stdout, stderr, error} = result.data;
-            console.log("stdout: "+stdout+", stderr: "+stderr+", error: "+error);
-            console.log('this is current user: '+currentUser);
-            console.log('this is the current question: '+currentQuestion)
-            await axios({
-                method: 'post',
-                url: '/submissions',
-                data: { 
-                    creatorId: currentUser._id,
-                    questionId: currentQuestion._id,
-                    dateTime: new Date(),
-                    submissionCode: oneLiner,
-                    timeElapsed: null,
-                    stdout: stdout,
-                    stderr: stderr,
-                    error: error
-
-                }
-            })
-            if (stderr || error)
-            {
-                return setAnswer(stderr +' '+ error)
+            try {
+                const result = await axios({
+                    method: 'post',
+                    url: '/compile',
+                    data: { 
+                        code:oneLiner,
+                        language:languageType
+                    }
+                });            
+                console.log(Object.getOwnPropertyNames(result))
+                const {stdout, stderr, error} = result.data;
+                console.log("stdout: "+stdout+", stderr: "+stderr+", error: "+error);
+                console.log('this is current user: '+currentUser);
+                console.log('this is the current question: '+currentQuestion)
+                await axios({
+                    method: 'post',
+                    url: '/submissions',
+                    data: { 
+                        creatorId: currentUser._id,
+                        questionId: currentQuestion._id,
+                        dateTime: new Date(),
+                        submissionCode: oneLiner,
+                        timeElapsed: null,
+                        stdout: stdout,
+                        stderr: stderr,
+                        error: error
+    
+                    }
+                })
+                if (stderr || error)
+                {
+                    return setAnswer(stderr +' '+ error)
+                }                
+                return setAnswer(stdout);
+            } catch (error) {
+                return Swal.fire("There was an error with the api." +error);
             }
-            return setAnswer(stdout);
+            
         }
       } catch (error){
         console.log("Error submitting question: "+error)
