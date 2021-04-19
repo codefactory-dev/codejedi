@@ -7,6 +7,8 @@ import { useAuth } from "../../Context/auth";
 import { Link, Redirect } from "react-router-dom";
 import { Typography } from "@material-ui/core"
 import axios from 'axios'
+import { useHistory } from "react-router-dom";
+import Swal from 'sweetalert2'
 
 const useStyles = makeStyles((theme) => ({
     
@@ -32,7 +34,8 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-export default function SubmissionsPage(props) { 
+export default function SubmissionsPage({location}, ...props) { 
+    let history = useHistory();
     const classes = useStyles();
     
     const [inputs, setInputs] = useState(['nums1', 'nums2', 'nums3']);
@@ -40,12 +43,15 @@ export default function SubmissionsPage(props) {
     const { authTokens, setAuthTokens } = useAuth();
     useEffect(()=>{
         if (authTokens){
-            console.log("this is the user id: "+JSON.parse(authTokens).user._id);
             async function getSubmissionsList()
             {
-                const fetchedQuestions = await axios.get(`/users/${JSON.parse(authTokens).user._id}/submissions`)
-                //console.log("fetched questions from backend: "+JSON.stringify(fetchedQuestions))                
-                setInputs(fetchedQuestions.data);    
+                try {
+                    const question = await axios.get(`/submissions/${location.state.questionId}`)
+                    setInputs(question.data.submissions);    
+                } catch (error) {
+                    Swal.fire("Error: could not get the submissions list for the question.")
+                }
+                
             }
             getSubmissionsList();
         }

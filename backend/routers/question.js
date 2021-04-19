@@ -13,19 +13,6 @@ router.get('/questions', middleware.checkLogIn, async (req,res) => {
     res.status(200).send(questions);
 });
 
-// PREFIX: /users/:uid/
-
-//INDEX - GET all user's owned questions
-router.get('/users/:uid/questions', middleware.checkLogIn,
-                                    middleware.checkQuestionParamsNull,
-                                    async (req,res) => {
-    console.log("getting user questions")
-    //const user = await User.findById(req.params.uid).populate('questionIds');
-    const questions = await Question.find({ 'creator.id': req.params.uid})
-
-    //res.status(201).send({questions: user.questionIds});
-    res.status(201).send(questions);
-});
 
 // CREATE - post a new question
 router.post('/users/:uid/questions', middleware.checkLogIn, 

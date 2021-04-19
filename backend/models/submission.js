@@ -15,7 +15,11 @@ const submissionSchema = new Schema({
         ref: "Question",
         required: true 
     },
-    title: { 
+    dateTime: { 
+        type: Date, 
+        required: true 
+    },
+    submissionCode: { 
         type: String, 
         required: true 
     },

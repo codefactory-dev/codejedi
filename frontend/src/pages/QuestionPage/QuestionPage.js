@@ -25,6 +25,7 @@ import {
 import CodeScaffolding from '../../utils/CodeScaffolding'
 import { Parse, ParseString } from '../../utils/Parser'
 import { EditorState, ContentState } from 'draft-js';
+import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
     
@@ -178,6 +179,9 @@ const pageTabs = {
 }
 
 const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
+    
+    let history = useHistory();
+
     const [minWidth, setMinWidth] = useState('893.750px')
     const classes = useStyles({minWidth});
     
@@ -317,13 +321,14 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
                 title: currentQuestion.title,
                 questionDifficulty: currentQuestion.difficulty,
                 questionType: currentQuestion.type,
-                editorState: EditorState.createWithContent(ContentState.createFromText(currentQuestion.description))
+                editorState: currentQuestion.description
             })   
             onSolutionSubPageChange({
                 funcName: currentQuestion.solutionName,
                 funcParameters: currentQuestion.parameters,
                 functReturnType: currentQuestion.returnType,
                 funcSolutionCode: currentQuestion.solution,
+                funcLanguageType: currentQuestion.languageType
             }) 
             onTestcasesSubPageChange({
                 inputs: currentQuestion.testcases
@@ -334,6 +339,12 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
     if (!authTokens || authTokens === "undefined") {
         return <Redirect to={"/login"} />;
     } 
+
+    function navigateToSubmissions(){
+        if (currentQuestion && currentQuestion._id){
+            history.push('/submissions', { questionId: currentQuestion._id });
+        }
+    }
     
     function saveQuestion() {
         if (currentUser){
@@ -341,8 +352,9 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
                 console.log("saving question")
                 const userId = currentUser._id;
                 console.log("this is the solution subpage: "+JSON.stringify(solutionSubpage))
-                const blocks = convertToRaw(descriptionSubpage.editorState.getCurrentContent()).blocks;
-                const editorStateRaw = blocks.map(block => (!block.text.trim() && '\n') || block.text).join('\n');
+                //const blocks = convertToRaw(descriptionSubpage.editorState.getCurrentContent()).blocks;
+                //const editorStateRaw = blocks.map(block => (!block.text.trim() && '\n') || block.text).join('\n');
+                const rawContext = JSON.stringify(convertToRaw(descriptionSubpage.editorState.getCurrentContent()));
                 
                 if (descriptionSubpage.questionId){
                    try {
@@ -353,10 +365,10 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
                                 title: descriptionSubpage.questionName,
                                 difficulty: descriptionSubpage.questionDifficulty,
                                 type: descriptionSubpage.questionType,
-                                description: editorStateRaw,
+                                description: rawContext,
                                 solution: solution,
                                 solutionName: solutionSubpage.funcName,
-                                languageType: languageNameToIndex(solutionSubpage.funcLanguage),
+                                languageType: solutionSubpage.funcLanguageType,
                                 returnType: solutionSubpage.functReturnType,
                                 parameters: solutionSubpage.funcParameters,
                                 testcases: testcasesSubpage.inputs,
@@ -380,10 +392,10 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
                             title: descriptionSubpage.questionName,
                             difficulty: descriptionSubpage.questionDifficulty,
                             type: descriptionSubpage.questionType,
-                            description: editorStateRaw,
+                            description: rawContext,
                             solution: solution,
                             solutionName: solutionSubpage.funcName,
-                            languageType: languageNameToIndex(solutionSubpage.funcLanguage),
+                            languageType: solutionSubpage.funcLanguageType,
                             returnType: solutionSubpage.functReturnType,
                             parameters: solutionSubpage.funcParameters,
                             testcases: testcasesSubpage.inputs
@@ -519,8 +531,8 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
                         <div className={classes.footerWrapper}>
                             <RegularButton 
                                 className={classes.regularButton} 
-                                onClick={saveQuestion}
-                                label="Save" 
+                                onClick={navigateToSubmissions}
+                                label="View Submissions" 
                             />
                             <RegularButton 
                                 className={classes.regularButton} 

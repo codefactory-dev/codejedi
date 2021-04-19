@@ -138,9 +138,11 @@ function NavBar() {
                 <Typography variant="h6" className={classes.menuOptions} onClick={navigateToProfile}>
                   PROFILE
                 </Typography>
+                {/*
                 <Typography variant="h6" className={classes.menuOptions} onClick={navigateToSubmissions}>
                   SUBMISSIONS
                 </Typography>
+                */}
               </span>
               <div className={classes.grow} />
               
