@@ -29,11 +29,11 @@ const submissionSchema = new Schema({
     },
     stderr: { 
         type: String, 
-        required: true 
+        default: undefined
     },
     error: { 
         type: String, 
-        required: true 
+        default: undefined
     },
 }, {
     timestamps: true

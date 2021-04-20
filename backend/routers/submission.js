@@ -44,7 +44,7 @@ router.post('/submissions', async (req,res) => {
         //create submission
         const submission = await Submission.create(newSubmission);
         //put submission id into the user
-        const query = { _id: req.user._id };
+        const query = { _id: req.body.creatorId };
         await User.updateOne(query, { $push: { submissions: submission._id } });
         //put submission id into the question
         await Question.updateOne(query, { $push: { submissions: submission._id } });
@@ -57,10 +57,10 @@ router.post('/submissions', async (req,res) => {
       
       
     } catch(e){
-      console.error(`STATUS :: Ops.Something went wrong. `+e.toString());
+      console.error(`STATUS :: Ops.Something went wrong. `+e.message);
       res.status(500).json({
         error: true,
-        message: e
+        message: e.message
       });
     }
 });
