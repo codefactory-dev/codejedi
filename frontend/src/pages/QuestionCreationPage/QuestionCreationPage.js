@@ -453,7 +453,7 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
                 console.log("stdout: "+stdout+", stderr: "+stderr+", error: "+error);
                 console.log('this is current user: '+currentUser);
                 console.log('this is the current question: '+currentQuestion)
-                await axios({
+                const submitted = await axios({
                     method: 'post',
                     url: '/submissions',
                     data: { 
@@ -468,13 +468,14 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
     
                     }
                 })
+                console.log("this was submitted: "+submitted)
                 if (stderr || error)
                 {
                     return setAnswer(stderr +' '+ error)
                 }                
                 return setAnswer(stdout);
             } catch (error) {
-                return Swal.fire("There was an error with the api." +error);
+                return Swal.fire("There was an error with the api: " +error.response.data.message);
             }
             
         }

@@ -26,7 +26,7 @@ router.get('/submissions/:id', middleware.auth,async (req,res) => {
 });
 
 // CREATE - post a new submission
-router.post('/submissions', middleware.auth, async (req,res) => {
+router.post('/submissions', async (req,res) => {
     console.log(`REQUEST :: create submission  ${req.body.creatorId}`);
   
     const newSubmission = {
@@ -60,7 +60,7 @@ router.post('/submissions', middleware.auth, async (req,res) => {
       console.error(`STATUS :: Ops.Something went wrong. `+e.toString());
       res.status(500).json({
         error: true,
-        message: e.toString()
+        message: e
       });
     }
 });
