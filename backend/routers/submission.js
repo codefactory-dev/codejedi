@@ -25,6 +25,14 @@ router.get('/submissions/:id', middleware.auth,async (req,res) => {
     res.status(200).send(submission);
 });
 
+//SHOW - get all submissions from Question
+router.get('/submissionsQuestion/:qId', async (req,res) => {
+
+  const question = await Question.findById(req.params.qId).populate('submissionIds');
+  const submissionIds = question.submissionIds;
+  res.status(200).send(submissionIds);
+});
+
 // CREATE - post a new submission
 router.post('/submissions', async (req,res) => {
     console.log(`REQUEST :: create submission  ${req.body.creatorId}`);
