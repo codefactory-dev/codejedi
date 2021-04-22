@@ -53,9 +53,9 @@ router.post('/submissions', async (req,res) => {
         const submission = await Submission.create(newSubmission);
         //put submission id into the user
         const query = { _id: req.body.creatorId };
-        await User.updateOne(query, { $push: { submissions: submission._id } });
+        await User.updateOne(query, { $push: { submissionIds: submission._id } });
         //put submission id into the question
-        await Question.updateOne(query, { $push: { submissions: submission._id } });
+        await Question.updateOne(query, { $push: { submissionIds: submission._id } });
       }
       await db.runAsTransaction(operation)
       

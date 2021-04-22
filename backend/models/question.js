@@ -91,7 +91,9 @@ const questionSchema = new Schema({
     }],
     submissionIds: [{
         type: mongoose.Schema.Types.ObjectId, 
-        ref: "Submission"
+        ref: "Submission",
+        required: true,
+        default: []
     }],
 }, {
     timestamps: true

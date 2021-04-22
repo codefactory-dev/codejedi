@@ -79,7 +79,9 @@ const userSchema = new mongoose.Schema({
     }],
     submissionIds: [{
         type: mongoose.Schema.Types.ObjectId, 
-        ref: "Submission"
+        ref: "Submission",
+        required: true,
+        default: []
     }],
     qTrackSummary: {
         nbTracks: {
