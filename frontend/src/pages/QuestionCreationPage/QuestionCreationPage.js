@@ -205,11 +205,11 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
     // --------------------------------------
 
     useEffect(()=>{
-        if(answer.length > 0)
-        {
-            Swal.fire(answer);
-        }
-        setAnswer("");
+        // if(answer.length > 0)
+        // {
+        //     Swal.fire(answer);
+        // }
+        // setAnswer("");
     },[answer])
 
     // --------------------------------------
@@ -471,9 +471,9 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
                 console.log("this was submitted: "+submitted)
                 if (stderr || error)
                 {
-                    return setAnswer(stderr +' '+ error)
-                }                
-                return setAnswer(stdout);
+                    return Swal.fire(stderr +' '+ error);   
+                }       
+                return Swal.fire(''+stdout)  
             } catch (error) {
                 return Swal.fire("There was an error with the api: " +error.response.data.message);
             }
