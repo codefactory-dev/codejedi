@@ -36,12 +36,13 @@ router.get('/submissionsQuestion/:qId', async (req,res) => {
 // CREATE - post a new submission
 router.post('/submissions', async (req,res) => {
     console.log(`REQUEST :: create submission  ${req.body.creatorId}`);
-  
     const newSubmission = {
       creatorId: req.body.creatorId,
       questionId: req.body.questionId,
       dateTime: req.body.dateTime,
       submissionCode: req.body.submissionCode,
+      totalCases: req.body.totalCases,
+      casesPassed: req.body.casesPassed,
       stdout: req.body.stdout,
       stderr: req.body.stderr,
       error: req.body.error

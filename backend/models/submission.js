@@ -23,6 +23,14 @@ const submissionSchema = new Schema({
         type: String, 
         required: true 
     },
+    totalCases: {
+        type: Number,
+        required: true
+    },
+    casesPassed: {
+        type: Number,
+        required: true
+    },
     stdout: { 
         type: String, 
         default: undefined
