@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import Navbar from '../../components/Navbar/Navbar.js'
-import QuestionsList from '../../components/List/QuestionsList/QuestionsList.js'
+import SubmissionsList from '../../components/List/SubmissionsList/SubmissionsList.js'
 import { useAuth } from "../../Context/auth";
 import { Link, Redirect } from "react-router-dom";
 import { Typography } from "@material-ui/core"
@@ -64,7 +64,7 @@ export default function SubmissionsPage({location}, ...props) {
                 <Navbar setAuthTokens={setAuthTokens} />
                 <div className={classes.centralElements}>
                     <div className={classes.centralTextArea}>
-                    <QuestionsList
+                    <SubmissionsList
                         title={"Submissions"}
                         inputs={inputs}
                         setInputs={setInputs}
