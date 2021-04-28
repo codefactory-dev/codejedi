@@ -8,6 +8,7 @@ import IconButton from '../../Buttons/IconButton';
 import axios from 'axios'
 import {ReactComponent as HashIcon} from '../../../icons/hashtag.svg';
 import {ReactComponent as AddIcon} from '../../../icons/add.svg';
+import { format, parseISO, startOfDay, endOfDay, subDays } from 'date-fns';
 
 
 import {ReactComponent as CrossIcon} from '../../../icons/cross.svg';
@@ -281,7 +282,7 @@ const SubmissionsList = ({dispatch,currentQuestion, inputs, setInputs,...props})
     const getDeletionState = (input,idx) => ({
         [rowStates.DESELECTED]: 
             <div className={classes.selectedInput}>
-                <span onClick={()=>{navigateToQuestion(input)}}>{input.title}</span>
+                <span onClick={()=>{navigateToQuestion(input)}}>{input.dateTime}</span>
             </div>,
         [rowStates.EDITING_ROW]: 
             <div className={classes.focusedInput}>
@@ -325,7 +326,7 @@ const SubmissionsList = ({dispatch,currentQuestion, inputs, setInputs,...props})
                     <div 
                         className={classes.input}
                         onClick={(event) => {onClickRowItem(event,idx) }} >
-                            <span>{input.stdout}</span>
+                            <span>{input.dateTime}</span>
                     </div>
                 </div>
             )
