@@ -1,104 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react';
-import javascript from 'codemirror/mode/javascript/javascript';
-import clike from 'codemirror/mode/clike/clike';
-import CodeMirror from 'codemirror';
-import PropTypes from 'prop-types';
-import axios from 'axios';
-import ConnectTo from "../../store/connect";
-import { saveSolutionAction } from "../../store/reducers/solution";
 
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/monokai.css';
 
-
-// @code - default HTML-based code to be loaded in codeEditor as soon as it first renders
-// @setCode - ?
-// @height - code editor's height  
-// @loadedCode - boolean - state variable used to reload the code in code mirror
-
-//const TroughReading = ({dispatch, troughReadings}) => {
-const CodeEditor = ({dispatch,solution,...props}) => {
-    const codemirror = useRef(null);
-    const textareaNode = useRef();
-
-    const saveSolutionHandler = (code) => {
-        dispatch(saveSolutionAction(code))
-    }
-    
-    const languageModes = new Map([['javascript', 'javascript'], ['java', 'text/x-java'], ['c++', 'text/x-c++src']]);
-    let selectedLanguage = 'java';
-
-    // set codemirror default configs + code
-    useEffect(() => {
-        codemirror.current = CodeMirror.fromTextArea(textareaNode.current, {
-            lineNumbers: true,
-            mode: languageModes.get(props.mode),
-            matchBrackets: true
-        });
-        
-        codemirror.current.on("change", changeObj => {    
-            // console.log("property names: "+ Object.getOwnPropertyNames(changeObj));
-            // console.log("QUESTION CODE: "+changeObj.doc.getValue());
-            handleChange(changeObj)
-            saveSolutionHandler(changeObj.doc.getValue())
-        });
-        
-        if (props.code) {
-            textareaNode.current.innerHTML = props.code;
-        }
-        // codemirror.current.focus();
-
-    }, []);
-
-
-    useEffect(() => {    
-        
-            // console.log("codemirror updated");
-            // console.log("loadedCode: "+props.loadedCode);
-            // console.log("code: "+props.code);
-            
-            if (props.code)
-                codemirror.current.setValue(props.code);
-            // textareaNode.current.innerHTML = code;
-        
-        
-    }, [props.loadedCode]);
-
-
-    useEffect(() => {
-        let chosenMode = props.mode ? props.mode.toLowerCase() : '';
-        codemirror.current.setOption('mode', languageModes.get(chosenMode));
-    }, [props.mode])
-
-    // --------------------------------------------------------------------
-    // HANDLERS
-    // --------------------------------------------------------------------
-
-    /*
-    const handleBtnClick = evt => {
-        createCode();
-
-        // POST request
-        async function createCode() {
-            const result = await axios.post('/.netlify/functions/server/api/codes', {mode: codemirror.current.doc.modeOption, text: codemirror.current.doc.getValue()});
-
-            // console.log(result);
-            codemirror.current.setOption('mode', result.data.mode);
-            codemirror.current.setValue(result.data.text);
-            codemirror.current.setOption('readOnly', 'nocursor');
-            console.log("HI");
-            setCode(result.data);
-        }
-    }
-    */
-
-    function handleChange(changeObj) {    
-        //props.setCode(changeObj.doc.getValue());
-    }
-
-    // --------------------------------------------------------------------
-    // RENDERING
-    // --------------------------------------------------------------------
+const CodeEditor = ({textareaNode, ...props}) => {
 
     return (
         <div style= {{width:'100%', height: props.height}} className={'codemirrorContainer'}>
@@ -106,33 +11,10 @@ const CodeEditor = ({dispatch,solution,...props}) => {
 					ref={textareaNode}
                     autoComplete="off"
 			/>
-            {/*<button onClick={handleBtnClick}>Save</button>*/}
         </div>
         
     );
 
 }
 
-CodeEditor.propTypes = {
-    code: PropTypes.string,
-    loadedCode: PropTypes.bool,
-    mode:  PropTypes.string,
-    height: PropTypes.number,    
-    onChange: PropTypes.func,
-    dispatch: PropTypes.func.isRequired,
-    troughReadings: PropTypes.string.isRequired
-}
-
-CodeEditor.defaultProps = {
-    mode: 'java'
-}
-
-
-const mapStateToProps = ({ solution }, props) => {
-    return {
-        solution,
-        ...props
-    };
-};
-  
-export default ConnectTo(mapStateToProps)(CodeEditor);
+export default CodeEditor;

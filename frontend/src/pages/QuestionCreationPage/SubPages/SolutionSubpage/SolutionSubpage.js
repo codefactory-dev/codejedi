@@ -1,4 +1,4 @@
-import React, {useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import ParameterInputList from '../../../../components/List/ParameterInputList';
 import CustomSelect from '../../../../components/Select/CustomSelect.js'
@@ -6,6 +6,9 @@ import SimpleTextField from '../../../../components/TextField/SimpleTextField.js
 import CodeEditor from '../../../../components/CodeEditor/CodeEditor';
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
+import CodeMirror from 'codemirror';
+import { saveSolutionAction } from "../../../../store/reducers/solution";
+import ConnectTo from "../../../../store/connect";
 
 /*root: {
         boxSizing: 'border-box',
@@ -117,17 +120,20 @@ const getKeyIndexByValue = (object, value) => {
 }
 
 
-export default function SolutionSubpage(props) {
+function SolutionSubpage({dispatch, solution, ...props}) {
     const classes = useStyles();
     const theme = useTheme();
+    const [codemirror, setCodeMirror] = useState(null)
+    const textareaNode = useRef();
 
     let [funcName, setFuncName] = useState(props.funcName);
     let [funcLanguage, setFuncLanguage] = useState(props.funcLanguage);
     let [functReturnType, setFuncReturnType] = useState(props.functReturnType);
     let [funcParameters, setFuncParams] = useState(props.funcParameters);
     let [funcSolutionCode, setFuncSolutionCode] = useState()
-    let [toggleCodeReload, setToggleCodeReload] = useState(false);
     let userCode = ``;
+    const languageModes = new Map([['javascript', 'javascript'], ['java', 'text/x-java'], ['c++', 'text/x-c++src']]);
+    let selectedLanguage = 'java';
 
     // ------------------------------------------------------------------
     // HOOKS
@@ -146,8 +152,15 @@ export default function SolutionSubpage(props) {
     }, []);
 
     useEffect(() => {
-        setToggleCodeReload(!toggleCodeReload);
+        let functionSignature = generateFunctionSignature()
+        if (codemirror){
+            codemirror.setValue("");
+            codemirror.clearHistory();
+        }
+        setFuncSolutionCode(functionSignature)
+    }, [funcLanguage])
 
+    useEffect(() => {
         props.onPageChange({funcName, funcParameters, functReturnType, funcSolutionCode, funcLanguage});
 
     }, [funcName, 
@@ -155,21 +168,72 @@ export default function SolutionSubpage(props) {
         functReturnType, 
         funcSolutionCode,
         funcLanguage]);
+    
+    // set codemirror default configs + code
+    useEffect(() => {
+        let codeMirrorInstance = CodeMirror.fromTextArea(textareaNode.current, {
+            lineNumbers: true,
+            mode: languageModes.get(funcLanguage),
+            matchBrackets: true
+        });
+        
+        codeMirrorInstance.on("change", changeObj => {    
+            dispatch(saveSolutionAction(changeObj.doc.getValue()))
+        });
+
+        setCodeMirror(codeMirrorInstance)
+        
+        
+
+    }, []);
+    useEffect(() => {
+        if (funcLanguage){
+            if (codemirror){
+                let chosenMode = funcLanguage ? funcLanguage.toLowerCase() : '';
+                codemirror.setOption('mode', languageModes.get(chosenMode));
+                if (solution) {
+                    textareaNode.current.innerHTML = solution;
+                }
+                codemirror.focus();
+            }
+        }
+    }, [funcLanguage,
+        codemirror,
+        solution])
+
+    
+    useEffect(() => {    
+        
+        function insertTextAtCursor(editor, text) {
+            var doc = editor.getDoc();
+            var cursor = doc.getCursor();
+            doc.replaceRange(text, cursor);
+        }
+        
+        if (funcSolutionCode){
+            if (codemirror){
+                insertTextAtCursor(codemirror, funcSolutionCode)
+            }
+        }
+    
+    
+    }, [funcSolutionCode]);
 
     // ------------------------------------------------------------------
     //
     // ------------------------------------------------------------------
 
     const generateFunctionSignature = () => {       
-        if (!funcSolutionCode || funcSolutionCode.length === 0){
-            let params;
-        
-            switch(funcLanguage) {
+        let params;
+    
+        if (funcLanguage){
+            let lowercaseFuncLanguage = funcLanguage.toLowerCase();
+            switch(lowercaseFuncLanguage) {
                 case PROGRAMMING_LANGUAGES.JAVASCRIPT:
                     params =   funcParameters && funcParameters.reduce((acc, input, idx) => {
                         return `${acc}${input.name}${idx === funcParameters.length-1 ? `` : `, `}`
                     }, ``);
-         
+            
                     return `var ${funcName} = function(${params}) {\n \n \n}`;
                     break;
     
@@ -182,10 +246,8 @@ export default function SolutionSubpage(props) {
                     return `class Solution {\n   public ${functReturnType} ${funcName} (${params}) {\n \n\n  }\n}`;
                     break;
             }
-    
-        } else {
-            return funcSolutionCode;
-        }
+        } 
+        return '';
     }
 
 
@@ -196,7 +258,6 @@ export default function SolutionSubpage(props) {
     const onParameterInputListChange = inputs => setFuncParams([...inputs]);
 
     const handleCodeChange = code => {
-        // functionSignatureCode = code;
         setFuncSolutionCode(code);
     }
 
@@ -268,10 +329,11 @@ export default function SolutionSubpage(props) {
                             <div className={classes.titleContainer}>
                                     <span className={classes.title}>Solution</span>
                             </div>
-                            <CodeEditor code={generateFunctionSignature()} 
-                                        setCode={handleCodeChange}
-                                        loadedCode={toggleCodeReload}
-                                        mode={(() => funcLanguage)()}
+                            <CodeEditor code={funcSolutionCode} 
+                                        setCode={setFuncSolutionCode}
+                                        codemirror={codemirror}
+                                        textareaNode={textareaNode}
+                                        mode={funcLanguage}
                                         />
                         </div>
                     
@@ -299,3 +361,12 @@ SolutionSubpage.defaultProps = {
     functReturnType: FUNCTION_RETURN_TYPES.INT,
     funcParameters: [],
 }
+
+const mapStateToProps = ({ solution }, props) => {
+    return {
+        solution,
+        ...props
+    };
+};
+  
+export default ConnectTo(mapStateToProps)(SolutionSubpage);

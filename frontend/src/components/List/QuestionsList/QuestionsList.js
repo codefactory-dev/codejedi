@@ -335,7 +335,7 @@ const QuestionsList = ({dispatch,currentQuestion, inputs, setInputs,...props}) =
 
 
     function createQuestion(){
-        history.push('/question')
+        history.push('/questionCreation')
     }
 
     return (
