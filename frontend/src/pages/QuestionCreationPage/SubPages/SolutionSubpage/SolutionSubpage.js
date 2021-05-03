@@ -126,7 +126,7 @@ function SolutionSubpage({dispatch, solution, ...props}) {
     const [codemirror, setCodeMirror] = useState(null)
     const textareaNode = useRef();
 
-    let [funcName, setFuncName] = useState(props.funcName);
+    let [funcName, setFuncName] = useState(props.funcName || 'Solution');
     let [funcLanguage, setFuncLanguage] = useState(props.funcLanguage);
     let [functReturnType, setFuncReturnType] = useState(props.functReturnType);
     let [funcParameters, setFuncParams] = useState(props.funcParameters);
@@ -156,9 +156,13 @@ function SolutionSubpage({dispatch, solution, ...props}) {
         if (codemirror){
             codemirror.setValue("");
             codemirror.clearHistory();
+            let chosenMode = funcLanguage ? funcLanguage.toLowerCase() : 'java';
+            let languageMode = languageModes.get(chosenMode)
+            codemirror.setOption('mode', languageMode);
         }
         setFuncSolutionCode(functionSignature)
-    }, [funcLanguage])
+    }, [funcLanguage, 
+        funcParameters])
 
     useEffect(() => {
         props.onPageChange({funcName, funcParameters, functReturnType, funcSolutionCode, funcLanguage});
@@ -189,8 +193,6 @@ function SolutionSubpage({dispatch, solution, ...props}) {
     useEffect(() => {
         if (funcLanguage){
             if (codemirror){
-                let chosenMode = funcLanguage ? funcLanguage.toLowerCase() : '';
-                codemirror.setOption('mode', languageModes.get(chosenMode));
                 if (solution) {
                     textareaNode.current.innerHTML = solution;
                 }
@@ -334,7 +336,7 @@ function SolutionSubpage({dispatch, solution, ...props}) {
                                         codemirror={codemirror}
                                         textareaNode={textareaNode}
                                         mode={funcLanguage}
-                                        />
+                            />
                         </div>
                     
                     </div>
