@@ -4,23 +4,23 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
-import IconButton from '../../Buttons/IconButton';
+import IconButton from 'components/Buttons/IconButton';
 import axios from 'axios'
 
-import {ReactComponent as HashIcon} from '../../../icons/hashtag.svg';
-import {ReactComponent as AddIcon} from '../../../icons/add.svg';
+import {ReactComponent as HashIcon} from 'icons/hashtag.svg';
+import {ReactComponent as AddIcon} from 'icons/add.svg';
 
 
-import {ReactComponent as CrossIcon} from '../../../icons/cross.svg';
-import { useAuth } from "../../../Context/auth";
+import {ReactComponent as CrossIcon} from 'icons/cross.svg';
+import { useAuth } from "Context/auth";
 import { useHistory } from "react-router-dom";
-import ConnectTo from "../../../store/connect";
+import ConnectTo from "store/connect";
 
-import { selectCurrentQuestionAction } from "../../../store/reducers/currentQuestion";
+import { selectCurrentQuestionAction } from "store/reducers/currentQuestion";
 
 import './QuestionsList.scss'
 
-const { usePrevious } = require('../../../utils/useful.js')
+const { usePrevious } = require('utils/useful.js')
 
 const useStyles = makeStyles(theme => ({
     root: {
