@@ -232,7 +232,8 @@ const QuestionsList = ({dispatch,currentQuestion, inputs, setInputs,...props}) =
             console.log("this is the user id: "+JSON.parse(authTokens).user._id);
             async function getQuestionsList()
             {
-                const fetchedQuestions = await axios.get(`/questions`)
+                //const fetchedQuestions = await axios.get(`/questions`)
+                const fetchedQuestions = await axios.get(`/users/${JSON.parse(authTokens).user._id}/questions`)
                 //console.log("fetched questions from backend: "+JSON.stringify(fetchedQuestions))                
                 setInputs(fetchedQuestions.data);    
             }
