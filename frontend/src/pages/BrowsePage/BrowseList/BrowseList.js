@@ -285,6 +285,7 @@ const BrowseList = ({dispatch,currentQuestion,...props}) => {
         [rowStates.DESELECTED]: 
             <div className={classes.selectedInput}>
                 <span onClick={()=>{navigateToQuestion(input)}}>{input.title}</span>
+                <span onClick={()=>{navigateToQuestion(input)}}>{input.creator ? '| Author: '+input.creator.username : ''}</span>
             </div>,
         [rowStates.EDITING_ROW]: 
             <div className={classes.focusedInput}>
@@ -329,6 +330,7 @@ const BrowseList = ({dispatch,currentQuestion,...props}) => {
                         className={classes.input}
                         onClick={(event) => {onClickRowItem(event,idx) }} >
                             <span>{input.title}</span>
+                            <span>{input.creator ? '| Author: '+input.creator.username : ''}</span>
                     </div>
                 </div>
             )

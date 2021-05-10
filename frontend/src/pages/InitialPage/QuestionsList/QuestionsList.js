@@ -232,7 +232,7 @@ const QuestionsList = ({dispatch,currentQuestion, inputs, setInputs,...props}) =
             console.log("this is the user id: "+JSON.parse(authTokens).user._id);
             async function getQuestionsList()
             {
-                const fetchedQuestions = await axios.get(`/users/${JSON.parse(authTokens).user._id}/questions`)
+                const fetchedQuestions = await axios.get(`/questions`)
                 //console.log("fetched questions from backend: "+JSON.stringify(fetchedQuestions))                
                 setInputs(fetchedQuestions.data);    
             }
@@ -283,6 +283,8 @@ const QuestionsList = ({dispatch,currentQuestion, inputs, setInputs,...props}) =
         [rowStates.DESELECTED]: 
             <div className={classes.selectedInput}>
                 <span onClick={()=>{navigateToQuestion(input)}}>{input.title}</span>
+                
+                <span onClick={()=>{navigateToQuestion(input)}}>{input.creator ? '| Author: '+input.creator.username : ''}</span>
             </div>,
         [rowStates.EDITING_ROW]: 
             <div className={classes.focusedInput}>
@@ -327,6 +329,7 @@ const QuestionsList = ({dispatch,currentQuestion, inputs, setInputs,...props}) =
                         className={classes.input}
                         onClick={(event) => {onClickRowItem(event,idx) }} >
                             <span>{input.title}</span>
+                            <span>{input.creator ? '| Author: '+input.creator.username : ''}</span>
                     </div>
                 </div>
             )
