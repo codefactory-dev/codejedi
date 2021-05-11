@@ -162,7 +162,8 @@ function SolutionSubpage({dispatch, solution, ...props}) {
         }
         setFuncSolutionCode(functionSignature)
     }, [funcLanguage, 
-        funcParameters])
+        funcParameters,
+        codemirror])
 
     useEffect(() => {
         props.onPageChange({funcName, funcParameters, functReturnType, funcSolutionCode, funcLanguage});
@@ -182,7 +183,8 @@ function SolutionSubpage({dispatch, solution, ...props}) {
         });
         
         codeMirrorInstance.on("change", changeObj => {    
-            dispatch(saveSolutionAction(changeObj.doc.getValue()))
+            let code = changeObj.doc.getValue();
+            dispatch(saveSolutionAction(code));
         });
 
         setCodeMirror(codeMirrorInstance)
