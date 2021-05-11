@@ -159,8 +159,18 @@ export default function DescriptionSubpage(props) {
     }
     
     if (props.editorState){
-      //setEditorState(EditorState.createWithContent(ContentState.createFromText(editorStateRaw)));  
-      setEditorState(EditorState.createWithContent(convertFromRaw(JSON.parse(props.editorState))))
+      //setEditorState(EditorState.createWithContent(ContentState.createFromText(editorStateRaw))); 
+      try {
+        let rawContent = JSON.parse(props.editorState);
+        let editorState = EditorState.createWithContent(convertFromRaw(rawContent));
+        setEditorState(editorState)
+      } catch (error){
+        if (typeof props.editorState === 'string'){
+          console.log("this is the error: "+error);
+          setEditorState(EditorState.createWithContent(ContentState.createFromText(props.editorState))); 
+        }
+        
+      }
       
     }  
 
