@@ -151,6 +151,23 @@ function SolutionSubpage({dispatch, solution, ...props}) {
 
     }, []);
 
+    // set codemirror default configs + code
+    useEffect(() => {
+        let codeMirrorInstance = CodeMirror.fromTextArea(textareaNode.current, {
+            lineNumbers: true,
+            mode: languageModes.get(funcLanguage),
+            matchBrackets: true
+        });
+        
+        codeMirrorInstance.on("change", changeObj => {    
+            let code = changeObj.doc.getValue();
+            dispatch(saveSolutionAction(code));
+        });
+
+        setCodeMirror(codeMirrorInstance)
+
+    }, []);
+
     useEffect(() => {
         let functionSignature = generateFunctionSignature()
         if (codemirror){
@@ -166,33 +183,6 @@ function SolutionSubpage({dispatch, solution, ...props}) {
         codemirror])
 
     useEffect(() => {
-        props.onPageChange({funcName, funcParameters, functReturnType, funcSolutionCode, funcLanguage});
-
-    }, [funcName, 
-        funcParameters, 
-        functReturnType, 
-        funcSolutionCode,
-        funcLanguage]);
-    
-    // set codemirror default configs + code
-    useEffect(() => {
-        let codeMirrorInstance = CodeMirror.fromTextArea(textareaNode.current, {
-            lineNumbers: true,
-            mode: languageModes.get(funcLanguage),
-            matchBrackets: true
-        });
-        
-        codeMirrorInstance.on("change", changeObj => {    
-            let code = changeObj.doc.getValue();
-            dispatch(saveSolutionAction(code));
-        });
-
-        setCodeMirror(codeMirrorInstance)
-        
-        
-
-    }, []);
-    useEffect(() => {
         if (funcLanguage){
             if (codemirror){
                 if (solution) {
@@ -202,9 +192,18 @@ function SolutionSubpage({dispatch, solution, ...props}) {
             }
         }
     }, [funcLanguage,
+        funcParameters,
         codemirror,
         solution])
 
+    useEffect(() => {
+        props.onPageChange({funcName, funcParameters, functReturnType, funcSolutionCode, funcLanguage});
+
+    }, [funcName, 
+        funcParameters, 
+        functReturnType, 
+        funcSolutionCode,
+        funcLanguage]);
     
     useEffect(() => {    
         
@@ -224,7 +223,7 @@ function SolutionSubpage({dispatch, solution, ...props}) {
     }, [funcSolutionCode]);
 
     // ------------------------------------------------------------------
-    //
+    // FUNCTIONS
     // ------------------------------------------------------------------
 
     const generateFunctionSignature = () => {       
