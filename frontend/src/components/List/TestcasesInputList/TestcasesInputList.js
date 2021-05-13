@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Divider from '@material-ui/core/Divider';
-import Button from '@material-ui/core/Button';
 import IconButton from '../../Buttons/IconButton';
 
 import {ReactComponent as HashIcon} from '../../../icons/hashtag.svg';

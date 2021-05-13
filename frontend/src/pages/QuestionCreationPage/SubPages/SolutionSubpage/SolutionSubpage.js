@@ -115,8 +115,12 @@ const getKeyByValue = (object, value) => {
 }
 
 const getKeyIndexByValue = (object, value) => {
+    if (!value){
+        value = 'java'
+    }
+    let language = value.toLowerCase();
     const keys = Object.keys(object);
-    return keys.indexOf(getKeyByValue(object, value));
+    return keys.indexOf(getKeyByValue(object, language));
 }
 
 
@@ -169,7 +173,7 @@ function SolutionSubpage({dispatch, solution, ...props}) {
     }, []);
 
     useEffect(() => {
-        let functionSignature = generateFunctionSignature()
+       let functionSignature = generateFunctionSignature()
         if (codemirror){
             codemirror.setValue("");
             codemirror.clearHistory();
@@ -177,7 +181,11 @@ function SolutionSubpage({dispatch, solution, ...props}) {
             let languageMode = languageModes.get(chosenMode)
             codemirror.setOption('mode', languageMode);
         }
-        setFuncSolutionCode(functionSignature)
+        if (!solution){
+            //setFuncSolutionCode(functionSignature)
+        } else {
+            setFuncSolutionCode(solution)
+        }
     }, [funcLanguage, 
         funcParameters,
         codemirror])
@@ -304,16 +312,20 @@ function SolutionSubpage({dispatch, solution, ...props}) {
                             </div>
                             <div className={classes.colFlex1}>
                                 <CustomSelect label={'Language'}
-                                              checkedOptionIndex={(() => 1 + getKeyIndexByValue(PROGRAMMING_LANGUAGES, funcLanguage))()}
-                                              options={(() => Object.keys(PROGRAMMING_LANGUAGES))()}  
+                                              checkedOptionIndex={1 + getKeyIndexByValue(PROGRAMMING_LANGUAGES, funcLanguage) || 0}
+                                              options={Object.keys(PROGRAMMING_LANGUAGES)}  
                                               onChange={onFunctionLanguageChange}/>
                             </div>
-                            <div className={classes.colFlex1}>
-                                <CustomSelect label={'Return type'} 
-                                              checkedOptionIndex={(() => 1 + getKeyIndexByValue(FUNCTION_RETURN_TYPES, functReturnType))()}
-                                              options={(() => Object.keys(FUNCTION_RETURN_TYPES))()}  
-                                              onChange={onFunctionReturnTypeChange}/>
-                            </div>
+                            { funcLanguage && funcLanguage.toLowerCase() === 'java' 
+                                ?
+                                <div className={classes.colFlex1}>
+                                    <CustomSelect label={'Return type'} 
+                                                checkedOptionIndex={(() => 1 + getKeyIndexByValue(FUNCTION_RETURN_TYPES, functReturnType))()}
+                                                options={(() => Object.keys(FUNCTION_RETURN_TYPES))()}  
+                                                onChange={onFunctionReturnTypeChange}/>
+                                </div>
+                                : ''
+                            }
                         </div>
 
                         {/* parameters */}

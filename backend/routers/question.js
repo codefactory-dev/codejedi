@@ -112,7 +112,7 @@ router.put('/users/:uid/questions/:id', middleware.checkLogIn,
     
 });
 
-//DESTROY - delete question
+//DESTROY - delete question of user
 router.delete('/users/:uid/questions/:id', middleware.checkLogIn, 
                                            middleware.checkQuestionNull,
                                            middleware.checkQuestionParamsNull,

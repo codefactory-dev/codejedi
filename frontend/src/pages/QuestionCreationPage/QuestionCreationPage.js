@@ -336,21 +336,53 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
         return <Redirect to={"/login"} />;
     } 
     
+    function validateSolution(solution){
+        return true;
+    }
+
     function saveQuestion() {
         if (currentUser){
             async function performSave(){
-                console.log("saving question")
-                const userId = currentUser._id;
-                console.log("this is the solution subpage: "+JSON.stringify(solutionSubpage))
-                //const blocks = convertToRaw(descriptionSubpage.editorState.getCurrentContent()).blocks;
-                //const editorStateRaw = blocks.map(block => (!block.text.trim() && '\n') || block.text).join('\n');
-                const rawContext = JSON.stringify(convertToRaw(descriptionSubpage.editorState.getCurrentContent()));
-                
-                if (descriptionSubpage.questionId){
-                   try {
+                if (validateSolution(solution)){
+                    console.log("saving question")
+                    const userId = currentUser._id;
+                    console.log("this is the solution subpage: "+JSON.stringify(solutionSubpage))
+                    //const blocks = convertToRaw(descriptionSubpage.editorState.getCurrentContent()).blocks;
+                    //const editorStateRaw = blocks.map(block => (!block.text.trim() && '\n') || block.text).join('\n');
+                    const rawContext = JSON.stringify(convertToRaw(descriptionSubpage.editorState.getCurrentContent()));
+                    
+                    if (descriptionSubpage.questionId){
+                       try {
+                            const result = await axios({
+                                method: 'put',
+                                url: `/users/${userId}/questions/${descriptionSubpage.questionId}`,
+                                data: { 
+                                    title: descriptionSubpage.questionName,
+                                    difficulty: descriptionSubpage.questionDifficulty,
+                                    type: descriptionSubpage.questionType,
+                                    description: rawContext,
+                                    solution: solution,
+                                    solutionName: solutionSubpage.funcName,
+                                    languageType: solutionSubpage.funcLanguageType,
+                                    returnType: solutionSubpage.functReturnType,
+                                    parameters: solutionSubpage.funcParameters,
+                                    testcases: testcasesSubpage.inputs,
+                                }
+                            }); 
+                            if (result.status === 200){
+                                Swal.fire('updated !');
+                            }
+                       } catch (error){
+                         Swal.fire(`update failed !`);
+                         console.log("error updating question: "+error)
+                       }
+                       
+                        return; 
+                    }
+                    try {
                         const result = await axios({
-                            method: 'put',
-                            url: `/users/${userId}/questions/${descriptionSubpage.questionId}`,
+                            method: 'post',
+                            url: `/users/${userId}/questions`,
                             data: { 
                                 title: descriptionSubpage.questionName,
                                 difficulty: descriptionSubpage.questionDifficulty,
@@ -361,42 +393,16 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
                                 languageType: solutionSubpage.funcLanguageType,
                                 returnType: solutionSubpage.functReturnType,
                                 parameters: solutionSubpage.funcParameters,
-                                testcases: testcasesSubpage.inputs,
+                                testcases: testcasesSubpage.inputs
                             }
-                        }); 
-                        if (result.status === 200){
-                            Swal.fire('updated !');
+                        });  
+                        if (result.status === 201){
+                            Swal.fire('created !');
                         }
-                   } catch (error){
-                     Swal.fire(`update failed !`);
-                     console.log("error updating question: "+error)
-                   }
-                   
-                    return; 
+                    } catch (error){
+                        Swal.fire(`create failed !`);
+                    }   
                 }
-                try {
-                    const result = await axios({
-                        method: 'post',
-                        url: `/users/${userId}/questions`,
-                        data: { 
-                            title: descriptionSubpage.questionName,
-                            difficulty: descriptionSubpage.questionDifficulty,
-                            type: descriptionSubpage.questionType,
-                            description: rawContext,
-                            solution: solution,
-                            solutionName: solutionSubpage.funcName,
-                            languageType: solutionSubpage.funcLanguageType,
-                            returnType: solutionSubpage.functReturnType,
-                            parameters: solutionSubpage.funcParameters,
-                            testcases: testcasesSubpage.inputs
-                        }
-                    });  
-                    if (result.status === 201){
-                        Swal.fire('created !');
-                    }
-                } catch (error){
-                    Swal.fire(`create failed !`);
-                }                
             }
             performSave();
         }
