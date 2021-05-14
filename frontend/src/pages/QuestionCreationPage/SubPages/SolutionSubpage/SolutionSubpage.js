@@ -1,14 +1,14 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import ParameterInputList from '../../../../components/List/ParameterInputList';
-import CustomSelect from '../../../../components/Select/CustomSelect.js'
-import SimpleTextField from '../../../../components/TextField/SimpleTextField.js'
-import CodeEditor from '../../../../components/CodeEditor/CodeEditor';
-import Button from '@material-ui/core/Button';
+import ParameterInputList from 'components/List/ParameterInputList';
+import CustomSelect from 'components/Select/CustomSelect.js'
+import SimpleTextField from 'components/TextField/SimpleTextField.js'
+import CodeEditor from 'components/CodeEditor/CodeEditor';
 import PropTypes from 'prop-types';
 import CodeMirror from 'codemirror';
-import { saveSolutionAction } from "../../../../store/reducers/solution";
-import ConnectTo from "../../../../store/connect";
+import { saveSolutionAction } from "store/reducers/solution";
+import ConnectTo from "store/connect";
+import { generateFunctionSignature, FUNCTION_RETURN_TYPES, PROGRAMMING_LANGUAGES } from "../../functions"
 
 /*root: {
         boxSizing: 'border-box',
@@ -97,19 +97,6 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-// -------------------------------------------------------------------------
-// GLOBAL VARIABLES and HELPERS
-// -------------------------------------------------------------------------
-
-const PROGRAMMING_LANGUAGES = {
-    JAVA: 'java', 
-    JAVASCRIPT: 'javascript'
-};
-const FUNCTION_RETURN_TYPES = {
-    INT: 'int', 
-    STRING: 'String'
-};
-
 const getKeyByValue = (object, value) => {
     return Object.keys(object).find(key => object[key] === value);
 }
@@ -135,6 +122,7 @@ function SolutionSubpage({dispatch, solution, ...props}) {
     let [functReturnType, setFuncReturnType] = useState(props.functReturnType);
     let [funcParameters, setFuncParams] = useState(props.funcParameters);
     let [funcSolutionCode, setFuncSolutionCode] = useState()
+    let [signature, setSignature] = useState();
     let userCode = ``;
     const languageModes = new Map([['javascript', 'javascript'], ['java', 'text/x-java'], ['c++', 'text/x-c++src']]);
     let selectedLanguage = 'java';
@@ -173,7 +161,6 @@ function SolutionSubpage({dispatch, solution, ...props}) {
     }, []);
 
     useEffect(() => {
-       let functionSignature = generateFunctionSignature()
         if (codemirror){
             codemirror.setValue("");
             codemirror.clearHistory();
@@ -181,9 +168,7 @@ function SolutionSubpage({dispatch, solution, ...props}) {
             let languageMode = languageModes.get(chosenMode)
             codemirror.setOption('mode', languageMode);
         }
-        if (!solution){
-            //setFuncSolutionCode(functionSignature)
-        } else {
+        if (solution){
             setFuncSolutionCode(solution)
         }
     }, [funcLanguage, 
@@ -212,6 +197,16 @@ function SolutionSubpage({dispatch, solution, ...props}) {
         functReturnType, 
         funcSolutionCode,
         funcLanguage]);
+
+    useEffect(()=>{
+        let functionSignature = generateFunctionSignature(funcLanguage,funcParameters,funcName,functReturnType)
+        setSignature(functionSignature);
+    },[funcName,
+       funcParameters,
+       functReturnType,
+       funcSolutionCode,
+       funcLanguage
+    ])
     
     useEffect(() => {    
         
@@ -229,38 +224,6 @@ function SolutionSubpage({dispatch, solution, ...props}) {
     
     
     }, [funcSolutionCode]);
-
-    // ------------------------------------------------------------------
-    // FUNCTIONS
-    // ------------------------------------------------------------------
-
-    const generateFunctionSignature = () => {       
-        let params;
-    
-        if (funcLanguage){
-            let lowercaseFuncLanguage = funcLanguage.toLowerCase();
-            switch(lowercaseFuncLanguage) {
-                case PROGRAMMING_LANGUAGES.JAVASCRIPT:
-                    params =   funcParameters && funcParameters.reduce((acc, input, idx) => {
-                        return `${acc}${input.name}${idx === funcParameters.length-1 ? `` : `, `}`
-                    }, ``);
-            
-                    return `var ${funcName} = function(${params}) {\n \n \n}`;
-                    break;
-    
-    
-                case PROGRAMMING_LANGUAGES.JAVA:
-                    params = funcParameters.reduce((acc, input, idx) => {
-                        return `${acc}${input.type} ${input.name}${idx === funcParameters.length-1 ? `` : `, `}`
-                    }, ``);
-            
-                    return `class Solution {\n   public ${functReturnType} ${funcName} (${params}) {\n \n\n  }\n}`;
-                    break;
-            }
-        } 
-        return '';
-    }
-
 
     // ------------------------------------------------------------------
     // HANDLERS, CALLBACKS
@@ -341,6 +304,12 @@ function SolutionSubpage({dispatch, solution, ...props}) {
 
                         {/* solution preview */}
                         <div className={classes.section}>
+                            <div>
+                                Signature:
+                            </div>
+                            <div>
+                                {signature}
+                            </div>
                             <div className={classes.titleContainer}>
                                     <span className={classes.title}>Solution</span>
                             </div>
