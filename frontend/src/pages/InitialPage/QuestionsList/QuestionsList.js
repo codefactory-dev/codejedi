@@ -1,22 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
-import IconButton from 'components/Buttons/IconButton';
 import axios from 'axios'
 
-import {ReactComponent as HashIcon} from 'icons/hashtag.svg';
-import {ReactComponent as AddIcon} from 'icons/add.svg';
-
-
-import {ReactComponent as CrossIcon} from 'icons/cross.svg';
 import { useAuth } from "Context/auth";
 import { useHistory } from "react-router-dom";
 import ConnectTo from "store/connect";
 
-import { selectCurrentQuestionAction } from "store/reducers/currentQuestion";
+import { selectCurrentQuestionAction, deselectCurrentQuestionAction } from "store/reducers/currentQuestion";
 
 import './QuestionsList.scss'
 
@@ -206,6 +198,9 @@ const QuestionsList = ({dispatch,currentQuestion, inputs, setInputs,...props}) =
     const selectCurrentQuestionHandler = (question) => {
         dispatch(selectCurrentQuestionAction(question))
     }
+    const deselectCurrentQuestionHandler = () => {
+        dispatch(deselectCurrentQuestionAction())
+    }
 
     const deleteCurrentRow = () => {
         let newInputs = [...inputs];
@@ -337,8 +332,8 @@ const QuestionsList = ({dispatch,currentQuestion, inputs, setInputs,...props}) =
         }
     }
 
-
     function createQuestion(){
+        deselectCurrentQuestionHandler();
         history.push('/questionCreation')
     }
 
