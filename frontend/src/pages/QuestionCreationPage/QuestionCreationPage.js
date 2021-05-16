@@ -217,7 +217,10 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
     // CALLBACKS
     // --------------------------------------
     const onDescriptionSubPageChange = variables => setDescriptionSubpage(Object.assign(descriptionSubpage, variables));
-    const onSolutionSubPageChange = variables => setSolutionSubpage(Object.assign(solutionSubpage, variables));
+    const onSolutionSubPageChange = variables => {
+        console.log("these are variables: "+variables)
+        setSolutionSubpage(Object.assign(solutionSubpage, variables)) 
+    };
     const onTestcasesSubPageChange = variables => setTestcasesSubpage(Object.assign(testcasesSubpage, variables));
     
     // --------------------------------------
@@ -325,7 +328,7 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
                 funcParameters: currentQuestion.parameters,
                 functReturnType: currentQuestion.returnType,
                 funcSolutionCode: currentQuestion.solution,
-                funcLanguageType: currentQuestion.languageType
+                funcLanguage: currentQuestion.languageType
             }) 
             onTestcasesSubPageChange({
                 inputs: currentQuestion.testcases

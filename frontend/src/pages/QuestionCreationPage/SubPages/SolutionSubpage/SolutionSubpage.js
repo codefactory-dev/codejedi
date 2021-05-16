@@ -136,7 +136,7 @@ function SolutionSubpage({dispatch, solution, ...props}) {
 
         // load props
         setFuncName(props.funcName);
-        setFuncLanguage(props.funcLanguageType);
+        setFuncLanguage(props.funcLanguage);
         setFuncReturnType(props.functReturnType);
         setFuncSolutionCode(props.funcSolutionCode)
         setFuncParams(props.funcParameters);
@@ -161,10 +161,10 @@ function SolutionSubpage({dispatch, solution, ...props}) {
     }, []);
 
     useEffect(() => {
-        if (codemirror){
+        if (funcLanguage && codemirror){
             codemirror.setValue("");
             codemirror.clearHistory();
-            let chosenMode = funcLanguage ? funcLanguage.toLowerCase() : 'java';
+            let chosenMode = funcLanguage.toLowerCase();
             let languageMode = languageModes.get(chosenMode)
             codemirror.setOption('mode', languageMode);
         }
@@ -275,7 +275,7 @@ function SolutionSubpage({dispatch, solution, ...props}) {
                             </div>
                             <div className={classes.colFlex1}>
                                 <CustomSelect label={'Language'}
-                                              checkedOptionIndex={1 + getKeyIndexByValue(PROGRAMMING_LANGUAGES, funcLanguage) || 0}
+                                              checkedOptionIndex={1 + getKeyIndexByValue(PROGRAMMING_LANGUAGES, funcLanguage)}
                                               options={Object.keys(PROGRAMMING_LANGUAGES)}  
                                               onChange={onFunctionLanguageChange}/>
                             </div>
