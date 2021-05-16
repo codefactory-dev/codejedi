@@ -9,6 +9,7 @@ import CodeMirror from 'codemirror';
 import { saveSolutionAction } from "store/reducers/solution";
 import ConnectTo from "store/connect";
 import { generateFunctionSignature, FUNCTION_RETURN_TYPES, PROGRAMMING_LANGUAGES } from "../../functions"
+import Swal from 'sweetalert2';
 
 /*root: {
         boxSizing: 'border-box',
@@ -224,6 +225,30 @@ function SolutionSubpage({dispatch, solution, ...props}) {
     
     
     }, [funcSolutionCode]);
+    // ------------------------------------------------------------------
+    // FUNCTIONS
+    // ------------------------------------------------------------------
+    function refreshSignature() {
+        Swal.fire({
+            title: '<strong>Are you sure ?</strong>',
+            icon: 'warning',
+            html: 'Refreshing signature will erase your current code from the editor. Copy your code somewhere first.', 
+            showCloseButton: true,
+            showCancelButton: true,
+            focusConfirm: false,
+            confirmButtonText: 'Continue',
+            confirmButtonAriaLabel: 'Thumbs up, great!',
+            cancelButtonText: 'Cancel',
+            cancelButtonAriaLabel: 'Thumbs down'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let functionSignature = generateFunctionSignature(funcLanguage,funcParameters,funcName,functReturnType)
+                setFuncSolutionCode(functionSignature)
+            } else if (result.isDenied) {
+                //Swal.fire('Changes are not saved', '', 'info')
+            }
+        })
+    }
 
     // ------------------------------------------------------------------
     // HANDLERS, CALLBACKS
@@ -310,6 +335,9 @@ function SolutionSubpage({dispatch, solution, ...props}) {
                             <div>
                                 {signature}
                             </div>
+                            <br/>
+                            <button onClick={refreshSignature}>Refresh Signature</button>
+                            <br/>
                             <div className={classes.titleContainer}>
                                     <span className={classes.title}>Solution</span>
                             </div>
