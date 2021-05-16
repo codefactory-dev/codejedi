@@ -243,6 +243,8 @@ function SolutionSubpage({dispatch, solution, ...props}) {
         }).then((result) => {
             if (result.isConfirmed) {
                 let functionSignature = generateFunctionSignature(funcLanguage,funcParameters,funcName,functReturnType)
+                codemirror.setValue("");
+                codemirror.clearHistory();
                 setFuncSolutionCode(functionSignature)
             } else if (result.isDenied) {
                 //Swal.fire('Changes are not saved', '', 'info')
