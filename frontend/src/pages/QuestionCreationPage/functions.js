@@ -9,7 +9,7 @@ const generateFunctionSignature = (funcLanguage,funcParameters,funcName,functRet
                     return `${acc}${input.name}${idx === funcParameters.length-1 ? `` : `, `}`
                 }, ``);
         
-                return `var ${funcName} = function(${params}) {\n \n \n}`;
+                return `var ${funcName} = function(${params}) {\n\n\n}`;
                 break;
 
 
@@ -18,7 +18,7 @@ const generateFunctionSignature = (funcLanguage,funcParameters,funcName,functRet
                     return `${acc}${input.type} ${input.name}${idx === funcParameters.length-1 ? `` : `, `}`
                 }, ``);
         
-                return `class Solution {\n   public ${functReturnType} ${funcName} (${params}) {\n \n\n  }\n}`;
+                return `class Solution {\n   public ${functReturnType} ${funcName} (${params}) {\n\n\n}\n}`;
                 break;
         }
     } 

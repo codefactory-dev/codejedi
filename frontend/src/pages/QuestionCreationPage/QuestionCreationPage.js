@@ -342,7 +342,14 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
     
     function validateSolution(solution){
         let functionSignature = generateFunctionSignature(currentQuestion.languageType,currentQuestion.parameters,currentQuestion.solutionName,currentQuestion.returnType)
-        return true;
+        let functionStart = functionSignature.substring(0,functionSignature.length-1).replace(/\n/g,'');;
+        let functionEnd = functionSignature.substring(functionSignature.length-1,functionSignature.length);
+        let condition1 = solution.startsWith(functionStart);
+        let condition2 = solution.endsWith(functionEnd)
+        if ( condition1 && condition2 ) {
+            return true;
+        }
+        return false;
     }
 
     function saveQuestion() {
@@ -407,6 +414,8 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
                     } catch (error){
                         Swal.fire(`create failed !`);
                     }   
+                } else {
+                    Swal.fire(`Please don't change your function signature !`);
                 }
             }
             performSave();
