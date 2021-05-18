@@ -11,9 +11,11 @@ const local = process.env.LOCAL_SERVER || false;
 // --------------------------------------------------------------------
 const db = require('./src/utils/db');
 db.connect()
+/*
     .then(db.initCollections)
     .then(() => db.reset(false))
     .then(() => db.seed(false));
+*/
 
 // --------------------------------------------------------------------
 // SERVER LISTENER

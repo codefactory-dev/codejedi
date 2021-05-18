@@ -15,7 +15,7 @@ import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import { useAuth } from "../../Context/auth";
-import { Link, Redirect, useHistory } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import ConnectTo from "../../store/connect";
 import { ConvertCodeToOneLiner } from '../../utils/TextReadingUtils'
 import {
@@ -178,8 +178,7 @@ const pageTabs = {
     TESTCASES_PAGE: 2
 }
 
-const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
-    let history = useHistory();
+const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
     const [minWidth, setMinWidth] = useState('893.750px')
     const classes = useStyles({minWidth});
     
@@ -353,9 +352,73 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
         return false;
     }
 
-    function navigateToSubmissions(){
-        if (currentQuestion && currentQuestion._id){
-            history.push('/submissions', { questionId: currentQuestion._id });
+    function saveQuestion() {
+        if (currentUser){
+            async function performSave(){
+                if (validateSolution(solution)){
+                    console.log("saving question")
+                    const userId = currentUser._id;
+                    console.log("this is the solution subpage: "+JSON.stringify(solutionSubpage))
+                    //const blocks = convertToRaw(descriptionSubpage.editorState.getCurrentContent()).blocks;
+                    //const editorStateRaw = blocks.map(block => (!block.text.trim() && '\n') || block.text).join('\n');
+                    const rawContext = JSON.stringify(convertToRaw(descriptionSubpage.editorState.getCurrentContent()));
+                    
+                    if (descriptionSubpage.questionId){
+                       try {
+                            const result = await axios({
+                                method: 'put',
+                                url: `/users/${userId}/questions/${descriptionSubpage.questionId}`,
+                                data: { 
+                                    title: descriptionSubpage.questionName,
+                                    difficulty: descriptionSubpage.questionDifficulty,
+                                    type: descriptionSubpage.questionType,
+                                    description: rawContext,
+                                    solution: solution,
+                                    solutionName: solutionSubpage.funcName,
+                                    languageType: solutionSubpage.funcLanguageType,
+                                    returnType: solutionSubpage.functReturnType,
+                                    parameters: solutionSubpage.funcParameters,
+                                    testcases: testcasesSubpage.inputs,
+                                }
+                            }); 
+                            if (result.status === 200){
+                                Swal.fire('updated !');
+                            }
+                       } catch (error){
+                         Swal.fire(`update failed !`);
+                         console.log("error updating question: "+error)
+                       }
+                       
+                        return; 
+                    }
+                    try {
+                        const result = await axios({
+                            method: 'post',
+                            url: `/users/${userId}/questions`,
+                            data: { 
+                                title: descriptionSubpage.questionName,
+                                difficulty: descriptionSubpage.questionDifficulty,
+                                type: descriptionSubpage.questionType,
+                                description: rawContext,
+                                solution: solution,
+                                solutionName: solutionSubpage.funcName,
+                                languageType: solutionSubpage.funcLanguageType,
+                                returnType: solutionSubpage.functReturnType,
+                                parameters: solutionSubpage.funcParameters,
+                                testcases: testcasesSubpage.inputs
+                            }
+                        });  
+                        if (result.status === 201){
+                            Swal.fire('created !');
+                        }
+                    } catch (error){
+                        Swal.fire(`create failed !`);
+                    }   
+                } else {
+                    Swal.fire(`Please don't change your function signature !`);
+                }
+            }
+            performSave();
         }
     }
     
@@ -506,8 +569,8 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
                         <div className={classes.footerWrapper}>
                             <RegularButton 
                                 className={classes.regularButton} 
-                                onClick={navigateToSubmissions}
-                                label="View Submissions" 
+                                onClick={saveQuestion}
+                                label="Save" 
                             />
                             <RegularButton 
                                 className={classes.regularButton} 
@@ -558,5 +621,5 @@ const mapStateToProps = ({ solution, currentQuestion }, props) => {
     };
 };
   
-export default ConnectTo(mapStateToProps)(QuestionPage);
+export default ConnectTo(mapStateToProps)(QuestionCreationPage);
   

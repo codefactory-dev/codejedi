@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import Navbar from '../../components/Navbar/Navbar.js'
-import BrowseList from '../../components/List/BrowseList/BrowseList.js'
+import BrowseList from './BrowseList/BrowseList.js'
 import { useAuth } from "../../Context/auth";
 import { Link, Redirect } from "react-router-dom";
 

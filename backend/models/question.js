@@ -32,21 +32,25 @@ const questionSchema = new Schema({
         type: String,
         default: undefined
     },
-    testcases: {
-        type: Array,
-        default: undefined
-    },
-    testcasesType: {
-        type: Array,
-        default: undefined
-    },
     languageType: {
-        type: Number,
+        type: String,
+        default: undefined
+    },
+    returnType: {
+        type: String,
         default: undefined
     },
     solutionName: {
         type: String,
         default: undefined
+    },
+    testcases: {
+        type: Array,
+        default: []
+    },
+    parameters: {
+        type: Array,
+        default: []
     },
     difficulty: { 
         type: String, 
@@ -84,7 +88,13 @@ const questionSchema = new Schema({
     commentIds: [{ 
         type: mongoose.Schema.Types.ObjectId, 
         ref: "Comment"
-    }]
+    }],
+    submissionIds: [{
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: "Submission",
+        required: true,
+        default: []
+    }],
 }, {
     timestamps: true
 });

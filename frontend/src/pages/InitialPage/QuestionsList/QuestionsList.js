@@ -1,26 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
-import IconButton from '../../Buttons/IconButton';
 import axios from 'axios'
 
-import {ReactComponent as HashIcon} from '../../../icons/hashtag.svg';
-import {ReactComponent as AddIcon} from '../../../icons/add.svg';
-
-
-import {ReactComponent as CrossIcon} from '../../../icons/cross.svg';
-import { useAuth } from "../../../Context/auth";
+import { useAuth } from "Context/auth";
 import { useHistory } from "react-router-dom";
-import ConnectTo from "../../../store/connect";
+import ConnectTo from "store/connect";
 
-import { selectCurrentQuestionAction } from "../../../store/reducers/currentQuestion";
+import { selectCurrentQuestionAction, deselectCurrentQuestionAction } from "store/reducers/currentQuestion";
 
-import './BrowseList.scss'
+import './QuestionsList.scss'
 
-const { usePrevious } = require('../../../utils/useful.js')
+const { usePrevious } = require('utils/useful.js')
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -191,12 +183,11 @@ const rowStates = {
     EDITING_ROW: 1,
     CONFIRMING_DELETE: 2
 }
-const BrowseList = ({dispatch,currentQuestion,...props}) => {
+const QuestionsList = ({dispatch,currentQuestion, inputs, setInputs,...props}) => {
     let history = useHistory();
     const classes = useStyles();
     const matches = useMediaQuery('(min-width:798px)');
     const theme = useTheme();
-    const [inputs, setInputs] = useState(['nums1', 'nums2', 'nums3']);
     const [activeRowItem, setActiveRowItem] = useState();
     const [editingState, setEditingState] = useState(rowStates.DESELECTED)
     const [maxInputTag, setMaxInputTag] = useState('20 max');
@@ -206,6 +197,9 @@ const BrowseList = ({dispatch,currentQuestion,...props}) => {
 
     const selectCurrentQuestionHandler = (question) => {
         dispatch(selectCurrentQuestionAction(question))
+    }
+    const deselectCurrentQuestionHandler = () => {
+        dispatch(deselectCurrentQuestionAction())
     }
 
     const deleteCurrentRow = () => {
@@ -233,8 +227,8 @@ const BrowseList = ({dispatch,currentQuestion,...props}) => {
             console.log("this is the user id: "+JSON.parse(authTokens).user._id);
             async function getQuestionsList()
             {
-                //const fetchedQuestions = await axios.get(`/users/${JSON.parse(authTokens).user._id}/questions`)
-                const fetchedQuestions = await axios.get(`/questions`)
+                //const fetchedQuestions = await axios.get(`/questions`)
+                const fetchedQuestions = await axios.get(`/users/${JSON.parse(authTokens).user._id}/questions`)
                 //console.log("fetched questions from backend: "+JSON.stringify(fetchedQuestions))                
                 setInputs(fetchedQuestions.data);    
             }
@@ -245,7 +239,7 @@ const BrowseList = ({dispatch,currentQuestion,...props}) => {
     const navigateToQuestion = (input) => {
         //here should be the code to navigate to the selected question
         selectCurrentQuestionHandler(input)
-        history.push('/question')
+        history.push('/questionCreation')
     }
 
     const onClickHandler = (e) => {
@@ -285,6 +279,8 @@ const BrowseList = ({dispatch,currentQuestion,...props}) => {
         [rowStates.DESELECTED]: 
             <div className={classes.selectedInput}>
                 <span onClick={()=>{navigateToQuestion(input)}}>{input.title}</span>
+                
+                <span onClick={()=>{navigateToQuestion(input)}}>{input.creator ? '| Author: '+input.creator.username : ''}</span>
             </div>,
         [rowStates.EDITING_ROW]: 
             <div className={classes.focusedInput}>
@@ -329,21 +325,22 @@ const BrowseList = ({dispatch,currentQuestion,...props}) => {
                         className={classes.input}
                         onClick={(event) => {onClickRowItem(event,idx) }} >
                             <span>{input.title}</span>
+                            <span>{input.creator ? '| Author: '+input.creator.username : ''}</span>
                     </div>
                 </div>
             )
         }
     }
 
-
     function createQuestion(){
-        history.push('/question')
+        deselectCurrentQuestionHandler();
+        history.push('/questionCreation')
     }
 
     return (
         <div className={classes.root}>
             <div className={classes.subtitleContainer}>
-                <p>Title</p>
+                <p>{props.title}</p>
             </div>
             <hr className={classes.divider} />
             <div className={classes.wrapper}>
@@ -371,4 +368,4 @@ const mapStateToProps = ({ currentQuestion }, props) => {
     };
 };
   
-export default ConnectTo(mapStateToProps)(BrowseList);
+export default ConnectTo(mapStateToProps)(QuestionsList);
