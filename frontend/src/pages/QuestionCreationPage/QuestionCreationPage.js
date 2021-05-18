@@ -25,7 +25,7 @@ import {
 import CodeScaffolding from '../../utils/CodeScaffolding'
 import { Parse, ParseString } from '../../utils/Parser'
 import { EditorState, ContentState } from 'draft-js';
-import { generateFunctionSignature, FUNCTION_RETURN_TYPES, PROGRAMMING_LANGUAGES } from "./functions"
+import { generateFunctionSignature, FUNCTION_RETURN_TYPES, PROGRAMMING_LANGUAGES } from "utils/functions"
 
 const useStyles = makeStyles((theme) => ({
     

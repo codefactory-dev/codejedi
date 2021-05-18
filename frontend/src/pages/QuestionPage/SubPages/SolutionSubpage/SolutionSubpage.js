@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import CodeMirror from 'codemirror';
 import { saveSolutionAction } from "store/reducers/solution";
 import ConnectTo from "store/connect";
-import { generateFunctionSignature, FUNCTION_RETURN_TYPES, PROGRAMMING_LANGUAGES } from "../../functions"
+import { generateFunctionSignature, FUNCTION_RETURN_TYPES, PROGRAMMING_LANGUAGES } from "utils/functions"
 import Swal from 'sweetalert2';
 
 /*root: {

@@ -1,4 +1,4 @@
-const generateFunctionSignature = (funcLanguage,funcParameters,funcName,functReturnType) => {       
+export const generateFunctionSignature = (funcLanguage,funcParameters,funcName,functReturnType) => {       
     let params;
 
     if (funcLanguage){
@@ -25,17 +25,11 @@ const generateFunctionSignature = (funcLanguage,funcParameters,funcName,functRet
     return '';
 }
 
-const PROGRAMMING_LANGUAGES = {
+export const PROGRAMMING_LANGUAGES = {
     JAVA: 'java', 
     JAVASCRIPT: 'javascript'
 };
-const FUNCTION_RETURN_TYPES = {
+export const FUNCTION_RETURN_TYPES = {
     INT: 'int', 
     STRING: 'String'
 };
-
-module.exports = {
-    generateFunctionSignature,
-    PROGRAMMING_LANGUAGES,
-    FUNCTION_RETURN_TYPES
-}
