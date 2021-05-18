@@ -1,8 +1,8 @@
 const languageTypes = {
-    Javascript: 0,
-    Java: 1,
-    Cpp: 2,
-    Python: 3
+    Javascript: 'javascript',
+    Java: 'java',
+    Cpp: 'cpp',
+    Python: 'python'
 }
 
 module.exports = languageTypes

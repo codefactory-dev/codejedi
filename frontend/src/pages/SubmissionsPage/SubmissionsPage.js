@@ -2,9 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import Navbar from '../../components/Navbar/Navbar.js'
-import QuestionsList from './QuestionsList/QuestionsList.js'
+import SubmissionsList from '../../components/List/SubmissionsList/SubmissionsList.js'
 import { useAuth } from "../../Context/auth";
 import { Link, Redirect } from "react-router-dom";
+import { Typography } from "@material-ui/core"
+import axios from 'axios'
+import { useHistory } from "react-router-dom";
+import Swal from 'sweetalert2'
 
 const useStyles = makeStyles((theme) => ({
     
@@ -30,12 +34,28 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-export default function InitialPage(props) { 
+export default function SubmissionsPage({location}, ...props) { 
+    let history = useHistory();
     const classes = useStyles();
-
+    
     const [inputs, setInputs] = useState(['nums1', 'nums2', 'nums3']);
 
     const { authTokens, setAuthTokens } = useAuth();
+    useEffect(()=>{
+        if (authTokens){
+            async function getSubmissionsList()
+            {
+                try {
+                    const question = await axios.get(`/submissionsQuestion/${location.state.questionId}`)
+                    setInputs(question.data);    
+                } catch (error) {
+                    Swal.fire("Error: could not get the submissions list for the question.")
+                }
+                
+            }
+            getSubmissionsList();
+        }
+    },[])
     if (!authTokens || authTokens === "undefined") {
         return <Redirect to={"/login"} />;
     }
@@ -44,10 +64,10 @@ export default function InitialPage(props) {
                 <Navbar setAuthTokens={setAuthTokens} />
                 <div className={classes.centralElements}>
                     <div className={classes.centralTextArea}>
-                    <QuestionsList 
-                        title={"Initial Page"}
+                    <SubmissionsList
+                        title={"Submissions"}
                         inputs={inputs}
-                        setInputs={setInputs}                        
+                        setInputs={setInputs}
                     />
                     </div>
                 </div>

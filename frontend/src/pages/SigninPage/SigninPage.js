@@ -14,8 +14,7 @@ import Paper from '@material-ui/core/Paper';
 import Container from '@material-ui/core/Container';
 import { Link, Redirect } from "react-router-dom";
 import { useAuth } from "../../Context/auth";
-
-
+import { useHistory } from "react-router-dom";
 import RegularButton from '../../components/Buttons/RegularButton';
 
 
@@ -90,6 +89,10 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignSelf: 'center',
         color: theme.palette.common.greyLight
+    },
+    green: {
+        cursor: 'pointer',
+        color: '#00B5AD'
     }
 }));
 
@@ -100,6 +103,7 @@ function SigninPage(props) {
     const [isError, setIsError] = useState(false);
     const { setAuthTokens } = useAuth();
     const referer = (props.location.state && props.location.state.referer) || '/';
+    let history = useHistory();
  
     function handleLogin(e){
         e.preventDefault();
@@ -133,6 +137,9 @@ function SigninPage(props) {
         }
         login();        
     }
+    const navigateToSignup = () => {
+        history.push('/signup')
+    }
 
     if (isLoggedIn) {
         return <Redirect to={referer} />;
@@ -165,7 +172,8 @@ function SigninPage(props) {
                                 label="Password" 
                                 fullWidth
                                 type="password"
-                                autoComplete="current-password"
+                                autoComplete="new-password"
+                                //autoComplete="current-password"
                             />
                             <FormControlLabel
                                 classes={{label:classes.formControlLabel}} 
@@ -187,7 +195,7 @@ function SigninPage(props) {
                             <Typography variant="h4">
                                 <Grid container className={classes.extraInfo}>
                                     <div className={classes.white} style={{marginTop: '30px'}}>Forgot your password? <span className={classes.green}>Reset</span></div>
-                                    <div className={classes.white} style={{marginTop: '10px'}}>Don't have an account? <span className={classes.green}>Sign Up</span></div>
+                                    <div className={classes.white} style={{marginTop: '10px'}}>Don't have an account? <span className={classes.green} onClick={navigateToSignup}>Sign Up</span></div>
                                 </Grid>
                             </Typography>
                             { isError && <div>The username or password provided were incorrect!</div> }

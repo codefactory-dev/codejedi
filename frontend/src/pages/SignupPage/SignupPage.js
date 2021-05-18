@@ -19,6 +19,8 @@ import {
 
 import RegularButton from '../../components/Buttons/RegularButton';
 import TextFileReader from '../../utils/TextfileReader.js'
+import { useHistory } from "react-router-dom";
+
 var myTxt = require("../../version.txt");
 
 
@@ -103,6 +105,10 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'column',
         alignContent: 'center',
         alignItems: 'center'
+    },
+    green: {
+        cursor: 'pointer',
+        color: '#00B5AD'
     }
 }));
 
@@ -113,6 +119,7 @@ function SignupPage(props) {
     const [isError, setIsError] = useState(false);
     const { setAuthTokens } = useAuth();
     const referer = (props.location.state && props.location.state.referer) || '/';
+    let history = useHistory();
  
     function handleSignup(e){
         e.preventDefault();
@@ -154,6 +161,9 @@ function SignupPage(props) {
         }
         login();        
     }
+    const navigateToSignin = () => {
+        history.push('/login')
+    }
 
     if (isLoggedIn) {
         return <Redirect to="/login" />;
@@ -178,23 +188,27 @@ function SignupPage(props) {
                                 id="firstname"
                                 classes={{ root: classes.textField }}
                                 label="First name"
+                                autoComplete={false}
                             />
                             <TextField 
                                 id="lastname"
                                 classes={{ root: classes.textField }}
                                 label="Last name"
+                                autoComplete={false}
                             />
                             <TextField 
                                 id="mylogin"
                                 classes={{ root: classes.textField }}
                                 label="Username"
                                 fullWidth
+                                autoComplete={false}
                             />
                             <TextField 
                                 id="myemail"
                                 classes={{ root: classes.textField }}
                                 label="Email"
                                 fullWidth
+                                autoComplete={false}
                             />
                             <TextField 
                                 id="mypassword"
@@ -202,7 +216,7 @@ function SignupPage(props) {
                                 label="Password" 
                                 fullWidth
                                 type="password"
-                                autoComplete="current-password"
+                                autoComplete="new-password"
                             />
                             <TextField 
                                 id="confirmpassword"
@@ -210,7 +224,7 @@ function SignupPage(props) {
                                 label="Confirm Password" 
                                 fullWidth
                                 type="password"
-                                autoComplete="confirm-password"
+                                autoComplete="new-password"
                             />
                             <FormControlLabel
                                 classes={{label:classes.formControlLabel}} 
@@ -219,6 +233,7 @@ function SignupPage(props) {
                                             value="remember" 
                                             color="primary"/>}
                                 label="I agree with terms and conditions"
+                                autoComplete="false"
                             />
                             
                             <Container className={classes.centered}>
@@ -231,7 +246,7 @@ function SignupPage(props) {
                             
                             <Typography variant="h4">
                                 <Grid container className={classes.extraInfo}>
-                                    <div className={classes.white} style={{marginTop: '10px'}}>Already have an account? <span className={classes.green}>Sign In</span></div>
+                                    <div className={classes.white} style={{marginTop: '10px'}}>Already have an account? <span className={classes.green} onClick={navigateToSignin}>Sign In</span></div>
                                 </Grid>
                             </Typography>
                             { isError && <div>The username or password provided were incorrect!</div> }

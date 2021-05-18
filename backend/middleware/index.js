@@ -27,14 +27,14 @@ middleware.auth = async (req,res, next) => {
         const user = await User.findOne({ _id: decoded._id, 'tokens.token': token})
 
         if (!user) {
-            throw new Error()
+            return res.status(500).json({ error: true, message: 'A user was not found with this token' });
         }
 
         req.token = token;
         req.user = user;
         next()
     } catch (e){
-
+        return res.status(500).json({ error: true, message: e.message });
     }
 
 };

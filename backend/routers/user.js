@@ -1,6 +1,8 @@
 const express = require('express'),
       router = express.Router({mergeParams: true}),
+      middleware = require('../middleware/index'),
       User = require('../models/user'),
+      Question = require('../models/question'),
       { qDifficulties, qTypes } = require('../src/utils/seed.js');
 
 //(OK)TODO: user doesn't send back ALL data, such as passwords, tokens etc. to the frontend
@@ -173,15 +175,29 @@ router.delete('/users/:id', async (req,res) => {
   }
 })
 
-// EDIT /photos/:id/edit GET
-router.get('/users/:id/edit', async (req,res) => {
+//GET all user's owned submissions (index submissions)
+router.get('/users/:qid/submissions', middleware.checkLogIn,
+                                    middleware.checkQuestionParamsNull,
+                                    async (req,res) => {
+    console.log("getting user submissions")
+    //const user = await User.findById(req.params.uid).populate('questionIds');
+    const question = await Question.findById(req.params.qid)
+    const submissions = question.submissions;
 
+    //res.status(201).send({questions: user.questionIds});
+    res.status(201).send(submissions);
 });
 
+//GET all user's owned questions (index questions)
+router.get('/users/:uid/questions', middleware.checkLogIn,
+                                    middleware.checkQuestionParamsNull,
+                                    async (req,res) => {
+    console.log("getting user questions")
+    //const user = await User.findById(req.params.uid).populate('questionIds');
+    const questions = await Question.find({ 'creator.id': req.params.uid})
 
-//NEW /photos/new	GET
-router.get('/users/:id/new', async (req,res) => {
-
+    //res.status(201).send({questions: user.questionIds});
+    res.status(201).send(questions);
 });
 
 module.exports = router;

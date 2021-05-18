@@ -6,9 +6,9 @@ import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import IconButton from '../../Buttons/IconButton';
 import axios from 'axios'
-
 import {ReactComponent as HashIcon} from '../../../icons/hashtag.svg';
 import {ReactComponent as AddIcon} from '../../../icons/add.svg';
+import { format, parseISO, startOfDay, endOfDay, subDays } from 'date-fns';
 
 
 import {ReactComponent as CrossIcon} from '../../../icons/cross.svg';
@@ -18,7 +18,7 @@ import ConnectTo from "../../../store/connect";
 
 import { selectCurrentQuestionAction } from "../../../store/reducers/currentQuestion";
 
-import './QuestionsList.scss'
+import './SubmissionsList.scss'
 
 const { usePrevious } = require('../../../utils/useful.js')
 
@@ -191,12 +191,11 @@ const rowStates = {
     EDITING_ROW: 1,
     CONFIRMING_DELETE: 2
 }
-const QuestionsList = ({dispatch,currentQuestion,...props}) => {
+const SubmissionsList = ({dispatch,currentQuestion, inputs, setInputs,...props}) => {
     let history = useHistory();
     const classes = useStyles();
     const matches = useMediaQuery('(min-width:798px)');
     const theme = useTheme();
-    const [inputs, setInputs] = useState(['nums1', 'nums2', 'nums3']);
     const [activeRowItem, setActiveRowItem] = useState();
     const [editingState, setEditingState] = useState(rowStates.DESELECTED)
     const [maxInputTag, setMaxInputTag] = useState('20 max');
@@ -244,7 +243,7 @@ const QuestionsList = ({dispatch,currentQuestion,...props}) => {
     const navigateToQuestion = (input) => {
         //here should be the code to navigate to the selected question
         selectCurrentQuestionHandler(input)
-        history.push('/question')
+        history.push('/questionCreation')
     }
 
     const onClickHandler = (e) => {
@@ -283,7 +282,9 @@ const QuestionsList = ({dispatch,currentQuestion,...props}) => {
     const getDeletionState = (input,idx) => ({
         [rowStates.DESELECTED]: 
             <div className={classes.selectedInput}>
-                <span onClick={()=>{navigateToQuestion(input)}}>{input.title}</span>
+                <span onClick={()=>{navigateToQuestion(input)}}>{input.dateTime}</span>
+                <span onClick={()=>{navigateToQuestion(input)}}>{input.casesPassed}/{input.totalCases}</span>
+                <span onClick={()=>{navigateToQuestion(input)}}>{(input.casesPassed/input.totalCases) * 100}%</span>
             </div>,
         [rowStates.EDITING_ROW]: 
             <div className={classes.focusedInput}>
@@ -327,7 +328,9 @@ const QuestionsList = ({dispatch,currentQuestion,...props}) => {
                     <div 
                         className={classes.input}
                         onClick={(event) => {onClickRowItem(event,idx) }} >
-                            <span>{input.title}</span>
+                            <span>{input.dateTime}</span>
+                            <span>{input.casesPassed}/{input.totalCases}</span>
+                            <span>{(input.casesPassed/input.totalCases) * 100}%</span>
                     </div>
                 </div>
             )
@@ -342,7 +345,7 @@ const QuestionsList = ({dispatch,currentQuestion,...props}) => {
     return (
         <div className={classes.root}>
             <div className={classes.subtitleContainer}>
-                <p>Title</p>
+                <p>{props.title}</p>
             </div>
             <hr className={classes.divider} />
             <div className={classes.wrapper}>
@@ -370,4 +373,4 @@ const mapStateToProps = ({ currentQuestion }, props) => {
     };
 };
   
-export default ConnectTo(mapStateToProps)(QuestionsList);
+export default ConnectTo(mapStateToProps)(SubmissionsList);

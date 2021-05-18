@@ -23,3 +23,14 @@ div {
     -o-user-select:none;
     user-select:none;
 }
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 50px #1B1C1D inset; /* Change the color to your own background color */
+    box-shadow:  0 0 0 50px #1B1C1D inset; /* Change the color to your own background color */
+    -webkit-text-fill-color: #999;
+}
+input:-webkit-autofill:focus {
+    -webkit-box-shadow: /*your box-shadow*/ 0 0 0 50px #1B1C1D inset;
+    box-shadow:  0 0 0 50px #1B1C1D inset; /* Change the color to your own background color */
+    -webkit-text-fill-color: #999;
+}

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import Navbar from '../../components/Navbar/Navbar.js'
-import QuestionsList from './QuestionsList/QuestionsList.js'
+import BrowseList from './BrowseList/BrowseList.js'
 import { useAuth } from "../../Context/auth";
 import { Link, Redirect } from "react-router-dom";
 
@@ -32,9 +32,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function InitialPage(props) { 
     const classes = useStyles();
-
-    const [inputs, setInputs] = useState(['nums1', 'nums2', 'nums3']);
-
     const { authTokens, setAuthTokens } = useAuth();
     if (!authTokens || authTokens === "undefined") {
         return <Redirect to={"/login"} />;
@@ -44,11 +41,7 @@ export default function InitialPage(props) {
                 <Navbar setAuthTokens={setAuthTokens} />
                 <div className={classes.centralElements}>
                     <div className={classes.centralTextArea}>
-                    <QuestionsList 
-                        title={"Initial Page"}
-                        inputs={inputs}
-                        setInputs={setInputs}                        
-                    />
+                    <BrowseList />
                     </div>
                 </div>
                 

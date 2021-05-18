@@ -3,7 +3,9 @@ const mongoose = require('mongoose'),
       casual = require('casual');
 
 const qDifficulties = ["Easy", "Medium", "Hard"];
-const qTypes = ["Array", "String", "Linked List", "Stack/Queue", "Tree", "Heap", "HashTable", "Graph", "Sort", "Bit Manipulation", "Greedy", "Dynamic Programming"];
+const qTypes = ["Array", "String", "Integer", "Linked List", "Stack/Queue", "Tree", "Heap", "HashTable", "Graph", "Sort", "Bit Manipulation", "Greedy", "Dynamic Programming"];
+
+const basicQtypes = ["Array", "String", "Integer"]
 
 //plain text passwords:
 //users[0]: roberta.crmota123
@@ -157,7 +159,12 @@ const generateQuestions = (n, users) => {
                     title: casual.title,
                     difficulty: casual.random_element(qDifficulties),
                     description: casual.description,
-                    type: casual.random_element(qTypes),
+                    solutionName: casual.word,
+                    solution: `class Solution {\n   public int Solution (int param) {\n \n\n  }\n}`,
+                    languageType: 'Java',
+                    parameters: [{name: casual.word, type: 'int'}],
+                    testcases: [12,26,2,324],
+                    type: casual.random_element(basicQtypes),
                     createdAt: casual.date(),          
             };
 

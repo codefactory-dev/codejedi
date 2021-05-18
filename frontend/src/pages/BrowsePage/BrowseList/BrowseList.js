@@ -1,25 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import IconButton from '../../Buttons/IconButton';
+import Button from '@material-ui/core/Button';
+import axios from 'axios'
 
-import {ReactComponent as HashIcon} from '../../../icons/hashtag.svg';
-import {ReactComponent as AddIcon} from '../../../icons/add.svg';
+import { useAuth } from "Context/auth";
+import { useHistory } from "react-router-dom";
+import ConnectTo from "store/connect";
 
 
-import {ReactComponent as CrossIcon} from '../../../icons/cross.svg';
-import {ReactComponent as YesIcon} from '../../../icons/yes.svg';
+import Swal from 'sweetalert2'
+import { selectCurrentQuestionAction } from "store/reducers/currentQuestion";
 
-import './TestcasesInputList.scss'
+import IconButton from 'components/Buttons/IconButton';
 
-const { usePrevious } = require('../../../utils/useful.js')
+import {ReactComponent as HashIcon} from 'icons/hashtag.svg';
+import {ReactComponent as AddIcon} from 'icons/add.svg';
+
+
+import {ReactComponent as CrossIcon} from 'icons/cross.svg';
+import {ReactComponent as YesIcon} from 'icons/yes.svg';
+
+import './BrowseList.scss'
+
+const { usePrevious } = require('utils/useful.js')
 
 const useStyles = makeStyles(theme => ({
     root: {
         fontFamily: 'Lato',
         fontWeight: '700',
-        height: 280,
+        height: '100vh',
         boxSizing: 'border-box',
         padding: '30px 10px',
         backgroundColor: theme.palette.common.black,
@@ -28,7 +38,7 @@ const useStyles = makeStyles(theme => ({
         marginRight: 'auto',
         marginLeft: 'auto',
         width: '60%',
-        minWidth: 96,
+        minWidth: '296.493px',
         marginTop: 60
         
     },
@@ -52,14 +62,15 @@ const useStyles = makeStyles(theme => ({
     subtitleContainer: {
         display: 'flex',
         alignItems: 'center',
-        marginLeft: '5px',
-        padding: '10px',
+        padding: '10px 10px 10px 0',
         fill: theme.palette.common.grey3,
         
 
         '& p': {
             ... theme.listSubtitle,
-            marginLeft: '5px'
+            marginLeft: '10px',
+            color: theme.palette.common.white,
+            fontSize: '1rem'
         }
     },
     contentContainer: {
@@ -79,7 +90,7 @@ const useStyles = makeStyles(theme => ({
         cursor: 'pointer',
         '& > span': {
             margin: '0',
-            marginLeft: '40px',
+            marginLeft: '10px',
             display: 'inline'
         }
     },
@@ -91,15 +102,14 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: theme.palette.common.black,
         fontSize: '1rem',
         width: '100%',
-        height: 28,
+        height: '100%',
         //border
         borderStyle: 'none',
         cursor: 'pointer',
         backgroundColor: theme.palette.common.black2,
-        borderRadius: '5px',
         '& > span': {
             margin: '0',
-            marginLeft: '15.5px',
+            marginLeft: '10px',
             display: 'inline',
         },
     },
@@ -125,7 +135,7 @@ const useStyles = makeStyles(theme => ({
             width: '100%',
             border: 0,
             borderTop: `.1px solid rgba(0,0,0,0)`,
-            borderBottom: `.1px solid ${theme.palette.common.grey}`,
+            borderBottom: `.1px solid ${theme.palette.common.grey2}`,
             cursor: 'pointer',
             fontWeight: '700',
             marginLeft: '15.5px',
@@ -136,7 +146,8 @@ const useStyles = makeStyles(theme => ({
         ...theme.divider,
         zIndex: 0,
         position: 'relative',
-        minWidth: '225.297px'
+        minWidth: '225.297px',
+        backgroundColor: theme.palette.common.grey2
     },
     addContainer: {
         display: 'inline-flex',
@@ -163,13 +174,14 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        borderBottom: 'solid #333333 1px'
+        borderBottom: `solid ${theme.palette.common.grey2} 1px`,
+        width: '100%',
     },
     activeRow: {
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        borderBottom: 'solid #333333 1px',
+        borderBottom: `solid ${theme.palette.common.grey2} 1px`,
         borderColor: theme.palette.common.grey,
         fill: theme.palette.common.grey3,
         padding: '0',
@@ -180,45 +192,28 @@ const useStyles = makeStyles(theme => ({
         color: theme.palette.secondary.main,
         fontWeight: 100
     },
-    confirmingDeleteIcon: {
-        backgroundColor: theme.palette.secondary.main,
-    }
   }));
 const rowStates = {
     DESELECTED: 0,
     EDITING_ROW: 1,
     CONFIRMING_DELETE: 2
 }
-export default function TestcasesInputList(props) {
+const BrowseList = ({dispatch,currentQuestion,...props}) => {
+    let history = useHistory();
     const classes = useStyles();
     const matches = useMediaQuery('(min-width:798px)');
     const theme = useTheme();
-    const [inputs, setInputs] = useState(props.inputs);
+    const [inputs, setInputs] = useState(['nums1', 'nums2', 'nums3']);
     const [activeRowItem, setActiveRowItem] = useState();
     const [editingState, setEditingState] = useState(rowStates.DESELECTED)
     const [maxInputTag, setMaxInputTag] = useState('20 max');
+    const [questionsList, setQuestionsList] = useState([]);
+    const { authTokens, setAuthTokens } = useAuth();
     //const prevInputs = usePrevious(inputs);
 
-    // -----------------------------------------
-    // HOOKS
-    // -----------------------------------------
-
-    useEffect(() => {
-        props.onChange(inputs);
-    }, [inputs]);
-
-
-    useEffect(()=>{
-        if (editingState === rowStates.EDITING_ROW){
-            let elmt = document.querySelector(`#input-${activeRowItem}`);
-            elmt.value = inputs[activeRowItem];
-            elmt.focus();
-        }
-    },[editingState])
-
-    // ------------------------------------------
-    //
-    // ------------------------------------------
+    const selectCurrentQuestionHandler = (question) => {
+        dispatch(selectCurrentQuestionAction(question))
+    }
 
     const deleteCurrentRow = () => {
         let newInputs = [...inputs];
@@ -231,10 +226,33 @@ export default function TestcasesInputList(props) {
         e.preventDefault();
        setEditingState(rowStates.CONFIRMING_DELETE);
     }
-    
+    useEffect(()=>{
+        if (editingState === rowStates.EDITING_ROW){
+            let elmt = document.querySelector(`#input-${activeRowItem}`);
+            elmt.value = inputs[activeRowItem];
+            elmt.focus();
+        }
+    },[editingState])
 
-    const editRow = (e, idx) => {
-        setEditingState(rowStates.EDITING_ROW);
+
+    useEffect(()=>{
+        if (authTokens){
+            console.log("this is the user id: "+JSON.parse(authTokens).user._id);
+            async function getQuestionsList()
+            {
+                //const fetchedQuestions = await axios.get(`/users/${JSON.parse(authTokens).user._id}/questions`)
+                const fetchedQuestions = await axios.get(`/questions`)
+                //console.log("fetched questions from backend: "+JSON.stringify(fetchedQuestions))                
+                setInputs(fetchedQuestions.data);    
+            }
+            getQuestionsList();
+        }
+    },[])
+    
+    const navigateToQuestion = (input) => {
+        //here should be the code to navigate to the selected question
+        selectCurrentQuestionHandler(input)
+        history.push('/question')
     }
 
     const onClickHandler = (e) => {
@@ -258,8 +276,26 @@ export default function TestcasesInputList(props) {
         setActiveRowItem(-1);
     }
 
-    function handleYes(){
-        deleteCurrentRow();
+    function handleYes(question){
+        async function deleteQuestion(questionId){
+            try {
+                let userId = question.creator.id;
+                let questionId = question._id;
+                const result = await axios({
+                    method: 'delete',
+                    url: `/users/${userId}/questions/${questionId}`,
+                });  
+                if (result.status === 200){
+                    deleteCurrentRow();
+                    Swal.fire('deleted !');
+                }
+            } catch (error){
+                Swal.fire('failed to delete !');
+            }
+            
+        }
+        deleteQuestion();
+        
     }
     function handleNo(){
         setEditingState(rowStates.DESELECTED);
@@ -273,7 +309,6 @@ export default function TestcasesInputList(props) {
     const getDeletionState = (input,idx) => ({
         [rowStates.DESELECTED]: 
             <div className={classes.selectedInput}>
-                
                 <IconButton 
                             className={classes.deleteIcon} 
                             width={19.5} 
@@ -288,7 +323,8 @@ export default function TestcasesInputList(props) {
                             icon={<CrossIcon />}
                             onClick={(e) => { askForDelete(e,idx) } } 
                 />
-                <span onClick={()=>{editRow()}}>{input}</span>
+                <span onClick={()=>{navigateToQuestion(input)}}>{input.title}</span>
+                <span onClick={()=>{navigateToQuestion(input)}}>{input.creator ? '| Author: '+input.creator.username : ''}</span>
             </div>,
         [rowStates.EDITING_ROW]: 
             <div className={classes.focusedInput}>
@@ -325,10 +361,9 @@ export default function TestcasesInputList(props) {
                             strokeHover={'none'}
                             borderRadius={'3px'}
                             icon={<YesIcon />}
-                            onClick={(e) => { handleYes() } } 
+                            onClick={(e) => { handleYes(input) } } 
                 />
                 <span className={classes.confirmingDeleteText}>{matches ? 'Are you sure to delete this row ?' : 'Remove selected item ?'}</span>
-                {/*onClick={()=>{handleYes()}}*/}
             </div>
     })
     
@@ -359,25 +394,23 @@ export default function TestcasesInputList(props) {
                     <div 
                         className={classes.input}
                         onClick={(event) => {onClickRowItem(event,idx) }} >
-                            <span>{input}</span>
+                            <span>{input.title}</span>
+                            <span>{input.creator ? '| Author: '+input.creator.username : ''}</span>
                     </div>
                 </div>
             )
         }
     }
 
-    
+
+    function createQuestion(){
+        history.push('/question')
+    }
 
     return (
         <div className={classes.root}>
-            <div className={classes.titleContainer}>
-                <span className={classes.title}>Input</span>
-                <a className={classes.tag}>{maxInputTag}</a>
-            </div>
-            <hr className={classes.divider} />
             <div className={classes.subtitleContainer}>
-                <HashIcon style={{'height': '12px', width: '12px'}} />
-                <p>Value</p>
+                <p>Title</p>
             </div>
             <hr className={classes.divider} />
             <div className={classes.wrapper}>
@@ -386,30 +419,23 @@ export default function TestcasesInputList(props) {
                         //onBlur in React is used instead of onFocusOut
                         /*onBlur={(e) => {onFormSubmit(e)}}*/
                         onSubmit={(e) => {onFormSubmit(e)}}>
-                        {inputs.map((input, idx) => {
+                        {inputs && inputs.length > 0 && inputs.map((input, idx) => {
                             return (
                                     generateRow(input,idx)
                         )})}
                     </form>
-                    <div 
-                        className={classes.addContainer}
-                        onClick={onClickHandler} 
-                        >
-                        <AddIcon style={{'height': '12px', width: '12px'}} />
-                        <a className={classes.newButton}>New</a>
-                    </div>
                 </div>
             </div>
+            <Button onClick={createQuestion} variant="outlined" disableFocusRipple disableRipple className={classes.saveButton}>Create a Question</Button>
         </div>
     );
 }
 
-TestcasesInputList.propTypes = {
-    inputs: PropTypes.array,
-    // callbacks
-    onChange: PropTypes.func.isRequired
-}
-
-TestcasesInputList.defaultProps = {
-    inputs: []
-}
+const mapStateToProps = ({ currentQuestion }, props) => {
+    return {
+        currentQuestion,
+        ...props
+    };
+};
+  
+export default ConnectTo(mapStateToProps)(BrowseList);
