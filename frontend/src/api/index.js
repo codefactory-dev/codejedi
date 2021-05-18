@@ -4,7 +4,7 @@ import axios from "axios";
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
 const api = axios.create({
-    baseURL: '/.netlify/functions/server/api'
+    baseURL: '/'
 });
 
 export {
