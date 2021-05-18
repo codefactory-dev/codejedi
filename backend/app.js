@@ -11,7 +11,7 @@ var path = require('path');
 // --------------------------------------------------------------------
 
 const local = process.env.LOCAL_SERVER || false;
-const proxy = local ? '' : '/.netlify/functions/server/api/';
+const proxy = '';
 
 app.use(cors())
    .use(bodyParser.json({limit: '50mb'}))
