@@ -345,7 +345,7 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
             if (!solution){
                 return true;
             }
-            let functionSignature = generateFunctionSignature(currentQuestion.languageType,currentQuestion.parameters,currentQuestion.solutionName,currentQuestion.returnType)
+            let functionSignature = generateFunctionSignature(solutionSubpage.funcLanguage,solutionSubpage.funcParameters,solutionSubpage.funcName,solutionSubpage.functReturnType)
             let functionStart = functionSignature.substring(0,functionSignature.length-1).replace(/\n/g,'');;
             let functionEnd = functionSignature.substring(functionSignature.length-1,functionSignature.length);
             let condition1 = solution.startsWith(functionStart);
@@ -383,7 +383,7 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
                                     description: rawContext,
                                     solution: solution,
                                     solutionName: solutionSubpage.funcName,
-                                    languageType: solutionSubpage.funcLanguageType,
+                                    languageType: solutionSubpage.funcLanguage,
                                     returnType: solutionSubpage.functReturnType,
                                     parameters: solutionSubpage.funcParameters,
                                     testcases: testcasesSubpage.inputs,
@@ -410,7 +410,7 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
                                 description: rawContext,
                                 solution: solution,
                                 solutionName: solutionSubpage.funcName,
-                                languageType: solutionSubpage.funcLanguageType,
+                                languageType: solutionSubpage.funcLanguage,
                                 returnType: solutionSubpage.functReturnType,
                                 parameters: solutionSubpage.funcParameters,
                                 testcases: testcasesSubpage.inputs
