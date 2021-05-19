@@ -118,7 +118,7 @@ function SolutionSubpage({dispatch, solution, ...props}) {
     const [codemirror, setCodeMirror] = useState(null)
     const textareaNode = useRef();
 
-    let [funcName, setFuncName] = useState(props.funcName || 'Solution');
+    let [funcName, setFuncName] = useState(props.funcName);
     let [funcLanguage, setFuncLanguage] = useState(props.funcLanguage);
     let [functReturnType, setFuncReturnType] = useState(props.functReturnType);
     let [funcParameters, setFuncParams] = useState(props.funcParameters);

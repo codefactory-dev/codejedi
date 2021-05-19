@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Navbar from '../../components/Navbar/Navbar.js'
+import Navbar from 'components/Navbar/Navbar.js'
 import Swal from 'sweetalert2'
 import axios from 'axios'
 import { StylesProvider } from '@material-ui/core/styles';
@@ -10,20 +10,20 @@ import TestcasesSubpage from './SubPages/TestcasesSubpage/TestcasesSubpage.js'
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Paper from '@material-ui/core/Paper';
-import RegularButton from '../../components/Buttons/RegularButton.js'
+import RegularButton from 'components/Buttons/RegularButton.js'
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import { useAuth } from "../../Context/auth";
+import { useAuth } from "Context/auth";
 import { Link, Redirect } from "react-router-dom";
-import ConnectTo from "../../store/connect";
-import { ConvertCodeToOneLiner } from '../../utils/TextReadingUtils'
+import ConnectTo from "store/connect";
+import { ConvertCodeToOneLiner } from 'utils/TextReadingUtils'
 import {
     convertToRaw,
 } from 'draft-js';
 
-import CodeScaffolding from '../../utils/CodeScaffolding'
-import { Parse, ParseString } from '../../utils/Parser'
+import CodeScaffolding from 'utils/CodeScaffolding'
+import { Parse, ParseString } from 'utils/Parser'
 import { EditorState, ContentState } from 'draft-js';
 import { generateFunctionSignature, FUNCTION_RETURN_TYPES, PROGRAMMING_LANGUAGES } from "utils/functions"
 
@@ -341,15 +341,23 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
     } 
     
     function validateSolution(solution){
-        let functionSignature = generateFunctionSignature(currentQuestion.languageType,currentQuestion.parameters,currentQuestion.solutionName,currentQuestion.returnType)
-        let functionStart = functionSignature.substring(0,functionSignature.length-1).replace(/\n/g,'');;
-        let functionEnd = functionSignature.substring(functionSignature.length-1,functionSignature.length);
-        let condition1 = solution.startsWith(functionStart);
-        let condition2 = solution.endsWith(functionEnd)
-        if ( condition1 && condition2 ) {
-            return true;
+        try {
+            if (!solution){
+                return true;
+            }
+            let functionSignature = generateFunctionSignature(currentQuestion.languageType,currentQuestion.parameters,currentQuestion.solutionName,currentQuestion.returnType)
+            let functionStart = functionSignature.substring(0,functionSignature.length-1).replace(/\n/g,'');;
+            let functionEnd = functionSignature.substring(functionSignature.length-1,functionSignature.length);
+            let condition1 = solution.startsWith(functionStart);
+            let condition2 = solution.endsWith(functionEnd)
+            if ( condition1 && condition2 ) {
+                return true;
+            }
+            return false;
+        } catch (error){
+            Swal.fire(`Something's wrong with your solution.`)
         }
-        return false;
+        
     }
 
     function saveQuestion() {
