@@ -177,7 +177,6 @@ router.delete('/users/:id', async (req,res) => {
 
 //GET all user's owned submissions (index submissions)
 router.get('/users/:qid/submissions', middleware.checkLogIn,
-                                    middleware.checkQuestionParamsNull,
                                     async (req,res) => {
     console.log("getting user submissions")
     //const user = await User.findById(req.params.uid).populate('questionIds');

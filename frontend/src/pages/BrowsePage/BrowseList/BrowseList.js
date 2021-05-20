@@ -212,12 +212,17 @@ const BrowseList = ({dispatch,currentQuestion,...props}) => {
     //const prevInputs = usePrevious(inputs);
 
     const selectCurrentSubmissionHandler = async (question) => {
-        const allSubmissions = await axios({
-            method: 'get',
-            url: `/users/${question._id}/submissions`
-        });  
-        const submission = allSubmissions.data[0];
-        dispatch(selectCurrentSubmissionAction(submission))
+        try {
+            const allSubmissions = await axios({
+                method: 'get',
+                url: `/users/${question._id}/submissions`
+            });  
+            const submission = allSubmissions.data[0];
+            dispatch(selectCurrentSubmissionAction(submission))
+        } catch(error) {
+            throw new Error(`Couldn't get user submissions`)
+        }
+        
     }
 
     const deleteCurrentRow = () => {
@@ -255,9 +260,13 @@ const BrowseList = ({dispatch,currentQuestion,...props}) => {
     },[])
     
     const navigateToQuestion = (input) => {
-        //here should be the code to navigate to the selected question
-        selectCurrentSubmissionHandler(input)
-        history.push('/question')
+        try {
+            //here should be the code to navigate to the selected question
+            selectCurrentSubmissionHandler(input)
+            history.push('/question')
+        } catch (error) {
+            throw new Error('Navigate to question failed. '+error);
+        }        
     }
 
     const onClickHandler = (e) => {
