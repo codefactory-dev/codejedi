@@ -10,7 +10,7 @@ import ConnectTo from "store/connect";
 
 
 import Swal from 'sweetalert2'
-import { selectCurrentQuestionAction } from "store/reducers/currentQuestion";
+import { selectCurrentSubmissionAction } from "store/reducers/currentSubmission";
 
 import IconButton from 'components/Buttons/IconButton';
 
@@ -211,8 +211,13 @@ const BrowseList = ({dispatch,currentQuestion,...props}) => {
     const { authTokens, setAuthTokens } = useAuth();
     //const prevInputs = usePrevious(inputs);
 
-    const selectCurrentQuestionHandler = (question) => {
-        dispatch(selectCurrentQuestionAction(question))
+    const selectCurrentSubmissionHandler = async (question) => {
+        const allSubmissions = await axios({
+            method: 'get',
+            url: `/users/${question._id}/submissions`
+        });  
+        const submission = allSubmissions.data[0];
+        dispatch(selectCurrentSubmissionAction(submission))
     }
 
     const deleteCurrentRow = () => {
@@ -251,7 +256,7 @@ const BrowseList = ({dispatch,currentQuestion,...props}) => {
     
     const navigateToQuestion = (input) => {
         //here should be the code to navigate to the selected question
-        selectCurrentQuestionHandler(input)
+        selectCurrentSubmissionHandler(input)
         history.push('/question')
     }
 

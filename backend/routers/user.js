@@ -185,7 +185,7 @@ router.get('/users/:qid/submissions', middleware.checkLogIn,
     const submissions = question.submissions;
 
     //res.status(201).send({questions: user.questionIds});
-    res.status(201).send(submissions);
+    res.status(200).send(submissions);
 });
 
 //GET all user's owned questions (index questions)

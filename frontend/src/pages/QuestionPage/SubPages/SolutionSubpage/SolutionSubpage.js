@@ -11,13 +11,6 @@ import ConnectTo from "store/connect";
 import { generateFunctionSignature, FUNCTION_RETURN_TYPES, PROGRAMMING_LANGUAGES } from "utils/functions"
 import Swal from 'sweetalert2';
 
-/*root: {
-        boxSizing: 'border-box',
-        padding: '30px 30px',
-        margin: '0',
-        backgroundColor: theme.palette.common.black,
-        height: '100vh',
-*/
 const useStyles = makeStyles(theme => ({
     
     root: {

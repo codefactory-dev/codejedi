@@ -250,53 +250,7 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
           'aria-controls': `scrollable-auto-tabpanel-${index}`,
         };
     }
-    async function loadQuestion(){
-        const allUsers = await axios({
-            method: 'get',
-            url: `/users`
-        });  
-        const userId = allUsers.data[0]._id;
-        const allQuestions = await axios({
-            method: 'get',
-            url: `/users/${userId}/questions`,
-        });  
-        let question = allQuestions.data.questions[0];
-        let defaultQuestion = {
-            solution: "",
-            testcases: "",
-            testcasesType: "",
-            languageType: "",
-            solutionName: "",
-            description: ""
-        }
-        const chosenQuestion = question ? question : defaultQuestion;
-        setQuestionSolution(chosenQuestion.solution);
-        setQuestionTestcases(chosenQuestion.testcases);
-        setQuestionTestcasesType(chosenQuestion.testcasesType);
-        setLanguageType(chosenQuestion.languageType);
-        setSolutionName(chosenQuestion.solutionName);
-        setQuestionDescription(chosenQuestion.description);
-    }
-
-    function triggerSubmitAll(){
-        setShouldSubmit(true);
-    }
-
-    function triggerLoad(){
-        async function performQuestionLoading(){
-            await loadQuestion();
-            setQuestionLoaded(true);
-        }
-        performQuestionLoading();
-        console.log("finished loading questions");
-    }
-
-    function triggerSave(){
-        console.log("triggered save");
-        setShouldSave(true);
-    }
-
-
+        
     function renderSubpage(){     
         const subPages = {
             [pageTabs.DESCRIPTION_PAGE]: 
