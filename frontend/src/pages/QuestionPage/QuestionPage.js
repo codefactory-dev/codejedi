@@ -490,7 +490,7 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
                         creatorId: currentUser._id,
                         questionId: currentQuestion._id,
                         dateTime: new Date(),
-                        submissionCode: questionText,
+                        submissionCode: solution,
                         timeElapsed: null,
                         totalCases: totalCases,
                         casesPassed: casesPassed,                        
