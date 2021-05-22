@@ -437,7 +437,7 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
         var questionText = solutionSubpage.funcSolutionCode;
 
         //get solution from database
-        var hiddenSolution = solutionSubpage.funcSolutionCode;
+        var hiddenSolution = currentQuestion.solution;
             
         //get test cases from file  
         var testCasesText = JSON.stringify(testcasesSubpage.inputs);

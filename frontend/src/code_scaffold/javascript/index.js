@@ -21,7 +21,7 @@ function CodeScaffolding(entries, userSolution, hiddenSolution,questionType, ent
 //The replacement uses $1 as a reference for the things that were wrapped in quotes
 const arrayScaffold = (entries, userSolution, hiddenSolution,entryFunction) =>
 ` /*---------------ENTRIES---------------*/
-const convertedEntries = ${entries.replace(/"([^"]*)"/g, '[$1]')};
+const convertedEntries = ${ entries.length > 0 ? entries.replace(/"([^"]*)"/g, '[$1]') : '[]'};
 var userSolution = function(argument){
     ${userSolution}
     return ${entryFunction}.apply(null,argument);
