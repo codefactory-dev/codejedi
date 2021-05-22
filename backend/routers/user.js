@@ -180,8 +180,8 @@ router.get('/users/:qid/submissions', middleware.checkLogIn,
                                     async (req,res) => {
     console.log("getting user submissions")
     //const user = await User.findById(req.params.uid).populate('questionIds');
-    const question = await Question.findById(req.params.qid)
-    const submissions = question.submissions;
+    const question = await Question.findById(req.params.qid).populate('submissionIds');
+    const submissions = question.submissionIds;
 
     //res.status(201).send({questions: user.questionIds});
     res.status(200).send(submissions);
