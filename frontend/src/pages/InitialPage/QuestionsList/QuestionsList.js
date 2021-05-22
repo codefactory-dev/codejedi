@@ -236,9 +236,9 @@ const QuestionsList = ({dispatch,currentQuestion, inputs, setInputs,...props}) =
         }
     },[])
     
-    const navigateToQuestion = (input) => {
+    const navigateToQuestion = async (input) => {
         //here should be the code to navigate to the selected question
-        selectCurrentQuestionHandler(input)
+        await selectCurrentQuestionHandler(input)
         history.push('/questionCreation')
     }
 
