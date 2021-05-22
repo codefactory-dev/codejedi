@@ -216,6 +216,7 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
 
     useEffect(()=>{
         if (currentQuestion){
+            let submissionCode = currentQuestion.submission.submissionCode || '';
             onDescriptionSubPageChange({
                 questionId: currentQuestion._id,
                 title: currentQuestion.title,
@@ -227,7 +228,7 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
                 funcName: currentQuestion.solutionName,
                 funcParameters: currentQuestion.parameters,
                 functReturnType: currentQuestion.returnType,
-                funcSolutionCode: currentQuestion.solution,
+                funcSolutionCode: submissionCode,
                 funcLanguage: currentQuestion.languageType
             }) 
             onTestcasesSubPageChange({
