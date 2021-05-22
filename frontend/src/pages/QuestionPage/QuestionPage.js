@@ -429,7 +429,7 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
         }
     }
     
-    function submitAll()
+    function submitQuestion()
     {
       
       try {
@@ -490,7 +490,7 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
                         creatorId: currentUser._id,
                         questionId: currentQuestion._id,
                         dateTime: new Date(),
-                        submissionCode: oneLiner,
+                        submissionCode: questionText,
                         timeElapsed: null,
                         totalCases: totalCases,
                         casesPassed: casesPassed,                        
@@ -587,7 +587,7 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
                             />
                             <RegularButton 
                                 className={classes.regularButton} 
-                                onClick={submitAll}
+                                onClick={submitQuestion}
                                 label="Submit" 
                             />
                         </div>

@@ -430,7 +430,7 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
         }
     }
     
-    function submitAll()
+    function testQuestion()
     {
       
       try {
@@ -481,27 +481,6 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
                 console.log("stdout: "+stdout+", stderr: "+stderr+", error: "+error);
                 console.log('this is current user: '+currentUser);
                 console.log('this is the current question: '+currentQuestion)
-                let cases = stdout.split('Cases passed: ')[1];
-                let casesPassed = Number(cases.split('/')[0]);
-                let totalCases = Number(cases.split('/')[1]);
-                const submitted = await axios({
-                    method: 'post',
-                    url: '/submissions',
-                    data: { 
-                        creatorId: currentUser._id,
-                        questionId: currentQuestion._id,
-                        dateTime: new Date(),
-                        submissionCode: oneLiner,
-                        timeElapsed: null,
-                        totalCases: totalCases,
-                        casesPassed: casesPassed,                        
-                        stdout: stdout,
-                        stderr: stderr,
-                        error: error
-    
-                    }
-                })
-                console.log("this was submitted: "+submitted)
                 if (stderr || error)
                 {
                     return Swal.fire(stderr +' '+ error);   
@@ -582,7 +561,7 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
                             />
                             <RegularButton 
                                 className={classes.regularButton} 
-                                onClick={submitAll}
+                                onClick={testQuestion}
                                 label="Submit" 
                             />
                         </div>
