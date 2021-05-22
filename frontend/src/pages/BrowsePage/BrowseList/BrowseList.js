@@ -10,7 +10,6 @@ import ConnectTo from "store/connect";
 
 
 import Swal from 'sweetalert2'
-import { selectCurrentSubmissionAction } from "store/reducers/currentSubmission";
 
 import IconButton from 'components/Buttons/IconButton';
 
@@ -22,6 +21,8 @@ import {ReactComponent as CrossIcon} from 'icons/cross.svg';
 import {ReactComponent as YesIcon} from 'icons/yes.svg';
 
 import './BrowseList.scss'
+import { selectCurrentQuestionAction } from 'store/reducers/currentQuestion';
+//import { selectCurrentSubmissionAction } from "store/reducers/currentSubmission";
 
 const { usePrevious } = require('utils/useful.js')
 
@@ -218,7 +219,8 @@ const BrowseList = ({dispatch,currentQuestion,...props}) => {
                 url: `/users/${question._id}/submissions`
             });  
             const submission = allSubmissions.data[0];
-            dispatch(selectCurrentSubmissionAction(submission))
+            let currentQuestion = {...question, submission: { ...submission }}
+            dispatch(selectCurrentQuestionAction(currentQuestion))
         } catch(error) {
             throw new Error(`Couldn't get user submissions`)
         }
@@ -259,10 +261,10 @@ const BrowseList = ({dispatch,currentQuestion,...props}) => {
         }
     },[])
     
-    const navigateToQuestion = (input) => {
+    const navigateToQuestion = async (input) => {
         try {
             //here should be the code to navigate to the selected question
-            selectCurrentSubmissionHandler(input)
+            await selectCurrentSubmissionHandler(input)
             history.push('/question')
         } catch (error) {
             throw new Error('Navigate to question failed. '+error);

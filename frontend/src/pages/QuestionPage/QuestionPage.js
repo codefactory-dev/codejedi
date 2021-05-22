@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Navbar from '../../components/Navbar/Navbar.js'
+import Navbar from 'components/Navbar/Navbar.js'
 import Swal from 'sweetalert2'
 import axios from 'axios'
 import { StylesProvider } from '@material-ui/core/styles';
@@ -10,20 +10,20 @@ import TestcasesSubpage from './SubPages/TestcasesSubpage/TestcasesSubpage.js'
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Paper from '@material-ui/core/Paper';
-import RegularButton from '../../components/Buttons/RegularButton.js'
+import RegularButton from 'components/Buttons/RegularButton.js'
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import { useAuth } from "../../Context/auth";
+import { useAuth } from "Context/auth";
 import { Link, Redirect, useHistory } from "react-router-dom";
-import ConnectTo from "../../store/connect";
-import { ConvertCodeToOneLiner } from '../../utils/TextReadingUtils'
+import ConnectTo from "store/connect";
+import { ConvertCodeToOneLiner } from 'utils/TextReadingUtils'
 import {
     convertToRaw,
 } from 'draft-js';
 
-import CodeScaffolding from '../../utils/CodeScaffolding'
-import { Parse, ParseString } from '../../utils/Parser'
+import CodeScaffolding from 'utils/CodeScaffolding'
+import { Parse, ParseString } from 'utils/Parser'
 import { EditorState, ContentState } from 'draft-js';
 import { generateFunctionSignature, FUNCTION_RETURN_TYPES, PROGRAMMING_LANGUAGES } from "utils/functions"
 
@@ -201,74 +201,19 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
     let [descriptionSubpage, setDescriptionSubpage] = useState({});
     let [solutionSubpage, setSolutionSubpage] = useState({});
     let [testcasesSubpage, setTestcasesSubpage] = useState({});
-
-    // --------------------------------------
-    // HOOKS
-    // --------------------------------------
-
-    useEffect(()=>{
-        // if(answer.length > 0)
-        // {
-        //     Swal.fire(answer);
-        // }
-        // setAnswer("");
-    },[answer])
-
-    // --------------------------------------
-    // CALLBACKS
-    // --------------------------------------
-    const onDescriptionSubPageChange = variables => setDescriptionSubpage(Object.assign(descriptionSubpage, variables));
-    const onSolutionSubPageChange = variables => {
-        console.log("these are variables: "+variables)
-        setSolutionSubpage(Object.assign(solutionSubpage, variables)) 
-    };
-    const onTestcasesSubPageChange = variables => setTestcasesSubpage(Object.assign(testcasesSubpage, variables));
     
-    // --------------------------------------
-    // 
-    // --------------------------------------
+    //---------------------------------------------------
+    //HOOKS
+    //---------------------------------------------------
 
-    
-    const changeSubpage = (event,idx) => {
-        if (idx === 0){
-            setMinWidth('893.750px');
-        } else if (idx === 1) {
-            setMinWidth('1093.750px');
-        } else if (idx === 2) {
-            setMinWidth('842.500px');
-        }
-        console.log("changing subpage");
-        setActiveTab(idx);
-    }
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
-    function a11yProps(index) {
-  
-        return {
-          id: `scrollable-auto-tab-${index}`,
-          'aria-controls': `scrollable-auto-tabpanel-${index}`,
-        };
-    }
-        
-    function renderSubpage(){     
-        const subPages = {
-            [pageTabs.DESCRIPTION_PAGE]: 
-                <DescriptionSubpage {... descriptionSubpage} onPageChange={onDescriptionSubPageChange}/>,
-            [pageTabs.SOLUTION_PAGE]: 
-                <SolutionSubpage {... solutionSubpage} onPageChange={onSolutionSubPageChange}/>,
-            [pageTabs.TESTCASES_PAGE]: 
-                <TestcasesSubpage {... testcasesSubpage} onPageChange={onTestcasesSubPageChange}/>
-
-        }
-        return subPages[activeTab];
-    }
     const { authTokens, setAuthTokens } = useAuth();
+
     useEffect(()=>{
         if (authTokens && authTokens !== "undefined") {
             setCurrentUser(JSON.parse(authTokens).user)
         }
     },[authTokens])
+
     useEffect(()=>{
         if (currentQuestion){
             onDescriptionSubPageChange({
@@ -290,26 +235,196 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
             })  
         }
     },[currentQuestion])
+
+    // --------------------------------------
+    // CALLBACKS
+    // --------------------------------------
+    const onDescriptionSubPageChange = variables => {
+        console.log("these are the descripton subpage variables: "+variables)
+        setDescriptionSubpage(Object.assign(descriptionSubpage, variables));
+    }
+    const onSolutionSubPageChange = variables => {
+        console.log("these are variables: "+variables)
+        setSolutionSubpage(Object.assign(solutionSubpage, variables)) 
+    };
+    const onTestcasesSubPageChange = variables => setTestcasesSubpage(Object.assign(testcasesSubpage, variables));
+      
+    // --------------------------------------
+    // FUNCTIONS
+    // --------------------------------------
+
+    const changeSubpage = (event,idx) => {
+        if (idx === 0){
+            setMinWidth('893.750px');
+        } else if (idx === 1) {
+            setMinWidth('1093.750px');
+        } else if (idx === 2) {
+            setMinWidth('842.500px');
+        }
+        console.log("changing subpage");
+        setActiveTab(idx);
+    }
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+    function a11yProps(index) {
+  
+        return {
+          id: `scrollable-auto-tab-${index}`,
+          'aria-controls': `scrollable-auto-tabpanel-${index}`,
+        };
+    }
+    async function loadQuestion(){
+        const allUsers = await axios({
+            method: 'get',
+            url: `/users`
+        });  
+        const userId = allUsers.data[0]._id;
+        const allQuestions = await axios({
+            method: 'get',
+            url: `/users/${userId}/questions`,
+        });  
+        let question = allQuestions.data.questions[0];
+        let defaultQuestion = {
+            solution: "",
+            testcases: "",
+            testcasesType: "",
+            languageType: "",
+            solutionName: "",
+            description: ""
+        }
+        const chosenQuestion = question ? question : defaultQuestion;
+        setQuestionSolution(chosenQuestion.solution);
+        setQuestionTestcases(chosenQuestion.testcases);
+        setQuestionTestcasesType(chosenQuestion.testcasesType);
+        setLanguageType(chosenQuestion.languageType);
+        setSolutionName(chosenQuestion.solutionName);
+        setQuestionDescription(chosenQuestion.description);
+    }
+
+    function triggerSubmitAll(){
+        setShouldSubmit(true);
+    }
+
+    function triggerLoad(){
+        async function performQuestionLoading(){
+            await loadQuestion();
+            setQuestionLoaded(true);
+        }
+        performQuestionLoading();
+        console.log("finished loading questions");
+    }
+
+    function triggerSave(){
+        console.log("triggered save");
+        setShouldSave(true);
+    }
+
+
+    function renderSubpage(){     
+        const subPages = {
+            [pageTabs.DESCRIPTION_PAGE]: 
+                <DescriptionSubpage {... descriptionSubpage} onPageChange={onDescriptionSubPageChange}/>,
+            [pageTabs.SOLUTION_PAGE]: 
+                <SolutionSubpage {... solutionSubpage} onPageChange={onSolutionSubPageChange}/>,
+            [pageTabs.TESTCASES_PAGE]: 
+                <TestcasesSubpage {... testcasesSubpage} onPageChange={onTestcasesSubPageChange}/>
+
+        }
+        return subPages[activeTab];
+    }
     
     if (!authTokens || authTokens === "undefined") {
         return <Redirect to={"/login"} />;
     } 
     
     function validateSolution(solution){
-        let functionSignature = generateFunctionSignature(currentQuestion.languageType,currentQuestion.parameters,currentQuestion.solutionName,currentQuestion.returnType)
-        let functionStart = functionSignature.substring(0,functionSignature.length-1).replace(/\n/g,'');;
-        let functionEnd = functionSignature.substring(functionSignature.length-1,functionSignature.length);
-        let condition1 = solution.startsWith(functionStart);
-        let condition2 = solution.endsWith(functionEnd)
-        if ( condition1 && condition2 ) {
-            return true;
+        try {
+            if (!solution){
+                return true;
+            }
+            let functionSignature = generateFunctionSignature(solutionSubpage.funcLanguage,solutionSubpage.funcParameters,solutionSubpage.funcName,solutionSubpage.functReturnType)
+            let functionStart = functionSignature.substring(0,functionSignature.length-1).replace(/\n/g,'');;
+            let functionEnd = functionSignature.substring(functionSignature.length-1,functionSignature.length);
+            let condition1 = solution.startsWith(functionStart);
+            let condition2 = solution.endsWith(functionEnd)
+            if ( condition1 && condition2 ) {
+                return true;
+            }
+            return false;
+        } catch (error){
+            Swal.fire(`Something's wrong with your solution.`)
         }
-        return false;
+        
     }
 
-    function navigateToSubmissions(){
-        if (currentQuestion && currentQuestion._id){
-            history.push('/submissions', { questionId: currentQuestion._id });
+    function saveQuestion() {
+        if (currentUser){
+            async function performSave(){
+                if (validateSolution(solution)){
+                    console.log("saving question")
+                    const userId = currentUser._id;
+                    console.log("this is the solution subpage: "+JSON.stringify(solutionSubpage))
+                    //const blocks = convertToRaw(descriptionSubpage.editorState.getCurrentContent()).blocks;
+                    //const editorStateRaw = blocks.map(block => (!block.text.trim() && '\n') || block.text).join('\n');
+                    const rawContext = JSON.stringify(convertToRaw(descriptionSubpage.editorState.getCurrentContent()));
+                    
+                    if (descriptionSubpage.questionId){
+                       try {
+                            const result = await axios({
+                                method: 'put',
+                                url: `/users/${userId}/questions/${descriptionSubpage.questionId}`,
+                                data: { 
+                                    title: descriptionSubpage.questionName,
+                                    difficulty: descriptionSubpage.questionDifficulty,
+                                    type: descriptionSubpage.questionType,
+                                    description: rawContext,
+                                    solution: solution,
+                                    solutionName: solutionSubpage.funcName,
+                                    languageType: solutionSubpage.funcLanguage,
+                                    returnType: solutionSubpage.functReturnType,
+                                    parameters: solutionSubpage.funcParameters,
+                                    testcases: testcasesSubpage.inputs,
+                                }
+                            }); 
+                            if (result.status === 200){
+                                Swal.fire('updated !');
+                            }
+                       } catch (error){
+                         Swal.fire(`update failed !`);
+                         console.log("error updating question: "+error)
+                       }
+                       
+                        return; 
+                    }
+                    try {
+                        const result = await axios({
+                            method: 'post',
+                            url: `/users/${userId}/questions`,
+                            data: { 
+                                title: descriptionSubpage.questionName,
+                                difficulty: descriptionSubpage.questionDifficulty,
+                                type: descriptionSubpage.questionType,
+                                description: rawContext,
+                                solution: solution,
+                                solutionName: solutionSubpage.funcName,
+                                languageType: solutionSubpage.funcLanguage,
+                                returnType: solutionSubpage.functReturnType,
+                                parameters: solutionSubpage.funcParameters,
+                                testcases: testcasesSubpage.inputs
+                            }
+                        });  
+                        if (result.status === 201){
+                            Swal.fire('created !');
+                        }
+                    } catch (error){
+                        Swal.fire(`create failed !`);
+                    }   
+                } else {
+                    Swal.fire(`Please don't change your function signature !`);
+                }
+            }
+            performSave();
         }
     }
     
@@ -400,6 +515,12 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
         Swal.fire('Error submitting question !');
       }
       
+    }
+
+    function navigateToSubmissions(){
+        if (currentQuestion && currentQuestion._id){
+            history.push('/submissions', { questionId: currentQuestion._id });
+        }
     }
     
     function languageNameToIndex(languageName){
