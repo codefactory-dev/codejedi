@@ -218,7 +218,7 @@ const BrowseList = ({dispatch,currentQuestion,...props}) => {
                 method: 'get',
                 url: `/users/${question._id}/submissions`
             });  
-            const submission = allSubmissions.data[0];
+            const submission = allSubmissions.data[allSubmissions.data.length - 1];
             let currentQuestion = {...question, submission: { ...submission }}
             dispatch(selectCurrentQuestionAction(currentQuestion))
         } catch(error) {
