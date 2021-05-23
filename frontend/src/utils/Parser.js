@@ -46,6 +46,9 @@ export function ParseInteger(text)
 export function ParseArray(text){
     var array = text.split("\n");
     console.log("THIS IS THE ARRAY: "+array);
+    if (array.length === 1 && array[0] === '[]'){
+        return [];
+    }
     var res = [];
     let cont=0;
     array.forEach(elem => {

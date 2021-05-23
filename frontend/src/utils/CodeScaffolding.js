@@ -3,7 +3,8 @@ const languageTypes = require('./languageTypes.js')
 function CodeScaffolding(entries, userSolution, hiddenSolution, questionType,languageType,entryFunction="solution")
 {
     let CodeScaffolding;
-    switch(languageType){
+    let lowercaseLanguage = languageType.toLowerCase();
+    switch(lowercaseLanguage){
         case languageTypes.Javascript:
             CodeScaffolding = require('../code_scaffold/javascript/index.js');
             break;

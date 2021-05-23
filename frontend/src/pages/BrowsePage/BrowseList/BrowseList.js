@@ -10,7 +10,6 @@ import ConnectTo from "store/connect";
 
 
 import Swal from 'sweetalert2'
-import { selectCurrentQuestionAction } from "store/reducers/currentQuestion";
 
 import IconButton from 'components/Buttons/IconButton';
 
@@ -22,6 +21,8 @@ import {ReactComponent as CrossIcon} from 'icons/cross.svg';
 import {ReactComponent as YesIcon} from 'icons/yes.svg';
 
 import './BrowseList.scss'
+import { selectCurrentQuestionAction } from 'store/reducers/currentQuestion';
+//import { selectCurrentSubmissionAction } from "store/reducers/currentSubmission";
 
 const { usePrevious } = require('utils/useful.js')
 
@@ -211,8 +212,19 @@ const BrowseList = ({dispatch,currentQuestion,...props}) => {
     const { authTokens, setAuthTokens } = useAuth();
     //const prevInputs = usePrevious(inputs);
 
-    const selectCurrentQuestionHandler = (question) => {
-        dispatch(selectCurrentQuestionAction(question))
+    const selectCurrentSubmissionHandler = async (question) => {
+        try {
+            const allSubmissions = await axios({
+                method: 'get',
+                url: `/users/${question._id}/submissions`
+            });  
+            const submission = allSubmissions.data[allSubmissions.data.length - 1];
+            let currentQuestion = {...question, submission: { ...submission }}
+            dispatch(selectCurrentQuestionAction(currentQuestion))
+        } catch(error) {
+            throw new Error(`Couldn't get user submissions`)
+        }
+        
     }
 
     const deleteCurrentRow = () => {
@@ -249,10 +261,14 @@ const BrowseList = ({dispatch,currentQuestion,...props}) => {
         }
     },[])
     
-    const navigateToQuestion = (input) => {
-        //here should be the code to navigate to the selected question
-        selectCurrentQuestionHandler(input)
-        history.push('/question')
+    const navigateToQuestion = async (input) => {
+        try {
+            //here should be the code to navigate to the selected question
+            await selectCurrentSubmissionHandler(input)
+            history.push('/question')
+        } catch (error) {
+            throw new Error('Navigate to question failed. '+error);
+        }        
     }
 
     const onClickHandler = (e) => {
