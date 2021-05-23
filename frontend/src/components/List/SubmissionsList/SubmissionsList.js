@@ -361,7 +361,7 @@ const SubmissionsList = ({dispatch,currentQuestion, inputs, setInputs,...props})
                     </form>
                 </div>
             </div>
-            <Button onClick={createQuestion} variant="outlined" disableFocusRipple disableRipple className={classes.saveButton}>Create a Question</Button>
+            {/*<Button onClick={createQuestion} variant="outlined" disableFocusRipple disableRipple className={classes.saveButton}>Create a Question</Button>*/}
         </div>
     );
 }
