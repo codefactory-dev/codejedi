@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import axios from 'axios'
+import api from 'services/api'
 
 import { useAuth } from "Context/auth";
 import { useHistory } from "react-router-dom";
@@ -214,7 +214,7 @@ const BrowseList = ({dispatch,currentQuestion,...props}) => {
 
     const selectCurrentSubmissionHandler = async (question) => {
         try {
-            const allSubmissions = await axios({
+            const allSubmissions = await api({
                 method: 'get',
                 url: `/users/${question._id}/submissions`
             });  
@@ -253,7 +253,7 @@ const BrowseList = ({dispatch,currentQuestion,...props}) => {
             async function getQuestionsList()
             {
                 //const fetchedQuestions = await axios.get(`/users/${JSON.parse(authTokens).user._id}/questions`)
-                const fetchedQuestions = await axios.get(`/questions`)
+                const fetchedQuestions = await api.get(`/questions`)
                 //console.log("fetched questions from backend: "+JSON.stringify(fetchedQuestions))                
                 setInputs(fetchedQuestions.data);    
             }
@@ -297,7 +297,7 @@ const BrowseList = ({dispatch,currentQuestion,...props}) => {
             try {
                 let userId = question.creator.id;
                 let questionId = question._id;
-                const result = await axios({
+                const result = await api({
                     method: 'delete',
                     url: `/users/${userId}/questions/${questionId}`,
                 });  
