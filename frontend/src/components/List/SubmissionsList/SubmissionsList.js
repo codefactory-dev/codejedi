@@ -239,7 +239,7 @@ const SubmissionsList = ({dispatch,currentQuestion, inputs, setInputs,...props})
             getQuestionsList();
         }
     },[])
-    
+     
     const navigateToQuestion = (input) => {
         //here should be the code to navigate to the selected question
         selectCurrentQuestionHandler(input)
@@ -354,7 +354,7 @@ const SubmissionsList = ({dispatch,currentQuestion, inputs, setInputs,...props})
                         //onBlur in React is used instead of onFocusOut
                         /*onBlur={(e) => {onFormSubmit(e)}}*/
                         onSubmit={(e) => {onFormSubmit(e)}}>
-                        {inputs && inputs.length > 0 && inputs.map((input, idx) => {
+                        {inputs && inputs.length > 0 && inputs.slice().sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime)).map((input, idx) => {
                             return (
                                     generateRow(input,idx)
                         )})}
