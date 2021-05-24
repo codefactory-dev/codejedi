@@ -5,7 +5,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import IconButton from '../../Buttons/IconButton';
-import axios from 'axios'
+import api from 'services/api'
 import {ReactComponent as HashIcon} from '../../../icons/hashtag.svg';
 import {ReactComponent as AddIcon} from '../../../icons/add.svg';
 import { format, parseISO, startOfDay, endOfDay, subDays } from 'date-fns';
@@ -232,7 +232,7 @@ const SubmissionsList = ({dispatch,currentQuestion, inputs, setInputs,...props})
             console.log("this is the user id: "+JSON.parse(authTokens).user._id);
             async function getQuestionsList()
             {
-                const fetchedQuestions = await axios.get(`/users/${JSON.parse(authTokens).user._id}/questions`)
+                const fetchedQuestions = await api.get(`/users/${JSON.parse(authTokens).user._id}/questions`)
                 //console.log("fetched questions from backend: "+JSON.stringify(fetchedQuestions))                
                 setInputs(fetchedQuestions.data);    
             }

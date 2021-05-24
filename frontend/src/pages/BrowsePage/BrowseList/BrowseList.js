@@ -252,7 +252,7 @@ const BrowseList = ({dispatch,currentQuestion,...props}) => {
             console.log("this is the user id: "+JSON.parse(authTokens).user._id);
             async function getQuestionsList()
             {
-                //const fetchedQuestions = await axios.get(`/users/${JSON.parse(authTokens).user._id}/questions`)
+                //const fetchedQuestions = await api.get(`/users/${JSON.parse(authTokens).user._id}/questions`)
                 const fetchedQuestions = await api.get(`/questions`)
                 //console.log("fetched questions from backend: "+JSON.stringify(fetchedQuestions))                
                 setInputs(fetchedQuestions.data);    

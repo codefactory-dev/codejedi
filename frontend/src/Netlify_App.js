@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'
+import api from 'services/api'
 import GenerateName from './GenerateName.js'
 import TextFileReader from './utils/TextfileReader.js'
 
@@ -26,7 +26,7 @@ function App() {
     async function generateAsync() {
       const newName = GenerateName();
       setLoading(true);
-      const result = await axios.post('/.netlify/functions/server/api/users', {name: newName});
+      const result = await api.post('/.netlify/functions/server/api/users', {name: newName});
       console.log("posted user: "+result.data.name);
       setUsers([...users,`${result.data.firstname} ${result.data.lastname}`]);
       setLoading(false);

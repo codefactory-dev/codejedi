@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import CodeEditor from './CodeEditor.js'
 import EditorTestcases from './EditorTestcases';
-import axios from 'axios'
+import api from 'services/api'
 import { ConvertCodeToOneLiner } from './utils/TextReadingUtils'
 import CodeScaffolding from './utils/CodeScaffolding'
 import Parse from './utils/Parser'
@@ -44,7 +44,7 @@ function QuestionSubmitter()
         // POST both the question and the test cases
         async function createEditor() {
             
-            const result = await axios({
+            const result = await api({
                 method: 'post',
                 url: '/compile',
                 data: { 

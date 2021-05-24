@@ -6,7 +6,7 @@ import SubmissionsList from '../../components/List/SubmissionsList/SubmissionsLi
 import { useAuth } from "../../Context/auth";
 import { Link, Redirect } from "react-router-dom";
 import { Typography } from "@material-ui/core"
-import axios from 'axios'
+import api from 'services/api'
 import { useHistory } from "react-router-dom";
 import Swal from 'sweetalert2'
 
@@ -46,7 +46,7 @@ export default function SubmissionsPage({location}, ...props) {
             async function getSubmissionsList()
             {
                 try {
-                    const question = await axios.get(`/submissionsQuestion/${location.state.questionId}`)
+                    const question = await api.get(`/users/${location.state.questionId}/submissions`)
                     setInputs(question.data);    
                 } catch (error) {
                     Swal.fire("Error: could not get the submissions list for the question.")
