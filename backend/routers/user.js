@@ -178,12 +178,19 @@ router.delete('/users/:id', async (req,res) => {
 //GET all user's owned submissions (index submissions)
 router.get('/users/:qid/submissions', middleware.auth,
                                     async (req,res) => {
-    console.log("getting user submissions")
+    try {                                      
+      console.log("getting user submissions")
+      let userId = req.user._id.toString();
 
-    const question = await Question.findById(req.params.qid).populate('submissionIds');
-    const submissions = question.submissionIds;
+      const question = await Question.findById(req.params.qid).populate('submissionIds').lean();
+      const submissions = question.submissionIds;
+      
+      let submissionsCurrentUser = submissions.filter((submission)=> submission.creatorId.toString() === userId)
 
-    res.status(200).send(submissions);
+      res.status(200).send(submissionsCurrentUser);
+    } catch (error) {
+      res.status(500).send("internal error getting user owned submissions. "+error);;
+    }
 });
 
 //GET all user's owned questions (index questions)
