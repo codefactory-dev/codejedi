@@ -10,6 +10,7 @@ import QuestionPage from './pages/QuestionPage/QuestionPage.js'
 import QuestionCreationPage from './pages/QuestionCreationPage/QuestionCreationPage.js'
 import { AuthContext } from "./Context/auth";
 import PrivateRoute from './_RouteWrappers/private'
+import jwt_decode from "jwt-decode";
 import Store from "./store";
 
 
@@ -21,6 +22,30 @@ function App() {
   const setTokens = (data) => {
     localStorage.setItem("tokens", JSON.stringify(data));
     setAuthTokens(JSON.stringify(data));
+  }
+  
+  // Check for token to keep user logged in
+  if (localStorage.tokens) {
+    
+    // Set auth token header auth
+    const tokens = localStorage.tokens;
+    
+    if (tokens !== 'undefined'){
+
+      // Decode token and get user info and exp
+      const decoded = jwt_decode(JSON.parse(tokens).token);
+
+      // Check for expired token
+      const currentTime = Date.now() / 1000; // to get in milliseconds
+      if (decoded.exp < currentTime) {
+        // Logout user
+        handleLogout();
+      }
+    }    
+  }
+
+  function handleLogout(){
+    setAuthTokens();
   }
 
   return (

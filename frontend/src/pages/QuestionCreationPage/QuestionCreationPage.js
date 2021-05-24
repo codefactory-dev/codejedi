@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Navbar from 'components/Navbar/Navbar.js'
 import Swal from 'sweetalert2'
-import axios from 'axios'
+import api from 'services/api'
 import { StylesProvider } from '@material-ui/core/styles';
 import DescriptionSubpage from './SubPages/DescriptionSubpage/DescriptionSubpage.js'
 import SolutionSubpage from './SubPages/SolutionSubpage/SolutionSubpage.js'
@@ -250,12 +250,12 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
         };
     }
     async function loadQuestion(){
-        const allUsers = await axios({
+        const allUsers = await api({
             method: 'get',
             url: `/users`
         });  
         const userId = allUsers.data[0]._id;
-        const allQuestions = await axios({
+        const allQuestions = await api({
             method: 'get',
             url: `/users/${userId}/questions`,
         });  
@@ -373,7 +373,7 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
                     
                     if (descriptionSubpage.questionId){
                        try {
-                            const result = await axios({
+                            const result = await api({
                                 method: 'put',
                                 url: `/users/${userId}/questions/${descriptionSubpage.questionId}`,
                                 data: { 
@@ -400,7 +400,7 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
                         return; 
                     }
                     try {
-                        const result = await axios({
+                        const result = await api({
                             method: 'post',
                             url: `/users/${userId}/questions`,
                             data: { 
@@ -468,7 +468,7 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
         async function createEditor() {
             
             try {
-                const result = await axios({
+                const result = await api({
                     method: 'post',
                     url: '/compile',
                     data: { 

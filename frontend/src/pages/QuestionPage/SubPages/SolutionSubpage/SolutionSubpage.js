@@ -152,6 +152,10 @@ function SolutionSubpage({dispatch, solution, ...props}) {
 
         setCodeMirror(codeMirrorInstance)
 
+        return () => {
+            dispatch(saveSolutionAction(''));
+        }
+
     }, []);
 
     useEffect(() => {
@@ -357,6 +361,7 @@ SolutionSubpage.propTypes = {
     funcName: PropTypes.string,
     funcLanguage: PropTypes.string,
     functReturnType: PropTypes.string,
+    funcSolutionCode: PropTypes.string,
     funcParameters: PropTypes.array,
     // callbacks
     onPageChange: PropTypes.func.isRequired,
@@ -366,6 +371,7 @@ SolutionSubpage.defaultProps = {
     funcName: '',
     funcLanguage: PROGRAMMING_LANGUAGES.JAVA,
     functReturnType: FUNCTION_RETURN_TYPES.INT,
+    funcSolutionCode: '',
     funcParameters: [],
 }
 
