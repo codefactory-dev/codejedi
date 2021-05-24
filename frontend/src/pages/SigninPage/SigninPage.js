@@ -98,12 +98,12 @@ const useStyles = makeStyles((theme) => ({
 
 
 function SigninPage(props) {
+    let history = useHistory();
     const classes = useStyles();
     const [isLoggedIn, setLoggedIn] = useState(false);
     const [isError, setIsError] = useState(false);
     const { setAuthTokens } = useAuth();
     const referer = (props.location.state && props.location.state.referer) || '/';
-    let history = useHistory();
  
     function handleLogin(e){
         e.preventDefault();
