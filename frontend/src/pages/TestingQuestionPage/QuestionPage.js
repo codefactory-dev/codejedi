@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import Swal from 'sweetalert2'
 import questionTypes from '../../utils/questionTypes.js';
-import axios from 'axios'
+import api from 'services/api'
 
 export default function QuestionPage() { 
     const classes = useStyles();
@@ -25,12 +25,12 @@ export default function QuestionPage() {
 
 
     async function loadQuestion(){
-        const allUsers = await axios({
+        const allUsers = await api({
             method: 'get',
             url: `/users`
         });  
         const userId = allUsers.data[0]._id;
-        const allQuestions = await axios({
+        const allQuestions = await api({
             method: 'get',
             url: `/users/${userId}/questions`,
         });  

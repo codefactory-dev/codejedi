@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import axios from 'axios'
+import api from 'services/api'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
@@ -98,12 +98,12 @@ const useStyles = makeStyles((theme) => ({
 
 
 function SigninPage(props) {
+    let history = useHistory();
     const classes = useStyles();
     const [isLoggedIn, setLoggedIn] = useState(false);
     const [isError, setIsError] = useState(false);
     const { setAuthTokens } = useAuth();
     const referer = (props.location.state && props.location.state.referer) || '/';
-    let history = useHistory();
  
     function handleLogin(e){
         e.preventDefault();
@@ -113,7 +113,7 @@ function SigninPage(props) {
             try{
                 const login = document.querySelector('#mylogin').value;
                 const password = document.querySelector('#mypassword').value;
-                const result = await axios({
+                const result = await api({
                     method: 'post',
                     url: '/auth/signin',
                     data: {

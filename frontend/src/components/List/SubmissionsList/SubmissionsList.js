@@ -5,7 +5,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import IconButton from '../../Buttons/IconButton';
-import axios from 'axios'
+import api from 'services/api'
 import {ReactComponent as HashIcon} from '../../../icons/hashtag.svg';
 import {ReactComponent as AddIcon} from '../../../icons/add.svg';
 import { format, parseISO, startOfDay, endOfDay, subDays } from 'date-fns';
@@ -232,18 +232,17 @@ const SubmissionsList = ({dispatch,currentQuestion, inputs, setInputs,...props})
             console.log("this is the user id: "+JSON.parse(authTokens).user._id);
             async function getQuestionsList()
             {
-                const fetchedQuestions = await axios.get(`/users/${JSON.parse(authTokens).user._id}/questions`)
+                const fetchedQuestions = await api.get(`/users/${JSON.parse(authTokens).user._id}/questions`)
                 //console.log("fetched questions from backend: "+JSON.stringify(fetchedQuestions))                
                 setInputs(fetchedQuestions.data);    
             }
             getQuestionsList();
         }
     },[])
-    
-    const navigateToQuestion = (input) => {
-        //here should be the code to navigate to the selected question
-        selectCurrentQuestionHandler(input)
-        history.push('/questionCreation')
+     
+    const navigateToSubmission = (input) => {
+        //here should be the code to navigate to the selected submission
+        
     }
 
     const onClickHandler = (e) => {
@@ -282,9 +281,9 @@ const SubmissionsList = ({dispatch,currentQuestion, inputs, setInputs,...props})
     const getDeletionState = (input,idx) => ({
         [rowStates.DESELECTED]: 
             <div className={classes.selectedInput}>
-                <span onClick={()=>{navigateToQuestion(input)}}>{input.dateTime}</span>
-                <span onClick={()=>{navigateToQuestion(input)}}>{input.casesPassed}/{input.totalCases}</span>
-                <span onClick={()=>{navigateToQuestion(input)}}>{(input.casesPassed/input.totalCases) * 100}%</span>
+                <span onClick={()=>{navigateToSubmission(input)}}>{input.dateTime}</span>
+                <span onClick={()=>{navigateToSubmission(input)}}>{input.casesPassed}/{input.totalCases}</span>
+                {input.totalCases === 0 ? '' : <span>{(input.casesPassed/input.totalCases) * 100}%</span> }
             </div>,
         [rowStates.EDITING_ROW]: 
             <div className={classes.focusedInput}>
@@ -330,7 +329,8 @@ const SubmissionsList = ({dispatch,currentQuestion, inputs, setInputs,...props})
                         onClick={(event) => {onClickRowItem(event,idx) }} >
                             <span>{input.dateTime}</span>
                             <span>{input.casesPassed}/{input.totalCases}</span>
-                            <span>{(input.casesPassed/input.totalCases) * 100}%</span>
+                            {input.totalCases === 0 ? '' : <span>{(input.casesPassed/input.totalCases) * 100}%</span> }
+                            
                     </div>
                 </div>
             )
@@ -354,14 +354,14 @@ const SubmissionsList = ({dispatch,currentQuestion, inputs, setInputs,...props})
                         //onBlur in React is used instead of onFocusOut
                         /*onBlur={(e) => {onFormSubmit(e)}}*/
                         onSubmit={(e) => {onFormSubmit(e)}}>
-                        {inputs && inputs.length > 0 && inputs.map((input, idx) => {
+                        {inputs && inputs.length > 0 && inputs.slice().sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime)).map((input, idx) => {
                             return (
                                     generateRow(input,idx)
                         )})}
                     </form>
                 </div>
             </div>
-            <Button onClick={createQuestion} variant="outlined" disableFocusRipple disableRipple className={classes.saveButton}>Create a Question</Button>
+            {/*<Button onClick={createQuestion} variant="outlined" disableFocusRipple disableRipple className={classes.saveButton}>Create a Question</Button>*/}
         </div>
     );
 }

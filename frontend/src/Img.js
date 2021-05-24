@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from 'services/api'
 
 function Img() { 
     const [img, setImg] = useState('');
@@ -15,7 +15,7 @@ function Img() {
             const netlifyURL = '/.netlify/functions/server/api/uploadPhoto';   
             const localURL = 'http://localhost:3000/uploadPhoto';                
             const postURL = localURL;
-            const result = await axios.post(postURL, {img: content} );
+            const result = await api.post(postURL, {img: content} );
 
             // console.log(result);
             setImg(result.data.buffer);

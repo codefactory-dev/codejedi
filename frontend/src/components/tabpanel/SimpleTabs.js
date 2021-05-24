@@ -11,7 +11,7 @@ import EditorTestcases from '../EditorTestCases/EditorTestcases.js';
 import Editor from '../Editor/Editor.js'
 import CodeScaffolding from '../../utils/CodeScaffolding'
 import { ConvertCodeToOneLiner } from '../../utils/TextReadingUtils'
-import axios from 'axios'
+import api from 'services/api'
 import questionTypes from '../../utils/questionTypes.js'
 import languageTypes from '../../utils/languageTypes.js'
 import { Parse, ParseString } from '../../utils/Parser'
@@ -103,13 +103,13 @@ export default function SimpleTabs(props) {
       async function saveQuestion() {
         try{
           
-          const allUsers = await axios({
+          const allUsers = await api({
             method: 'get',
             url: `/users`
           });  
           //console.log("got all users ! "+JSON.stringify(allUsers.data));
           const userId = allUsers.data[0]._id;
-          const result = await axios({
+          const result = await api({
               method: 'post',
               url: `/users/${userId}/questions`,
               data: { 
@@ -167,7 +167,7 @@ export default function SimpleTabs(props) {
       // POST both the question and the test cases
       async function createEditor() {
           
-          const result = await axios({
+          const result = await api({
               method: 'post',
               url: '/compile',
               data: { 

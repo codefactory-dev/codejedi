@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import axios from 'axios'
+import api from 'services/api'
 
 import { useAuth } from "Context/auth";
 import { useHistory } from "react-router-dom";
@@ -10,7 +10,6 @@ import ConnectTo from "store/connect";
 
 
 import Swal from 'sweetalert2'
-import { selectCurrentQuestionAction } from "store/reducers/currentQuestion";
 
 import IconButton from 'components/Buttons/IconButton';
 
@@ -22,6 +21,8 @@ import {ReactComponent as CrossIcon} from 'icons/cross.svg';
 import {ReactComponent as YesIcon} from 'icons/yes.svg';
 
 import './BrowseList.scss'
+import { selectCurrentQuestionAction } from 'store/reducers/currentQuestion';
+//import { selectCurrentSubmissionAction } from "store/reducers/currentSubmission";
 
 const { usePrevious } = require('utils/useful.js')
 
@@ -211,8 +212,19 @@ const BrowseList = ({dispatch,currentQuestion,...props}) => {
     const { authTokens, setAuthTokens } = useAuth();
     //const prevInputs = usePrevious(inputs);
 
-    const selectCurrentQuestionHandler = (question) => {
-        dispatch(selectCurrentQuestionAction(question))
+    const selectCurrentSubmissionHandler = async (question) => {
+        try {
+            const allSubmissions = await api({
+                method: 'get',
+                url: `/users/${question._id}/submissions`
+            });  
+            const submission = allSubmissions.data[allSubmissions.data.length - 1];
+            let currentQuestion = {...question, submission: { ...submission }}
+            dispatch(selectCurrentQuestionAction(currentQuestion))
+        } catch(error) {
+            throw new Error(`Couldn't get user submissions`)
+        }
+        
     }
 
     const deleteCurrentRow = () => {
@@ -240,8 +252,8 @@ const BrowseList = ({dispatch,currentQuestion,...props}) => {
             console.log("this is the user id: "+JSON.parse(authTokens).user._id);
             async function getQuestionsList()
             {
-                //const fetchedQuestions = await axios.get(`/users/${JSON.parse(authTokens).user._id}/questions`)
-                const fetchedQuestions = await axios.get(`/questions`)
+                //const fetchedQuestions = await api.get(`/users/${JSON.parse(authTokens).user._id}/questions`)
+                const fetchedQuestions = await api.get(`/questions`)
                 //console.log("fetched questions from backend: "+JSON.stringify(fetchedQuestions))                
                 setInputs(fetchedQuestions.data);    
             }
@@ -249,10 +261,14 @@ const BrowseList = ({dispatch,currentQuestion,...props}) => {
         }
     },[])
     
-    const navigateToQuestion = (input) => {
-        //here should be the code to navigate to the selected question
-        selectCurrentQuestionHandler(input)
-        history.push('/question')
+    const navigateToQuestion = async (input) => {
+        try {
+            //here should be the code to navigate to the selected question
+            await selectCurrentSubmissionHandler(input)
+            history.push('/question')
+        } catch (error) {
+            throw new Error('Navigate to question failed. '+error);
+        }        
     }
 
     const onClickHandler = (e) => {
@@ -281,7 +297,7 @@ const BrowseList = ({dispatch,currentQuestion,...props}) => {
             try {
                 let userId = question.creator.id;
                 let questionId = question._id;
-                const result = await axios({
+                const result = await api({
                     method: 'delete',
                     url: `/users/${userId}/questions/${questionId}`,
                 });  

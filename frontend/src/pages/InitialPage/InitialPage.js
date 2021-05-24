@@ -41,7 +41,7 @@ export default function InitialPage(props) {
     }
     return (
             <div className={classes.questionPage}>
-                <Navbar setAuthTokens={setAuthTokens} />
+                <Navbar />
                 <div className={classes.centralElements}>
                     <div className={classes.centralTextArea}>
                     <QuestionsList 

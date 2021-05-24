@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import SvgIcon from '@material-ui/core/SvgIcon';
-import { useAuth } from "../../Context/auth";
 
 import { ReactComponent as YodaLogo } from '../../imgs/Yoda Logo.svg';
 import { ReactComponent as bars } from '../../imgs/bars.svg'
 import placeholderAvatar from  '../../icons/user_avatar.svg'
 
 import NotificationsIcon from '@material-ui/icons/Notifications';
+import { useAuth } from "Context/auth";
 
 import {
   Typography,
@@ -92,12 +92,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function NavBar() { 
+    let history = useHistory();
+    const [currentUser, setCurrentUser] = useState()
+    const [anchorElNotifications, setAnchorElNotifications] = useState(null);
+    const { authTokens, setAuthTokens } = useAuth();
+    
     const classes = useStyles();
     const yodaGreen = '#D7E2C6';
-    const { authTokens, setAuthTokens } = useAuth();
-    let history = useHistory();
     
-    const [anchorElNotifications, setAnchorElNotifications] = useState(null);
+    
+
+    useEffect(()=>{
+      if (authTokens && authTokens !== "undefined") {
+          setCurrentUser(JSON.parse(authTokens).user)
+      }
+    },[authTokens])
 
     function handleLogout(){
       setAuthTokens();
@@ -156,7 +165,7 @@ function NavBar() {
                   
                 <Avatar className={classes.avatar} alt="Remy Sharp" src={placeholderAvatar}/>
                 <Typography variant="body1" className={classes.avatarName}>
-                  roberta.cmota
+                  {currentUser ? currentUser.username : ''} 
                 </Typography>
               </IconButton>
               {(

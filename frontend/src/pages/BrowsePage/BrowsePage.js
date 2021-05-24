@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-export default function InitialPage(props) { 
+export default function BrowsePage(props) { 
     const classes = useStyles();
     const { authTokens, setAuthTokens } = useAuth();
     if (!authTokens || authTokens === "undefined") {

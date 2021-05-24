@@ -30,19 +30,19 @@ const questionSchema = new Schema({
     },
     solution: {
         type: String,
-        default: undefined
+        default: true
     },
     languageType: {
         type: String,
-        default: undefined
+        required: true
     },
     returnType: {
         type: String,
-        default: undefined
+        required: true
     },
     solutionName: {
         type: String,
-        default: undefined
+        required: true
     },
     testcases: {
         type: Array,

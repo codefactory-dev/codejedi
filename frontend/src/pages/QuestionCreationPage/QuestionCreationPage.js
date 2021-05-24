@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Navbar from '../../components/Navbar/Navbar.js'
+import Navbar from 'components/Navbar/Navbar.js'
 import Swal from 'sweetalert2'
-import axios from 'axios'
+import api from 'services/api'
 import { StylesProvider } from '@material-ui/core/styles';
 import DescriptionSubpage from './SubPages/DescriptionSubpage/DescriptionSubpage.js'
 import SolutionSubpage from './SubPages/SolutionSubpage/SolutionSubpage.js'
@@ -10,20 +10,20 @@ import TestcasesSubpage from './SubPages/TestcasesSubpage/TestcasesSubpage.js'
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Paper from '@material-ui/core/Paper';
-import RegularButton from '../../components/Buttons/RegularButton.js'
+import RegularButton from 'components/Buttons/RegularButton.js'
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import { useAuth } from "../../Context/auth";
+import { useAuth } from "Context/auth";
 import { Link, Redirect } from "react-router-dom";
-import ConnectTo from "../../store/connect";
-import { ConvertCodeToOneLiner } from '../../utils/TextReadingUtils'
+import ConnectTo from "store/connect";
+import { ConvertCodeToOneLiner } from 'utils/TextReadingUtils'
 import {
     convertToRaw,
 } from 'draft-js';
 
-import CodeScaffolding from '../../utils/CodeScaffolding'
-import { Parse, ParseString } from '../../utils/Parser'
+import CodeScaffolding from 'utils/CodeScaffolding'
+import { Parse, ParseString } from 'utils/Parser'
 import { EditorState, ContentState } from 'draft-js';
 import { generateFunctionSignature, FUNCTION_RETURN_TYPES, PROGRAMMING_LANGUAGES } from "utils/functions"
 
@@ -250,12 +250,12 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
         };
     }
     async function loadQuestion(){
-        const allUsers = await axios({
+        const allUsers = await api({
             method: 'get',
             url: `/users`
         });  
         const userId = allUsers.data[0]._id;
-        const allQuestions = await axios({
+        const allQuestions = await api({
             method: 'get',
             url: `/users/${userId}/questions`,
         });  
@@ -341,15 +341,23 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
     } 
     
     function validateSolution(solution){
-        let functionSignature = generateFunctionSignature(currentQuestion.languageType,currentQuestion.parameters,currentQuestion.solutionName,currentQuestion.returnType)
-        let functionStart = functionSignature.substring(0,functionSignature.length-1).replace(/\n/g,'');;
-        let functionEnd = functionSignature.substring(functionSignature.length-1,functionSignature.length);
-        let condition1 = solution.startsWith(functionStart);
-        let condition2 = solution.endsWith(functionEnd)
-        if ( condition1 && condition2 ) {
-            return true;
+        try {
+            if (!solution){
+                return true;
+            }
+            let functionSignature = generateFunctionSignature(solutionSubpage.funcLanguage,solutionSubpage.funcParameters,solutionSubpage.funcName,solutionSubpage.functReturnType)
+            let functionStart = functionSignature.substring(0,functionSignature.length-1).replace(/\n/g,'');;
+            let functionEnd = functionSignature.substring(functionSignature.length-1,functionSignature.length);
+            let condition1 = solution.startsWith(functionStart);
+            let condition2 = solution.endsWith(functionEnd)
+            if ( condition1 && condition2 ) {
+                return true;
+            }
+            return false;
+        } catch (error){
+            Swal.fire(`Something's wrong with your solution.`)
         }
-        return false;
+        
     }
 
     function saveQuestion() {
@@ -365,7 +373,7 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
                     
                     if (descriptionSubpage.questionId){
                        try {
-                            const result = await axios({
+                            const result = await api({
                                 method: 'put',
                                 url: `/users/${userId}/questions/${descriptionSubpage.questionId}`,
                                 data: { 
@@ -375,7 +383,7 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
                                     description: rawContext,
                                     solution: solution,
                                     solutionName: solutionSubpage.funcName,
-                                    languageType: solutionSubpage.funcLanguageType,
+                                    languageType: solutionSubpage.funcLanguage,
                                     returnType: solutionSubpage.functReturnType,
                                     parameters: solutionSubpage.funcParameters,
                                     testcases: testcasesSubpage.inputs,
@@ -392,7 +400,7 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
                         return; 
                     }
                     try {
-                        const result = await axios({
+                        const result = await api({
                             method: 'post',
                             url: `/users/${userId}/questions`,
                             data: { 
@@ -402,7 +410,7 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
                                 description: rawContext,
                                 solution: solution,
                                 solutionName: solutionSubpage.funcName,
-                                languageType: solutionSubpage.funcLanguageType,
+                                languageType: solutionSubpage.funcLanguage,
                                 returnType: solutionSubpage.functReturnType,
                                 parameters: solutionSubpage.funcParameters,
                                 testcases: testcasesSubpage.inputs
@@ -422,7 +430,7 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
         }
     }
     
-    function submitAll()
+    function testQuestion()
     {
       
       try {
@@ -460,7 +468,7 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
         async function createEditor() {
             
             try {
-                const result = await axios({
+                const result = await api({
                     method: 'post',
                     url: '/compile',
                     data: { 
@@ -473,27 +481,6 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
                 console.log("stdout: "+stdout+", stderr: "+stderr+", error: "+error);
                 console.log('this is current user: '+currentUser);
                 console.log('this is the current question: '+currentQuestion)
-                let cases = stdout.split('Cases passed: ')[1];
-                let casesPassed = Number(cases.split('/')[0]);
-                let totalCases = Number(cases.split('/')[1]);
-                const submitted = await axios({
-                    method: 'post',
-                    url: '/submissions',
-                    data: { 
-                        creatorId: currentUser._id,
-                        questionId: currentQuestion._id,
-                        dateTime: new Date(),
-                        submissionCode: oneLiner,
-                        timeElapsed: null,
-                        totalCases: totalCases,
-                        casesPassed: casesPassed,                        
-                        stdout: stdout,
-                        stderr: stderr,
-                        error: error
-    
-                    }
-                })
-                console.log("this was submitted: "+submitted)
                 if (stderr || error)
                 {
                     return Swal.fire(stderr +' '+ error);   
@@ -574,7 +561,7 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
                             />
                             <RegularButton 
                                 className={classes.regularButton} 
-                                onClick={submitAll}
+                                onClick={testQuestion}
                                 label="Submit" 
                             />
                         </div>
