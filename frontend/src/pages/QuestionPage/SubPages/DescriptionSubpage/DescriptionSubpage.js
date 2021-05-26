@@ -224,6 +224,8 @@ export default function DescriptionSubpage(props) {
       <div className={classes.bodyContainer}>
         <Paper className={classes.textArea}>
           <Editor
+            readOnly
+            toolbarHidden
             editorState={editorState}
             toolbarClassName="toolbarClassName"
             wrapperClassName="wrapperClassName"
