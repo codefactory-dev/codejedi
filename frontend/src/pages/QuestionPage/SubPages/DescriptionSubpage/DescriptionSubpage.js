@@ -16,11 +16,6 @@ import {
   convertFromRaw
 } from 'draft-js';
 
-
-import RichTextEditor from '../../../../components/Editor/RichTextEditor.js'
-
-import RegularButton from '../../../../components/Buttons/RegularButton.js'
-
 // -------------------------------------------------------------------------
 // GLOBAL VARIABLES and HELPERS
 // -------------------------------------------------------------------------
@@ -201,7 +196,9 @@ export default function DescriptionSubpage(props) {
     <div className={classes.verticalContainer}>
       <div className={classes.titleContainer}>
           <div className={classes.title}>
-              <SimpleTextField className={classes.titleTextfield} 
+              <SimpleTextField 
+                               disabled
+                               className={classes.titleTextfield} 
                                label="Title"
                                value={questionName}
                                setQuestionName={setQuestionName}

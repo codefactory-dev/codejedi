@@ -293,9 +293,12 @@ function SolutionSubpage({dispatch, solution, ...props}) {
                         {/* header */}
                         <div className={classes.colFlex}>
                             <div className={classes.colFlex3} style={{}}>
-                                <SimpleTextField label={"Function name"} 
-                                                 value={funcName}
-                                                 onChange={onFunctionNameChange}/>
+                                <SimpleTextField 
+                                    disabled
+                                    label={"Function name"} 
+                                    value={funcName}
+                                    onChange={onFunctionNameChange}
+                                />
                             </div>
                             <div className={classes.colFlex1}>
                                 <CustomSelect label={'Language'}
