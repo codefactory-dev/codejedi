@@ -16,11 +16,6 @@ import {
   convertFromRaw
 } from 'draft-js';
 
-
-import RichTextEditor from '../../../../components/Editor/RichTextEditor.js'
-
-import RegularButton from '../../../../components/Buttons/RegularButton.js'
-
 // -------------------------------------------------------------------------
 // GLOBAL VARIABLES and HELPERS
 // -------------------------------------------------------------------------
@@ -201,14 +196,18 @@ export default function DescriptionSubpage(props) {
     <div className={classes.verticalContainer}>
       <div className={classes.titleContainer}>
           <div className={classes.title}>
-              <SimpleTextField className={classes.titleTextfield} 
+              <SimpleTextField 
+                               disabled
+                               className={classes.titleTextfield} 
                                label="Title"
                                value={questionName}
                                setQuestionName={setQuestionName}
                                onChange={onQuestionNameChange}/>
               <div className={classes.grow}></div>
               <div className={classes.colFlex1}>
-                <CustomSelect label="Difficulty" 
+                <CustomSelect 
+                              disabled
+                              label="Difficulty" 
                               options={(() => Object.keys(DIFFICULTY_TYPES))()} 
                               checkedOptionIndex={(() => 1+getKeyIndexByValue(DIFFICULTY_TYPES, questionDifficulty))()}
                               onChange={onQuestionDifficultyChange}
@@ -216,7 +215,9 @@ export default function DescriptionSubpage(props) {
               </div>
               <div className={classes.grow2}></div>
               <div className={classes.colFlex1}>
-                <CustomSelect label="Type"
+                <CustomSelect 
+                              disabled
+                              label="Type"
                               options={(() => Object.keys(QUESTION_TYPES))()}
                               checkedOptionIndex={(() => 1+getKeyIndexByValue(QUESTION_TYPES, questionType))()}
                               onChange={onQuestionTypeChange}
@@ -227,6 +228,8 @@ export default function DescriptionSubpage(props) {
       <div className={classes.bodyContainer}>
         <Paper className={classes.textArea}>
           <Editor
+            readOnly
+            toolbarHidden
             editorState={editorState}
             toolbarClassName="toolbarClassName"
             wrapperClassName="wrapperClassName"

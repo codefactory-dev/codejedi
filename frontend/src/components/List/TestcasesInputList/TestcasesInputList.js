@@ -76,7 +76,7 @@ const useStyles = makeStyles(theme => ({
         fontSize: '1rem',
         height: 37,
         borderStyle: 'none',
-        cursor: 'pointer',
+        cursor: (props) => props.disabled === false ? 'pointer':'default',
         '& > span': {
             margin: '0',
             marginLeft: '40px',
@@ -94,7 +94,7 @@ const useStyles = makeStyles(theme => ({
         height: 28,
         //border
         borderStyle: 'none',
-        cursor: 'pointer',
+        cursor: (props) => props.disabled === false ? 'pointer':'default',
         backgroundColor: theme.palette.common.black2,
         borderRadius: '5px',
         '& > span': {
@@ -114,7 +114,7 @@ const useStyles = makeStyles(theme => ({
         height: 28,
         //border
         borderStyle: 'none',
-        cursor: 'pointer',
+        cursor: (props) => props.disabled === false ? 'pointer':'default',
         backgroundColor: theme.palette.common.black2,
         borderRadius: '5px',
         '& > input':{
@@ -126,7 +126,7 @@ const useStyles = makeStyles(theme => ({
             border: 0,
             borderTop: `.1px solid rgba(0,0,0,0)`,
             borderBottom: `.1px solid ${theme.palette.common.grey}`,
-            cursor: 'pointer',
+            cursor: (props) => props.disabled === false ? 'pointer':'default',
             fontWeight: '700',
             marginLeft: '15.5px',
             padding: 0
@@ -147,8 +147,14 @@ const useStyles = makeStyles(theme => ({
         borderRadius: '5px',
         margin: '5px 0',
         '&:hover': {
-            cursor: 'pointer',
-            backgroundColor: theme.palette.common.black2,
+            cursor: (props) =>
+                props.disabled === false
+                    ? 'pointer'
+                    : 'default',
+            backgroundColor: (props) =>
+                props.disabled === false
+                    ? theme.palette.common.black2
+                    : theme.palette.common.black,
         },
     },
     newButton: {
@@ -174,7 +180,7 @@ const useStyles = makeStyles(theme => ({
         fill: theme.palette.common.grey3,
         padding: '0',
         height: 37,
-        cursor: 'pointer',
+        cursor: (props) => props.disabled === false ? 'pointer':'default',
     },
     confirmingDeleteText: {
         color: theme.palette.secondary.main,
@@ -190,7 +196,7 @@ const rowStates = {
     CONFIRMING_DELETE: 2
 }
 export default function TestcasesInputList(props) {
-    const classes = useStyles();
+    const classes = useStyles(props);
     const matches = useMediaQuery('(min-width:798px)');
     const theme = useTheme();
     const [inputs, setInputs] = useState(props.inputs);
@@ -339,9 +345,11 @@ export default function TestcasesInputList(props) {
                 <div 
                     className={classes.activeRow} 
                     onMouseLeave={(event)=> {
-                        if (editingState !== rowStates.EDITING_ROW){
-                            deselectCurrentItem(event)}
-                        }
+                        if (!props.disabled){
+                            if (editingState !== rowStates.EDITING_ROW){
+                                deselectCurrentItem(event)}
+                            }
+                        }                        
                     }
                     key={`input-${idx}`}
                     >
@@ -353,12 +361,17 @@ export default function TestcasesInputList(props) {
             return(
                 <div 
                     className={classes.inactiveRow} 
-                    onMouseEnter={(event)=> {onClickRowItem(event,idx)}} 
-                    >
+                    onMouseEnter={(event)=> {
+                        if (!props.disabled)
+                            onClickRowItem(event,idx)
+                    }}>
                     {/*<input className={classes.input} placeholder={input} />*/}
                     <div 
                         className={classes.input}
-                        onClick={(event) => {onClickRowItem(event,idx) }} >
+                        onClick={(event) => {
+                            if (!props.disabled)
+                                onClickRowItem(event,idx) 
+                        }}>
                             <span>{input}</span>
                     </div>
                 </div>
@@ -385,7 +398,10 @@ export default function TestcasesInputList(props) {
                     <form 
                         //onBlur in React is used instead of onFocusOut
                         /*onBlur={(e) => {onFormSubmit(e)}}*/
-                        onSubmit={(e) => {onFormSubmit(e)}}>
+                        onSubmit={(e) => {
+                            if (!props.disabled)
+                                onFormSubmit(e)
+                        }}>
                         {inputs.map((input, idx) => {
                             return (
                                     generateRow(input,idx)
@@ -393,7 +409,10 @@ export default function TestcasesInputList(props) {
                     </form>
                     <div 
                         className={classes.addContainer}
-                        onClick={onClickHandler} 
+                        onClick={(event)=> {
+                            if (!props.disabled)
+                                onClickHandler(event)
+                        }} 
                         >
                         <AddIcon style={{'height': '12px', width: '12px'}} />
                         <a className={classes.newButton}>New</a>
