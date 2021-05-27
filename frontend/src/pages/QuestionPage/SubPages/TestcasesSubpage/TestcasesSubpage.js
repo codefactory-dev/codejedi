@@ -108,7 +108,11 @@ export default function TestcasesSubpage(props) {
           </div>
       </div>
       <div className={classes.bodyContainer}>
-          <TestcasesInputList inputs={props.inputs} onChange={onTestInputChange} />
+          <TestcasesInputList 
+              disabled
+              inputs={props.inputs} 
+              onChange={onTestInputChange} 
+          />
       </div>
       
     </div>
