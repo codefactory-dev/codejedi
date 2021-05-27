@@ -5,16 +5,16 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import ParameterInputDropdown from './ParameterInputDropdown';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '../Buttons/IconButton';
-import useKeyPres from '../../Hooks/useKeyPress';
-import ListTextField from '../../components/TextField/ListTextField';
+import useKeyPres from 'Hooks/useKeyPress';
+import ListTextField from 'components/TextField/ListTextField';
 
 
-import {ReactComponent as TextIcon} from '../../icons/text.svg';
-import {ReactComponent as ListIcon} from '../../icons/list.svg';
-import {ReactComponent as AddIcon} from '../../icons/add.svg';
-import {ReactComponent as DeleteIcon} from '../../icons/delete.svg';
-import {ReactComponent as CrossIcon} from '../../icons/cross.svg';
-import {ReactComponent as YesIcon} from '../../icons/yes.svg';
+import {ReactComponent as TextIcon} from 'icons/text.svg';
+import {ReactComponent as ListIcon} from 'icons/list.svg';
+import {ReactComponent as AddIcon} from 'icons/add.svg';
+import {ReactComponent as DeleteIcon} from 'icons/delete.svg';
+import {ReactComponent as CrossIcon} from 'icons/cross.svg';
+import {ReactComponent as YesIcon} from 'icons/yes.svg';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -38,8 +38,14 @@ const useStyles = makeStyles(theme => ({
             flexBasis: '50%'          
         },
         '&:hover': {
-            cursor: 'pointer',
-            backgroundColor: theme.palette.common.black2,
+            cursor: (props) =>
+                props.disabled === false
+                    ? 'pointer'
+                    : 'default',
+            backgroundColor: (props) =>
+                props.disabled === false
+                    ? theme.palette.common.black2
+                    : theme.palette.common.black,
         }
     },
     col_flex2: {
@@ -116,8 +122,14 @@ const useStyles = makeStyles(theme => ({
     },
     contentTypeContainerHover: {
         '&:hover': {
-            cursor: 'pointer',
-            backgroundColor: theme.palette.common.black2,
+            cursor: (props) =>
+                props.disabled === false
+                    ? 'pointer'
+                    : 'default',
+            backgroundColor: (props) =>
+                props.disabled === false
+                    ? theme.palette.common.black2
+                    : theme.palette.common.black,
         }
     },
     inputTypeTag: {
@@ -145,8 +157,14 @@ const useStyles = makeStyles(theme => ({
         borderRadius: '5px',
         margin: '5px 0',
         '&:hover': {
-            cursor: 'pointer',
-            backgroundColor: theme.palette.common.black2,
+            cursor: (props) =>
+                props.disabled === false
+                    ? 'pointer'
+                    : 'default',
+            backgroundColor: (props) =>
+                props.disabled === false
+                    ? theme.palette.common.black2
+                    : theme.palette.common.black,
         },
     },
     addIcon: {
@@ -173,7 +191,7 @@ const ROW_STATES = {
 const INPUT_TYPES = ['int', 'String'];
 
 export default function ParameterInputList(props) {
-    const classes = useStyles();
+    const classes = useStyles(props);
     const theme = useTheme();
   
     // const [inputs, setInputs] = useState([{name: 'nums1', type: INPUT_TYPES[0]}, 
@@ -378,14 +396,26 @@ export default function ParameterInputList(props) {
                             {/* content row(s) */}
                             <div className={classes.contentInput}>                                                            
                                 <div className={classes.col_flex1} 
-                                     onMouseEnter={() => onInputNameHover(idx)} 
-                                     onMouseLeave={() => onInputNameHover(-1)}
-                                     onClick={()=> onInputNameClick(idx)}>
+                                     onMouseEnter={() => {
+                                        if (!props.disabled)
+                                            onInputNameHover(idx)
+                                     }} 
+                                     onMouseLeave={() => {
+                                         if (!props.disabled)
+                                            onInputNameHover(-1)
+                                     }}
+                                     onClick={()=> {
+                                         if (!props.disabled)
+                                            onInputNameClick(idx)
+                                     }}>
                                      { generateInputNameComponent(input, idx) }
                                    
                                 </div>
                                 <div className={getInputTypeContainerClassName(input, idx)} 
-                                     onClick={() => onInputTypeClick(idx)}>
+                                     onClick={() => {
+                                        if (!props.disabled)
+                                            onInputTypeClick(idx)
+                                     }}>
                                      { generateInputTypeComponent(input, idx) }
                                 </div>                       
                             </div>
@@ -394,7 +424,10 @@ export default function ParameterInputList(props) {
                 )})}
                 
                 <div className={classes.addContainer}
-                     onClick={onButtonNewClick} >
+                     onClick={(event)=>{
+                        if (!props.disabled)
+                        onButtonNewClick(event)
+                     }} >
                     <AddIcon className={classes.addIcon} />
                     <a className={classes.newButton}>New</a>
                 </div>

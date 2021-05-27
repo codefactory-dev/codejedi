@@ -7,16 +7,19 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: 400,
     margin: 8,
+    '& .Mui-disabled': {
+      color: theme.palette.common.white,
+    },
     '& > label': {
       color: theme.palette.common.white,
-      fontWeight: 550
+      fontWeight: 550      
     },
     '& > div': {
       caretColor: theme.palette.common.grey,
       color: theme.palette.common.white,
       '&::before': {
         borderBottom: `1px solid ${theme.palette.common.grey}`
-      }
+      },
     }
   }
 }));
@@ -40,6 +43,7 @@ export default function SimpleTextField(props) {
   return (
         <TextField
           id="standard-full-width"
+          disabled={props.disabled}
           className={classes.root}
           fullWidth
           InputLabelProps={ {shrink: true, disableAnimation: false} }

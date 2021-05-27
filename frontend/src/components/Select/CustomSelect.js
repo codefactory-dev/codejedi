@@ -34,13 +34,15 @@ export default function CustomSelect(props){
 	// 
 	// --------------------------------------------------------------------
 
-	const generateOptions = () => {
+	const generateOptions = (disabled) => {
 		if (!props.options) { return undefined; }
 
 		return (
 			props.options.map((val, idx) => (
 				<label id={`${props.label}-${idx}`} key={`option-${idx}-${val}`} className="option">
-					<input type="radio" 
+					<input 
+						   disabled={disabled}	
+						   type="radio" 
 						   name={`option-test`} 
 						   value={val}
 						   />
@@ -70,14 +72,16 @@ export default function CustomSelect(props){
 				<div className="select" style={{"margin": "0"}}
 					onChange={ evt => onChangeHandler(evt)}>
 					<form>
-						<input type="radio" 
-							name={"option-test"} 
-							value={'default'}
-							/>
-						<i className="toggle icon icon-arrow-down"></i>
-						<i className="toggle icon icon-arrow-up"></i>
-						<span className="placeholder">Select an option</span>
-						{generateOptions()}
+							<input 
+								disabled={props.disabled}
+								type="radio" 
+								name={"option-test"} 
+								value={'default'}
+								/>
+							<i disabled={props.disabled} className="toggle icon icon-arrow-down"></i>
+							<i disabled={props.disabled} className="toggle icon icon-arrow-up"></i>
+							<span disabled={props.disabled} className="placeholder">Select an option</span>
+							{generateOptions(props.disabled)}
 					</form>
 				</div>
 			</div>
