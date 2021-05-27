@@ -67,11 +67,14 @@
 .select > form > input:not(:checked) ~ i.toggle.icon-arrow-up {
   display: none;
 }
+.select form i:disabled ~ i.toggle.icon-arrow-down {
+  display: none;
+}
 .select > form > input:not(:checked) ~ i.toggle.icon-arrow-down {
   display: block;
 }
 .select > form > input:disabled {
-  cursor: no-drop;
+  cursor: default;
 }
 .select > form > span.placeholder {
   position: relative;
@@ -119,12 +122,11 @@
   width: 100%;
 }
 .select form label.option input:disabled ~ span.title {
-  background: #f9f9f9 !important;
-  color: #aaa;
+  background: #1B1C1D !important;
+  cursor: default;
 }
 .select form label.option input:disabled ~ span.title:hover {
-  color: #aaa;
+  color: white;
   // background: none;
-  cursor: no-drop;
-  
+  cursor: default;
 }

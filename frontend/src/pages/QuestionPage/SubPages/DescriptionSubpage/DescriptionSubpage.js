@@ -205,7 +205,9 @@ export default function DescriptionSubpage(props) {
                                onChange={onQuestionNameChange}/>
               <div className={classes.grow}></div>
               <div className={classes.colFlex1}>
-                <CustomSelect label="Difficulty" 
+                <CustomSelect 
+                              disabled
+                              label="Difficulty" 
                               options={(() => Object.keys(DIFFICULTY_TYPES))()} 
                               checkedOptionIndex={(() => 1+getKeyIndexByValue(DIFFICULTY_TYPES, questionDifficulty))()}
                               onChange={onQuestionDifficultyChange}
@@ -213,7 +215,9 @@ export default function DescriptionSubpage(props) {
               </div>
               <div className={classes.grow2}></div>
               <div className={classes.colFlex1}>
-                <CustomSelect label="Type"
+                <CustomSelect 
+                              disabled
+                              label="Type"
                               options={(() => Object.keys(QUESTION_TYPES))()}
                               checkedOptionIndex={(() => 1+getKeyIndexByValue(QUESTION_TYPES, questionType))()}
                               onChange={onQuestionTypeChange}

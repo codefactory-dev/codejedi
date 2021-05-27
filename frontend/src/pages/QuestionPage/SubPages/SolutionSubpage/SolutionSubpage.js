@@ -301,7 +301,9 @@ function SolutionSubpage({dispatch, solution, ...props}) {
                                 />
                             </div>
                             <div className={classes.colFlex1}>
-                                <CustomSelect label={'Language'}
+                                <CustomSelect
+                                              disabled
+                                              label={'Language'}
                                               checkedOptionIndex={1 + getKeyIndexByValue(PROGRAMMING_LANGUAGES, funcLanguage)}
                                               options={Object.keys(PROGRAMMING_LANGUAGES)}  
                                               onChange={onFunctionLanguageChange}/>
@@ -309,7 +311,9 @@ function SolutionSubpage({dispatch, solution, ...props}) {
                             { funcLanguage && funcLanguage.toLowerCase() === 'java' 
                                 ?
                                 <div className={classes.colFlex1}>
-                                    <CustomSelect label={'Return type'} 
+                                    <CustomSelect 
+                                                disabled
+                                                label={'Return type'} 
                                                 checkedOptionIndex={(() => 1 + getKeyIndexByValue(FUNCTION_RETURN_TYPES, functReturnType))()}
                                                 options={(() => Object.keys(FUNCTION_RETURN_TYPES))()}  
                                                 onChange={onFunctionReturnTypeChange}/>
@@ -324,7 +328,9 @@ function SolutionSubpage({dispatch, solution, ...props}) {
                                     <span className={classes.title}>Parameters</span>
                             </div>
                             <div className={classes.listContainer}>
-                                <ParameterInputList inputs={funcParameters}
+                                <ParameterInputList 
+                                                    disabled
+                                                    inputs={funcParameters}
                                                     onParameterInputChange={onParameterInputListChange} />
                             </div>
                         </div>
