@@ -512,6 +512,10 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
             
         }
       } catch (error){
+        if (error.parseError){
+            console.log("Error parsing your testcases ! "+error.message)
+            return Swal.fire("Error parsing your testcases !");
+        }
         console.log("Error submitting question: "+error)
         Swal.fire('Error submitting question !');
       }

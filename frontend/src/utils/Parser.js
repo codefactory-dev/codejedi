@@ -1,14 +1,19 @@
+import ParseError from 'Errors/ParseError'
 const questionTypes = require('./questionTypes.js');
 
 export function Parse(text, parseType)
 {
-    switch(parseType){
-        case questionTypes.Array: 
-            return ParseArray(text);
-        case questionTypes.String:
-            return ParseString(text);
-        case questionTypes.Integer:
-            return ParseInteger(text);
+    try {
+        switch(parseType){
+            case questionTypes.Array: 
+                return ParseArray(text);
+            case questionTypes.String:
+                return ParseString(text);
+            case questionTypes.Integer:
+                return ParseInteger(text);
+        }
+    } catch(error) {
+        throw new ParseError('Error parsing your testcases. '+error)
     }
 }
 
@@ -44,23 +49,23 @@ export function ParseInteger(text)
 }
 
 export function ParseArray(text){
-    var array = text.split("\n");
+    
+    //split on a comma that is between quotes. The comma can have any number
+    //of whitespaces before or after. (\s means whitespace)
+    var array = text.slice(1,-1).split(/"\s*,\s*"/g);
     console.log("THIS IS THE ARRAY: "+array);
     if (array.length === 1 && array[0] === '[]'){
         return [];
     }
+    array[0] = array[0].replace(/"/,"");
+    array[array.length - 1] = array[array.length - 1].replace(/"/,"")
+    //---------finished reading array
     var res = [];
     let cont=0;
     array.forEach(elem => {
-        var cond1 = elem.substring(0,1) !== "[";
-        var cond2 = elem.substring(elem.length-1,elem.length) !== "]";
-        if ( cond1 || cond2 )
-        {
-            throw new Error("Testcases should be arrays separated by line breaks.");
-        }
         let parsed;
         try{
-            parsed = ParseSingleArray(elem);
+            parsed = JSON.parse(elem);
         } catch(e){
             throw new Error("Error parsing an array content.");
         }
