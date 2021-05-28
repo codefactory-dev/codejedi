@@ -15,8 +15,10 @@ const fetchClient = () => {
   // Set the AUTH token for any request
   instance.interceptors.request.use(function (config) {
     const tokens = localStorage.getItem('tokens');
-    const parsed = JSON.parse(tokens)
-    config.headers.Authorization =  parsed.token ? `Bearer ${parsed.token}` : '';
+    if (tokens !== 'undefined'){
+      const parsed = JSON.parse(tokens)
+      config.headers.Authorization =  parsed.token ? `Bearer ${parsed.token}` : '';
+    }
     return config;
   });
 
