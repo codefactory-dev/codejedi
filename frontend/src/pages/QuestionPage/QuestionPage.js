@@ -516,6 +516,10 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
             console.log("Error parsing your testcases ! "+error.message)
             return Swal.fire("Error parsing your testcases !");
         }
+        if (error.scaffoldError){
+            console.log("Error creating the scaffold ! "+error.message)
+            return Swal.fire("Error creating the scaffold !");
+        }
         console.log("Error submitting question: "+error)
         Swal.fire('Error submitting question !');
       }
