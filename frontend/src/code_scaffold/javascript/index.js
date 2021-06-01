@@ -21,7 +21,8 @@ function CodeScaffolding(entries, userSolution, hiddenSolution,questionType, ent
 //The replacement uses $1 as a reference for the things that were wrapped in quotes
 const arrayScaffold = (entries, userSolution, hiddenSolution,entryFunction) =>
 ` /*---------------ENTRIES---------------*/
-const convertedEntries = ${ entries.length > 0 ? entries.replace(/"([^"]*)"/g, '[$1]') : '[]'};
+//const convertedEntries = ${ entries.length > 0 ? entries.replace(/"([^"]*)"/g, '[$1]') : '[]'};
+const convertedEntries = ${ entries.length > 0 ? JSON.stringify(entries) : '[]'};
 ${userSolution.replace(entryFunction, 'userSolution')}
 ${hiddenSolution.replace(entryFunction, 'hiddenSolution')}
 var gotRightAmount = 0;
@@ -30,8 +31,9 @@ for(var i=0;i<convertedEntries.length;i++)
 
     let entry = convertedEntries[i];
     var result = userSolution(entry);
-    var hiddenResult = hiddenSolution.apply(null,entry);
-    console.log("case "+i+": "+result+":"+hiddenResult);
+    //var hiddenResult = hiddenSolution.apply(null,entry);
+    var hiddenResult = hiddenSolution(entry);
+    console.log("case "+i+": "+JSON.stringify(result)+":"+JSON.stringify(hiddenResult));
     if (JSON.stringify(result) === JSON.stringify(hiddenResult))
     {
         gotRightAmount++;

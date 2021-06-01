@@ -63,14 +63,18 @@ export function ParseArray(text){
     var res = [];
     let cont=0;
     array.forEach(elem => {
-        let parsed;
-        try{
-            parsed = JSON.parse(elem);
-        } catch(e){
-            throw new Error("Error parsing an array content.");
+        try {
+            let converted = JSON.parse(elem);
+            res.push(converted);
+        } catch(error) {
+            try {
+                let enclosedInArray = '[' + elem + ']';
+                let secondTryConvert = JSON.parse(enclosedInArray)
+                res.push(secondTryConvert);
+            } catch(error) {
+                throw new Error('Error parsing an array content.');
+            }
         }
-        console.log("parsed "+(cont++)+": "+parsed);
-        res.push(parsed);
     });
     console.log("returning parsed array: "+JSON.stringify(res));
     return res;
