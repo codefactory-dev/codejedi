@@ -283,7 +283,7 @@ const SubmissionsList = ({dispatch,currentQuestion, inputs, setInputs,...props})
             <div className={classes.selectedInput}>
                 <span onClick={()=>{navigateToSubmission(input)}}>{input.dateTime}</span>
                 <span onClick={()=>{navigateToSubmission(input)}}>{input.casesPassed}/{input.totalCases}</span>
-                {input.totalCases === 0 ? '' : <span>{(input.casesPassed/input.totalCases) * 100}%</span> }
+                {input && input.totalCases === 0 ? '' : <span>{(input.casesPassed/input.totalCases) * 100}%</span> }
             </div>,
         [rowStates.EDITING_ROW]: 
             <div className={classes.focusedInput}>
@@ -329,7 +329,7 @@ const SubmissionsList = ({dispatch,currentQuestion, inputs, setInputs,...props})
                         onClick={(event) => {onClickRowItem(event,idx) }} >
                             <span>{input.dateTime}</span>
                             <span>{input.casesPassed}/{input.totalCases}</span>
-                            {input.totalCases === 0 ? '' : <span>{(input.casesPassed/input.totalCases) * 100}%</span> }
+                            {input && input.totalCases === 0 ? '' : <span>{(input.casesPassed/input.totalCases) * 100}%</span> }
                             
                     </div>
                 </div>
