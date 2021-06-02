@@ -1,7 +1,7 @@
 import ScaffoldError from 'Errors/ScaffoldError'
 const languageTypes = require('./languageTypes.js')
 
-export default function CodeScaffolding(entries, userSolution, hiddenSolution, questionType,languageType,entryFunction="solution")
+export default function CodeScaffolding(entries, paramsAmount, userSolution, hiddenSolution, questionType,languageType,entryFunction="solution")
 {
     try {
         let CodeScaffolding;
@@ -16,7 +16,7 @@ export default function CodeScaffolding(entries, userSolution, hiddenSolution, q
             default:
                 CodeScaffolding = require('../code_scaffold/javascript/index.js');
         }
-        return CodeScaffolding(entries, userSolution, hiddenSolution, questionType,entryFunction);
+        return CodeScaffolding(entries, paramsAmount, userSolution, hiddenSolution, questionType,entryFunction);
     } catch (error) {
         throw new ScaffoldError('Error creating Scaffold. '+error)
     }

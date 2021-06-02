@@ -449,7 +449,7 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
 
         //insert test cases into question
         //var togetherText = questionText;
-        const togetherText = CodeScaffolding(structure, solutionSubpage.funcSolutionCode, hiddenSolution, descriptionSubpage.questionType,solutionSubpage.funcLanguage,solutionSubpage.funcName);
+        const togetherText = CodeScaffolding(structure, solutionSubpage.funcParameters.length, solutionSubpage.funcSolutionCode, hiddenSolution, descriptionSubpage.questionType,solutionSubpage.funcLanguage,solutionSubpage.funcName);
 
 
         console.log("---TOGETHER TEXT---");
