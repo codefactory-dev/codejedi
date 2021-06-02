@@ -449,7 +449,7 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
 
         //insert test cases into question
         //var togetherText = questionText;
-        const togetherText = CodeScaffolding(structure, solutionSubpage.funcSolutionCode, hiddenSolution, descriptionSubpage.questionType,solutionSubpage.funcLanguage,solutionSubpage.funcName);
+        const togetherText = CodeScaffolding(structure, solutionSubpage.funcParameters.length, solutionSubpage.funcSolutionCode, hiddenSolution, descriptionSubpage.questionType,solutionSubpage.funcLanguage,solutionSubpage.funcName);
 
 
         console.log("---TOGETHER TEXT---");
@@ -512,6 +512,14 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
             
         }
       } catch (error){
+        if (error.parseError){
+            console.log("Error parsing your testcases ! "+error.message)
+            return Swal.fire("Error parsing your testcases !");
+        }
+        if (error.scaffoldError){
+            console.log("Error creating the scaffold ! "+error.message)
+            return Swal.fire("Error creating the scaffold !");
+        }
         console.log("Error submitting question: "+error)
         Swal.fire('Error submitting question !');
       }
