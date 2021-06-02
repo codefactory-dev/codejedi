@@ -357,13 +357,28 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
         } catch (error){
             Swal.fire(`Something's wrong with your solution.`)
         }
-        
+    }
+
+    function validateTestcases(inputs){
+        /**TODO
+         * This function must be replaced with something that checks 
+         * if the testcases are in the right format
+         */
+        try {
+            let condition = true;
+            if (condition){
+                return true;
+            }
+            return false;
+        } catch (error) {
+            Swal.fire(`Error validating your testcases.`)
+        }
     }
 
     function saveQuestion() {
         if (currentUser){
             async function performSave(){
-                if (validateSolution(solution)){
+                if (validateSolution(solution) && validateTestcases(testcasesSubpage.inputs)){
                     console.log("saving question")
                     const userId = currentUser._id;
                     console.log("this is the solution subpage: "+JSON.stringify(solutionSubpage))
