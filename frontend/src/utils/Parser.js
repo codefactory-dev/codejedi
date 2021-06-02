@@ -50,6 +50,7 @@ export function ParseInteger(text)
 
 export function ParseArray(text){
     
+    if (!text) return [];
     //split on a comma that is between quotes. The comma can have any number
     //of whitespaces before or after. (\s means whitespace)
     var array = text.slice(1,-1).split(/"\s*,\s*"/g);
