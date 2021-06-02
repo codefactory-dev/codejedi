@@ -314,7 +314,7 @@ export default function TestcasesInputList(props) {
                 />
                 <input 
                     id={`input-${idx}`} 
-                    maxlength="20"
+                    maxlength="300"
                 />
             </div>,
         [rowStates.CONFIRMING_DELETE]: 
