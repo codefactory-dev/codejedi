@@ -22,7 +22,7 @@ import {
     convertToRaw,
 } from 'draft-js';
 
-import CodeScaffolding from 'utils/CodeScaffolding'
+import { TestScaffolding } from 'utils/CodeScaffolding'
 import { Parse, ParseString } from 'utils/Parser'
 import { EditorState, ContentState } from 'draft-js';
 import { generateFunctionSignature, FUNCTION_RETURN_TYPES, PROGRAMMING_LANGUAGES } from "utils/functions"
@@ -453,7 +453,7 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
         var questionText = solutionSubpage.funcSolutionCode;
 
         //get solution from database
-        var hiddenSolution = solutionSubpage.funcSolutionCode;
+        var testSolution = solutionSubpage.funcSolutionCode;
             
         //get test cases from file  
         var testCasesText = JSON.stringify(testcasesSubpage.inputs);
@@ -465,7 +465,7 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
 
         //insert test cases into question
         //var togetherText = questionText;
-        const togetherText = CodeScaffolding(structure, solutionSubpage.funcSolutionCode, hiddenSolution, descriptionSubpage.questionType,solutionSubpage.funcLanguage,solutionSubpage.funcName);
+        const togetherText = TestScaffolding(structure, solutionSubpage.funcParameters.length, testSolution, descriptionSubpage.questionType,solutionSubpage.funcLanguage,solutionSubpage.funcName);
 
 
         console.log("---TOGETHER TEXT---");

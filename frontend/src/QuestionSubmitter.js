@@ -3,7 +3,7 @@ import CodeEditor from './CodeEditor.js'
 import EditorTestcases from './EditorTestcases';
 import api from 'services/api'
 import { ConvertCodeToOneLiner } from './utils/TextReadingUtils'
-import CodeScaffolding from './utils/CodeScaffolding'
+import { CodeScaffolding } from './utils/CodeScaffolding'
 import Parse from './utils/Parser'
 
 function QuestionSubmitter()

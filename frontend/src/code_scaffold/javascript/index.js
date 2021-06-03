@@ -45,4 +45,40 @@ function CodeScaffolding(entries, paramsAmount, userSolution, hiddenSolution,que
             console.log('Accepted ! Cases passed: '+gotRightAmount+ '/'+convertedEntries.length);`;
 }
 
-module.exports = CodeScaffolding
+function TestScaffolding(entries, paramsAmount, testSolution, questionType, entryFunction="solution")
+{
+    let convertedEntries;
+    if (paramsAmount > 1){
+        convertedEntries = `${ entries.length > 0 ? JSON.stringify(entries).replace(/"([^"]*)"/g, '[$1]') : '[]'}`
+    } else {
+        convertedEntries = `${ entries.length > 0 ? JSON.stringify(entries) : '[]'}` 
+    }
+
+    let testSolutionExecution;
+    if (paramsAmount > 1){
+        testSolutionExecution = `testSolution.apply(null,entry)`
+    } else {
+        testSolutionExecution = `testSolution(entry)` 
+    }
+
+    return ` /*---------------ENTRIES---------------*/
+            const convertedEntries = ${convertedEntries};
+            ${testSolution.replace(entryFunction, 'testSolution')}
+            var gotRightAmount = 0;
+            for(var i=0;i<convertedEntries.length;i++)
+            {
+            
+                let entry = convertedEntries[i];
+                var result = ${testSolutionExecution};
+                console.log("case "+i+": "+JSON.stringify(result));
+                gotRightAmount++;
+                
+            }
+            
+            console.log('Test successful ! Amount of entries tested: '+convertedEntries.length);`;
+}
+
+module.exports = { 
+    CodeScaffolding,
+    TestScaffolding
+}

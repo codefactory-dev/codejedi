@@ -22,7 +22,7 @@ import {
     convertToRaw,
 } from 'draft-js';
 
-import CodeScaffolding from 'utils/CodeScaffolding'
+import { CodeScaffolding } from 'utils/CodeScaffolding'
 import { Parse, ParseString } from 'utils/Parser'
 import { EditorState, ContentState } from 'draft-js';
 import { generateFunctionSignature, FUNCTION_RETURN_TYPES, PROGRAMMING_LANGUAGES } from "utils/functions"
@@ -248,7 +248,10 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
         console.log("these are variables: "+variables)
         setSolutionSubpage(Object.assign(solutionSubpage, variables)) 
     };
-    const onTestcasesSubPageChange = variables => setTestcasesSubpage(Object.assign(testcasesSubpage, variables));
+    const onTestcasesSubPageChange = variables => {
+        console.log("these are the variables: "+variables)
+        setTestcasesSubpage(Object.assign(testcasesSubpage, variables));
+    }
       
     // --------------------------------------
     // FUNCTIONS
@@ -479,6 +482,10 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
                 });            
                 console.log(Object.getOwnPropertyNames(result))
                 const {stdout, stderr, error} = result.data;
+                if (stderr || error)
+                {
+                    return Swal.fire(stderr +' '+ error);   
+                }   
                 console.log("stdout: "+stdout+", stderr: "+stderr+", error: "+error);
                 console.log('this is current user: '+currentUser);
                 console.log('this is the current question: '+currentQuestion)
@@ -502,11 +509,7 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
     
                     }
                 })
-                console.log("this was submitted: "+submitted)
-                if (stderr || error)
-                {
-                    return Swal.fire(stderr +' '+ error);   
-                }       
+                console.log("this was submitted: "+submitted)    
                 return Swal.fire(''+stdout)  
             } catch (error) {
                 return Swal.fire("There was an error with the api: " +error.response.data.message);

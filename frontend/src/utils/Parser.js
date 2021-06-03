@@ -53,13 +53,14 @@ export function ParseArray(text){
     if (!text) return [];
     //split on a comma that is between quotes. The comma can have any number
     //of whitespaces before or after. (\s means whitespace)
-    var array = text.slice(1,-1).split(/"\s*,\s*"/g);
+    var array = text.match(/".*"/g)[0].split(",");
     console.log("THIS IS THE ARRAY: "+array);
-    if (array.length === 1 && array[0] === '[]'){
-        return [];
-    }
-    array[0] = array[0].replace(/"/,"");
-    array[array.length - 1] = array[array.length - 1].replace(/"/,"")
+    // if (array.length === 1 && array[0] === '[]'){
+    //     return [];
+    // }
+    //array[0] = array[0].replace(/"/,"");
+    //array[array.length - 1] = array[array.length - 1].replace(/"/,"")
+    
     //---------finished reading array
     var res = [];
     let cont=0;
