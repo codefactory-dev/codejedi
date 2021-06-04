@@ -48,13 +48,19 @@ export function ParseInteger(text)
     return res;
 }
 
-export function ParseArray(text){
-    
+function ParseArray(text){
     if (!text) return [];
     //split on a comma that is between quotes. The comma can have any number
     //of whitespaces before or after. (\s means whitespace)
-    var array = text.match(/".*"/g)[0].split(",");
-    console.log("THIS IS THE ARRAY: "+array);
+    var array = text.match(/".*"/g);
+    //(?<="), ---> this is the "positive look behind operator", it checks if 
+    //the comma is preceded by " (double quotes)
+    var splitArray = array[0].split(/(?<="),/);
+    console.log("THIS IS THE SPLIT ARRAY: "+splitArray);
+    for(let i=0;i<splitArray.length;i++){
+        splitArray[i] = splitArray[i].replace(/"/g,"");
+    }
+    console.log("THIS IS THE SPLIT ARRAY AFTER: "+splitArray);
     // if (array.length === 1 && array[0] === '[]'){
     //     return [];
     // }
@@ -64,17 +70,25 @@ export function ParseArray(text){
     //---------finished reading array
     var res = [];
     let cont=0;
-    array.forEach(elem => {
+    splitArray.forEach(elem => {
         try {
             let converted = JSON.parse(elem);
             res.push(converted);
         } catch(error) {
             try {
+                //let's test if it's multiple parameters
                 let enclosedInArray = '[' + elem + ']';
                 let secondTryConvert = JSON.parse(enclosedInArray)
                 res.push(secondTryConvert);
             } catch(error) {
-                throw new Error('Error parsing an array content.');
+                //let's see if it's a string
+                try {
+                    let enclosedInQuotes = '"' + elem + '"';
+                    let thirdTryConvert = JSON.parse(enclosedInQuotes)
+                    res.push(thirdTryConvert);
+                } catch (error){
+                    throw new Error('Error parsing an array content.');
+                }
             }
         }
     });
