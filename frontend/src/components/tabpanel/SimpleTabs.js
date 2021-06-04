@@ -9,7 +9,7 @@ import Box from '@material-ui/core/Box';
 import CodeEditor from '../CodeEditor/CodeEditor.js';
 import EditorTestcases from '../EditorTestCases/EditorTestcases.js';
 import Editor from '../Editor/Editor.js'
-import CodeScaffolding from '../../utils/CodeScaffolding'
+import { CodeScaffolding } from '../../utils/CodeScaffolding'
 import { ConvertCodeToOneLiner } from '../../utils/TextReadingUtils'
 import api from 'services/api'
 import questionTypes from '../../utils/questionTypes.js'

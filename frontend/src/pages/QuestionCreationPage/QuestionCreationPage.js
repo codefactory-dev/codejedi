@@ -22,7 +22,7 @@ import {
     convertToRaw,
 } from 'draft-js';
 
-import CodeScaffolding from 'utils/CodeScaffolding'
+import { TestScaffolding } from 'utils/CodeScaffolding'
 import { Parse, ParseString } from 'utils/Parser'
 import { EditorState, ContentState } from 'draft-js';
 import { generateFunctionSignature, FUNCTION_RETURN_TYPES, PROGRAMMING_LANGUAGES } from "utils/functions"
@@ -357,13 +357,28 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
         } catch (error){
             Swal.fire(`Something's wrong with your solution.`)
         }
-        
+    }
+
+    function validateTestcases(inputs){
+        /**TODO
+         * This function must be replaced with something that checks 
+         * if the testcases are in the right format
+         */
+        try {
+            let condition = true;
+            if (condition){
+                return true;
+            }
+            return false;
+        } catch (error) {
+            Swal.fire(`Error validating your testcases.`)
+        }
     }
 
     function saveQuestion() {
         if (currentUser){
             async function performSave(){
-                if (validateSolution(solution)){
+                if (validateSolution(solution) && validateTestcases(testcasesSubpage.inputs)){
                     console.log("saving question")
                     const userId = currentUser._id;
                     console.log("this is the solution subpage: "+JSON.stringify(solutionSubpage))
@@ -438,7 +453,7 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
         var questionText = solutionSubpage.funcSolutionCode;
 
         //get solution from database
-        var hiddenSolution = solutionSubpage.funcSolutionCode;
+        var testSolution = solutionSubpage.funcSolutionCode;
             
         //get test cases from file  
         var testCasesText = JSON.stringify(testcasesSubpage.inputs);
@@ -450,7 +465,7 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
 
         //insert test cases into question
         //var togetherText = questionText;
-        const togetherText = CodeScaffolding(structure, solutionSubpage.funcSolutionCode, hiddenSolution, descriptionSubpage.questionType,solutionSubpage.funcLanguage,solutionSubpage.funcName);
+        const togetherText = TestScaffolding(structure, solutionSubpage.funcParameters.length, testSolution, descriptionSubpage.questionType,solutionSubpage.funcLanguage,solutionSubpage.funcName);
 
 
         console.log("---TOGETHER TEXT---");
@@ -492,6 +507,14 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
             
         }
       } catch (error){
+        if (error.parseError){
+            console.log("Error parsing your testcases ! "+error.message)
+            return Swal.fire("Error parsing your testcases !");
+        }
+        if (error.scaffoldError){
+            console.log("Error creating the scaffold ! "+error.message)
+            return Swal.fire("Error creating the scaffold !");
+        }
         console.log("Error submitting question: "+error)
         Swal.fire('Error submitting question !');
       }
