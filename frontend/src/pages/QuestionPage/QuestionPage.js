@@ -454,7 +454,8 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
         
         //insert test cases into question
         //var togetherText = questionText;
-        const togetherText = CodeScaffolding(structure, solutionSubpage.funcParameters.length, solution, hiddenSolution, descriptionSubpage.questionType,solutionSubpage.funcLanguage,solutionSubpage.funcName);
+        let solutionCode = solution || solutionSubpage.funcSolutionCode;
+        const togetherText = CodeScaffolding(structure, solutionSubpage.funcParameters.length, solutionCode, hiddenSolution, descriptionSubpage.questionType,solutionSubpage.funcLanguage,solutionSubpage.funcName);
 
 
         console.log("---TOGETHER TEXT---");
@@ -499,7 +500,7 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
                         creatorId: currentUser._id,
                         questionId: currentQuestion._id,
                         dateTime: new Date(),
-                        submissionCode: solution,
+                        submissionCode: solutionCode,
                         timeElapsed: null,
                         totalCases: totalCases,
                         casesPassed: casesPassed,                        
