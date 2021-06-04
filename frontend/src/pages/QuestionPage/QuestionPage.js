@@ -466,6 +466,9 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
         console.log("---ONE LINER---");
         console.log(oneLiner);
 
+        if (!solutionCode) {
+            return Swal.fire('You must have a solution in order to submit the question !')
+        }
 
         createEditor();
 
