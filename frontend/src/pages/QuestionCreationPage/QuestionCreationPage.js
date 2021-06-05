@@ -26,6 +26,9 @@ import { TestScaffolding } from 'utils/CodeScaffolding'
 import { Parse, ParseString } from 'utils/Parser'
 import { EditorState, ContentState } from 'draft-js';
 import { generateFunctionSignature, FUNCTION_RETURN_TYPES, PROGRAMMING_LANGUAGES } from "utils/functions"
+import SolutionValidationError from 'Errors/SolutionValidationError'
+import TestcasesValidationError from 'Errors/TestcasesValidationError'
+import { saveSolutionAction } from "store/reducers/solution";
 
 const useStyles = makeStyles((theme) => ({
     
@@ -206,12 +209,10 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
     // --------------------------------------
 
     useEffect(()=>{
-        // if(answer.length > 0)
-        // {
-        //     Swal.fire(answer);
-        // }
-        // setAnswer("");
-    },[answer])
+        return () => {
+            dispatch(saveSolutionAction(''));
+        }
+    },[])
 
     // --------------------------------------
     // CALLBACKS
@@ -341,10 +342,10 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
     } 
     
     function validateSolution(solution){
+        if (!solution){
+            throw new SolutionValidationError('Must fill solution')
+        }
         try {
-            if (!solution){
-                return true;
-            }
             let functionSignature = generateFunctionSignature(solutionSubpage.funcLanguage,solutionSubpage.funcParameters,solutionSubpage.funcName,solutionSubpage.functReturnType)
             let functionStart = functionSignature.substring(0,functionSignature.length-1).replace(/\n/g,'');;
             let functionEnd = functionSignature.substring(functionSignature.length-1,functionSignature.length);
@@ -355,7 +356,7 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
             }
             return false;
         } catch (error){
-            Swal.fire(`Something's wrong with your solution.`)
+            throw new SolutionValidationError(`Don't change solution signature !`)
         }
     }
 
@@ -371,14 +372,16 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
             }
             return false;
         } catch (error) {
-            Swal.fire(`Error validating your testcases.`)
+            throw new TestcasesValidationError();
         }
     }
 
     function saveQuestion() {
         if (currentUser){
             async function performSave(){
-                if (validateSolution(solution) && validateTestcases(testcasesSubpage.inputs)){
+                try {
+                    validateSolution(solution)
+                    validateTestcases(testcasesSubpage.inputs)
                     console.log("saving question")
                     const userId = currentUser._id;
                     console.log("this is the solution subpage: "+JSON.stringify(solutionSubpage))
@@ -436,9 +439,14 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
                         }
                     } catch (error){
                         Swal.fire(`create failed !`);
-                    }   
-                } else {
-                    Swal.fire(`Please don't change your function signature !`);
+                    }  
+                } catch(error) {
+                    if (error.solutionValidationError){
+                        return Swal.fire(`Something's wrong with your solution. `+error.message)
+                    }
+                    if (error.testcasesValidationError){
+                        return Swal.fire(`Something's wrong with your testcases. `+error.message)
+                    }
                 }
             }
             performSave();
