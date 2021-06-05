@@ -28,6 +28,7 @@ import { EditorState, ContentState } from 'draft-js';
 import { generateFunctionSignature, FUNCTION_RETURN_TYPES, PROGRAMMING_LANGUAGES } from "utils/functions"
 import SolutionValidationError from 'Errors/SolutionValidationError'
 import TestcasesValidationError from 'Errors/TestcasesValidationError'
+import { saveSolutionAction } from "store/reducers/solution";
 
 const useStyles = makeStyles((theme) => ({
     
@@ -208,12 +209,10 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
     // --------------------------------------
 
     useEffect(()=>{
-        // if(answer.length > 0)
-        // {
-        //     Swal.fire(answer);
-        // }
-        // setAnswer("");
-    },[answer])
+        return () => {
+            dispatch(saveSolutionAction(''));
+        }
+    },[])
 
     // --------------------------------------
     // CALLBACKS
@@ -343,10 +342,10 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
     } 
     
     function validateSolution(solution){
+        if (!solution){
+            throw new SolutionValidationError('Must fill solution')
+        }
         try {
-            if (!solution){
-                throw new SolutionValidationError('Must fill solution')
-            }
             let functionSignature = generateFunctionSignature(solutionSubpage.funcLanguage,solutionSubpage.funcParameters,solutionSubpage.funcName,solutionSubpage.functReturnType)
             let functionStart = functionSignature.substring(0,functionSignature.length-1).replace(/\n/g,'');;
             let functionEnd = functionSignature.substring(functionSignature.length-1,functionSignature.length);
