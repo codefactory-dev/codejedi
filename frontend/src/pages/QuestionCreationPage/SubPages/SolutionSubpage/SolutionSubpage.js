@@ -159,10 +159,6 @@ function SolutionSubpage({dispatch, solution, ...props}) {
 
         setCodeMirror(codeMirrorInstance)
 
-        return () => {
-            dispatch(saveSolutionAction(''));
-        }
-
     }, []);
 
     useEffect(() => {

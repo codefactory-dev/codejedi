@@ -418,11 +418,6 @@ const BrowseList = ({dispatch,currentQuestion,...props}) => {
         }
     }
 
-
-    function createQuestion(){
-        history.push('/question')
-    }
-
     return (
         <div className={classes.root}>
             <div className={classes.subtitleContainer}>
@@ -442,7 +437,6 @@ const BrowseList = ({dispatch,currentQuestion,...props}) => {
                     </form>
                 </div>
             </div>
-            <Button onClick={createQuestion} variant="outlined" disableFocusRipple disableRipple className={classes.saveButton}>Create a Question</Button>
         </div>
     );
 }
