@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
@@ -90,6 +90,7 @@ const useStyles = makeStyles( theme => ({
 
 export default function TestcasesSubpage(props) {
   const classes = useStyles();
+  const [testcaseFormat, setTestcaseFormat] = useState()
   
   // ---------------------------------------
   // CALLBACKS
@@ -103,7 +104,7 @@ export default function TestcasesSubpage(props) {
           <div className={classes.titleWrapper} >
             <Typography variant="h6">
                 <div className={classes.title}>Type your inputs below. Each input line is a separate test case in this format:</div>
-                <div className={classes.format}>1</div>
+                <div className={classes.format}>{testcaseFormat}</div>
             </Typography>
           </div>
       </div>

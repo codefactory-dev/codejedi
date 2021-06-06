@@ -188,6 +188,10 @@ const useStyles = makeStyles(theme => ({
     },
     confirmingDeleteIcon: {
         backgroundColor: theme.palette.secondary.main,
+    },
+    error: {
+        color: 'red',
+        fontWeight: 100
     }
   }));
 const rowStates = {
@@ -203,6 +207,7 @@ export default function TestcasesInputList(props) {
     const [activeRowItem, setActiveRowItem] = useState();
     const [editingState, setEditingState] = useState(rowStates.DESELECTED)
     const [maxInputTag, setMaxInputTag] = useState('20 max');
+    const [errors, setErrors] = useState();
     //const prevInputs = usePrevious(inputs);
 
     // -----------------------------------------
@@ -244,17 +249,34 @@ export default function TestcasesInputList(props) {
     }
 
     const onClickHandler = (e) => {
-        setInputs([...inputs, "another"])
+        let newInputs = [...inputs, ""];
+        if (newInputs.length > 0){
+            onClickRowItem(null, newInputs.length-1);
+            editRow();
+        }
+        setInputs(newInputs)
     }
     const onClickRowItem = (event,idx) => {
         //console.log("clicked row item "+idx);
         setEditingState(rowStates.DESELECTED);
         setActiveRowItem(idx);
     }
+    //when pressing enter after typing a new input, onFormSubmit is called
     const onFormSubmit = (e) => {
-        e.preventDefault();
+        e.preventDefault();        
         let newInputs = [...inputs];
-        const activeRowValue = document.querySelector(`#input-${activeRowItem}`).value;
+        const activeRowValue = document.querySelector(`#input-${activeRowItem}`).value;        
+        if (!validateSingleInput(activeRowValue,activeRowItem,"string"))
+        {
+            //if input is not valid, make it red colored.
+            if (activeRowValue.trim()){
+                newInputs[activeRowItem] = document.querySelector(`#input-${activeRowItem}`).value;
+            }
+            console.log("new inputs: "+JSON.stringify(newInputs));
+            setInputs(newInputs);
+            setActiveRowItem(-1);
+            return;
+        }
         //if string contains only whitespaces, don't change anything
         if (activeRowValue.trim()){
             newInputs[activeRowItem] = document.querySelector(`#input-${activeRowItem}`).value;
@@ -267,9 +289,7 @@ export default function TestcasesInputList(props) {
     function handleYes(){
         deleteCurrentRow();
     }
-    function handleNo(){
-        setEditingState(rowStates.DESELECTED);
-    }
+
     function deselectCurrentItem(event){
         console.log("deselecting current item");
         const activeRowElement = document.querySelectorAll('div[class^="makeStyles-activeRow"]');
@@ -340,6 +360,7 @@ export default function TestcasesInputList(props) {
     
 
     function generateRow(input,idx) {
+        //if i'm generating an active row
         if (idx === activeRowItem){
             return (
                 <div 
@@ -353,11 +374,11 @@ export default function TestcasesInputList(props) {
                     }
                     key={`input-${idx}`}
                     >
-                    {getDeletionState(input,idx)[editingState]} 
+                    {getDeletionState(input,idx)[editingState]}                     
                 </div>
             )
         }
-        else {
+        else { //if the row i'm generating is inactive
             return(
                 <div 
                     className={classes.inactiveRow} 
@@ -374,12 +395,23 @@ export default function TestcasesInputList(props) {
                         }}>
                             <span>{input}</span>
                     </div>
+                    <div className={classes.error}>
+                        {errors && errors[idx] && ("  -  "+errors[idx])}
+                    </div>
                 </div>
             )
         }
     }
 
-    
+    function validateSingleInput(input, idx, pattern){
+        let errorMsg = 'this is error';
+        let errorsArray = []
+        inputs.forEach((input, idx)=>{
+            errorsArray.push(errorMsg)
+        })
+        setErrors(errorsArray)
+        return false;
+    }
 
     return (
         <div className={classes.root}>

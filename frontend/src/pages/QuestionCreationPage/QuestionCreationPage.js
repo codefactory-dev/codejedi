@@ -222,7 +222,10 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
         console.log("these are variables: "+variables)
         setSolutionSubpage(Object.assign(solutionSubpage, variables)) 
     };
-    const onTestcasesSubPageChange = variables => setTestcasesSubpage(Object.assign(testcasesSubpage, variables));
+    const onTestcasesSubPageChange = variables => {
+        console.log("these are variables: "+variables)
+        setTestcasesSubpage(Object.assign(testcasesSubpage, variables));
+    };
     
     // --------------------------------------
     // 
@@ -527,15 +530,6 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
         Swal.fire('Error submitting question !');
       }
       
-    }
-    
-    function languageNameToIndex(languageName){
-        switch(languageName){
-            case "java":
-                return 1;
-            case "javascript":
-                return 0;             
-        }
     }
 
     return (
