@@ -98,7 +98,10 @@ export default function TestcasesSubpage(props) {
   
   useEffect(()=>{
     console.log("started");
-  },[])
+    if(testcaseFormat !== JSON.stringify(props.funcParameters)) {
+      setTestcaseFormat(JSON.stringify(props.funcParameters))
+    }
+  },[props.funcParameters])
 
   // ---------------------------------------
   // CALLBACKS
