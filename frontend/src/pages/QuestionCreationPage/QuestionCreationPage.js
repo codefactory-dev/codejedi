@@ -394,7 +394,7 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
                     //const editorStateRaw = blocks.map(block => (!block.text.trim() && '\n') || block.text).join('\n');
 
                     let rawContext = typeof descriptionSubpage.editorState === 'string'
-                            ? descriptionSubpage.editorState
+                            ? convertToRaw(descriptionSubpage.editorState)
                             : JSON.stringify(convertToRaw(descriptionSubpage.editorState.getCurrentContent()));
                     
                     if (descriptionSubpage.questionId){
