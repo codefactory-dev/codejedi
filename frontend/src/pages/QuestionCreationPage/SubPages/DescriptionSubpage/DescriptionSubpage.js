@@ -195,7 +195,10 @@ export default function DescriptionSubpage(props) {
   const onQuestionNameChange = evt => setQuestionName(evt.target.value);
   const onQuestionTypeChange = evt => setQuestionType(QUESTION_TYPES[evt.target.value]);
   const onQuestionDifficultyChange = evt => setQuestionDifficulty(DIFFICULTY_TYPES[evt.target.value]);
-  const onEditorStateChange = editorState => setEditorState(editorState);
+  const onEditorStateChange = editorState => {
+    console.log("setting editor state")
+    setEditorState(editorState);
+  }
 
   return (
     <div className={classes.verticalContainer}>
@@ -227,7 +230,12 @@ export default function DescriptionSubpage(props) {
       <div className={classes.bodyContainer}>
         <Paper className={classes.textArea}>
           <Editor
-            editorState={editorState}
+            editorState={(()=>{
+              if (typeof editorState === 'string'){
+                return EditorState.createWithContent(ContentState.createFromText(props.editorState))
+              }
+              return editorState
+            })()}
             toolbarClassName="toolbarClassName"
             wrapperClassName="wrapperClassName"
             editorClassName="editorClassName"

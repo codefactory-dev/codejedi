@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
@@ -90,7 +90,19 @@ const useStyles = makeStyles( theme => ({
 
 export default function TestcasesSubpage(props) {
   const classes = useStyles();
+  const [testcaseFormat, setTestcaseFormat] = useState()
   
+  // ---------------------------------------
+  // HOOKS
+  // ---------------------------------------
+  
+  useEffect(()=>{
+    console.log("started");
+    if(testcaseFormat !== JSON.stringify(props.funcParameters)) {
+      setTestcaseFormat(props.funcParameters)
+    }
+  },[props.funcParameters])
+
   // ---------------------------------------
   // CALLBACKS
   // ---------------------------------------
@@ -103,12 +115,16 @@ export default function TestcasesSubpage(props) {
           <div className={classes.titleWrapper} >
             <Typography variant="h6">
                 <div className={classes.title}>Type your inputs below. Each input line is a separate test case in this format:</div>
-                <div className={classes.format}>1</div>
+                <div className={classes.format}>{JSON.stringify(testcaseFormat)}</div>
             </Typography>
           </div>
       </div>
       <div className={classes.bodyContainer}>
-          <TestcasesInputList inputs={props.inputs} onChange={onTestInputChange} />
+          <TestcasesInputList 
+              inputs={props.inputs} 
+              testcaseFormat={testcaseFormat}
+              onChange={onTestInputChange} 
+          />
       </div>
       
     </div>

@@ -188,7 +188,7 @@ const ROW_STATES = {
     DELETING: 3
 }
 
-const INPUT_TYPES = ['int', 'String'];
+const INPUT_TYPES = ['number', 'string', 'array', 'boolean' ];
 
 export default function ParameterInputList(props) {
     const classes = useStyles(props);

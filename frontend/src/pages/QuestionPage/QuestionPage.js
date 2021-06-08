@@ -541,15 +541,6 @@ const QuestionPage = ({dispatch,solution,currentQuestion,...props}) => {
         }
     }
     
-    function languageNameToIndex(languageName){
-        switch(languageName){
-            case "java":
-                return 1;
-            case "javascript":
-                return 0;             
-        }
-    }
-
     return (
             <StylesProvider injectFirst>
                 <div className={classes.questionPage}>
