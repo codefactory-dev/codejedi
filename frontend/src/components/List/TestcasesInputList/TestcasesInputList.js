@@ -266,7 +266,7 @@ export default function TestcasesInputList({testcaseFormat, ...props}) {
         e.preventDefault();        
         let newInputs = [...inputs];
         const activeRowValue = document.querySelector(`#input-${activeRowItem}`).value;        
-        if (!validateSingleInput(activeRowValue,activeRowItem))
+        if (!validateSingleInput(activeRowValue,activeRowItem, newInputs))
         {
             //if input is not valid, make it red colored.
             if (activeRowValue.trim()){
@@ -403,10 +403,11 @@ export default function TestcasesInputList({testcaseFormat, ...props}) {
         }
     }
 
-    function validateSingleInput(input, idx){
+    function validateSingleInput(input, idx, allInputs){
         let errorMsg = 'wrong format. should be '+JSON.stringify(testcaseFormat);
         let errorsArray = []
-        inputs.forEach((input, idx)=>{
+        allInputs[idx] = input;
+        allInputs.forEach((input, idx)=>{
             
             
             let everythingPassed = true;
