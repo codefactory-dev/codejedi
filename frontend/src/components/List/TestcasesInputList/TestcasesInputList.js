@@ -199,7 +199,7 @@ const rowStates = {
     EDITING_ROW: 1,
     CONFIRMING_DELETE: 2
 }
-export default function TestcasesInputList(props) {
+export default function TestcasesInputList({testcaseFormat, ...props}) {
     const classes = useStyles(props);
     const matches = useMediaQuery('(min-width:798px)');
     const theme = useTheme();
@@ -266,7 +266,7 @@ export default function TestcasesInputList(props) {
         e.preventDefault();        
         let newInputs = [...inputs];
         const activeRowValue = document.querySelector(`#input-${activeRowItem}`).value;        
-        if (!validateSingleInput(activeRowValue,activeRowItem,"string"))
+        if (!validateSingleInput(activeRowValue,activeRowItem))
         {
             //if input is not valid, make it red colored.
             if (activeRowValue.trim()){
@@ -403,11 +403,58 @@ export default function TestcasesInputList(props) {
         }
     }
 
-    function validateSingleInput(input, idx, pattern){
-        let errorMsg = 'this is error';
+    function validateSingleInput(input, idx){
+        let errorMsg = 'wrong format. should be '+JSON.stringify(testcaseFormat);
         let errorsArray = []
         inputs.forEach((input, idx)=>{
-            errorsArray.push(errorMsg)
+            
+            
+            let everythingPassed = true;
+
+            //is it multiple parameters ?
+            if(testcaseFormat.length > 1){
+                let enclosedInArray = '[' + input + ']';
+                try {
+                    let converted = JSON.parse(enclosedInArray)
+                    for(let i=0;i<converted.length;i++){
+                        if (Array.isArray(converted[i])){
+                            if (testcaseFormat[i].type !== 'array') {
+                                everythingPassed = false;
+                            }
+                        } else if (typeof converted[i] !== testcaseFormat[i].type){
+                            everythingPassed = false;
+                        }
+                    }
+                } catch (error) {
+                    everythingPassed = false;
+                }
+            } else {
+                //is it a single parameter ?
+                try {
+                    let converted = JSON.parse(input);
+                    if (typeof converted !== testcaseFormat[0].type){
+                        everythingPassed = false;
+                    }
+                } catch (error) {
+                    //let's see if it's a string
+                    try {
+                        let enclosedInQuotes = '"' + input + '"';
+                        let secondTryConvert = JSON.parse(enclosedInQuotes)
+                        if (typeof secondTryConvert !== testcaseFormat[0].type){
+                            everythingPassed = false;
+                        }
+                    } catch (error){
+                        everythingPassed = false;
+                    }
+                }
+            }
+            if (everythingPassed){
+                errorsArray.push('');
+            } else {
+                errorsArray.push(errorMsg)
+            }
+
+            
         })
         setErrors(errorsArray)
         return false;

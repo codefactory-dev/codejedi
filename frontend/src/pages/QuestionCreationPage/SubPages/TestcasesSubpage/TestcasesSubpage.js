@@ -99,7 +99,7 @@ export default function TestcasesSubpage(props) {
   useEffect(()=>{
     console.log("started");
     if(testcaseFormat !== JSON.stringify(props.funcParameters)) {
-      setTestcaseFormat(JSON.stringify(props.funcParameters))
+      setTestcaseFormat(props.funcParameters)
     }
   },[props.funcParameters])
 
@@ -115,12 +115,16 @@ export default function TestcasesSubpage(props) {
           <div className={classes.titleWrapper} >
             <Typography variant="h6">
                 <div className={classes.title}>Type your inputs below. Each input line is a separate test case in this format:</div>
-                <div className={classes.format}>{testcaseFormat}</div>
+                <div className={classes.format}>{JSON.stringify(testcaseFormat)}</div>
             </Typography>
           </div>
       </div>
       <div className={classes.bodyContainer}>
-          <TestcasesInputList inputs={props.inputs} onChange={onTestInputChange} />
+          <TestcasesInputList 
+              inputs={props.inputs} 
+              testcaseFormat={testcaseFormat}
+              onChange={onTestInputChange} 
+          />
       </div>
       
     </div>
