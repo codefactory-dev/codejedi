@@ -304,7 +304,10 @@ function SolutionSubpage({dispatch, solution, ...props}) {
                                 <CustomSelect
                                               disabled
                                               label={'Language'}
-                                              checkedOptionIndex={1 + getKeyIndexByValue(PROGRAMMING_LANGUAGES, funcLanguage)}
+                                              checkedOptionIndex={(()=>{
+                                                let index = getKeyIndexByValue(PROGRAMMING_LANGUAGES, funcLanguage)
+                                                return (1 + index)
+                                              })()}
                                               options={Object.keys(PROGRAMMING_LANGUAGES)}  
                                               onChange={onFunctionLanguageChange}/>
                             </div>

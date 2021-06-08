@@ -29,6 +29,7 @@ import { generateFunctionSignature, FUNCTION_RETURN_TYPES, PROGRAMMING_LANGUAGES
 import SolutionValidationError from 'Errors/SolutionValidationError'
 import TestcasesValidationError from 'Errors/TestcasesValidationError'
 import { saveSolutionAction } from "store/reducers/solution";
+import { selectCurrentQuestionAction } from "store/reducers/currentQuestion";
 
 const useStyles = makeStyles((theme) => ({
     
@@ -222,7 +223,10 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
         console.log("these are variables: "+variables)
         setSolutionSubpage(Object.assign(solutionSubpage, variables)) 
     };
-    const onTestcasesSubPageChange = variables => setTestcasesSubpage(Object.assign(testcasesSubpage, variables));
+    const onTestcasesSubPageChange = variables => {
+        console.log("these are variables: "+variables)
+        setTestcasesSubpage(Object.assign(testcasesSubpage, variables));
+    };
     
     // --------------------------------------
     // 
@@ -332,7 +336,8 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
                 funcLanguage: currentQuestion.languageType
             }) 
             onTestcasesSubPageChange({
-                inputs: currentQuestion.testcases
+                inputs: currentQuestion.testcases,
+                funcParameters: currentQuestion.parameters
             })  
         }
     },[currentQuestion])
@@ -387,7 +392,10 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
                     console.log("this is the solution subpage: "+JSON.stringify(solutionSubpage))
                     //const blocks = convertToRaw(descriptionSubpage.editorState.getCurrentContent()).blocks;
                     //const editorStateRaw = blocks.map(block => (!block.text.trim() && '\n') || block.text).join('\n');
-                    const rawContext = JSON.stringify(convertToRaw(descriptionSubpage.editorState.getCurrentContent()));
+
+                    let rawContext = typeof descriptionSubpage.editorState === 'string'
+                            ? convertToRaw(descriptionSubpage.editorState)
+                            : JSON.stringify(convertToRaw(descriptionSubpage.editorState.getCurrentContent()));
                     
                     if (descriptionSubpage.questionId){
                        try {
@@ -408,6 +416,7 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
                                 }
                             }); 
                             if (result.status === 200){
+                                dispatch(selectCurrentQuestionAction(result.data.question));
                                 Swal.fire('updated !');
                             }
                        } catch (error){
@@ -435,6 +444,7 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
                             }
                         });  
                         if (result.status === 201){
+                            dispatch(selectCurrentQuestionAction(result.data.question));
                             Swal.fire('created !');
                         }
                     } catch (error){
@@ -447,6 +457,8 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
                     if (error.testcasesValidationError){
                         return Swal.fire(`Something's wrong with your testcases. `+error.message)
                     }
+                    console.log("Unknown error: "+error.message);
+                    return Swal.fire(`Unknown error`)
                 }
             }
             performSave();
@@ -527,15 +539,6 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
         Swal.fire('Error submitting question !');
       }
       
-    }
-    
-    function languageNameToIndex(languageName){
-        switch(languageName){
-            case "java":
-                return 1;
-            case "javascript":
-                return 0;             
-        }
     }
 
     return (
