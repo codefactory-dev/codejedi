@@ -11,7 +11,7 @@ const CodeEditor = ({textareaNode, ...props}) => {
         <div style= {{width:'100%', height: props.height}} className={'codemirrorContainer'}>
             <textarea
 					    ref={textareaNode}
-              autoComplete="off"
+                        autoComplete="off"
 			      />
         </div>
         

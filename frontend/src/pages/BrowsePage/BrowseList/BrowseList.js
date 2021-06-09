@@ -325,7 +325,9 @@ const BrowseList = ({dispatch,currentQuestion,...props}) => {
     const getDeletionState = (input,idx) => ({
         [rowStates.DESELECTED]: 
             <div className={classes.selectedInput}>
-                <IconButton 
+                {
+                process.env.NODE_ENV !== 'production'
+                ? <IconButton 
                             className={classes.deleteIcon} 
                             width={19.5} 
                             height={20} 
@@ -338,7 +340,9 @@ const BrowseList = ({dispatch,currentQuestion,...props}) => {
                             borderRadius={'3px'}
                             icon={<CrossIcon />}
                             onClick={(e) => { askForDelete(e,idx) } } 
-                />
+                /> 
+                : ''
+                }
                 <span onClick={()=>{navigateToQuestion(input)}}>{input.title}</span>
                 <span onClick={()=>{navigateToQuestion(input)}}>{input.creator ? '| Author: '+input.creator.username : ''}</span>
             </div>,

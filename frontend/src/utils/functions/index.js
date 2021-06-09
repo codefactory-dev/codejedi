@@ -26,7 +26,6 @@ export const generateFunctionSignature = (funcLanguage,funcParameters,funcName,f
 }
 
 export const PROGRAMMING_LANGUAGES = {
-    JAVA: 'java', 
     JAVASCRIPT: 'javascript'
 };
 export const FUNCTION_RETURN_TYPES = {
