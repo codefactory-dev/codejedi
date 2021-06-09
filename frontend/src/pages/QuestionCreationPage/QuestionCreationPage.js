@@ -206,6 +206,8 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
     let [testcasesSubpage, setTestcasesSubpage] = useState({});
     let [codeareaDisabled, setCodeareaDisabled] = useState(true)
 
+    const { authTokens, setAuthTokens } = useAuth();
+
     // --------------------------------------
     // HOOKS
     // --------------------------------------
@@ -215,6 +217,34 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
             dispatch(saveSolutionAction(''));
         }
     },[])
+
+    useEffect(()=>{
+        if (authTokens && authTokens !== "undefined") {
+            setCurrentUser(JSON.parse(authTokens).user)
+        }
+    },[authTokens])
+
+    useEffect(()=>{
+        if (currentQuestion){
+            onDescriptionSubPageChange({
+                questionId: currentQuestion._id,
+                title: currentQuestion.title,
+                questionDifficulty: currentQuestion.difficulty,
+                questionType: currentQuestion.type,
+                editorState: currentQuestion.description
+            })   
+            onSolutionSubPageChange({
+                funcName: currentQuestion.solutionName,
+                funcParameters: currentQuestion.parameters,
+                functReturnType: currentQuestion.returnType,
+                funcSolutionCode: currentQuestion.solution,
+            }) 
+            onTestcasesSubPageChange({
+                inputs: currentQuestion.testcases,
+                funcParameters: currentQuestion.parameters
+            })  
+        }
+    },[currentQuestion])
 
     // --------------------------------------
     // CALLBACKS
@@ -311,6 +341,7 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
                     {... solutionSubpage} 
                     codeareaDisabled={codeareaDisabled}
                     setCodeareaDisabled={setCodeareaDisabled}
+                    funcLanguage={'javascript'}
                     onPageChange={onSolutionSubPageChange}
                 />,
             [pageTabs.TESTCASES_PAGE]: 
@@ -319,35 +350,7 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
         }
         return subPages[activeTab];
     }
-    const { authTokens, setAuthTokens } = useAuth();
-    useEffect(()=>{
-        if (authTokens && authTokens !== "undefined") {
-            setCurrentUser(JSON.parse(authTokens).user)
-        }
-    },[authTokens])
-    useEffect(()=>{
-        if (currentQuestion){
-            onDescriptionSubPageChange({
-                questionId: currentQuestion._id,
-                title: currentQuestion.title,
-                questionDifficulty: currentQuestion.difficulty,
-                questionType: currentQuestion.type,
-                editorState: currentQuestion.description
-            })   
-            onSolutionSubPageChange({
-                funcName: currentQuestion.solutionName,
-                funcParameters: currentQuestion.parameters,
-                functReturnType: currentQuestion.returnType,
-                funcSolutionCode: currentQuestion.solution,
-                funcLanguage: currentQuestion.languageType,
-            }) 
-            onTestcasesSubPageChange({
-                inputs: currentQuestion.testcases,
-                funcParameters: currentQuestion.parameters
-            })  
-        }
-    },[currentQuestion])
-    
+        
     if (!authTokens || authTokens === "undefined") {
         return <Redirect to={"/login"} />;
     } 

@@ -138,7 +138,7 @@ function SolutionSubpage({dispatch, solution, codeareaDisabled, setCodeareaDisab
 
         // load props
         setFuncName(props.funcName);
-        setFuncLanguage(props.funcLanguage);
+       setFuncLanguage(props.funcLanguage);
         setFuncReturnType(props.functReturnType);
         setFuncSolutionCode(props.funcSolutionCode)
         setFuncParams(props.funcParameters);
@@ -305,7 +305,9 @@ function SolutionSubpage({dispatch, solution, codeareaDisabled, setCodeareaDisab
                                                  onChange={onFunctionNameChange}/>
                             </div>
                             <div className={classes.colFlex1}>
-                                <CustomSelect label={'Language'}
+                                <CustomSelect 
+                                              disabled
+                                              label={'Language'}
                                               checkedOptionIndex={1 + getKeyIndexByValue(PROGRAMMING_LANGUAGES, funcLanguage)}
                                               options={Object.keys(PROGRAMMING_LANGUAGES)}  
                                               onChange={onFunctionLanguageChange}/>
