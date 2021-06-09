@@ -112,7 +112,7 @@ const getKeyIndexByValue = (object, value) => {
 }
 
 
-function SolutionSubpage({dispatch, solution, ...props}) {
+function SolutionSubpage({dispatch, solution, codeareaDisabled, setCodeareaDisabled, ...props}) {
     const classes = useStyles();
     const theme = useTheme();
     const [codemirror, setCodeMirror] = useState(null)
@@ -124,6 +124,7 @@ function SolutionSubpage({dispatch, solution, ...props}) {
     let [funcParameters, setFuncParams] = useState(props.funcParameters);
     let [funcSolutionCode, setFuncSolutionCode] = useState()
     let [signature, setSignature] = useState();
+
     let userCode = ``;
     const languageModes = new Map([['javascript', 'javascript'], ['java', 'text/x-java'], ['c++', 'text/x-c++src']]);
     let selectedLanguage = 'java';
@@ -149,7 +150,8 @@ function SolutionSubpage({dispatch, solution, ...props}) {
         let codeMirrorInstance = CodeMirror.fromTextArea(textareaNode.current, {
             lineNumbers: true,
             mode: languageModes.get(funcLanguage),
-            matchBrackets: true
+            matchBrackets: true,
+            readOnly: codeareaDisabled ? "nocursor" : false
         });
         
         codeMirrorInstance.on("change", changeObj => {    
@@ -245,6 +247,8 @@ function SolutionSubpage({dispatch, solution, ...props}) {
                 let functionSignature = generateFunctionSignature(funcLanguage,funcParameters,funcName,functReturnType)
                 codemirror.setValue("");
                 codemirror.clearHistory();
+                codemirror.setOption("readOnly",false);
+                setCodeareaDisabled(false);
                 setFuncSolutionCode(functionSignature)
             } else if (result.isDenied) {
                 //Swal.fire('Changes are not saved', '', 'info')
@@ -343,7 +347,8 @@ function SolutionSubpage({dispatch, solution, ...props}) {
                             <div className={classes.titleContainer}>
                                     <span className={classes.title}>Solution</span>
                             </div>
-                            <CodeEditor code={funcSolutionCode} 
+                            <CodeEditor 
+                                        code={funcSolutionCode} 
                                         setCode={setFuncSolutionCode}
                                         codemirror={codemirror}
                                         textareaNode={textareaNode}

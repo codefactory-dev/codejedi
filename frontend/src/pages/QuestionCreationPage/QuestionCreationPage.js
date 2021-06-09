@@ -204,6 +204,7 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
     let [descriptionSubpage, setDescriptionSubpage] = useState({});
     let [solutionSubpage, setSolutionSubpage] = useState({});
     let [testcasesSubpage, setTestcasesSubpage] = useState({});
+    let [codeareaDisabled, setCodeareaDisabled] = useState(true)
 
     // --------------------------------------
     // HOOKS
@@ -306,7 +307,12 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
             [pageTabs.DESCRIPTION_PAGE]: 
                 <DescriptionSubpage {... descriptionSubpage} onPageChange={onDescriptionSubPageChange}/>,
             [pageTabs.SOLUTION_PAGE]: 
-                <SolutionSubpage {... solutionSubpage} onPageChange={onSolutionSubPageChange}/>,
+                <SolutionSubpage 
+                    {... solutionSubpage} 
+                    codeareaDisabled={codeareaDisabled}
+                    setCodeareaDisabled={setCodeareaDisabled}
+                    onPageChange={onSolutionSubPageChange}
+                />,
             [pageTabs.TESTCASES_PAGE]: 
                 <TestcasesSubpage {... testcasesSubpage} onPageChange={onTestcasesSubPageChange}/>
 
@@ -333,7 +339,7 @@ const QuestionCreationPage = ({dispatch,solution,currentQuestion,...props}) => {
                 funcParameters: currentQuestion.parameters,
                 functReturnType: currentQuestion.returnType,
                 funcSolutionCode: currentQuestion.solution,
-                funcLanguage: currentQuestion.languageType
+                funcLanguage: currentQuestion.languageType,
             }) 
             onTestcasesSubPageChange({
                 inputs: currentQuestion.testcases,
