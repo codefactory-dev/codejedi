@@ -7,6 +7,12 @@ import api from 'services/api'
 import { useAuth } from "Context/auth";
 import { useHistory } from "react-router-dom";
 import ConnectTo from "store/connect";
+import IconButton from 'components/Buttons/IconButton';
+import {ReactComponent as YesIcon} from 'icons/yes.svg';
+import {ReactComponent as CrossIcon} from 'icons/cross.svg';
+
+
+import Swal from 'sweetalert2'
 
 import { selectCurrentQuestionAction, deselectCurrentQuestionAction } from "store/reducers/currentQuestion";
 
@@ -177,6 +183,10 @@ const useStyles = makeStyles(theme => ({
         height: 37,
         cursor: 'pointer',
     },
+    confirmingDeleteText: {
+        color: theme.palette.secondary.main,
+        fontWeight: 100
+    },
   }));
 const rowStates = {
     DESELECTED: 0,
@@ -263,8 +273,25 @@ const QuestionsList = ({dispatch,currentQuestion, inputs, setInputs,...props}) =
         setActiveRowItem(-1);
     }
 
-    function handleYes(){
-        deleteCurrentRow();
+    function handleYes(question){
+        async function deleteQuestion(questionId){
+            try {
+                let userId = question.creator.id;
+                let questionId = question._id;
+                const result = await api({
+                    method: 'delete',
+                    url: `/users/${userId}/questions/${questionId}`,
+                });  
+                if (result.status === 200){
+                    deleteCurrentRow();
+                    Swal.fire('deleted !');
+                }
+            } catch (error){
+                Swal.fire('failed to delete !');
+            }
+            
+        }
+        deleteQuestion();
     }
     function handleNo(){
         setEditingState(rowStates.DESELECTED);
@@ -278,6 +305,20 @@ const QuestionsList = ({dispatch,currentQuestion, inputs, setInputs,...props}) =
     const getDeletionState = (input,idx) => ({
         [rowStates.DESELECTED]: 
             <div className={classes.selectedInput}>
+                <IconButton 
+                            className={classes.deleteIcon} 
+                            width={19.5} 
+                            height={20} 
+                            padding={3} 
+                            marginLeft={5}
+                            fill={`${theme.palette.primary.main}`}
+                            stroke={'none'}
+                            fillHover={'white'}
+                            strokeHover={'none'}
+                            borderRadius={'3px'}
+                            icon={<CrossIcon />}
+                            onClick={(e) => { askForDelete(e,idx) }} 
+                />
                 <span onClick={()=>{navigateToQuestion(input)}}>{input.title}</span>
                 
                 <span onClick={()=>{navigateToQuestion(input)}}>{input.creator ? '| Author: '+input.creator.username : ''}</span>
@@ -291,9 +332,21 @@ const QuestionsList = ({dispatch,currentQuestion, inputs, setInputs,...props}) =
             </div>,
         [rowStates.CONFIRMING_DELETE]: 
             <div className={classes.selectedInput}>
-                <span>{matches ? 'Do you want to remove the selected item ?' : 'Remove selected item ?'}</span>
-                <div style={{marginLeft: 10}} onClick={()=>{handleYes()}}>Yes</div>
-                <div style={{marginLeft: 10}} onClick={()=>{handleNo()}}>no</div>
+                <IconButton 
+                            className={classes.confirmingDeleteIcon} 
+                            width={19.5} 
+                            height={20} 
+                            padding={3} 
+                            marginLeft={5}
+                            fill={`${theme.palette.secondary.main}`}
+                            stroke={'none'}
+                            fillHover={'white'}
+                            strokeHover={'none'}
+                            borderRadius={'3px'}
+                            icon={<YesIcon />}
+                            onClick={(e) => { handleYes(input) } } 
+                />
+                <span className={classes.confirmingDeleteText}>{matches ? 'Are you sure to delete this row ?' : 'Remove selected item ?'}</span>
             </div>
     })
     

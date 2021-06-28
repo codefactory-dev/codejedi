@@ -42,7 +42,7 @@ function CodeScaffolding(entries, paramsAmount, userSolution, hiddenSolution,que
                 }
             }
             
-            console.log('Accepted ! Cases passed: '+gotRightAmount+ '/'+convertedEntries.length);`;
+            console.log('Submitted ! Cases passed: '+gotRightAmount+ '/'+convertedEntries.length);`;
 }
 
 function TestScaffolding(entries, paramsAmount, testSolution, questionType, entryFunction="solution")
