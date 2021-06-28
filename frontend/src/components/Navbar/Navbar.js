@@ -144,8 +144,8 @@ function NavBar() {
                 <Typography variant="h6" className={classes.menuOptions} onClick={navigateToBrowse}>
                   BROWSE
                 </Typography>
-                <Typography variant="h6" className={classes.menuOptions} onClick={navigateToProfile}>
-                  PROFILE
+                <Typography variant="h6" className={classes.menuOptions} onClick={navigateToInitial}>
+                  MY QUESTIONS
                 </Typography>
                 {/*
                 <Typography variant="h6" className={classes.menuOptions} onClick={navigateToSubmissions}>
