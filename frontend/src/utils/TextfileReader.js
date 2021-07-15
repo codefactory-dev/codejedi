@@ -1,5 +1,4 @@
-import React from "react";
-
+import React from 'react';
 
 /*
 	Read a text file and out put the content.
@@ -16,7 +15,7 @@ class TextFileReader extends React.Component {
 		super(props);
 
 		this.state = {
-			text: ""
+			text: '',
 		};
 	}
 
@@ -24,15 +23,15 @@ class TextFileReader extends React.Component {
 		this.readTextFile(this.props.txt);
 	}
 
-	readTextFile = file => {
+	readTextFile = (file) => {
 		var rawFile = new XMLHttpRequest();
-		rawFile.open("GET", file, false);
+		rawFile.open('GET', file, false);
 		rawFile.onreadystatechange = () => {
 			if (rawFile.readyState === 4) {
 				if (rawFile.status === 200 || rawFile.status == 0) {
 					var allText = rawFile.responseText;
 					this.setState({
-						text: allText
+						text: allText,
 					});
 				}
 			}
@@ -43,8 +42,13 @@ class TextFileReader extends React.Component {
 	render() {
 		return (
 			<>
-				{this.state.text.split("\n").map((item, key) => {
-					return <span key={key}>{item}<br /></span>;
+				{this.state.text.split('\n').map((item, key) => {
+					return (
+						<span key={key}>
+							{item}
+							<br />
+						</span>
+					);
 				})}
 			</>
 		);

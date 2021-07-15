@@ -1,7 +1,7 @@
 const questionTypes = {
-    Array: 'Array',
-    String: 'String',
-    Integer: 'Integer'
-}
+	Array: 'Array',
+	String: 'String',
+	Integer: 'Integer',
+};
 
-module.exports = questionTypes
+module.exports = questionTypes;
