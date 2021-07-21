@@ -356,6 +356,8 @@ const QuestionCreationPage = ({
 			[pageTabs.TESTCASES_PAGE]: (
 				<TestcasesSubpage
 					{...testcasesSubpage}
+					codeareaDisabled={codeareaDisabled}
+					setCodeareaDisabled={setCodeareaDisabled}
 					onPageChange={onTestcasesSubPageChange}
 				/>
 			),
@@ -615,6 +617,7 @@ const QuestionCreationPage = ({
 								onClick={(e) => changeSubpage(e, 1)}
 							/>
 							<Tab
+								disabled={codeareaDisabled}
 								disableRipple
 								classes={{ root: classes.tab, selected: classes.selected }}
 								label="TEST CASES"

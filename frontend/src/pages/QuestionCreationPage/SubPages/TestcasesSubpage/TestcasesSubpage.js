@@ -87,7 +87,11 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function TestcasesSubpage(props) {
+export default function TestcasesSubpage({
+	codeareaDisabled,
+	setCodeareaDisabled,
+	...props
+}) {
 	const classes = useStyles();
 	const [testcaseFormat, setTestcaseFormat] = useState();
 
