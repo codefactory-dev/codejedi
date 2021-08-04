@@ -93,18 +93,6 @@ export default function TestcasesSubpage({
 	...props
 }) {
 	const classes = useStyles();
-	const [testcaseFormat, setTestcaseFormat] = useState();
-
-	// ---------------------------------------
-	// HOOKS
-	// ---------------------------------------
-
-	useEffect(() => {
-		console.log('started');
-		if (testcaseFormat !== JSON.stringify(props.funcParameters)) {
-			setTestcaseFormat(props.funcParameters);
-		}
-	}, [props.funcParameters]);
 
 	// ---------------------------------------
 	// CALLBACKS
@@ -122,7 +110,7 @@ export default function TestcasesSubpage({
 							this format:
 						</div>
 						<div className={classes.format}>
-							{JSON.stringify(testcaseFormat)}
+							{JSON.stringify(props.funcParameters)}
 						</div>
 					</Typography>
 				</div>
@@ -130,7 +118,7 @@ export default function TestcasesSubpage({
 			<div className={classes.bodyContainer}>
 				<TestcasesInputList
 					inputs={props.inputs}
-					testcaseFormat={testcaseFormat}
+					testcaseFormat={props.funcParameters}
 					onChange={onTestInputChange}
 				/>
 			</div>
