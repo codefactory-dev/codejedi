@@ -3,6 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import api from 'services/api';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import clsx from 'clsx';
+import FormControl from '@material-ui/core/FormControl';
 import Checkbox from '@material-ui/core/Checkbox';
 import TextField from '@material-ui/core/TextField';
 import Box from '@material-ui/core/Box';
@@ -12,8 +14,13 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Container from '@material-ui/core/Container';
 import { Link, Redirect, useHistory } from 'react-router-dom';
+import Input from '@material-ui/core/Input';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import IconButton from '@material-ui/core/IconButton';
+import InputLabel from '@material-ui/core/InputLabel';
 import { useAuth } from '../../Context/auth';
-
 import Illustration from '../../imgs/CompleteLogo.svg';
 import RegularButton from '../../components/Buttons/RegularButton';
 
@@ -36,6 +43,12 @@ const useStyles = makeStyles((theme) => ({
 	},
 	textField: {
 		...theme.inputTextField,
+	},
+	adornedFormTextfield: {
+		...theme.adornedFormTextfield,
+	},
+	margin: {
+		// margin: theme.spacing(1),
 	},
 	container: {
 		height: '100vh',
@@ -100,17 +113,33 @@ function SigninPage(props) {
 	const classes = useStyles();
 	const [isLoggedIn, setLoggedIn] = useState(false);
 	const [isError, setIsError] = useState(false);
+	const [values, setValues] = React.useState({
+		password: '',
+		showPassword: false,
+	});
 	const { setAuthTokens } = useAuth();
 	const referer = (props.location.state && props.location.state.referer) || '/';
 
-	function handleLogin(e) {
+	const handleChange = (prop) => (event) => {
+		setValues({ ...values, [prop]: event.target.value });
+	};
+
+	const handleClickShowPassword = () => {
+		setValues({ ...values, showPassword: !values.showPassword });
+	};
+
+	const handleMouseDownPassword = (event) => {
+		event.preventDefault();
+	};
+
+	const handleLogin = (e) => {
 		e.preventDefault();
 		setIsError(false);
 		async function login() {
 			console.log('handling login');
 			try {
 				const login = document.querySelector('#mylogin').value;
-				const password = document.querySelector('#mypassword').value;
+				const password = document.querySelector('#field1').value;
 				const result = await api({
 					method: 'post',
 					url: '/auth/signin',
@@ -135,7 +164,7 @@ function SigninPage(props) {
 			}
 		}
 		login();
-	}
+	};
 	const navigateToSignup = () => {
 		history.push('/signup');
 	};
@@ -173,15 +202,37 @@ function SigninPage(props) {
 								label="Username"
 								fullWidth
 							/>
-							<TextField
-								id="mypassword"
-								classes={{ root: classes.textField }}
-								label="Password"
+							<FormControl
+								className={clsx(classes.margin, classes.adornedFormTextfield)}
+								autoComplete={false}
 								fullWidth
-								type="password"
-								autoComplete="new-password"
-								// autoComplete="current-password"
-							/>
+							>
+								<InputLabel htmlFor="field1">Password</InputLabel>
+								<Input
+									id="field1"
+									label="Password"
+									fullWidth
+									type={values.showPassword ? 'text' : 'password'}
+									value={values.password}
+									autoComplete="new-password"
+									onChange={handleChange('password')}
+									endAdornment={
+										<InputAdornment position="end">
+											<IconButton
+												aria-label="toggle password visibility"
+												onClick={handleClickShowPassword}
+												onMouseDown={handleMouseDownPassword}
+											>
+												{values.showPassword ? (
+													<Visibility />
+												) : (
+													<VisibilityOff />
+												)}
+											</IconButton>
+										</InputAdornment>
+									}
+								/>
+							</FormControl>
 							<FormControlLabel
 								classes={{ label: classes.formControlLabel }}
 								control={
