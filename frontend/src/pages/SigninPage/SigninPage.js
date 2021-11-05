@@ -139,7 +139,7 @@ function SigninPage(props) {
 			console.log('handling login');
 			try {
 				const login = document.querySelector('#mylogin').value;
-				const password = document.querySelector('#mypassword').value;
+				const password = document.querySelector('#field1').value;
 				const result = await api({
 					method: 'post',
 					url: '/auth/signin',
@@ -207,9 +207,9 @@ function SigninPage(props) {
 								autoComplete={false}
 								fullWidth
 							>
-								<InputLabel htmlFor="mypassword">Password</InputLabel>
+								<InputLabel htmlFor="field1">Password</InputLabel>
 								<Input
-									id="mypassword"
+									id="field1"
 									label="Password"
 									fullWidth
 									type={values.showPassword ? 'text' : 'password'}
@@ -231,7 +231,6 @@ function SigninPage(props) {
 											</IconButton>
 										</InputAdornment>
 									}
-									// autoComplete="current-password"
 								/>
 							</FormControl>
 							<FormControlLabel
