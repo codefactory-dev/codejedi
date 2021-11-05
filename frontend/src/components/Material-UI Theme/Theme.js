@@ -185,14 +185,43 @@ export default createMuiTheme({
 	},
 	inputTextField: {
 		caretColor: greyLight,
-		'& input': {
-			color: greyLight,
-			borderBottom: `2px solid ${greyDark}`,
+		'& div': {
+			'&::before': {
+				borderBottom: 'none',
+			},
+			'& input': {
+				color: greyLight,
+				borderBottom: `2px solid ${greyDark}`,
+			},
 		},
 		'& label': {
 			color: greyDark,
 			fontSize: '0.8rem',
 			fontWeight: 700,
+		},
+	},
+	adornedFormTextfield: {
+		caretColor: greyLight,
+		color: greyLight,
+		// borderBottom: `2px solid ${greyDark}`,
+		'& input': {
+			color: greyLight,
+		},
+		'& label': {
+			color: greyDark,
+			fontSize: '0.8rem',
+			fontWeight: 700,
+		},
+		'& div': {
+			'& input': {
+				// borderBottom: '1px solid rgba(255, 0, 0, 0.42)',
+			},
+			'&::before': {
+				borderBottom: `2px solid ${greyDark}`,
+			},
+			'& button': {
+				color: greyDark,
+			},
 		},
 	},
 	logo: {
