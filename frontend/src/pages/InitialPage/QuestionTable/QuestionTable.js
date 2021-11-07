@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
 		border: '1px solid #dddddd',
 		textAlign: 'left',
 		padding: '8px',
+		backgroundColor: props.hoverColor,
 	}),
 
 	//   tr:nth-child(even) {
@@ -107,22 +108,27 @@ export default function () {
 					</tr>
 				</thead>
 				<tbody>
-					{rowStates.map((row) => (
-						<tr
-							onClick={(e) => {
-								handleClickRow(e);
-							}}
-							className={classes.tdOrTh}
-						>
-							<td className={classes.tdOrTh}>{row.title}</td>
-							<td className={classes.tdOrTh}>{row.type}</td>
-							<td className={classes.tdOrTh}>{row.solution}</td>
-							<td className={classes.tdOrTh}>{row.rating}</td>
-							<td className={classes.tdOrTh}>{row.difficulty}</td>
-							<td className={classes.tdOrTh}>{row.creator}</td>
-							<td className={classes.tdOrTh}>{row.lastUpdate}</td>
-						</tr>
-					))}
+					{rowStates.map((row) => {
+						const myColor = row.selected ? 'green' : 'red';
+						const props = { hoverColor: myColor };
+						const theClass = useStyles(props);
+						return (
+							<tr
+								onClick={(e) => {
+									handleClickRow(e);
+								}}
+								className={classes.tdOrTh}
+							>
+								<td className={theClass.tdOrTh}>{row.title}</td>
+								<td className={theClass.tdOrTh}>{row.type}</td>
+								<td className={theClass.tdOrTh}>{row.solution}</td>
+								<td className={theClass.tdOrTh}>{row.rating}</td>
+								<td className={theClass.tdOrTh}>{row.difficulty}</td>
+								<td className={theClass.tdOrTh}>{row.creator}</td>
+								<td className={theClass.tdOrTh}>{row.lastUpdate}</td>
+							</tr>
+						);
+					})}
 				</tbody>
 			</table>
 		</div>
