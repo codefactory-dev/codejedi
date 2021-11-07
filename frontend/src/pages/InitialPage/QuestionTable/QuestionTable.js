@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
 		border: '1px solid #dddddd',
 		textAlign: 'left',
 		padding: '8px',
-		backgroundColor: props.hoverColor,
+		backgroundColor: props.questionColor,
 	}),
 
 	//   tr:nth-child(even) {
@@ -26,6 +26,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 export default function () {
 	// const props = { backgroundColor: 'black', color: 'white' };
+	const SubmissionStates = {
+		ACCEPTED: 0,
+		FAILED: 1,
+		NOT_TRIED: 2,
+	};
 	const [rowStates, setRowStates] = useState([
 		{
 			title: 'Two Sum',
@@ -35,7 +40,7 @@ export default function () {
 			difficulty: 'Medium',
 			creator: 'grrbm',
 			lastUpdate: '03.05.2012 - 17:35',
-			selected: false,
+			submissionState: SubmissionStates.NOT_TRIED,
 		},
 		{
 			title: 'Number of Islands',
@@ -45,7 +50,7 @@ export default function () {
 			difficulty: '',
 			creator: 'rcm4',
 			lastUpdate: '',
-			selected: true,
+			submissionState: SubmissionStates.ACCEPTED,
 		},
 		{
 			title: 'Add Two Numbers',
@@ -55,7 +60,7 @@ export default function () {
 			difficulty: '',
 			creator: 'grrbm',
 			lastUpdate: '',
-			selected: false,
+			submissionState: SubmissionStates.ACCEPTED,
 		},
 		{
 			title: 'Two Sum',
@@ -65,7 +70,7 @@ export default function () {
 			difficulty: '',
 			creator: 'grrbm',
 			lastUpdate: '',
-			selected: false,
+			submissionState: SubmissionStates.NOT_TRIED,
 		},
 		{
 			title: 'Number of Islands',
@@ -75,7 +80,7 @@ export default function () {
 			difficulty: '',
 			creator: 'grrbm',
 			lastUpdate: '',
-			selected: false,
+			submissionState: SubmissionStates.FAILED,
 		},
 		{
 			title: 'Add Two Numbers',
@@ -85,7 +90,7 @@ export default function () {
 			difficulty: '',
 			creator: 'grrbm',
 			lastUpdate: '',
-			selected: false,
+			submissionState: SubmissionStates.FAILED,
 		},
 	]);
 	const classes = useStyles(rowStates);
@@ -109,8 +114,22 @@ export default function () {
 				</thead>
 				<tbody>
 					{rowStates.map((row) => {
-						const myColor = row.selected ? 'green' : 'red';
-						const props = { hoverColor: myColor };
+						let rowColor = '';
+						switch (row.submissionState) {
+							case SubmissionStates.ACCEPTED:
+								rowColor = 'green';
+								break;
+							case SubmissionStates.FAILED:
+								rowColor = 'red';
+								break;
+							case SubmissionStates.NOT_TRIED:
+								rowColor = 'grey';
+								break;
+							default:
+								rowColor = 'grey';
+								break;
+						}
+						const props = { questionColor: rowColor };
 						const theClass = useStyles(props);
 						return (
 							<tr
