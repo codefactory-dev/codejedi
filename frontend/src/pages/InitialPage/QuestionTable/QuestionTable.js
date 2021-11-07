@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { ReactComponent as CrossIcon } from 'icons/cross.svg';
+import { ReactComponent as YesIcon } from 'icons/yes.svg';
+import { ReactComponent as DotsIcon } from 'icons/dots.svg';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -47,7 +50,7 @@ export default function () {
 			type: '',
 			solution: '',
 			rating: '',
-			difficulty: '',
+			difficulty: 'Medium',
 			creator: 'rcm4',
 			lastUpdate: '',
 			submissionState: SubmissionStates.ACCEPTED,
@@ -57,7 +60,7 @@ export default function () {
 			type: '',
 			solution: '',
 			rating: '',
-			difficulty: '',
+			difficulty: 'Easy',
 			creator: 'grrbm',
 			lastUpdate: '',
 			submissionState: SubmissionStates.ACCEPTED,
@@ -67,7 +70,7 @@ export default function () {
 			type: '',
 			solution: '',
 			rating: '',
-			difficulty: '',
+			difficulty: 'Easy',
 			creator: 'grrbm',
 			lastUpdate: '',
 			submissionState: SubmissionStates.NOT_TRIED,
@@ -77,7 +80,7 @@ export default function () {
 			type: '',
 			solution: '',
 			rating: '',
-			difficulty: '',
+			difficulty: 'Hard',
 			creator: 'grrbm',
 			lastUpdate: '',
 			submissionState: SubmissionStates.FAILED,
@@ -87,7 +90,7 @@ export default function () {
 			type: '',
 			solution: '',
 			rating: '',
-			difficulty: '',
+			difficulty: 'Hard',
 			creator: 'grrbm',
 			lastUpdate: '',
 			submissionState: SubmissionStates.FAILED,
@@ -144,7 +147,9 @@ export default function () {
 								<td className={theClass.tdOrTh}>{row.type}</td>
 								<td className={theClass.tdOrTh}>{row.solution}</td>
 								<td className={theClass.tdOrTh}>{row.rating}</td>
-								<td className={theClass.tdOrTh}>{row.difficulty}</td>
+								<td className={theClass.tdOrTh}>
+									{getDifficultyIcon(row.difficulty)}
+								</td>
 								<td className={theClass.tdOrTh}>{row.creator}</td>
 								<td className={theClass.tdOrTh}>{row.lastUpdate}</td>
 							</tr>
@@ -155,3 +160,15 @@ export default function () {
 		</div>
 	);
 }
+const getDifficultyIcon = (difficulty) => {
+	switch (difficulty) {
+		case 'Medium':
+			return <CrossIcon />;
+		case 'Easy':
+			return <YesIcon />;
+		case 'Hard':
+			return <DotsIcon />;
+		default:
+			return <DotsIcon />;
+	}
+};
