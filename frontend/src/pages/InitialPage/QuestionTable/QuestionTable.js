@@ -117,16 +117,16 @@ export default function () {
 						let rowColor = '';
 						switch (row.submissionState) {
 							case SubmissionStates.ACCEPTED:
-								rowColor = 'green';
+								rowColor = '#183B3A';
 								break;
 							case SubmissionStates.FAILED:
-								rowColor = 'red';
+								rowColor = '#1B1C1D';
 								break;
 							case SubmissionStates.NOT_TRIED:
-								rowColor = 'grey';
+								rowColor = '#313233';
 								break;
 							default:
-								rowColor = 'grey';
+								rowColor = '#313233';
 								break;
 						}
 						const props = { questionColor: rowColor };
@@ -138,7 +138,9 @@ export default function () {
 								}}
 								className={classes.tdOrTh}
 							>
-								<td className={theClass.tdOrTh}>{row.title}</td>
+								<td className={theClass.tdOrTh}>
+									<span>{row.title}</span>
+								</td>
 								<td className={theClass.tdOrTh}>{row.type}</td>
 								<td className={theClass.tdOrTh}>{row.solution}</td>
 								<td className={theClass.tdOrTh}>{row.rating}</td>
