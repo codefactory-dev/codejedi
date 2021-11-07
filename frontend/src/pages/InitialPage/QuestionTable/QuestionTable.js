@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -13,19 +13,85 @@ const useStyles = makeStyles((theme) => ({
 		borderCollapse: 'collapse',
 		width: '80%',
 	},
-
-	tdOrTh: {
+	tdOrTh: (props) => ({
 		border: '1px solid #dddddd',
 		textAlign: 'left',
 		padding: '8px',
-	},
+	}),
 
 	//   tr:nth-child(even) {
 	//     background-color: #dddddd;
 	//   }
 }));
 export default function () {
-	const classes = useStyles();
+	// const props = { backgroundColor: 'black', color: 'white' };
+	const [rowStates, setRowStates] = useState([
+		{
+			title: 'Two Sum',
+			type: '-',
+			solution: 'Yes',
+			rating: '3/5',
+			difficulty: 'Medium',
+			creator: 'grrbm',
+			lastUpdate: '03.05.2012 - 17:35',
+			selected: false,
+		},
+		{
+			title: 'Number of Islands',
+			type: '',
+			solution: '',
+			rating: '',
+			difficulty: '',
+			creator: 'rcm4',
+			lastUpdate: '',
+			selected: true,
+		},
+		{
+			title: 'Add Two Numbers',
+			type: '',
+			solution: '',
+			rating: '',
+			difficulty: '',
+			creator: 'grrbm',
+			lastUpdate: '',
+			selected: false,
+		},
+		{
+			title: 'Two Sum',
+			type: '',
+			solution: '',
+			rating: '',
+			difficulty: '',
+			creator: 'grrbm',
+			lastUpdate: '',
+			selected: false,
+		},
+		{
+			title: 'Number of Islands',
+			type: '',
+			solution: '',
+			rating: '',
+			difficulty: '',
+			creator: 'grrbm',
+			lastUpdate: '',
+			selected: false,
+		},
+		{
+			title: 'Add Two Numbers',
+			type: '',
+			solution: '',
+			rating: '',
+			difficulty: '',
+			creator: 'grrbm',
+			lastUpdate: '',
+			selected: false,
+		},
+	]);
+	const classes = useStyles(rowStates);
+	const handleClickRow = (event) => {
+		event.preventDefault();
+	};
+	useEffect(() => {}, [rowStates]);
 	return (
 		<div className={classes.root}>
 			<table className={classes.table}>
@@ -41,60 +107,22 @@ export default function () {
 					</tr>
 				</thead>
 				<tbody>
-					<tr className={classes.tdOrTh}>
-						<td className={classes.tdOrTh}>Alfreds Futterkiste</td>
-						<td className={classes.tdOrTh}>Maria Anders</td>
-						<td className={classes.tdOrTh}>Germany</td>
-						<th className={classes.tdOrTh}>-</th>
-						<th className={classes.tdOrTh}>-</th>
-						<th className={classes.tdOrTh}>-</th>
-						<th className={classes.tdOrTh}>-</th>
-					</tr>
-					<tr className={classes.tdOrTh}>
-						<td className={classes.tdOrTh}>Centro comercial Moctezuma</td>
-						<td className={classes.tdOrTh}>Francisco Chang</td>
-						<td className={classes.tdOrTh}>Mexico</td>
-						<th className={classes.tdOrTh}>-</th>
-						<th className={classes.tdOrTh}>-</th>
-						<th className={classes.tdOrTh}>-</th>
-						<th className={classes.tdOrTh}>-</th>
-					</tr>
-					<tr className={classes.tdOrTh}>
-						<td className={classes.tdOrTh}>Ernst Handel</td>
-						<td className={classes.tdOrTh}>Roland Mendel</td>
-						<td className={classes.tdOrTh}>Austria</td>
-						<th className={classes.tdOrTh}>-</th>
-						<th className={classes.tdOrTh}>-</th>
-						<th className={classes.tdOrTh}>-</th>
-						<th className={classes.tdOrTh}>-</th>
-					</tr>
-					<tr className={classes.tdOrTh}>
-						<td className={classes.tdOrTh}>Island Trading</td>
-						<td className={classes.tdOrTh}>Helen Bennett</td>
-						<td className={classes.tdOrTh}>UK</td>
-						<th className={classes.tdOrTh}>-</th>
-						<th className={classes.tdOrTh}>-</th>
-						<th className={classes.tdOrTh}>-</th>
-						<th className={classes.tdOrTh}>-</th>
-					</tr>
-					<tr className={classes.tdOrTh}>
-						<td className={classes.tdOrTh}>Laughing Bacchus Winecellars</td>
-						<td className={classes.tdOrTh}>Yoshi Tannamuri</td>
-						<td className={classes.tdOrTh}>Canada</td>
-						<th className={classes.tdOrTh}>-</th>
-						<th className={classes.tdOrTh}>-</th>
-						<th className={classes.tdOrTh}>-</th>
-						<th className={classes.tdOrTh}>-</th>
-					</tr>
-					<tr className={classes.tdOrTh}>
-						<td className={classes.tdOrTh}>Magazzini Alimentari Riuniti</td>
-						<td className={classes.tdOrTh}>Giovanni Rovelli</td>
-						<td className={classes.tdOrTh}>Italy</td>
-						<th className={classes.tdOrTh}>-</th>
-						<th className={classes.tdOrTh}>-</th>
-						<th className={classes.tdOrTh}>-</th>
-						<th className={classes.tdOrTh}>-</th>
-					</tr>
+					{rowStates.map((row) => (
+						<tr
+							onClick={(e) => {
+								handleClickRow(e);
+							}}
+							className={classes.tdOrTh}
+						>
+							<td className={classes.tdOrTh}>{row.title}</td>
+							<td className={classes.tdOrTh}>{row.type}</td>
+							<td className={classes.tdOrTh}>{row.solution}</td>
+							<td className={classes.tdOrTh}>{row.rating}</td>
+							<td className={classes.tdOrTh}>{row.difficulty}</td>
+							<td className={classes.tdOrTh}>{row.creator}</td>
+							<td className={classes.tdOrTh}>{row.lastUpdate}</td>
+						</tr>
+					))}
 				</tbody>
 			</table>
 		</div>
