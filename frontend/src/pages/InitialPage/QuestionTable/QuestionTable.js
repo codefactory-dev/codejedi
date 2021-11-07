@@ -3,6 +3,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { ReactComponent as CrossIcon } from 'icons/cross.svg';
 import { ReactComponent as YesIcon } from 'icons/yes.svg';
 import { ReactComponent as DotsIcon } from 'icons/dots.svg';
+import Rating from 'components/Rating/Rating';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -146,7 +147,9 @@ export default function () {
 								</td>
 								<td className={theClass.tdOrTh}>{row.type}</td>
 								<td className={theClass.tdOrTh}>{row.solution}</td>
-								<td className={theClass.tdOrTh}>{row.rating}</td>
+								<td className={theClass.tdOrTh}>
+									<Rating />
+								</td>
 								<td className={theClass.tdOrTh}>
 									{getDifficultyIcon(row.difficulty)}
 								</td>
