@@ -19,20 +19,34 @@ const useStyles = makeStyles((theme) => ({
 		justifyContent: 'center',
 	},
 	table: {
+		display: 'inline-table',
 		fontFamily: 'arial, sans-serif',
+		// borderCollapse: 'separate',
 		borderCollapse: 'collapse',
+		borderSpacing: '0 5px',
 		width: '80%',
+		boxSizing: 'border-box',
 	},
-	tdOrTh: (props) => ({
+	trTitle: (props) => ({
 		borderBottom: '1px solid #dddddd',
 		textAlign: 'left',
 		padding: '8px',
-		backgroundColor: props.questionColor,
 	}),
 	tr: (props) => ({
 		borderLeft: props.leftBorderColor
 			? `3px solid ${props.leftBorderColor}`
 			: '',
+
+		boxSizing: 'border-box',
+	}),
+	td: (props) => ({
+		borderBottom: '1px solid #dddddd',
+		textAlign: 'left',
+		padding: '4px 0',
+		height: '65px',
+		boxSizing: 'border-box',
+		backgroundColor: props.questionColor,
+		backgroundClip: 'content-box',
 	}),
 
 	//   tr:nth-child(even) {
@@ -123,14 +137,14 @@ export default function () {
 		<div className={classes.root}>
 			<table className={classes.table}>
 				<thead>
-					<tr className={classes.tdOrTh}>
-						<th className={classes.tdOrTh}>Title</th>
-						<th className={classes.tdOrTh}>Type</th>
-						<th className={classes.tdOrTh}>Solution</th>
-						<th className={classes.tdOrTh}>Rating</th>
-						<th className={classes.tdOrTh}>Difficulty</th>
-						<th className={classes.tdOrTh}>Creator</th>
-						<th className={classes.tdOrTh}>Last Update</th>
+					<tr className={classes.trTitle}>
+						<th className={classes.td}>Title</th>
+						<th className={classes.td}>Type</th>
+						<th className={classes.td}>Solution</th>
+						<th className={classes.td}>Rating</th>
+						<th className={classes.td}>Difficulty</th>
+						<th className={classes.td}>Creator</th>
+						<th className={classes.td}>Last Update</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -164,21 +178,29 @@ export default function () {
 								}}
 								className={theClass.tr}
 							>
-								<td className={theClass.tdOrTh}>
+								<td className={theClass.td}>
 									<span>{row.title}</span>
 								</td>
-								<td className={theClass.tdOrTh}>{row.type}</td>
-								<td className={theClass.tdOrTh}>
-									{getHasSolution(row.submissionState)}
+								<td className={theClass.td}>
+									<span>{row.type}</span>
 								</td>
-								<td className={theClass.tdOrTh}>
-									<Rating />
+								<td className={theClass.td}>
+									<span>{getHasSolution(row.submissionState)}</span>
 								</td>
-								<td className={theClass.tdOrTh}>
-									{getDifficultyIcon(row.difficulty)}
+								<td className={theClass.td}>
+									<span>
+										<Rating />
+									</span>
 								</td>
-								<td className={theClass.tdOrTh}>{row.profilePic}</td>
-								<td className={theClass.tdOrTh}>{row.lastUpdate}</td>
+								<td className={theClass.td}>
+									<span>{getDifficultyIcon(row.difficulty)}</span>
+								</td>
+								<td className={theClass.td}>
+									<span>{row.profilePic}</span>
+								</td>
+								<td className={theClass.td}>
+									<span>{row.lastUpdate}</span>
+								</td>
 							</tr>
 						);
 					})}
