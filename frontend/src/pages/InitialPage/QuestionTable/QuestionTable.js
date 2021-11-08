@@ -3,6 +3,12 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { ReactComponent as CrossIcon } from 'icons/cross.svg';
 import { ReactComponent as YesIcon } from 'icons/yes.svg';
 import { ReactComponent as DotsIcon } from 'icons/dots.svg';
+import { ReactComponent as EasyIcon } from 'icons/Easy Component.svg';
+import { ReactComponent as MediumIcon } from 'icons/Medium Component.svg';
+import { ReactComponent as HardIcon } from 'icons/Hard Component.svg';
+import { ReactComponent as GrrbmProfileIcon } from 'icons/grrbm profile pic.svg';
+import { ReactComponent as Rcm4ProfileIcon } from 'icons/rcm4 profile pic.svg';
+import { ReactComponent as SolutionIcon } from 'icons/Solution Component.svg';
 import Rating from 'components/Rating/Rating';
 
 const useStyles = makeStyles((theme) => ({
@@ -28,13 +34,13 @@ const useStyles = makeStyles((theme) => ({
 	//     background-color: #dddddd;
 	//   }
 }));
+const SubmissionStates = {
+	ACCEPTED: 0,
+	FAILED: 1,
+	NOT_TRIED: 2,
+};
 export default function () {
 	// const props = { backgroundColor: 'black', color: 'white' };
-	const SubmissionStates = {
-		ACCEPTED: 0,
-		FAILED: 1,
-		NOT_TRIED: 2,
-	};
 	const [rowStates, setRowStates] = useState([
 		{
 			title: 'Two Sum',
@@ -43,6 +49,7 @@ export default function () {
 			rating: '3/5',
 			difficulty: 'Medium',
 			creator: 'grrbm',
+			profilePic: <GrrbmProfileIcon />,
 			lastUpdate: '03.05.2012 - 17:35',
 			submissionState: SubmissionStates.NOT_TRIED,
 		},
@@ -53,6 +60,7 @@ export default function () {
 			rating: '',
 			difficulty: 'Medium',
 			creator: 'rcm4',
+			profilePic: <Rcm4ProfileIcon />,
 			lastUpdate: '',
 			submissionState: SubmissionStates.ACCEPTED,
 		},
@@ -62,7 +70,8 @@ export default function () {
 			solution: '',
 			rating: '',
 			difficulty: 'Easy',
-			creator: 'grrbm',
+			creator: 'rcm4',
+			profilePic: <Rcm4ProfileIcon />,
 			lastUpdate: '',
 			submissionState: SubmissionStates.ACCEPTED,
 		},
@@ -72,7 +81,8 @@ export default function () {
 			solution: '',
 			rating: '',
 			difficulty: 'Easy',
-			creator: 'grrbm',
+			creator: 'rcm4',
+			profilePic: <Rcm4ProfileIcon />,
 			lastUpdate: '',
 			submissionState: SubmissionStates.NOT_TRIED,
 		},
@@ -83,6 +93,7 @@ export default function () {
 			rating: '',
 			difficulty: 'Hard',
 			creator: 'grrbm',
+			profilePic: <GrrbmProfileIcon />,
 			lastUpdate: '',
 			submissionState: SubmissionStates.FAILED,
 		},
@@ -93,6 +104,7 @@ export default function () {
 			rating: '',
 			difficulty: 'Hard',
 			creator: 'grrbm',
+			profilePic: <GrrbmProfileIcon />,
 			lastUpdate: '',
 			submissionState: SubmissionStates.FAILED,
 		},
@@ -146,14 +158,16 @@ export default function () {
 									<span>{row.title}</span>
 								</td>
 								<td className={theClass.tdOrTh}>{row.type}</td>
-								<td className={theClass.tdOrTh}>{row.solution}</td>
+								<td className={theClass.tdOrTh}>
+									{getHasSolution(row.submissionState)}
+								</td>
 								<td className={theClass.tdOrTh}>
 									<Rating />
 								</td>
 								<td className={theClass.tdOrTh}>
 									{getDifficultyIcon(row.difficulty)}
 								</td>
-								<td className={theClass.tdOrTh}>{row.creator}</td>
+								<td className={theClass.tdOrTh}>{row.profilePic}</td>
 								<td className={theClass.tdOrTh}>{row.lastUpdate}</td>
 							</tr>
 						);
@@ -166,12 +180,32 @@ export default function () {
 const getDifficultyIcon = (difficulty) => {
 	switch (difficulty) {
 		case 'Medium':
-			return <CrossIcon />;
+			return <MediumIcon />;
 		case 'Easy':
-			return <YesIcon />;
+			return <EasyIcon />;
 		case 'Hard':
-			return <DotsIcon />;
+			return <HardIcon />;
 		default:
-			return <DotsIcon />;
+			return <EasyIcon />;
+	}
+};
+
+const getProfilePic = (username) => {
+	switch (username) {
+		case 'grrbm':
+			return <GrrbmProfileIcon />;
+		case 'rcm4':
+			return <Rcm4ProfileIcon />;
+		default:
+			return <Rcm4ProfileIcon />;
+	}
+};
+
+const getHasSolution = (submissionState) => {
+	switch (submissionState) {
+		case SubmissionStates.ACCEPTED:
+			return <SolutionIcon />;
+		default:
+			return '';
 	}
 };
