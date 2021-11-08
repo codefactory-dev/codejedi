@@ -37,6 +37,10 @@ const useStyles = makeStyles((theme) => ({
 		},
 		'&>:nth-child(7)': {
 			textAlign: 'left',
+			width: 120,
+		},
+		'&>:nth-child(8)': {
+			textAlign: 'right',
 		},
 	}),
 	tr: (props) => ({
@@ -45,6 +49,10 @@ const useStyles = makeStyles((theme) => ({
 		},
 		'&>:nth-child(7)': {
 			textAlign: 'left',
+			width: 50,
+		},
+		'&>:nth-child(8)': {
+			textAlign: 'right',
 		},
 		boxSizing: 'border-box',
 	}),
@@ -53,6 +61,7 @@ const useStyles = makeStyles((theme) => ({
 		textAlign: 'center',
 		padding: '4px 0',
 		height: '65px',
+		overflow: 'hidden',
 		boxSizing: 'border-box',
 		backgroundColor: props.questionColor,
 		backgroundClip: 'content-box',
@@ -89,7 +98,8 @@ export default function () {
 			difficulty: 'Medium',
 			creator: 'grrbm',
 			profilePic: <GrrbmProfileIcon />,
-			lastUpdate: '03.05.2012 - 17:35',
+			lastUpdate: '',
+			lastUpdateDate: '03.05.2012 - 17:35',
 			submissionState: SubmissionStates.NOT_TRIED,
 		},
 		{
@@ -101,6 +111,7 @@ export default function () {
 			creator: 'rcm4',
 			profilePic: <Rcm4ProfileIcon />,
 			lastUpdate: '',
+			lastUpdateDate: '03.05.2012 - 17:35',
 			submissionState: SubmissionStates.ACCEPTED,
 		},
 		{
@@ -112,6 +123,7 @@ export default function () {
 			creator: 'rcm4',
 			profilePic: <Rcm4ProfileIcon />,
 			lastUpdate: '',
+			lastUpdateDate: '03.05.2012 - 17:35',
 			submissionState: SubmissionStates.ACCEPTED,
 		},
 		{
@@ -123,6 +135,7 @@ export default function () {
 			creator: 'rcm4',
 			profilePic: <Rcm4ProfileIcon />,
 			lastUpdate: '',
+			lastUpdateDate: '03.05.2012 - 17:35',
 			submissionState: SubmissionStates.NOT_TRIED,
 		},
 		{
@@ -134,6 +147,7 @@ export default function () {
 			creator: 'grrbm',
 			profilePic: <GrrbmProfileIcon />,
 			lastUpdate: '',
+			lastUpdateDate: '03.05.2012 - 17:35',
 			submissionState: SubmissionStates.FAILED,
 		},
 		{
@@ -145,6 +159,7 @@ export default function () {
 			creator: 'grrbm',
 			profilePic: <GrrbmProfileIcon />,
 			lastUpdate: '',
+			lastUpdateDate: '03.05.2012 - 17:35',
 			submissionState: SubmissionStates.FAILED,
 		},
 	]);
@@ -165,6 +180,7 @@ export default function () {
 						<th className={classes.td}>Difficulty</th>
 						<th className={classes.td}>Creator</th>
 						<th className={classes.td}>Last Update</th>
+						<th className={classes.td}>Test</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -221,6 +237,9 @@ export default function () {
 								</td>
 								<td className={theClass.td}>
 									<span>{row.lastUpdate}</span>
+								</td>
+								<td className={theClass.td}>
+									<span>{row.lastUpdateDate}</span>
 								</td>
 							</tr>
 						);
