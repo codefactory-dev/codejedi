@@ -31,26 +31,32 @@ const useStyles = makeStyles((theme) => ({
 		borderBottom: '1px solid #dddddd',
 		textAlign: 'left',
 		padding: '8px',
+		'&>:nth-child(1)': {
+			textAlign: 'left',
+			paddingLeft: 8,
+		},
+		'&>:nth-child(7)': {
+			textAlign: 'left',
+		},
 	}),
 	tr: (props) => ({
-		// borderLeft: props.leftBorderColor
-		// 	? `3px solid ${props.leftBorderColor}`
-		// 	: '',
-
+		'&>:nth-child(1)': {
+			textAlign: 'left',
+		},
+		'&>:nth-child(7)': {
+			textAlign: 'left',
+		},
 		boxSizing: 'border-box',
 	}),
 	td: (props) => ({
 		borderBottom: '1px solid #dddddd',
-		textAlign: 'left',
+		textAlign: 'center',
 		padding: '4px 0',
 		height: '65px',
 		boxSizing: 'border-box',
 		backgroundColor: props.questionColor,
 		backgroundClip: 'content-box',
 		position: 'relative',
-		'& span': {
-			paddingLeft: 15,
-		},
 	}),
 	dummy: (props) => ({
 		borderLeft: props.leftBorderColor
