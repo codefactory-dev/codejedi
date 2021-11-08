@@ -46,6 +46,9 @@ const useStyles = makeStyles((theme) => ({
 	tr: (props) => ({
 		'&>:nth-child(1)': {
 			textAlign: 'left',
+			'& span': {
+				paddingLeft: 15,
+			},
 		},
 		'&>:nth-child(7)': {
 			textAlign: 'left',
@@ -53,6 +56,9 @@ const useStyles = makeStyles((theme) => ({
 		},
 		'&>:nth-child(8)': {
 			textAlign: 'right',
+			'& span': {
+				paddingRight: 15,
+			},
 		},
 		boxSizing: 'border-box',
 	}),
