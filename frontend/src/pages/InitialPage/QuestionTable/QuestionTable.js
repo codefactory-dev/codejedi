@@ -24,10 +24,15 @@ const useStyles = makeStyles((theme) => ({
 		width: '80%',
 	},
 	tdOrTh: (props) => ({
-		border: '1px solid #dddddd',
+		borderBottom: '1px solid #dddddd',
 		textAlign: 'left',
 		padding: '8px',
 		backgroundColor: props.questionColor,
+	}),
+	tr: (props) => ({
+		borderLeft: props.leftBorderColor
+			? `3px solid ${props.leftBorderColor}`
+			: '',
 	}),
 
 	//   tr:nth-child(even) {
@@ -131,9 +136,11 @@ export default function () {
 				<tbody>
 					{rowStates.map((row) => {
 						let rowColor = '';
+						let leftBorderColor = '';
 						switch (row.submissionState) {
 							case SubmissionStates.ACCEPTED:
 								rowColor = '#183B3A';
+								leftBorderColor = '#00B5AD';
 								break;
 							case SubmissionStates.FAILED:
 								rowColor = '#1B1C1D';
@@ -145,14 +152,17 @@ export default function () {
 								rowColor = '#313233';
 								break;
 						}
-						const props = { questionColor: rowColor };
+						const props = {
+							questionColor: rowColor,
+							leftBorderColor,
+						};
 						const theClass = useStyles(props);
 						return (
 							<tr
 								onClick={(e) => {
 									handleClickRow(e);
 								}}
-								className={classes.tdOrTh}
+								className={theClass.tr}
 							>
 								<td className={theClass.tdOrTh}>
 									<span>{row.title}</span>
