@@ -33,9 +33,9 @@ const useStyles = makeStyles((theme) => ({
 		padding: '8px',
 	}),
 	tr: (props) => ({
-		borderLeft: props.leftBorderColor
-			? `3px solid ${props.leftBorderColor}`
-			: '',
+		// borderLeft: props.leftBorderColor
+		// 	? `3px solid ${props.leftBorderColor}`
+		// 	: '',
 
 		boxSizing: 'border-box',
 	}),
@@ -47,6 +47,20 @@ const useStyles = makeStyles((theme) => ({
 		boxSizing: 'border-box',
 		backgroundColor: props.questionColor,
 		backgroundClip: 'content-box',
+		position: 'relative',
+		'& span': {
+			paddingLeft: 15,
+		},
+	}),
+	dummy: (props) => ({
+		borderLeft: props.leftBorderColor
+			? `3px solid ${props.leftBorderColor}`
+			: '',
+		marginRight: 15,
+		position: 'absolute',
+		top: '3px',
+		bottom: '5px',
+		left: '0px',
 	}),
 
 	//   tr:nth-child(even) {
@@ -179,6 +193,7 @@ export default function () {
 								className={theClass.tr}
 							>
 								<td className={theClass.td}>
+									<div className={theClass.dummy} />
 									<span>{row.title}</span>
 								</td>
 								<td className={theClass.td}>
