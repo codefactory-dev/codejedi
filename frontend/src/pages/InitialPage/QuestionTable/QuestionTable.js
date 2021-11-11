@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 		},
 		'&>:nth-child(7)': {
 			textAlign: 'left',
-			width: 120,
+			width: 200,
 		},
 		'&>:nth-child(8)': {
 			textAlign: 'right',
@@ -52,7 +52,14 @@ const useStyles = makeStyles((theme) => ({
 		},
 		'&>:nth-child(7)': {
 			textAlign: 'left',
-			width: 50,
+			'& div': {
+				display: 'inline-block',
+				whiteSpace: 'wrap',
+				width: 200,
+				height: 35,
+				overflow: 'hidden',
+				textOverflow: 'ellipsis',
+			},
 		},
 		'&>:nth-child(8)': {
 			textAlign: 'right',
@@ -104,7 +111,8 @@ export default function () {
 			difficulty: 'Medium',
 			creator: 'grrbm',
 			profilePic: <GrrbmProfileIcon />,
-			lastUpdate: '',
+			lastUpdate:
+				'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Fusce id velit ut tortor pretium viverra suspendisse potenti nullam.',
 			lastUpdateDate: '03.05.2012 - 17:35',
 			submissionState: SubmissionStates.NOT_TRIED,
 		},
@@ -116,7 +124,8 @@ export default function () {
 			difficulty: 'Medium',
 			creator: 'rcm4',
 			profilePic: <Rcm4ProfileIcon />,
-			lastUpdate: '',
+			lastUpdate:
+				'Vitae suscipit tellus mauris a diam maecenas sed enim. Sapien pellentesque habitant morbi tristique senectus et netus et. Fusce id velit ut tortor pretium viverra suspendisse potenti nullam. ',
 			lastUpdateDate: '03.05.2012 - 17:35',
 			submissionState: SubmissionStates.ACCEPTED,
 		},
@@ -128,7 +137,8 @@ export default function () {
 			difficulty: 'Easy',
 			creator: 'rcm4',
 			profilePic: <Rcm4ProfileIcon />,
-			lastUpdate: '',
+			lastUpdate:
+				'Malesuada bibendum arcu vitae elementum curabitur. Nisi scelerisque eu ultrices vitae auctor eu augue. Massa tincidunt dui ut ornare lectus',
 			lastUpdateDate: '03.05.2012 - 17:35',
 			submissionState: SubmissionStates.ACCEPTED,
 		},
@@ -140,7 +150,8 @@ export default function () {
 			difficulty: 'Easy',
 			creator: 'rcm4',
 			profilePic: <Rcm4ProfileIcon />,
-			lastUpdate: '',
+			lastUpdate:
+				'Nunc scelerisque viverra mauris in aliquam sem. Suspendisse ultrices gravida dictum fusce ut placerat orci. Tincidunt vitae semper quis lectus nulla at. Consequat id porta nibh venenatis cras sed. Malesuada fames ac turpis egestas.',
 			lastUpdateDate: '03.05.2012 - 17:35',
 			submissionState: SubmissionStates.NOT_TRIED,
 		},
@@ -152,7 +163,8 @@ export default function () {
 			difficulty: 'Hard',
 			creator: 'grrbm',
 			profilePic: <GrrbmProfileIcon />,
-			lastUpdate: '',
+			lastUpdate:
+				'Quis lectus nulla at volutpat. Pellentesque elit ullamcorper dignissim cras.',
 			lastUpdateDate: '03.05.2012 - 17:35',
 			submissionState: SubmissionStates.FAILED,
 		},
@@ -164,7 +176,8 @@ export default function () {
 			difficulty: 'Hard',
 			creator: 'grrbm',
 			profilePic: <GrrbmProfileIcon />,
-			lastUpdate: '',
+			lastUpdate:
+				'Dui vivamus arcu felis bibendum ut tristique et egestas. Ipsum faucibus vitae aliquet nec ullamcorper sit amet risus nullam. Vitae tortor condimentum lacinia quis vel. Viverra nibh cras pulvinar mattis nunc.',
 			lastUpdateDate: '03.05.2012 - 17:35',
 			submissionState: SubmissionStates.FAILED,
 		},
@@ -186,7 +199,7 @@ export default function () {
 						<th className={classes.td}>Difficulty</th>
 						<th className={classes.td}>Creator</th>
 						<th className={classes.td}>Last Update</th>
-						<th className={classes.td}>Test</th>
+						<th className={classes.td}> </th>
 					</tr>
 				</thead>
 				<tbody>
@@ -242,7 +255,7 @@ export default function () {
 									<span>{row.profilePic}</span>
 								</td>
 								<td className={theClass.td}>
-									<span>{row.lastUpdate}</span>
+									<div>{row.lastUpdate}</div>
 								</td>
 								<td className={theClass.td}>
 									<span>{row.lastUpdateDate}</span>
