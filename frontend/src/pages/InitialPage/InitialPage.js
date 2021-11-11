@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Navbar from '../../components/Navbar/Navbar.js';
 import QuestionsList from './QuestionsList/QuestionsList.js';
 import { useAuth } from '../../Context/auth';
+import QuestionTable from './QuestionTable/QuestionTable.js';
 
 const useStyles = makeStyles((theme) => ({
 	questionPage: {
@@ -41,7 +42,7 @@ export default function InitialPage(props) {
 			<Navbar />
 			<div className={classes.centralElements}>
 				<div className={classes.centralTextArea}>
-					<QuestionsList
+					<QuestionTable
 						title="Initial Page"
 						inputs={inputs}
 						setInputs={setInputs}
