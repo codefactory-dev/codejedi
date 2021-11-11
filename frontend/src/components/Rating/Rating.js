@@ -21,24 +21,26 @@ export default function Rating() {
 		setRatingScore(score);
 	}, []);
 	return (
-		<div className="main">
-			{ratingScore}
-			<div>
-				{Array.from({ length: 5 }).map((val, idx) => {
-					if (idx < Math.floor(ratingScore)) {
+		<div className="main-wrapper">
+			<div className="main">
+				<div className="rating-score">{ratingScore}</div>
+				<div>
+					{Array.from({ length: 5 }).map((val, idx) => {
+						if (idx < Math.floor(ratingScore)) {
+							return (
+								<svg className="rectangle-wrapper">
+									<rect className="rectangle" />
+								</svg>
+							);
+						}
 						return (
 							<svg className="rectangle-wrapper">
-								<rect className="rectangle" />
+								<rect className="rectangle-disabled" />
 							</svg>
 						);
-					}
-					return (
-						<svg className="rectangle-wrapper">
-							<rect className="rectangle-disabled" />
-						</svg>
-					);
-				})}
-				<span className="amount-ratings">{`  (${ratings.length})`}</span>
+					})}
+					<span className="amount-ratings">{`  (${ratings.length})`}</span>
+				</div>
 			</div>
 		</div>
 	);
