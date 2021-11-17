@@ -81,6 +81,7 @@ const useStyles = makeStyles((theme) => ({
 	}),
 	lastUpdateDate: (props) => ({
 		textAlign: 'right',
+		minWidth: 180,
 		'& span': {
 			paddingRight: 15,
 		},
