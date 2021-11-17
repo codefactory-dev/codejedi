@@ -9,6 +9,8 @@
 }
 .main {
 	margin: auto;
+	min-width: 180px;
+	max-width: 180px;
 	//text-align: left;
 }
 .rating-score {
@@ -35,4 +37,20 @@
 }
 .amount-ratings {
 	color: grey;
+}
+@media only screen and (max-width: 600px) {
+	.rectangle-wrapper {
+		width: 13px;
+	}
+	.rectangle {
+		width: 11px;
+	}
+	.rectangle-disabled {
+		width: 11px;
+	}
+	.main {
+		min-width: 135px;
+		max-width: 135px;
+		//text-align: left;
+	}
 }
