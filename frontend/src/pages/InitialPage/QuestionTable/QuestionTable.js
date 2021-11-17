@@ -9,18 +9,19 @@ import { ReactComponent as HardIcon } from 'icons/Hard Component.svg';
 import { ReactComponent as GrrbmProfileIcon } from 'icons/grrbm profile pic.svg';
 import { ReactComponent as Rcm4ProfileIcon } from 'icons/rcm4 profile pic.svg';
 import { ReactComponent as SolutionIcon } from 'icons/Solution Component.svg';
+import clsx from 'clsx';
 import Rating from 'components/Rating/Rating';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
 		width: '100%',
-		minWidth: 632,
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
 	table: {
-		display: 'inline-table',
+		display: 'block',
+		overflowX: 'auto',
 		fontFamily: 'arial, sans-serif',
 		// borderCollapse: 'separate',
 		borderCollapse: 'collapse',
@@ -80,6 +81,9 @@ const useStyles = makeStyles((theme) => ({
 		backgroundColor: props.questionColor,
 		backgroundClip: 'content-box',
 		position: 'relative',
+	}),
+	th: (props) => ({
+		minWidth: 85,
 	}),
 	dummy: (props) => ({
 		borderLeft: props.leftBorderColor
@@ -193,14 +197,14 @@ export default function () {
 			<table className={classes.table}>
 				<thead>
 					<tr className={classes.trTitle}>
-						<th className={classes.td}>Title</th>
-						<th className={classes.td}>Type</th>
-						<th className={classes.td}>Solution</th>
-						<th className={classes.td}>Rating</th>
-						<th className={classes.td}>Difficulty</th>
-						<th className={classes.td}>Creator</th>
-						<th className={classes.td}>Last Update</th>
-						<th className={classes.td}> </th>
+						<th className={clsx(classes.td, classes.th)}>Title</th>
+						<th className={clsx(classes.td, classes.th)}>Type</th>
+						<th className={clsx(classes.td, classes.th)}>Solution</th>
+						<th className={clsx(classes.td, classes.th)}>Rating</th>
+						<th className={clsx(classes.td, classes.th)}>Difficulty</th>
+						<th className={clsx(classes.td, classes.th)}>Creator</th>
+						<th className={clsx(classes.td, classes.th)}>Last Update</th>
+						<th className={clsx(classes.td, classes.th)}> </th>
 					</tr>
 				</thead>
 				<tbody>
