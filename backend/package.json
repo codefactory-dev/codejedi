@@ -34,6 +34,7 @@
     "mailgun-js": "^0.22.0",
     "mongodb": "^3.5.9",
     "mongoose": "^5.9.21",
+    "nodemon": "^2.0.11",
     "serverless-http": "^2.5.0",
     "validator": "^13.1.1"
   },
