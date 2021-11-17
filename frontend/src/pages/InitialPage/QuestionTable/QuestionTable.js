@@ -9,18 +9,19 @@ import { ReactComponent as HardIcon } from 'icons/Hard Component.svg';
 import { ReactComponent as GrrbmProfileIcon } from 'icons/grrbm profile pic.svg';
 import { ReactComponent as Rcm4ProfileIcon } from 'icons/rcm4 profile pic.svg';
 import { ReactComponent as SolutionIcon } from 'icons/Solution Component.svg';
+import clsx from 'clsx';
 import Rating from 'components/Rating/Rating';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
 		width: '100%',
-		minWidth: 632,
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
 	table: {
-		display: 'inline-table',
+		display: 'block',
+		overflowX: 'auto',
 		fontFamily: 'arial, sans-serif',
 		// borderCollapse: 'separate',
 		borderCollapse: 'collapse',
@@ -32,42 +33,8 @@ const useStyles = makeStyles((theme) => ({
 		borderBottom: '1px solid #dddddd',
 		textAlign: 'left',
 		padding: '8px',
-		'&>:nth-child(1)': {
-			textAlign: 'left',
-			paddingLeft: 8,
-		},
-		'&>:nth-child(7)': {
-			textAlign: 'left',
-			width: 200,
-		},
-		'&>:nth-child(8)': {
-			textAlign: 'right',
-		},
 	}),
 	tr: (props) => ({
-		'&>:nth-child(1)': {
-			textAlign: 'left',
-			'& span': {
-				paddingLeft: 15,
-			},
-		},
-		'&>:nth-child(7)': {
-			textAlign: 'left',
-			'& div': {
-				display: 'inline-block',
-				whiteSpace: 'wrap',
-				width: 200,
-				height: 35,
-				overflow: 'hidden',
-				textOverflow: 'ellipsis',
-			},
-		},
-		'&>:nth-child(8)': {
-			textAlign: 'right',
-			'& span': {
-				paddingRight: 15,
-			},
-		},
 		boxSizing: 'border-box',
 	}),
 	td: (props) => ({
@@ -80,6 +47,44 @@ const useStyles = makeStyles((theme) => ({
 		backgroundColor: props.questionColor,
 		backgroundClip: 'content-box',
 		position: 'relative',
+	}),
+	th: (props) => ({
+		minWidth: 85,
+	}),
+	firstTitle: (props) => ({
+		textAlign: 'left',
+		paddingLeft: 8,
+	}),
+	lastUpdateTitle: (props) => ({
+		textAlign: 'left',
+		width: 200,
+	}),
+	lastUpdateDateTitle: (props) => ({
+		textAlign: 'right',
+	}),
+	firstElement: (props) => ({
+		textAlign: 'left',
+		'& div': {
+			paddingLeft: 15,
+		},
+	}),
+	lastUpdate: (props) => ({
+		textAlign: 'left',
+		'& div': {
+			display: 'inline-block',
+			whiteSpace: 'wrap',
+			width: 200,
+			height: 35,
+			overflow: 'hidden',
+			textOverflow: 'ellipsis',
+		},
+	}),
+	lastUpdateDate: (props) => ({
+		textAlign: 'right',
+		minWidth: 180,
+		'& span': {
+			paddingRight: 15,
+		},
 	}),
 	dummy: (props) => ({
 		borderLeft: props.leftBorderColor
@@ -193,14 +198,32 @@ export default function () {
 			<table className={classes.table}>
 				<thead>
 					<tr className={classes.trTitle}>
-						<th className={classes.td}>Title</th>
-						<th className={classes.td}>Type</th>
-						<th className={classes.td}>Solution</th>
-						<th className={classes.td}>Rating</th>
-						<th className={classes.td}>Difficulty</th>
-						<th className={classes.td}>Creator</th>
-						<th className={classes.td}>Last Update</th>
-						<th className={classes.td}> </th>
+						<th className={clsx(classes.td, classes.th, classes.firstTitle)}>
+							Title
+						</th>
+						<th className={clsx(classes.td, classes.th)}>Type</th>
+						<th className={clsx(classes.td, classes.th)}>Solution</th>
+						<th className={clsx(classes.td, classes.th)}>Rating</th>
+						<th className={clsx(classes.td, classes.th)}>Difficulty</th>
+						<th className={clsx(classes.td, classes.th)}>Creator</th>
+						<th
+							className={clsx([
+								classes.td,
+								classes.th,
+								true && classes.lastUpdateTitle,
+							])}
+						>
+							Last Update
+						</th>
+						<th
+							className={clsx(
+								classes.td,
+								classes.th,
+								classes.lastUpdateDateTitle
+							)}
+						>
+							{' '}
+						</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -234,9 +257,9 @@ export default function () {
 								}}
 								className={theClass.tr}
 							>
-								<td className={theClass.td}>
+								<td className={clsx(theClass.td, theClass.firstElement)}>
 									<div className={theClass.dummy} />
-									<span>{row.title}</span>
+									<div>{row.title}</div>
 								</td>
 								<td className={theClass.td}>
 									<span>{row.type}</span>
@@ -255,10 +278,10 @@ export default function () {
 								<td className={theClass.td}>
 									<span>{row.profilePic}</span>
 								</td>
-								<td className={theClass.td}>
+								<td className={clsx(theClass.td, theClass.lastUpdate)}>
 									<div>{row.lastUpdate}</div>
 								</td>
-								<td className={theClass.td}>
+								<td className={clsx(theClass.td, theClass.lastUpdateDate)}>
 									<span>{row.lastUpdateDate}</span>
 								</td>
 							</tr>
