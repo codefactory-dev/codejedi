@@ -14,6 +14,7 @@ import Rating from 'components/Rating/Rating';
 const useStyles = makeStyles((theme) => ({
 	root: {
 		width: '100%',
+		minWidth: 632,
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',

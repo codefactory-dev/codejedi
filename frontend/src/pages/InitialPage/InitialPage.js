@@ -9,6 +9,7 @@ import QuestionTable from './QuestionTable/QuestionTable.js';
 const useStyles = makeStyles((theme) => ({
 	questionPage: {
 		height: '1020px',
+		minWidth: 632,
 		backgroundColor: theme.palette.common.black,
 		color: 'white',
 	},
