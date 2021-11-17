@@ -33,42 +33,8 @@ const useStyles = makeStyles((theme) => ({
 		borderBottom: '1px solid #dddddd',
 		textAlign: 'left',
 		padding: '8px',
-		'&>:nth-child(1)': {
-			textAlign: 'left',
-			paddingLeft: 8,
-		},
-		'&>:nth-child(7)': {
-			textAlign: 'left',
-			width: 200,
-		},
-		'&>:nth-child(8)': {
-			textAlign: 'right',
-		},
 	}),
 	tr: (props) => ({
-		'&>:nth-child(1)': {
-			textAlign: 'left',
-			'& span': {
-				paddingLeft: 15,
-			},
-		},
-		'&>:nth-child(7)': {
-			textAlign: 'left',
-			'& div': {
-				display: 'inline-block',
-				whiteSpace: 'wrap',
-				width: 200,
-				height: 35,
-				overflow: 'hidden',
-				textOverflow: 'ellipsis',
-			},
-		},
-		'&>:nth-child(8)': {
-			textAlign: 'right',
-			'& span': {
-				paddingRight: 15,
-			},
-		},
 		boxSizing: 'border-box',
 	}),
 	td: (props) => ({
@@ -84,6 +50,40 @@ const useStyles = makeStyles((theme) => ({
 	}),
 	th: (props) => ({
 		minWidth: 85,
+	}),
+	firstTitle: (props) => ({
+		textAlign: 'left',
+		paddingLeft: 8,
+	}),
+	lastUpdateTitle: (props) => ({
+		textAlign: 'left',
+		width: 200,
+	}),
+	lastUpdateDateTitle: (props) => ({
+		textAlign: 'right',
+	}),
+	firstElement: (props) => ({
+		textAlign: 'left',
+		'& span': {
+			paddingLeft: 15,
+		},
+	}),
+	lastUpdate: (props) => ({
+		textAlign: 'left',
+		'& div': {
+			display: 'inline-block',
+			whiteSpace: 'wrap',
+			width: 200,
+			height: 35,
+			overflow: 'hidden',
+			textOverflow: 'ellipsis',
+		},
+	}),
+	lastUpdateDate: (props) => ({
+		textAlign: 'right',
+		'& span': {
+			paddingRight: 15,
+		},
 	}),
 	dummy: (props) => ({
 		borderLeft: props.leftBorderColor
@@ -203,8 +203,24 @@ export default function () {
 						<th className={clsx(classes.td, classes.th)}>Rating</th>
 						<th className={clsx(classes.td, classes.th)}>Difficulty</th>
 						<th className={clsx(classes.td, classes.th)}>Creator</th>
-						<th className={clsx(classes.td, classes.th)}>Last Update</th>
-						<th className={clsx(classes.td, classes.th)}> </th>
+						<th
+							className={clsx([
+								classes.td,
+								classes.th,
+								true && classes.lastUpdateTitle,
+							])}
+						>
+							Last Update
+						</th>
+						<th
+							className={clsx(
+								classes.td,
+								classes.th,
+								classes.lastUpdateDateTitle
+							)}
+						>
+							{' '}
+						</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -238,7 +254,7 @@ export default function () {
 								}}
 								className={theClass.tr}
 							>
-								<td className={theClass.td}>
+								<td className={clsx(theClass.td, theClass.firstElement)}>
 									<div className={theClass.dummy} />
 									<span>{row.title}</span>
 								</td>
@@ -259,10 +275,10 @@ export default function () {
 								<td className={theClass.td}>
 									<span>{row.profilePic}</span>
 								</td>
-								<td className={theClass.td}>
+								<td className={clsx(theClass.td, theClass.lastUpdate)}>
 									<div>{row.lastUpdate}</div>
 								</td>
-								<td className={theClass.td}>
+								<td className={clsx(theClass.td, theClass.lastUpdateDate)}>
 									<span>{row.lastUpdateDate}</span>
 								</td>
 							</tr>
