@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
 	}),
 	firstElement: (props) => ({
 		textAlign: 'left',
-		'& span': {
+		'& div': {
 			paddingLeft: 15,
 		},
 	}),
@@ -198,7 +198,9 @@ export default function () {
 			<table className={classes.table}>
 				<thead>
 					<tr className={classes.trTitle}>
-						<th className={clsx(classes.td, classes.th)}>Title</th>
+						<th className={clsx(classes.td, classes.th, classes.firstTitle)}>
+							Title
+						</th>
 						<th className={clsx(classes.td, classes.th)}>Type</th>
 						<th className={clsx(classes.td, classes.th)}>Solution</th>
 						<th className={clsx(classes.td, classes.th)}>Rating</th>
@@ -257,7 +259,7 @@ export default function () {
 							>
 								<td className={clsx(theClass.td, theClass.firstElement)}>
 									<div className={theClass.dummy} />
-									<span>{row.title}</span>
+									<div>{row.title}</div>
 								</td>
 								<td className={theClass.td}>
 									<span>{row.type}</span>
