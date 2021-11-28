@@ -1,16 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { ReactComponent as CrossIcon } from 'icons/cross.svg';
-import { ReactComponent as YesIcon } from 'icons/yes.svg';
-import { ReactComponent as DotsIcon } from 'icons/dots.svg';
-import { ReactComponent as EasyIcon } from 'icons/Easy Component.svg';
-import { ReactComponent as MediumIcon } from 'icons/Medium Component.svg';
-import { ReactComponent as HardIcon } from 'icons/Hard Component.svg';
+import { useAuth } from 'Context/auth';
+import api from 'services/api';
+import clsx from 'clsx';
 import { ReactComponent as GrrbmProfileIcon } from 'icons/grrbm profile pic.svg';
 import { ReactComponent as Rcm4ProfileIcon } from 'icons/rcm4 profile pic.svg';
-import { ReactComponent as SolutionIcon } from 'icons/Solution Component.svg';
-import clsx from 'clsx';
-import Rating from 'components/Rating/Rating';
+import QuestionTableRow from './QuestionTableRow/QuestionTableRow';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -107,6 +102,32 @@ const SubmissionStates = {
 	NOT_TRIED: 2,
 };
 export default function () {
+	const { authTokens } = useAuth();
+	const [inputs, setInputs] = useState([]);
+	useEffect(() => {
+		async function getQuestionsList() {
+			// const fetchedQuestions = await api.get(`/questions`)
+			const fetchedQuestions = await api.get(
+				`/users/${JSON.parse(authTokens).user._id}/questions`
+			);
+			// console.log("fetched questions from backend: "+JSON.stringify(fetchedQuestions))
+			const data = fetchedQuestions.data.map((question) => ({
+				title: question.title,
+				type: question.type,
+				solution:
+					question.submissionIds.length > 0
+						? question.submissionIds[0].submissionCode
+						: 'NotTried',
+				difficulty: question.difficulty,
+				creator: question.creator.username,
+			}));
+			setInputs(data);
+		}
+		if (authTokens) {
+			console.log(`this is the user id: ${JSON.parse(authTokens).user._id}`);
+			getQuestionsList();
+		}
+	}, []);
 	// const props = { backgroundColor: 'black', color: 'white' };
 	const [rowStates, setRowStates] = useState([
 		{
@@ -189,9 +210,6 @@ export default function () {
 		},
 	]);
 	const classes = useStyles(rowStates);
-	const handleClickRow = (event) => {
-		event.preventDefault();
-	};
 	useEffect(() => {}, [rowStates]);
 	return (
 		<div className={classes.root}>
@@ -227,7 +245,7 @@ export default function () {
 					</tr>
 				</thead>
 				<tbody>
-					{rowStates.map((row) => {
+					{inputs.map((row) => {
 						let rowColor = '';
 						let leftBorderColor = '';
 						switch (row.submissionState) {
@@ -249,78 +267,10 @@ export default function () {
 							questionColor: rowColor,
 							leftBorderColor,
 						};
-						const theClass = useStyles(props);
-						return (
-							<tr
-								onClick={(e) => {
-									handleClickRow(e);
-								}}
-								className={theClass.tr}
-							>
-								<td className={clsx(theClass.td, theClass.firstElement)}>
-									<div className={theClass.dummy} />
-									<div>{row.title}</div>
-								</td>
-								<td className={theClass.td}>
-									<span>{row.type}</span>
-								</td>
-								<td className={theClass.td}>
-									<span>{getHasSolution(row.submissionState)}</span>
-								</td>
-								<td className={theClass.td}>
-									<span>
-										<Rating />
-									</span>
-								</td>
-								<td className={theClass.td}>
-									<span>{getDifficultyIcon(row.difficulty)}</span>
-								</td>
-								<td className={theClass.td}>
-									<span>{row.profilePic}</span>
-								</td>
-								<td className={clsx(theClass.td, theClass.lastUpdate)}>
-									<div>{row.lastUpdate}</div>
-								</td>
-								<td className={clsx(theClass.td, theClass.lastUpdateDate)}>
-									<span>{row.lastUpdateDate}</span>
-								</td>
-							</tr>
-						);
+						return <QuestionTableRow materialUiProps={props} rowData={row} />;
 					})}
 				</tbody>
 			</table>
 		</div>
 	);
 }
-const getDifficultyIcon = (difficulty) => {
-	switch (difficulty) {
-		case 'Medium':
-			return <MediumIcon />;
-		case 'Easy':
-			return <EasyIcon />;
-		case 'Hard':
-			return <HardIcon />;
-		default:
-			return <EasyIcon />;
-	}
-};
-
-const getProfilePic = (username) => {
-	switch (username) {
-		case 'grrbm':
-			return <GrrbmProfileIcon />;
-		case 'rcm4':
-			return <Rcm4ProfileIcon />;
-		default:
-			return <Rcm4ProfileIcon />;
-	}
-};
-
-const getHasSolution = (submissionState) => {
-	switch (submissionState) {
-		case SubmissionStates.ACCEPTED:
-			return <SolutionIcon />;
-		default:
-			return '';
-	}
-};
