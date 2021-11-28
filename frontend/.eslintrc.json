@@ -18,7 +18,8 @@
 		"react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
 		"react/react-in-jsx-scope": "off",
 		"no-unused-vars": ["error", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }],
-		"no-underscore-dangle": "off"
+		"no-underscore-dangle": "off",
+		"no-inner-declarations":"off",
 	},
 	"ignorePatterns": ["*.test.js", "*.test.tsx"]
 }
