@@ -9,8 +9,12 @@ import { ReactComponent as HardIcon } from 'icons/Hard Component.svg';
 import { ReactComponent as GrrbmProfileIcon } from 'icons/grrbm profile pic.svg';
 import { ReactComponent as Rcm4ProfileIcon } from 'icons/rcm4 profile pic.svg';
 import { ReactComponent as SolutionIcon } from 'icons/Solution Component.svg';
+import { selectCurrentQuestionAction } from 'store/reducers/currentQuestion';
+import api from 'services/api';
+import ConnectTo from 'store/connect';
 import Rating from 'components/Rating/Rating';
 import clsx from 'clsx';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -106,10 +110,38 @@ const SubmissionStates = {
 	FAILED: 1,
 	NOT_TRIED: 2,
 };
-const QuestionTableRow = ({ materialUiProps, rowData }) => {
+const QuestionTableRow = ({
+	dispatch,
+	currentQuestion,
+	materialUiProps,
+	rowData,
+}) => {
 	const theClass = useStyles(materialUiProps);
+	const history = useHistory();
 	const handleClickRow = (event) => {
 		event.preventDefault();
+	};
+	const navigateToQuestion = async (input) => {
+		try {
+			// here should be the code to navigate to the selected question
+			await selectCurrentSubmissionHandler(input);
+			history.push('/question');
+		} catch (error) {
+			throw new Error(`Navigate to question failed. ${error}`);
+		}
+	};
+	const selectCurrentSubmissionHandler = async (question) => {
+		try {
+			const allSubmissions = await api({
+				method: 'get',
+				url: `/users/${question._id}/submissions`,
+			});
+			const submission = allSubmissions.data[allSubmissions.data.length - 1];
+			const currentQuestion = { ...question, submission: { ...submission } };
+			dispatch(selectCurrentQuestionAction(currentQuestion));
+		} catch (error) {
+			throw new Error(`Couldn't get user submissions`);
+		}
 	};
 	return (
 		<tr
@@ -149,7 +181,12 @@ const QuestionTableRow = ({ materialUiProps, rowData }) => {
 	);
 };
 
-export default QuestionTableRow;
+const mapStateToProps = ({ currentQuestion }, props) => ({
+	currentQuestion,
+	...props,
+});
+
+export default ConnectTo(mapStateToProps)(QuestionTableRow);
 
 const getProfilePic = (username) => {
 	switch (username) {
