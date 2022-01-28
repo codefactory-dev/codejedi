@@ -3,7 +3,9 @@
 		"browser": true,
 		"es2021": true
 	},
-	"extends": ["plugin:react/recommended", "airbnb", "prettier"],
+	"extends": ["plugin:react/recommended",
+		"plugin:react-hooks/recommended",
+		"airbnb", "prettier"],
 	"parserOptions": {
 		"ecmaFeatures": {
 			"jsx": true
@@ -15,7 +17,9 @@
 	"rules": {
 		"react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
 		"react/react-in-jsx-scope": "off",
-		"no-unused-vars": ["error", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }]
+		"no-unused-vars": ["error", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }],
+		"no-underscore-dangle": "off",
+		"no-inner-declarations":"off",
 	},
 	"ignorePatterns": ["*.test.js", "*.test.tsx"]
 }

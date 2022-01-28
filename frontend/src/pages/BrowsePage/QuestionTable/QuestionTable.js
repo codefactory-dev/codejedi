@@ -107,9 +107,7 @@ export default function () {
 	useEffect(() => {
 		async function getQuestionsList() {
 			// const fetchedQuestions = await api.get(`/questions`)
-			const fetchedQuestions = await api.get(
-				`/users/${JSON.parse(authTokens).user._id}/questions`
-			);
+			const fetchedQuestions = await api.get(`/questions`);
 			// console.log("fetched questions from backend: "+JSON.stringify(fetchedQuestions))
 			const data = fetchedQuestions.data.map((question) => ({
 				_id: question._id,

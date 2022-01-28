@@ -4,6 +4,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Navbar from '../../components/Navbar/Navbar.js';
 import BrowseList from './BrowseList/BrowseList.js';
 import { useAuth } from '../../Context/auth';
+import QuestionTable from './QuestionTable/QuestionTable.js';
+import api from 'services/api';
 
 const useStyles = makeStyles((theme) => ({
 	questionPage: {
@@ -38,7 +40,8 @@ export default function BrowsePage(props) {
 			<Navbar setAuthTokens={setAuthTokens} />
 			<div className={classes.centralElements}>
 				<div className={classes.centralTextArea}>
-					<BrowseList />
+					{/* <BrowseList /> */}
+					<QuestionTable title="Browse Page" />
 				</div>
 			</div>
 		</div>
