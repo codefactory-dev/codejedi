@@ -6,6 +6,13 @@ import clsx from 'clsx';
 import { ReactComponent as GrrbmProfileIcon } from 'icons/grrbm profile pic.svg';
 import { ReactComponent as Rcm4ProfileIcon } from 'icons/rcm4 profile pic.svg';
 import QuestionTableRow from './QuestionTableRow/QuestionTableRow';
+import Button from '@material-ui/core/Button';
+import ConnectTo from 'store/connect';
+import {
+	selectCurrentQuestionAction,
+	deselectCurrentQuestionAction,
+} from 'store/reducers/currentQuestion';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -13,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
+		flexDirection: 'column',
 	},
 	table: {
 		display: 'block',
@@ -28,6 +36,10 @@ const useStyles = makeStyles((theme) => ({
 		borderBottom: '1px solid #dddddd',
 		textAlign: 'left',
 		padding: '8px',
+	}),
+	createButton: (props) => ({
+		...theme.btnPrimaryOutline,
+		margin: '40px 0',
 	}),
 	tr: (props) => ({
 		boxSizing: 'border-box',
@@ -45,6 +57,14 @@ const useStyles = makeStyles((theme) => ({
 	}),
 	th: (props) => ({
 		minWidth: 85,
+	}),
+	buttonArea: (props) => ({
+		display: 'flex',
+		flexDirection: 'row',
+		alignItems: 'start',
+		justifyContent: 'start',
+		marginTop: '30px',
+		width: '80%',
 	}),
 	firstTitle: (props) => ({
 		textAlign: 'left',
@@ -101,9 +121,20 @@ const SubmissionStates = {
 	FAILED: 1,
 	NOT_TRIED: 2,
 };
-export default function () {
+const QuestionTable = ({ dispatch }) => {
 	const { authTokens } = useAuth();
 	const [inputs, setInputs] = useState([]);
+	const history = useHistory();
+	function createQuestion() {
+		deselectCurrentQuestionHandler();
+		history.push('/questionCreation');
+	}
+	const selectCurrentQuestionHandler = (question) => {
+		dispatch(selectCurrentQuestionAction(question));
+	};
+	const deselectCurrentQuestionHandler = () => {
+		dispatch(deselectCurrentQuestionAction());
+	};
 	useEffect(() => {
 		async function getQuestionsList() {
 			// const fetchedQuestions = await api.get(`/questions`)
@@ -274,6 +305,24 @@ export default function () {
 					})}
 				</tbody>
 			</table>
+			<div className={classes.buttonArea}>
+				<Button
+					onClick={createQuestion}
+					variant="outlined"
+					disableFocusRipple
+					disableRipple
+					className={classes.createButton}
+				>
+					Create a Question
+				</Button>
+			</div>
 		</div>
 	);
-}
+};
+
+const mapStateToProps = ({ currentQuestion }, props) => ({
+	currentQuestion,
+	...props,
+});
+
+export default ConnectTo(mapStateToProps)(QuestionTable);
