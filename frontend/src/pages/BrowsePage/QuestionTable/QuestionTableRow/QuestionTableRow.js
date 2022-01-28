@@ -40,6 +40,12 @@ const useStyles = makeStyles((theme) => ({
 	}),
 	tr: (props) => ({
 		boxSizing: 'border-box',
+		'&:hover': {
+			'& > td': {
+				backgroundColor: '#222324',
+			},
+			cursor: 'pointer',
+		},
 	}),
 	td: (props) => ({
 		borderBottom: '1px solid #dddddd',
@@ -120,6 +126,8 @@ const QuestionTableRow = ({
 	const history = useHistory();
 	const handleClickRow = (event) => {
 		event.preventDefault();
+		console.log('Handling row click');
+		navigateToQuestion();
 	};
 	const navigateToQuestion = async (input) => {
 		try {
