@@ -110,12 +110,15 @@ export default function () {
 			const fetchedQuestions = await api.get(`/questions`);
 			// console.log("fetched questions from backend: "+JSON.stringify(fetchedQuestions))
 			const data = fetchedQuestions.data.map((question) => ({
+				_id: question._id,
 				title: question.title,
 				type: question.type,
+				description: question.description,
 				solution:
 					question.submissionIds.length > 0
 						? question.submissionIds[0].submissionCode
 						: 'NotTried',
+				testcases: question.testcases,
 				difficulty: question.difficulty,
 				creator: question.creator.username,
 			}));

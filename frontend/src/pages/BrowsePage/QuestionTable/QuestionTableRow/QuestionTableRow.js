@@ -124,10 +124,10 @@ const QuestionTableRow = ({
 }) => {
 	const theClass = useStyles(materialUiProps);
 	const history = useHistory();
-	const handleClickRow = (event) => {
+	const handleClickRow = (event, input) => {
 		event.preventDefault();
 		console.log('Handling row click');
-		navigateToQuestion();
+		navigateToQuestion(input);
 	};
 	const navigateToQuestion = async (input) => {
 		try {
@@ -154,7 +154,7 @@ const QuestionTableRow = ({
 	return (
 		<tr
 			onClick={(e) => {
-				handleClickRow(e);
+				handleClickRow(e, rowData);
 			}}
 			className={theClass.tr}
 		>
