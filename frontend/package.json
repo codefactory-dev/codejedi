@@ -22,8 +22,8 @@
 		"react-draft-wysiwyg": "^1.14.5",
 		"react-hook-form": "^6.15.4",
 		"react-router-dom": "^5.2.0",
-		"react-scripts": "^3.4.3",
-		"react-swipe-to-delete-ios": "^1.0.8",
+		"react-scripts": "^5.0.1",
+		"react-swipe-to-delete-ios": "^2.1.0",
 		"sweetalert2": "^9.17.1"
 	},
 	"main": "index.js",
