@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
+import { makeStyles } from '@mui/material/styles';
+import TextField from '@mui/material/TextField';
 
 const useStyles = makeStyles((theme) => ({
 	root: {

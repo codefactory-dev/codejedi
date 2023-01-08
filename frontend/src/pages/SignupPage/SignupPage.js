@@ -13,7 +13,7 @@ import {
 	CssBaseline,
 	Grid,
 	makeStyles,
-} from '@material-ui/core';
+} from '@mui/material';
 import Illustration from '../../imgs/CompleteLogo.svg';
 import { useAuth } from '../../Context/auth';
 

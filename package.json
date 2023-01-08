@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "install": "run-s install:**",
-    "install:server": "cd backend && npm install",
-    "install:app": "cd frontend && npm install",
+    "install:server": "cd backend && yarn",
+    "install:app": "cd frontend && yarn",
     "start": "run-s start:**",
     "start:server": "cd backend && npm run start",
     "start:app": "cd frontend && npm run start",

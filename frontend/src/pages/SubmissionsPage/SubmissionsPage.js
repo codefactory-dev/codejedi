@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, Link, Redirect, useHistory } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
+import { makeStyles } from '@mui/material/styles';
+import { Typography } from '@mui/material';
 import api from 'services/api';
 import Swal from 'sweetalert2';
 import Navbar from '../../components/Navbar/Navbar.js';

@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from 'tss-react/mui';
 import ParameterInputList from 'components/List/ParameterInputList';
 import CustomSelect from 'components/Select/CustomSelect.js';
 import SimpleTextField from 'components/TextField/SimpleTextField.js';
@@ -22,84 +22,87 @@ import Swal from 'sweetalert2';
         backgroundColor: theme.palette.common.black,
         height: '100vh',
 */
-const useStyles = makeStyles((theme) => ({
-	root: {
-		display: 'flex',
-		flexDirection: 'column',
-		width: '100%',
-	},
-	verticalContainer: {
-		display: 'flex',
-		flexDirection: 'column',
-		width: '100%',
-		minWidth: 893.75,
-		alignItems: 'start',
-	},
-	titleContainer: {
-		display: 'flex',
-		flexDirection: 'row',
-		width: '60%',
-		marginTop: 20,
-		height: 60,
-		minWidth: 503,
-		paddingLeft: 0,
-		paddingRIght: 0,
-	},
-	bodyContainer: {
-		display: 'flex',
-		flexDirection: 'row',
-		width: '100%',
-		height: '100%',
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-	bodyWrapper: {
-		display: 'flex',
-		flexDirection: 'column',
-		width: '60%',
-		alignItems: 'start',
-	},
-	section: {
-		display: 'block',
-		marginTop: '50px',
-	},
-	titleContainer: {
-		display: 'flex',
-		alignItems: 'center',
-		margin: '10px 0px',
-	},
-	title: {
-		marginRight: '15px',
-		fontSize: '1rem',
-		color: theme.palette.common.greyLight,
-		fontFamily: 'Lato',
-		fontWeigth: '700',
-	},
+const useStyles =
+	makeStyles <
+	{ color: 'red' | 'blue' } >
+	((theme, { color }) => ({
+		root: {
+			display: 'flex',
+			flexDirection: 'column',
+			width: '100%',
+		},
+		verticalContainer: {
+			display: 'flex',
+			flexDirection: 'column',
+			width: '100%',
+			minWidth: 893.75,
+			alignItems: 'start',
+		},
+		titleContainer: {
+			display: 'flex',
+			flexDirection: 'row',
+			width: '60%',
+			marginTop: 20,
+			height: 60,
+			minWidth: 503,
+			paddingLeft: 0,
+			paddingRIght: 0,
+		},
+		bodyContainer: {
+			display: 'flex',
+			flexDirection: 'row',
+			width: '100%',
+			height: '100%',
+			alignItems: 'center',
+			justifyContent: 'center',
+		},
+		bodyWrapper: {
+			display: 'flex',
+			flexDirection: 'column',
+			width: '60%',
+			alignItems: 'start',
+		},
+		section: {
+			display: 'block',
+			marginTop: '50px',
+		},
+		titleContainer: {
+			display: 'flex',
+			alignItems: 'center',
+			margin: '10px 0px',
+		},
+		title: {
+			marginRight: '15px',
+			fontSize: '1rem',
+			color: theme.palette.common.greyLight,
+			fontFamily: 'Lato',
+			fontWeigth: '700',
+		},
 
-	listContainer: {
-		// padding: '20px'
-	},
-	colFlex: {
-		display: 'flex',
-		width: '100%',
-	},
-	colFlex3: {
-		display: 'flex',
-		flexDirection: 'column',
-		flexGrow: '3',
-	},
-	colFlex1: {
-		display: 'flex',
-		flexDirection: 'column',
-		flexGrow: '1',
-		marginLeft: 10,
-	},
-	saveButton: {
-		alignSelf: 'flex-start',
-		...theme.btnPrimaryOutline,
-		margin: '40px 0',
-	},
-}));
+		listContainer: {
+			// padding: '20px'
+		},
+		colFlex: {
+			display: 'flex',
+			width: '100%',
+		},
+		colFlex3: {
+			display: 'flex',
+			flexDirection: 'column',
+			flexGrow: '3',
+		},
+		colFlex1: {
+			display: 'flex',
+			flexDirection: 'column',
+			flexGrow: '1',
+			marginLeft: 10,
+		},
+		saveButton: {
+			alignSelf: 'flex-start',
+			...theme.btnPrimaryOutline,
+			margin: '40px 0',
+		},
+	}));
 
 const getKeyByValue = (object, value) =>
 	Object.keys(object).find((key) => object[key] === value);
@@ -121,7 +124,6 @@ function SolutionSubpage({
 	...props
 }) {
 	const classes = useStyles();
-	const theme = useTheme();
 	const [codemirror, setCodeMirror] = useState(null);
 	const textareaNode = useRef();
 

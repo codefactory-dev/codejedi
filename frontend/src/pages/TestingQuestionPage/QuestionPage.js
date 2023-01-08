@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import Button from '@material-ui/core/Button';
-import Box from '@material-ui/core/Box';
+import { makeStyles } from '@mui/material/styles';
+import Container from '@mui/material/Container';
+import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 import Swal from 'sweetalert2';
 import api from 'services/api';
 import questionTypes from '../../utils/questionTypes.js';

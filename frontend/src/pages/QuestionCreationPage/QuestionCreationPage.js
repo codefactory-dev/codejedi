@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles, StylesProvider } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from 'tss-react/mui';
+import { StylesProvider } from '@mui/styles';
 import Navbar from 'components/Navbar/Navbar.js';
 import Swal from 'sweetalert2';
 import api from 'services/api';
 
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Paper from '@material-ui/core/Paper';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Paper from '@mui/material/Paper';
 import RegularButton from 'components/Buttons/RegularButton.js';
 import PropTypes from 'prop-types';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 import { useAuth } from 'Context/auth';
 import { Link, Redirect } from 'react-router-dom';
 import ConnectTo from 'store/connect';
@@ -618,7 +619,10 @@ const QuestionCreationPage = ({
 								onClick={(e) => changeSubpage(e, 1)}
 							/>
 							<Tab
-								disabled={!solutionSubpage.funcParameters || !solutionSubpage.funcParameters.length > 0}
+								disabled={
+									!solutionSubpage.funcParameters ||
+									!solutionSubpage.funcParameters.length > 0
+								}
 								disableRipple
 								classes={{ root: classes.tab, selected: classes.selected }}
 								label="TEST CASES"

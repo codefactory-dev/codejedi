@@ -1,168 +1,167 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Divider from '@material-ui/core/Divider';
-import useKeyPres from 'Hooks/useKeyPress';
-import ListTextField from 'components/TextField/ListTextField';
+import { makeStyles, withStyles } from 'tss-react/mui';
+import useKeyPres from 'Hooks/useKeyPress';]
 
 import { ReactComponent as TextIcon } from 'icons/text.svg';
 import { ReactComponent as ListIcon } from 'icons/list.svg';
 import { ReactComponent as AddIcon } from 'icons/add.svg';
-import { ReactComponent as DeleteIcon } from 'icons/delete.svg';
 import { ReactComponent as CrossIcon } from 'icons/cross.svg';
 import { ReactComponent as YesIcon } from 'icons/yes.svg';
 import IconButton from '../Buttons/IconButton';
 import ParameterInputDropdown from './ParameterInputDropdown';
 
-const useStyles = makeStyles((theme) => ({
-	root: {
-		display: 'flex',
-		flexDirection: 'column',
-		fontFamily: 'Lato',
-		fontWeigth: '700',
-		boxSizing: 'border-box',
-		margin: '0',
-		backgroundColor: theme.palette.common.black,
-		color: theme.palette.common.greyLight,
-	},
-	col_flex1: {
-		display: 'flex',
-		alignItems: 'center',
-		flexBasis: '30em',
-		borderRadius: '5px',
-		padding: '5px 0 5px 5px',
-		[theme.breakpoints.down('xs')]: {
-			flexBasis: '50%',
+const useStyles =
+	makeStyles <
+	{ color: 'red' | 'blue' } >
+	((theme, { color }) => ({
+		root: {
+			display: 'flex',
+			flexDirection: 'column',
+			fontFamily: 'Lato',
+			fontWeigth: '700',
+			boxSizing: 'border-box',
+			margin: '0',
+			backgroundColor: theme.palette.common.black,
+			color: theme.palette.common.greyLight,
 		},
-		'&:hover': {
-			cursor: (props) => (props.disabled === false ? 'pointer' : 'default'),
-			backgroundColor: (props) =>
-				props.disabled === false
-					? theme.palette.common.black2
-					: theme.palette.common.black,
+		col_flex1: {
+			display: 'flex',
+			alignItems: 'center',
+			flexBasis: '30em',
+			borderRadius: '5px',
+			padding: '5px 0 5px 5px',
+			[theme.breakpoints.down('xs')]: {
+				flexBasis: '50%',
+			},
+			'&:hover': {
+				cursor: (props) => (props.disabled === false ? 'pointer' : 'default'),
+				backgroundColor: (props) =>
+					props.disabled === false
+						? theme.palette.common.black2
+						: theme.palette.common.black,
+			},
 		},
-	},
-	col_flex2: {
-		display: 'flex',
-	},
-
-	// row subtitle
-	subtitleContainer: {
-		display: 'flex',
-		alignItems: 'center',
-		marginLeft: '5px',
-		padding: '10px',
-		fill: theme.palette.common.grey3,
-	},
-	subtitle: {
-		...theme.listSubtitle,
-		display: 'inline',
-		marginLeft: '5px',
-	},
-	subtitleIcon: {
-		height: '15px',
-		width: '15px',
-	},
-
-	// row content
-	contentContainer: {
-		display: 'flex',
-		flexDirection: 'column',
-	},
-	contentInput: {
-		display: 'flex',
-		alignItems: 'center',
-		margin: '5px 0',
-	},
-	inputName: {
-		color: theme.palette.common.white,
-		fontSize: '1rem',
-		marginLeft: '35px',
-		padding: '0 10px',
-		flexGrow: '100',
-	},
-	inputNameDelete: {
-		color: theme.palette.secondary.main,
-		fontSize: '1rem',
-		marginLeft: '35px',
-		padding: '0 10px',
-		flexGrow: '100',
-	},
-	inputNameField: {
-		backgroundColor: theme.palette.common.black2,
-		color: theme.palette.common.white,
-		fontFamily: 'Lato',
-		fontSize: '1rem',
-		width: '100%',
-		border: 0,
-		borderBottom: `.1px solid ${theme.palette.common.grey}`,
-		cursor: 'pointer',
-		fontWeight: '700',
-		padding: 0,
-	},
-	contentTypeContainer: {
-		position: 'relative',
-		flexGrow: '100',
-		height: '100%',
-		display: 'flex',
-		flexDirection: 'column',
-		justifyContent: 'center',
-		borderRadius: '5px',
-		margin: '2px 0',
-		marginLeft: '30px',
-		padding: '0px 5px',
-	},
-	contentTypeContainerHover: {
-		'&:hover': {
-			cursor: (props) => (props.disabled === false ? 'pointer' : 'default'),
-			backgroundColor: (props) =>
-				props.disabled === false
-					? theme.palette.common.black2
-					: theme.palette.common.black,
+		col_flex2: {
+			display: 'flex',
 		},
-	},
-	inputTypeTag: {
-		alignSelf: 'flex-start',
-		border: `1px solid ${theme.palette.primary.main}`,
-		borderRadius: '10%',
-		padding: '5px',
 
-		fontSize: '.7rem',
-		fontFamily: 'Lato',
-		fontWeight: '400',
-		color: theme.palette.primary.main,
-	},
-
-	// extra
-	divider: {
-		...theme.divider,
-	},
-	addContainer: {
-		display: 'inline-flex',
-		alignItems: 'center',
-		marginLeft: '25px',
-		fill: theme.palette.common.grey3,
-		padding: '5px',
-		borderRadius: '5px',
-		margin: '5px 0',
-		'&:hover': {
-			cursor: (props) => (props.disabled === false ? 'pointer' : 'default'),
-			backgroundColor: (props) =>
-				props.disabled === false
-					? theme.palette.common.black2
-					: theme.palette.common.black,
+		// row subtitle
+		subtitleContainer: {
+			display: 'flex',
+			alignItems: 'center',
+			marginLeft: '5px',
+			padding: '10px',
+			fill: theme.palette.common.grey3,
 		},
-	},
-	addIcon: {
-		height: '12px',
-		width: '12px',
-	},
-	newButton: {
-		...theme.listSubtitle,
-		marginLeft: '5px',
-	},
-}));
+		subtitle: {
+			...theme.listSubtitle,
+			display: 'inline',
+			marginLeft: '5px',
+		},
+		subtitleIcon: {
+			height: '15px',
+			width: '15px',
+		},
+
+		// row content
+		contentContainer: {
+			display: 'flex',
+			flexDirection: 'column',
+		},
+		contentInput: {
+			display: 'flex',
+			alignItems: 'center',
+			margin: '5px 0',
+		},
+		inputName: {
+			color: theme.palette.common.white,
+			fontSize: '1rem',
+			marginLeft: '35px',
+			padding: '0 10px',
+			flexGrow: '100',
+		},
+		inputNameDelete: {
+			color: theme.palette.secondary.main,
+			fontSize: '1rem',
+			marginLeft: '35px',
+			padding: '0 10px',
+			flexGrow: '100',
+		},
+		inputNameField: {
+			backgroundColor: theme.palette.common.black2,
+			color: theme.palette.common.white,
+			fontFamily: 'Lato',
+			fontSize: '1rem',
+			width: '100%',
+			border: 0,
+			borderBottom: `.1px solid ${theme.palette.common.grey}`,
+			cursor: 'pointer',
+			fontWeight: '700',
+			padding: 0,
+		},
+		contentTypeContainer: {
+			position: 'relative',
+			flexGrow: '100',
+			height: '100%',
+			display: 'flex',
+			flexDirection: 'column',
+			justifyContent: 'center',
+			borderRadius: '5px',
+			margin: '2px 0',
+			marginLeft: '30px',
+			padding: '0px 5px',
+		},
+		contentTypeContainerHover: {
+			'&:hover': {
+				cursor: (props) => (props.disabled === false ? 'pointer' : 'default'),
+				backgroundColor: (props) =>
+					props.disabled === false
+						? theme.palette.common.black2
+						: theme.palette.common.black,
+			},
+		},
+		inputTypeTag: {
+			alignSelf: 'flex-start',
+			border: `1px solid ${theme.palette.primary.main}`,
+			borderRadius: '10%',
+			padding: '5px',
+
+			fontSize: '.7rem',
+			fontFamily: 'Lato',
+			fontWeight: '400',
+			color: theme.palette.primary.main,
+		},
+
+		// extra
+		divider: {
+			...theme.divider,
+		},
+		addContainer: {
+			display: 'inline-flex',
+			alignItems: 'center',
+			marginLeft: '25px',
+			fill: theme.palette.common.grey3,
+			padding: '5px',
+			borderRadius: '5px',
+			margin: '5px 0',
+			'&:hover': {
+				cursor: (props) => (props.disabled === false ? 'pointer' : 'default'),
+				backgroundColor: (props) =>
+					props.disabled === false
+						? theme.palette.common.black2
+						: theme.palette.common.black,
+			},
+		},
+		addIcon: {
+			height: '12px',
+			width: '12px',
+		},
+		newButton: {
+			...theme.listSubtitle,
+			marginLeft: '5px',
+		},
+	}));
 
 // -----------------------------------------
 //  GLOBAL VARIABLES
@@ -178,7 +177,6 @@ const INPUT_TYPES = ['number', 'string', 'array', 'boolean'];
 
 export default function ParameterInputList(props) {
 	const classes = useStyles(props);
-	const theme = useTheme();
 
 	// const [inputs, setInputs] = useState([{name: 'nums1', type: INPUT_TYPES[0]},
 	//                                       {name: 'nums2', type: INPUT_TYPES[0]},

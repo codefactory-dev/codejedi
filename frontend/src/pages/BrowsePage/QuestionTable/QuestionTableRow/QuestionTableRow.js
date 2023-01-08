@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from 'tss-react/mui';
 import { ReactComponent as CrossIcon } from 'icons/cross.svg';
 import { ReactComponent as YesIcon } from 'icons/yes.svg';
 import { ReactComponent as DotsIcon } from 'icons/dots.svg';

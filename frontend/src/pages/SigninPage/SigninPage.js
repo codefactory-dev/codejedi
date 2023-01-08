@@ -1,25 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@mui/material/styles';
 import api from 'services/api';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 import clsx from 'clsx';
-import FormControl from '@material-ui/core/FormControl';
-import Checkbox from '@material-ui/core/Checkbox';
-import TextField from '@material-ui/core/TextField';
-import Box from '@material-ui/core/Box';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Grid from '@material-ui/core/Grid';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Paper from '@material-ui/core/Paper';
-import Container from '@material-ui/core/Container';
+import FormControl from '@mui/material/FormControl';
+import Checkbox from '@mui/material/Checkbox';
+import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Grid from '@mui/material/Grid';
+import CssBaseline from '@mui/material/CssBaseline';
+import Paper from '@mui/material/Paper';
+import Container from '@mui/material/Container';
 import { Link, Redirect, useHistory } from 'react-router-dom';
-import Input from '@material-ui/core/Input';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import IconButton from '@material-ui/core/IconButton';
-import InputLabel from '@material-ui/core/InputLabel';
+import Input from '@mui/material/Input';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+import InputLabel from '@mui/material/InputLabel';
 import { useAuth } from '../../Context/auth';
 import Illustration from '../../imgs/CompleteLogo.svg';
 import RegularButton from '../../components/Buttons/RegularButton';
@@ -224,9 +224,9 @@ function SigninPage(props) {
 												onMouseDown={handleMouseDownPassword}
 											>
 												{values.showPassword ? (
-													<Visibility />
+													<VisibilityIcon />
 												) : (
-													<VisibilityOff />
+													<VisibilityOffIcon />
 												)}
 											</IconButton>
 										</InputAdornment>

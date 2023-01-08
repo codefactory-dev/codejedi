@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Editor, EditorState, RichUtils } from 'draft-js';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from 'tss-react/mui';
 import './RichTextEditor.scss';
 import { camelCase } from 'jquery';
 

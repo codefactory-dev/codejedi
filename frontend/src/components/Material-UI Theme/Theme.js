@@ -1,4 +1,4 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createMuiTheme } from '@mui/material/styles';
 
 const teal = '#00B5AD';
 const tealDark = '#005b57';

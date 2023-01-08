@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from 'tss-react/mui';
 import { useAuth } from 'Context/auth';
 import api from 'services/api';
 import clsx from 'clsx';
 import { ReactComponent as GrrbmProfileIcon } from 'icons/grrbm profile pic.svg';
 import { ReactComponent as Rcm4ProfileIcon } from 'icons/rcm4 profile pic.svg';
 import QuestionTableRow from './QuestionTableRow/QuestionTableRow';
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 import ConnectTo from 'store/connect';
 import {
 	selectCurrentQuestionAction,

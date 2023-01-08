@@ -1,11 +1,11 @@
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import ListItemText from '@material-ui/core/ListItemText';
-import Typography from '@material-ui/core/Typography';
-import ListItem from '@material-ui/core/ListItem';
-import Divider from '@material-ui/core/Divider';
-import List from '@material-ui/core/List';
+import { makeStyles, withStyles } from 'tss-react/mui';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import ListItemText from '@mui/material/ListItemText';
+import Typography from '@mui/material/Typography';
+import ListItem from '@mui/material/ListItem';
+import Divider from '@mui/material/Divider';
+import List from '@mui/material/List';
 import React from 'react';
 import SwipeProvider from '../SwipeableList/SwipeProvider';
 import ListRow from './ListRow';
@@ -14,22 +14,24 @@ import IconButton from '../Buttons/IconButton';
 import { ReactComponent as EditIcon } from '../../icons/edit.svg';
 import { ReactComponent as DeleteIcon } from '../../icons/delete.svg';
 
-const useStyles = makeStyles((theme) => ({
-	root: {
-		backgroundColor: theme.palette.common.black1,
-		width: '100%',
-		boxSizing: 'border-box',
-		padding: '10px',
-		margin: '0',
-	},
-	divider: {
-		backgroundColor: theme.palette.common.black3,
-	},
-}));
+const useStyles =
+	makeStyles <
+	{ color: 'red' | 'blue' } >
+	((theme, { color }) => ({
+		root: {
+			backgroundColor: theme.palette.common.black1,
+			width: '100%',
+			boxSizing: 'border-box',
+			padding: '10px',
+			margin: '0',
+		},
+		divider: {
+			backgroundColor: theme.palette.common.black3,
+		},
+	}));
 
 export default function SwipeList() {
 	const classes = useStyles();
-	const theme = useTheme();
 	const matchesSM = useMediaQuery(theme.breakpoints.down('xs'));
 
 	const comment = {

@@ -1,6 +1,6 @@
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from 'tss-react/mui';
 import styled, { css } from 'styled-components';
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 import PropTypes from 'prop-types';
 import React from 'react';
 import theme from '../Material-UI Theme/Theme.js';

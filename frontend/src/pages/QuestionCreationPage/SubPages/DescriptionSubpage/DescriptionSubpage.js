@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import PhoneIcon from '@material-ui/icons/Phone';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import PersonPinIcon from '@material-ui/icons/PersonPin';
-import Button from '@material-ui/core/Button';
+import { makeStyles } from '@mui/material/styles';
+import Paper from '@mui/material/Paper';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import {
@@ -17,10 +13,6 @@ import PropTypes from 'prop-types';
 
 import SimpleTextField from '../../../../components/TextField/SimpleTextField.js';
 import CustomSelect from '../../../../components/Select/CustomSelect.js';
-
-import RichTextEditor from '../../../../components/Editor/RichTextEditor.js';
-
-import RegularButton from '../../../../components/Buttons/RegularButton.js';
 
 // -------------------------------------------------------------------------
 // GLOBAL VARIABLES and HELPERS

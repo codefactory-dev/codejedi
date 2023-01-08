@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import SvgIcon from '@material-ui/core/SvgIcon';
+import { makeStyles, withStyles } from 'tss-react/mui';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import SvgIcon from '@mui/material/SvgIcon';
 
 import { useAuth } from 'Context/auth';
 
@@ -14,7 +14,7 @@ import {
 	Fade,
 	Avatar,
 	Divider,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import { useHistory } from 'react-router-dom';
 import placeholderAvatar from '../../icons/user_avatar.svg';

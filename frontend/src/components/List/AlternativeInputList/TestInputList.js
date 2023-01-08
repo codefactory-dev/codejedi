@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Divider from '@material-ui/core/Divider';
-import Button from '@material-ui/core/Button';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { makeStyles, withStyles } from 'tss-react/mui';
+import Divider from '@mui/material/Divider';
+import Button from '@mui/material/Button';
 import IconButton from '../../Buttons/IconButton';
 
 import { ReactComponent as HashIcon } from '../../../icons/hashtag.svg';
@@ -16,135 +16,138 @@ import './TestInputList.scss';
 
 const { usePrevious } = require('../../../utils/useful.js');
 
-const useStyles = makeStyles((theme) => ({
-	root: {
-		fontFamily: 'Lato',
-		fontWeight: '700',
-		height: '100vh',
-		boxSizing: 'border-box',
-		padding: '30px 10px',
-		backgroundColor: theme.palette.common.black,
-		color: theme.palette.common.greyLight,
-		flexShrink: 1,
-		marginRight: 'auto',
-		marginLeft: 'auto',
-		paddingLeft: 100,
-		width: '60%',
-		minWidth: '296.493px',
-		marginTop: 60,
-	},
-	titleContainer: {
-		display: 'flex',
-		alignItems: 'center',
-		padding: '15px 0',
-	},
-	title: {
-		marginRight: '15px',
-		fontSize: '1.4rem',
-	},
-	tag: {
-		padding: '5px 10px',
-		backgroundColor: theme.palette.primary.main,
-		borderRadius: '15px',
-		fontSize: '.65rem',
-		fontWeight: 700,
-	},
-	subtitleContainer: {
-		display: 'flex',
-		alignItems: 'center',
-		marginLeft: '5px',
-		padding: '10px',
-		fill: theme.palette.common.grey3,
+const useStyles =
+	makeStyles <
+	{ color: 'red' | 'blue' } >
+	((theme, { color }) => ({
+		root: {
+			fontFamily: 'Lato',
+			fontWeight: '700',
+			height: '100vh',
+			boxSizing: 'border-box',
+			padding: '30px 10px',
+			backgroundColor: theme.palette.common.black,
+			color: theme.palette.common.greyLight,
+			flexShrink: 1,
+			marginRight: 'auto',
+			marginLeft: 'auto',
+			paddingLeft: 100,
+			width: '60%',
+			minWidth: '296.493px',
+			marginTop: 60,
+		},
+		titleContainer: {
+			display: 'flex',
+			alignItems: 'center',
+			padding: '15px 0',
+		},
+		title: {
+			marginRight: '15px',
+			fontSize: '1.4rem',
+		},
+		tag: {
+			padding: '5px 10px',
+			backgroundColor: theme.palette.primary.main,
+			borderRadius: '15px',
+			fontSize: '.65rem',
+			fontWeight: 700,
+		},
+		subtitleContainer: {
+			display: 'flex',
+			alignItems: 'center',
+			marginLeft: '5px',
+			padding: '10px',
+			fill: theme.palette.common.grey3,
 
-		'& p': {
+			'& p': {
+				...theme.listSubtitle,
+				marginLeft: '5px',
+			},
+		},
+		wrapper: {},
+		contentContainer: {
+			overflow: 'visible',
+			minWidth: '225.297px',
+		},
+		input: {
+			color: theme.palette.common.white,
+			backgroundColor: theme.palette.common.black,
+			fontSize: '1rem',
+			marginLeft: '30px',
+			margin: '10px 0',
+			borderStyle: 'none',
+			padding: '0',
+			cursor: 'pointer',
+		},
+		selectedInput: {
+			margin: 0,
+			fontSize: '1rem',
+			position: 'absolute',
+			top: '50%',
+			left: 127,
+			msTransform: 'translateY(-50%)',
+			transform: 'translateY(-50%)',
+			'& > div': {
+				display: 'inline',
+				marginLeft: 15,
+				cursor: 'pointer',
+			},
+		},
+		focusedInput: {
+			color: theme.palette.common.white,
+			backgroundColor: theme.palette.common.black,
+			fontSize: '1rem',
+			position: 'absolute',
+			top: '50%',
+			left: 127,
+			msTransform: 'translateY(-50%)',
+			transform: 'translateY(-50%)',
+
+			borderStyle: 'none',
+			width: 85,
+			borderBottom: `.1px solid ${theme.palette.common.grey}`,
+			padding: '0',
+			cursor: 'pointer',
+		},
+		divider: {
+			...theme.divider,
+			zIndex: 0,
+			position: 'relative',
+			minWidth: '225.297px',
+		},
+		addContainer: {
+			display: 'inline-flex',
+			alignItems: 'center',
+			marginLeft: '25px',
+			fill: theme.palette.common.grey3,
+			padding: '5px',
+			borderRadius: '5px',
+			margin: '5px 0',
+			'&:hover': {
+				cursor: 'pointer',
+				backgroundColor: theme.palette.common.black2,
+			},
+		},
+		newButton: {
 			...theme.listSubtitle,
 			marginLeft: '5px',
 		},
-	},
-	wrapper: {},
-	contentContainer: {
-		overflow: 'visible',
-		minWidth: '225.297px',
-	},
-	input: {
-		color: theme.palette.common.white,
-		backgroundColor: theme.palette.common.black,
-		fontSize: '1rem',
-		marginLeft: '30px',
-		margin: '10px 0',
-		borderStyle: 'none',
-		padding: '0',
-		cursor: 'pointer',
-	},
-	selectedInput: {
-		margin: 0,
-		fontSize: '1rem',
-		position: 'absolute',
-		top: '50%',
-		left: 127,
-		msTransform: 'translateY(-50%)',
-		transform: 'translateY(-50%)',
-		'& > div': {
-			display: 'inline',
-			marginLeft: 15,
-			cursor: 'pointer',
+		saveButton: {
+			...theme.btnPrimaryOutline,
+			margin: '40px 0',
 		},
-	},
-	focusedInput: {
-		color: theme.palette.common.white,
-		backgroundColor: theme.palette.common.black,
-		fontSize: '1rem',
-		position: 'absolute',
-		top: '50%',
-		left: 127,
-		msTransform: 'translateY(-50%)',
-		transform: 'translateY(-50%)',
-
-		borderStyle: 'none',
-		width: 85,
-		borderBottom: `.1px solid ${theme.palette.common.grey}`,
-		padding: '0',
-		cursor: 'pointer',
-	},
-	divider: {
-		...theme.divider,
-		zIndex: 0,
-		position: 'relative',
-		minWidth: '225.297px',
-	},
-	addContainer: {
-		display: 'inline-flex',
-		alignItems: 'center',
-		marginLeft: '25px',
-		fill: theme.palette.common.grey3,
-		padding: '5px',
-		borderRadius: '5px',
-		margin: '5px 0',
-		'&:hover': {
-			cursor: 'pointer',
+		activeRow: {
+			position: 'relative',
+			left: -100,
+			height: 39,
 			backgroundColor: theme.palette.common.black2,
+			width: `calc(100% + 100px)`,
+			borderStyle: 'solid',
+			borderWidth: '0.05rem',
+			overflow: 'visible',
+			borderColor: theme.palette.common.grey,
 		},
-	},
-	newButton: {
-		...theme.listSubtitle,
-		marginLeft: '5px',
-	},
-	saveButton: {
-		...theme.btnPrimaryOutline,
-		margin: '40px 0',
-	},
-	activeRow: {
-		position: 'relative',
-		left: -100,
-		height: 39,
-		backgroundColor: theme.palette.common.black2,
-		width: `calc(100% + 100px)`,
-		borderStyle: 'solid',
-		borderWidth: '0.05rem',
-		overflow: 'visible',
-		borderColor: theme.palette.common.grey,
-	},
-}));
+	}));
 const rowStates = {
 	DESELECTED: 0,
 	EDITING_ROW: 1,
@@ -152,7 +155,6 @@ const rowStates = {
 };
 export default function TestInputList() {
 	const classes = useStyles();
-	const theme = useTheme();
 	const [inputs, setInputs] = useState(['nums1', 'nums2', 'nums3']);
 	const [activeRowItem, setActiveRowItem] = useState();
 	const [editingState, setEditingState] = useState(rowStates.DESELECTED);

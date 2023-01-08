@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { cursorPosition } from './util';
 import { Container, Content, SwipeContent } from './style';
 
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@mui/material/styles';
 
 const styles = (theme) => ({});
 

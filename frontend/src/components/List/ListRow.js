@@ -1,86 +1,88 @@
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import ListItemText from '@material-ui/core/ListItemText';
-import Typography from '@material-ui/core/Typography';
-import ListItem from '@material-ui/core/ListItem';
-import Divider from '@material-ui/core/Divider';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import List from '@material-ui/core/List';
+import { makeStyles, withStyles } from 'tss-react/mui';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import ListItemText from '@mui/material/ListItemText';
+import Typography from '@mui/material/Typography';
+import ListItem from '@mui/material/ListItem';
+import Divider from '@mui/material/Divider';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import List from '@mui/material/List';
 import React from 'react';
 import PropTypes from 'prop-types';
 import SwipeProvider from '../SwipeableList/SwipeProvider';
 
-const useStyles = makeStyles((theme) => ({
-	root: {
-		backgroundColor: theme.palette.common.black,
-		boxSizing: 'border-box',
-		width: '100%',
-		padding: '20px 0',
-		margin: '0',
-		'&:hover': {
-			backgroundColor: theme.palette.common.black3,
+const useStyles =
+	makeStyles <
+	{ color: 'red' | 'blue' } >
+	((theme, { color }) => ({
+		root: {
+			backgroundColor: theme.palette.common.black,
+			boxSizing: 'border-box',
+			width: '100%',
+			padding: '20px 0',
+			margin: '0',
+			'&:hover': {
+				backgroundColor: theme.palette.common.black3,
+			},
 		},
-	},
-	contentContainer: {
-		...theme.typography.body2,
-		display: 'flex',
-		flexDirection: 'column',
-		width: '100%',
-	},
-	headerContainer: {
-		display: 'flex',
-	},
-	avatarContainer: {
-		marginTop: '0px',
-	},
-	avatar: {
-		border: `1.5px solid ${theme.palette.common.greyLight}`,
-	},
-	header: {
-		display: 'flex',
-		color: theme.palette.common.greyLight,
-		fontSize: '.75rem',
-		fontWeight: 'bold',
-		width: '100%',
-		[theme.breakpoints.down('xs')]: {
-			margin: '0 10px',
+		contentContainer: {
+			...theme.typography.body2,
+			display: 'flex',
+			flexDirection: 'column',
+			width: '100%',
 		},
-	},
-	date: {
-		marginLeft: 'auto',
-		fontSize: '.75rem',
-		fontWeight: 'bold',
-		lineHeight: '1.5',
-	},
-	text: {
-		color: theme.palette.common.greyLight,
-		fontSize: '.9rem',
-		marginTop: '10px',
-	},
-	readButton: {
-		...theme.btnPrimaryText,
-		display: 'block',
-		margin: 'auto',
-		marginTop: '20px',
-	},
-	replyButton: {
-		...theme.btnPrimaryOutline,
-		position: 'absolute',
-		bottom: '15px',
-		right: '15px',
-	},
-	nested: {
-		padding: '0 0 20px 30px',
-	},
-}));
+		headerContainer: {
+			display: 'flex',
+		},
+		avatarContainer: {
+			marginTop: '0px',
+		},
+		avatar: {
+			border: `1.5px solid ${theme.palette.common.greyLight}`,
+		},
+		header: {
+			display: 'flex',
+			color: theme.palette.common.greyLight,
+			fontSize: '.75rem',
+			fontWeight: 'bold',
+			width: '100%',
+			[theme.breakpoints.down('xs')]: {
+				margin: '0 10px',
+			},
+		},
+		date: {
+			marginLeft: 'auto',
+			fontSize: '.75rem',
+			fontWeight: 'bold',
+			lineHeight: '1.5',
+		},
+		text: {
+			color: theme.palette.common.greyLight,
+			fontSize: '.9rem',
+			marginTop: '10px',
+		},
+		readButton: {
+			...theme.btnPrimaryText,
+			display: 'block',
+			margin: 'auto',
+			marginTop: '20px',
+		},
+		replyButton: {
+			...theme.btnPrimaryOutline,
+			position: 'absolute',
+			bottom: '15px',
+			right: '15px',
+		},
+		nested: {
+			padding: '0 0 20px 30px',
+		},
+	}));
 
 const maxTextLength = 100;
 
 export default function ListRow(props) {
 	const classes = useStyles();
-	const theme = useTheme();
 	const matchesSM = useMediaQuery(theme.breakpoints.down('xs'));
 
 	const avatar = (
