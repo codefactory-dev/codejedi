@@ -12,3 +12,4 @@ functions/**/*
 # CRA build
 frontend/build/**/*
 .vscode
+node_modules/
