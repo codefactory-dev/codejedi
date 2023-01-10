@@ -1,8 +1,12 @@
 import axios from 'axios';
 
 const fetchClient = () => {
+	const API_URL =
+		process.env.NODE_ENV === 'production'
+			? 'https://codejedi.xyz'
+			: 'http://localhost:4001';
 	const defaultOptions = {
-		baseURL: '/',
+		baseURL: API_URL,
 		method: 'get',
 		headers: {
 			'Content-Type': 'application/json',

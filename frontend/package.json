@@ -27,7 +27,6 @@
 		"sweetalert2": "^9.17.1"
 	},
 	"main": "index.js",
-	"proxy": "http://localhost:4000/",
 	"scripts": {
 		"start": "PORT=3124 react-scripts --openssl-legacy-provider start",
 		"build": "react-scripts build",
