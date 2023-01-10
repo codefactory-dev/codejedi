@@ -15,7 +15,10 @@
     "test:user": "cd backend && npm run test:user",
     "test:auth": "cd backend && npm run test:auth",
     "test:comment": "cd backend && npm run test:comment",
-    "heroku-postbuild": "cd frontend && npm install && npm run build"
+    "clusterBack": "NODE_ENV=production pm2 start backend/server.js -i 1 --name codejedi-backend",
+    "clusterReloadBack": "NODE_ENV=production pm2 reload codejedi-backend",
+    "clusterFront": "NODE_ENV=production && cd frontend && pm2 start --name codejedi-front node_modules/react-scripts/scripts/start.js --node-args=\"--openssl-legacy-provider\"",
+    "clusterReloadFront": "NODE_ENV=production pm2 reload codejedi-front"
   },
   "repository": {
     "type": "git",

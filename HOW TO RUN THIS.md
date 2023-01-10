@@ -1,3 +1,9 @@
+# Installing:
+
+`yarn` on root
+
+# Running:
+
 In a new terminal:
 `mongod --dbpath=/Users/guilhermereis/data/db`
 
