@@ -1,16 +1,17 @@
-const serverless = require('serverless-http'),
-      mongoose = require('mongoose'),
-      app = require('./app');
+const serverless = require("serverless-http"),
+  mongoose = require("mongoose"),
+  app = require("./app");
 
-require('dotenv').config()
-      
+require("dotenv").config();
+
 const local = process.env.LOCAL_SERVER || false;
+const port = process.env.PORT || 4000;
 
 // --------------------------------------------------------------------
 // MONGODB/MONGOOSE
 // --------------------------------------------------------------------
-const db = require('./src/utils/db');
-db.connect()
+const db = require("./src/utils/db");
+db.connect();
 /*
     .then(db.initCollections)
     .then(() => db.reset(false))
@@ -22,7 +23,10 @@ db.connect()
 // --------------------------------------------------------------------
 
 // NOT NEEDED WITH NETLIFY
-if (local) app.listen(process.env.PORT || 4000, () => console.log('CodeJedi backend listening on port 4000!'));
+if (local)
+  app.listen(port, () =>
+    console.log(`CodeJedi backend listening on port ${port}!`)
+  );
 
 // --------------------------------------------------------------------
 // SERVELESS SETUP
