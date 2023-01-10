@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "install": "run-s install:**",
-    "install:server": "cd backend && npm install",
-    "install:app": "cd frontend && npm install",
+    "installer": "run-s installer:**",
+    "installer:server": "cd backend && yarn",
+    "installer:app": "cd frontend && yarn",
     "start": "run-s start:**",
     "start:server": "cd backend && npm run start",
     "start:app": "cd frontend && npm run start",
