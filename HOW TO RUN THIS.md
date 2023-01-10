@@ -13,3 +13,9 @@ backend/dev.env
 cd backend && yarn dev
 
 cd frontend && yarn dev
+
+# If theres problems with React 18:
+
+Use legacy peer deps:
+
+npm install @material-ui/core @material-ui/icons --legacy-peer-deps
