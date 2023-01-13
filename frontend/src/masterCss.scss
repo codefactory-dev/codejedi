@@ -9,9 +9,12 @@
     src: url('./fonts/Lato-Regular.ttf') format('ttf');
 }
 
+
 body {
     padding: 0;
-    margin: 0;
+    margin: 0;    
+    //Applying this to all elements is safe and wise:
+    box-sizing: border-box;
 }
 
 div {
