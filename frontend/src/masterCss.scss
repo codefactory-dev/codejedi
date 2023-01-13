@@ -13,13 +13,13 @@
 body {
     padding: 0;
     margin: 0;    
-    //Applying this to all elements is safe and wise:
-    box-sizing: border-box;
 }
 
-input {
-    box-sizing: border-box;
+*, *::before, *::after {
+    //This fixes the problem of dropdown menus height being broken
+    box-sizing: content-box; //content-box, border-box, padding-box(not used)
 }
+
 
 div {
     //The following properties makes HTML text un-selectable in all modern browsers
