@@ -5,7 +5,10 @@
 # Running:
 
 In a new terminal:
-`mongod --dbpath=/Users/guilhermereis/data/db`
+
+```mongod --dbpath=/Users/guilhermereis/data/db
+
+```
 
 (create this folder if it doens't exist: `mkdir /Users/guilhermereis/data/db`)
 
@@ -16,9 +19,9 @@ backend/dev.env
 
 (same variables for both)
 
-cd backend && yarn dev
+cd backend && yarn start
 
-cd frontend && yarn dev
+cd frontend && yarn start
 
 # If theres problems with React 18:
 
