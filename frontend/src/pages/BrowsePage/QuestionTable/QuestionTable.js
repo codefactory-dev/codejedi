@@ -121,6 +121,7 @@ export default function () {
 				testcases: question.testcases,
 				difficulty: question.difficulty,
 				creator: question.creator.username,
+				updatedAt: question.updatedAt,
 			}));
 			setInputs(data);
 		}

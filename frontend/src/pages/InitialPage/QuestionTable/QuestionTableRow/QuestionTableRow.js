@@ -14,6 +14,7 @@ import { useHistory } from 'react-router-dom';
 import ConnectTo from 'store/connect';
 import api from 'services/api';
 import Rating from 'components/Rating/Rating';
+import moment from 'moment';
 import clsx from 'clsx';
 
 const useStyles = makeStyles((theme) => ({
@@ -158,30 +159,40 @@ const QuestionTableRow = ({
 			}}
 			className={theClass.tr}
 		>
+			{/* Title */}
 			<td className={clsx(theClass.td, theClass.firstElement)}>
 				<div className={theClass.dummy} />
 				<div>{rowData.title}</div>
 			</td>
+			{/* Type */}
 			<td className={theClass.td}>
 				<span>{rowData.type}</span>
 			</td>
+			{/* Solution */}
 			<td className={theClass.td}>
 				<span>{getHasSolution(rowData.submissionState)}</span>
 			</td>
+			{/* Rating */}
 			<td className={theClass.td}>
 				<span>
 					<Rating />
 				</span>
 			</td>
+			{/* Difficulty */}
 			<td className={theClass.td}>
 				<span>{getDifficultyIcon(rowData.difficulty)}</span>
 			</td>
+			{/* Creator */}
 			<td className={theClass.td}>
-				<span>{rowData.profilePic}</span>
+				{/* TODO: REPLACE THIS WITH PROFILE PIC */}
+				{/* <span>{rowData.profilePic}</span> */}
+				{<span>{rowData.creator}</span>}
 			</td>
+			{/* Last Update */}
 			<td className={clsx(theClass.td, theClass.lastUpdate)}>
-				<div>{rowData.lastUpdate}</div>
+				<div>{moment(rowData.updatedAt).format('MM/DD/YYYY')}</div>
 			</td>
+			{/* Last Update Date */}
 			<td className={clsx(theClass.td, theClass.lastUpdateDate)}>
 				<span>{rowData.lastUpdateDate}</span>
 			</td>

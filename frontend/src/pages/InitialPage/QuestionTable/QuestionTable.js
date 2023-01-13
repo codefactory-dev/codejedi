@@ -154,6 +154,7 @@ const QuestionTable = ({ dispatch }) => {
 				testcases: question.testcases,
 				difficulty: question.difficulty,
 				creator: question.creator.username,
+				updatedAt: question.updatedAt,
 			}));
 			setInputs(data);
 		}
