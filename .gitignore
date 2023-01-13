@@ -13,3 +13,4 @@ functions/**/*
 frontend/build/**/*
 .vscode
 node_modules/
+yarn.lock
