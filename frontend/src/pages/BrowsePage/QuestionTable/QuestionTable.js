@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
 		paddingLeft: 8,
 	}),
 	lastUpdateTitle: (props) => ({
-		textAlign: 'left',
+		textAlign: 'center',
 		width: 200,
 	}),
 	lastUpdateDateTitle: (props) => ({

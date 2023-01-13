@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
 		paddingLeft: 8,
 	}),
 	lastUpdateTitle: (props) => ({
-		textAlign: 'left',
+		textAlign: 'center',
 		width: 200,
 	}),
 	lastUpdateDateTitle: (props) => ({
@@ -80,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
 		},
 	}),
 	lastUpdate: (props) => ({
-		textAlign: 'left',
+		textAlign: 'center',
 		'& div': {
 			display: 'inline-block',
 			whiteSpace: 'wrap',
@@ -190,7 +190,7 @@ const QuestionTableRow = ({
 			</td>
 			{/* Last Update */}
 			<td className={clsx(theClass.td, theClass.lastUpdate)}>
-				<div>{moment(rowData.updatedAt).format('MM/DD/YYYY')}</div>
+				<span>{moment(rowData.updatedAt).format('MM/DD/YYYY')}</span>
 			</td>
 			{/* Last Update Date */}
 			<td className={clsx(theClass.td, theClass.lastUpdateDate)}>
