@@ -190,7 +190,7 @@ const QuestionTableRow = ({
 			</td>
 			{/* Last Update */}
 			<td className={clsx(theClass.td, theClass.lastUpdate)}>
-				<span>{moment(rowData.updatedAt).format('MM/DD/YYYY')}</span>
+				<span>{moment(rowData.updatedAt).format('MM/DD/YYYY HH:mm:ss')}</span>
 			</td>
 			{/* Last Update Date */}
 			<td className={clsx(theClass.td, theClass.lastUpdateDate)}>
