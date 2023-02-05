@@ -112,7 +112,7 @@ function SigninPage(props) {
 	const history = useHistory();
 	const classes = useStyles();
 	const [isLoggedIn, setLoggedIn] = useState(false);
-	const [isError, setIsError] = useState(false);
+	const [errorMessage, setErrorMessage] = useState(false);
 	const [values, setValues] = React.useState({
 		password: '',
 		showPassword: false,
@@ -134,7 +134,7 @@ function SigninPage(props) {
 
 	const handleLogin = (e) => {
 		e.preventDefault();
-		setIsError(false);
+		setErrorMessage(null);
 		async function login() {
 			console.log('handling login');
 			try {
@@ -155,12 +155,12 @@ function SigninPage(props) {
 					setAuthTokens(result.data);
 					setLoggedIn(true);
 				} else {
-					setIsError(true);
+					setErrorMessage('The username or password provided were incorrect!');
 					console.log('Error logging in.');
 				}
 			} catch (error) {
 				console.log(`Error logging in. ${error}`);
-				setIsError(true);
+				setErrorMessage('The username or password provided were incorrect!');
 			}
 		}
 		login();
@@ -267,9 +267,7 @@ function SigninPage(props) {
 									</div>
 								</Grid>
 							</Typography>
-							{isError && (
-								<div>The username or password provided were incorrect!</div>
-							)}
+							{errorMessage && <div>{errorMessage}</div>}
 						</form>
 					</div>
 				</Grid>
