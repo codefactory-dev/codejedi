@@ -14,3 +14,4 @@ frontend/build/**/*
 .vscode
 node_modules/
 yarn.lock
+HOW TO DEPLOY THIS.md
