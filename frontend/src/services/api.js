@@ -3,10 +3,10 @@ require('dotenv').config({ path: '../../.env' });
 
 const fetchClient = () => {
 	const API_URL =
-		process.env.NODE_ENV === 'production'
+		process.env.ENVIRONMENT === 'production'
 			? 'https://codejedi.xyz'
 			: 'http://localhost:4001';
-	console.log({ API_URL, NODE_ENV: process.env.NODE_ENV });
+	console.log({ API_URL, ENVIRONMENT: process.env.ENVIRONMENT });
 	const defaultOptions = {
 		baseURL: API_URL,
 		method: 'get',
