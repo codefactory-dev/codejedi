@@ -1,12 +1,13 @@
 import axios from 'axios';
-require('dotenv').config({ path: '../../.env' });
+import dotenv from 'dotenv';
+dotenv.config({ path: '../../.env' });
 
 const fetchClient = () => {
 	const API_URL =
-		process.env.ENVIRONMENT === 'production'
+		process.env.REACT_APP_ENVIRONMENT === 'production'
 			? 'https://codejedi.xyz'
 			: 'http://localhost:4001';
-	console.log({ API_URL, ENVIRONMENT: process.env.ENVIRONMENT });
+	console.log({ API_URL, ENVIRONMENT: process.env.REACT_APP_ENVIRONMENT });
 	const defaultOptions = {
 		baseURL: API_URL,
 		method: 'get',
